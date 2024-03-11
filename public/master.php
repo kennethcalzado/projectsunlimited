@@ -15,7 +15,6 @@
     <!-- Header -->
     <header class="bg-blue-500 text-white p-4">
         <div class="container mx-auto">
-            <h1 class="text-2xl font-bold">My Website</h1>
             <nav class="p-4">
                 <div class="container mx-auto flex items-center justify-between">
                     <div>
