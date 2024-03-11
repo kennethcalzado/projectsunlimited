@@ -1,6 +1,6 @@
 {
  "scripts": {
-  "start": "npx tailwindcss -i ./assets/input.css -o ./assets/input.css --watch"
+  "start": "npx tailwindcss -i ./public/input.css -o ./assets/input.css --watch"
  }, 
   "devDependencies": {
     "tailwindcss": "^3.4.1"
