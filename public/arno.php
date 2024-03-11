@@ -1,5 +1,5 @@
 <?php
-$pageTitle = "Home";
+$pageTitle = "Brands - Arno";
 ob_start();
 ?>
 <!-- Your page content goes here -->

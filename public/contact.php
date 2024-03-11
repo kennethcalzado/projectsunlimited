@@ -1,9 +1,13 @@
 <?php
-$pageTitle = "Home";
+$pageTitle = "Contact Us";
 ob_start();
 ?>
-<!-- Your page content goes here -->
-
+<div class="content">
+<div class="relative">
+        <img src="../assets/image/contactus.png" class="w-full h-32 object-cover">
+        <div class="absolute inset-0 bg-black opacity-50"></div>
+    </div>
+</div>
 <?php
 $content = ob_get_clean();
 include("../public/master.php");
