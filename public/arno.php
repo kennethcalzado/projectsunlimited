@@ -4,66 +4,110 @@ ob_start();
 ?>
 <!-- Your page content goes here -->
 <div id="content">
+    <!-- CAROUSEL -->
     <div id="brand-slider cotainer">
-        <!-- Slider -->
-        <div data-hs-carousel='{"loadingClasses": "opacity-0", "isAutoPlay": true}' class="relative">
-            <div class="hs-carousel relative overflow-hidden w-full min-h-[350px] bg-white rounded-lg">
-                <div>
-                    class="hs-carousel-body absolute top-0 bottom-0 start-0 flex flex-nowrap transition-transform
-                    duration-700 opacity-0">
-                    <div class="hs-carousel-slide">
-                        <div class="flex justify-center h-full bg-gray-100 p-6">
-                            <span class="self-center text-4xl transition duration-700">First slide</span>
-                        </div>
+        <div class="carousel relative">
+            <div class="carousel-inner flex">
+                <div class="carousel-item w-full bg-red-500 text-white text-center">
+                    <h1 class="text-4xl font-bold">Slide 1</h1>
+                </div>
+                <div class="carousel-item w-full bg-blue-500 text-white text-center">
+                    <h1 class="text-4xl font-bold">Slide 2</h1>
+                </div>
+                <div class="carousel-item w-full bg-green-500 text-white text-center">
+                    <h1 class="text-4xl font-bold">Slide 3</h1>
+                </div>
+            </div>
+            <div class="carousel-arrow prev" onclick="prevSlide()">
+                <svg class="w-6 h-6" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd"
+                        d="M6.707 10l5.147-5.146a.5.5 0 0 1 .708.708l-4.793 4.793 4.793 4.793a.5.5 0 1 1-.708.708l-5.147-5.146a.5.5 0 0 1 0-.708z"
+                        clip-rule="evenodd" />
+                </svg>
+            </div>
+            <div class="carousel-arrow next" onclick="nextSlide()">
+                <svg class="w-6 h-6" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd"
+                        d="M13.293 10l-5.147 5.146a.5.5 0 0 0 .708.708l4.793-4.793-4.793-4.793a.5.5 0 1 0-.708.708l5.147 5.146a.5.5 0 0 0 0-.708z"
+                        clip-rule="evenodd" />
+                </svg>
+            </div>
+        </div>
+    </div>
+    <!-- DESCRIPTION -->
+    <div id="brand-definition cotainer">
+        <blockquote class="text-xl text-justify px-24 py-10 font-semibold text-gray-900 dark:text-dark">
+            <p>ARNO is a Projects Unlimited’s homegrown brand for office and commercial furniture. A trusted brand
+                by designers and end users alike, ARNO furniture provides long-lasting comfort in your working space. We
+                ensure that our products are durable, sleek, and elegant. With several designs and features to choose
+                from</p>
+        </blockquote>
+    </div>
+    <!-- DESCRIPTION -->
+    <div id="brand-content cotainer">
+        <div id="table-concepts-pic cotainer">
+            <div class="relative bg-white p-4">
+                <div class="absolute h-30 bg-black"></div>
+                <div class="flex justify-between relative z-10">
+                    <div class="w-1/4 bg-white p-4 rounded-lg">
+                        <!-- Image 1 -->
+                        <img src="https://picsum.photos/300/300" alt="Image 1">
                     </div>
-                    <div class="hs-carousel-slide">
-                        <div class="flex justify-center h-full bg-gray-200 p-6">
-                            <span class="self-center text-4xl transition duration-700">Second slide</span>
-                        </div>
+                    <div class="w-1/4 bg-white p-4 rounded-lg">
+                        <!-- Image 2 -->
+                        <img src="https://picsum.photos/300/300" alt="Image 2">
                     </div>
-                    <div class="hs-carousel-slide">
-                        <div class="flex justify-center h-full bg-gray-300 p-6">
-                            <span class="self-center text-4xl transition duration-700">Third slide</span>
-                        </div>
+                    <div class="w-1/4 bg-white p-4 rounded-lg">
+                        <!-- Image 3 -->
+                        <img src="https://picsum.photos/300/300" alt="Image 3">
+                    </div>
+                    <div class="w-1/4 bg-white p-4 rounded-lg">
+                        <!-- Image 4 -->
+                        <img src="https://picsum.photos/300/300" alt="Image 4">
                     </div>
                 </div>
             </div>
-
-            <button type="button"
-                class="hs-carousel-prev hs-carousel:disabled:opacity-50 disabled:pointer-events-none absolute inset-y-0 start-0 inline-flex justify-center items-center w-[46px] h-full text-gray-800 hover:bg-gray-800/[.1]">
-                <span class="text-2xl" aria-hidden="true">
-                    <svg class="size-4" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                        viewBox="0 0 16 16">
-                        <path fill-rule="evenodd"
-                            d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z" />
-                    </svg>
-                </span>
-                <span class="sr-only">Previous</span>
-            </button>
-            <button type="button"
-                class="hs-carousel-next hs-carousel:disabled:opacity-50 disabled:pointer-events-none absolute inset-y-0 end-0 inline-flex justify-center items-center w-[46px] h-full text-gray-800 hover:bg-gray-800/[.1]">
-                <span class="sr-only">Next</span>
-                <span class="text-2xl" aria-hidden="true">
-                    <svg class="size-4" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                        viewBox="0 0 16 16">
-                        <path fill-rule="evenodd"
-                            d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708z" />
-                    </svg>
-                </span>
-            </button>
-
-            <div class="hs-carousel-pagination flex justify-center absolute bottom-3 start-0 end-0 space-x-2">
-                <span
-                    class="hs-carousel-active:bg-blue-700 hs-carousel-active:border-blue-700 size-3 border border-gray-400 rounded-full cursor-pointer"></span>
-                <span
-                    class="hs-carousel-active:bg-blue-700 hs-carousel-active:border-blue-700 size-3 border border-gray-400 rounded-full cursor-pointer"></span>
-                <span
-                    class="hs-carousel-active:bg-blue-700 hs-carousel-active:border-blue-700 size-3 border border-gray-400 rounded-full cursor-pointer"></span>
-            </div>
         </div>
-        <!-- End Slider -->
     </div>
 </div>
+
+<script>
+    let currentIndex = 0;
+    const items = document.querySelectorAll( ".carousel-item" );
+    const totalItems = items.length;
+
+    function nextSlide ()
+    {
+        if ( currentIndex < totalItems - 1 )
+        {
+            currentIndex++;
+        } else
+        {
+            currentIndex = 0;
+        }
+        updateCarousel();
+    }
+
+    function prevSlide ()
+    {
+        if ( currentIndex > 0 )
+        {
+            currentIndex--;
+        } else
+        {
+            currentIndex = totalItems - 1;
+        }
+        updateCarousel();
+    }
+
+    function updateCarousel ()
+    {
+        const width = items[currentIndex].clientWidth;
+        document.querySelector(
+            ".carousel-inner"
+        ).style.transform = `translateX(-${ width * currentIndex }px)`;
+    }
+</script>
 
 <?php
 $content = ob_get_clean();
