@@ -22,8 +22,10 @@
                     <div class="hidden md:flex space-x-4">
                         <ul class="flex space-x-4">
                             <li><a href="#" class="text-white">Home</a></li>
-                            <li><a href="#" class="text-white">Services</a></li>
-                            <li><a href="#" class="text-white">About</a></li>
+                            <li><a href="#" class="text-white">About Us</a></li>
+                            <li><a href="#" class="text-white">Brands</a></li>
+                            <li><a href="#" class="text-white">Products</a></li>
+                            <li><a href="#" class="text-white">Blogs</a></li>
                             <li><a href="#" class="text-white">Contact</a></li>
                         </ul>
                     </div>
@@ -50,7 +52,7 @@
     <!-- Footer -->
     <footer class="bg-gray-800 text-white py-4">
         <div class="container mx-auto text-center">
-            &copy; 2024 My Website. All rights reserved.
+            &copy; 2024 Projects Unlimited Powered by Projects Unlimited
         </div>
     </footer>
 
