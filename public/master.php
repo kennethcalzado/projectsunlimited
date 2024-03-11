@@ -24,7 +24,7 @@
                         <ul class="flex space-x-4">
                             <li><a href="../public/home.php" class="text-white">Home</a></li>
                             <li><a href="../public/about.php" class="text-white">About Us</a></li>
-                            <li><a href="../public/brands.php" class="text-white">Brands</a></li>
+                            <li><a href="../public/arno.php" class="text-white">Brands</a></li>
                             <li><a href="../public/category.php" class="text-white">Products</a></li>
                             <li><a href="../public/blogs.php" class="text-white">Blogs</a></li>
                             <li><a href="../public/contact.php" class="text-white">Contact</a></li>
