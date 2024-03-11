@@ -16,19 +16,19 @@
     <header class="bg-blue-500 text-white p-4">
         <div class="container mx-auto">
             <h1 class="text-2xl font-bold">My Website</h1>
-            <nav class="bg-yellow-400 p-4">
+            <nav class="p-4">
                 <div class="container mx-auto flex items-center justify-between">
                     <div>
-                        <a href="#" class="text-white text-xl font-bold">Logo</a>
+                    <a href="#" class="logo-link"> <img src="../assets/image/projects.png" alt="Logo" class="logo-image"></a>
                     </div>
                     <div class="hidden md:flex space-x-4">
                         <ul class="flex space-x-4">
-                            <li><a href="#" class="text-white">Home</a></li>
-                            <li><a href="#" class="text-white">About Us</a></li>
-                            <li><a href="#" class="text-white">Brands</a></li>
-                            <li><a href="#" class="text-white">Products</a></li>
-                            <li><a href="#" class="text-white">Blogs</a></li>
-                            <li><a href="#" class="text-white">Contact</a></li>
+                            <li><a href="../public/home.php" class="text-white">Home</a></li>
+                            <li><a href="../public/about.php" class="text-white">About Us</a></li>
+                            <li><a href="../public/brands.php" class="text-white">Brands</a></li>
+                            <li><a href="../public/category.php" class="text-white">Products</a></li>
+                            <li><a href="../public/blogs.php" class="text-white">Blogs</a></li>
+                            <li><a href="../public/contact.php" class="text-white">Contact</a></li>
                         </ul>
                     </div>
                     <div class="md:hidden">

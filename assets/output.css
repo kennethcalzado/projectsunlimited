@@ -778,11 +778,6 @@ video {
   background-color: rgb(255 255 255 / 0.3);
 }
 
-.bg-yellow-400 {
-  --tw-bg-opacity: 1;
-  background-color: rgb(250 204 21 / var(--tw-bg-opacity));
-}
-
 .p-4 {
   padding: 1rem;
 }
@@ -811,11 +806,6 @@ video {
   line-height: 2.5rem;
 }
 
-.text-xl {
-  font-size: 1.25rem;
-  line-height: 1.75rem;
-}
-
 .font-bold {
   font-weight: 700;
 }
@@ -824,6 +814,21 @@ video {
   --tw-text-opacity: 1;
   color: rgb(255 255 255 / var(--tw-text-opacity));
 }
+
+/**nav bar**/
+
+.logo-link {
+  display: inline-block;
+}
+
+.logo-image {
+  width: 150px;
+  /* Adjust the width according to your design */
+  height:auto;
+  /* Maintain aspect ratio */
+}
+
+/**carousel**/
 
 .duration-700 {
   transition-duration: 700ms;

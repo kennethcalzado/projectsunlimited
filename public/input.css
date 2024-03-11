@@ -2,7 +2,17 @@
 @tailwind components;
 @tailwind utilities;
 
+/**nav bar**/
+.logo-link {
+    display: inline-block;
+  }
+  
+  .logo-image {
+    width: 150px; /* Adjust the width according to your design */
+    height:auto; /* Maintain aspect ratio */
+  }
 
+/**carousel**/
 .carousel {
     position: relative;
     overflow: hidden;
