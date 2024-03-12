@@ -813,6 +813,11 @@ video {
   --tw-text-opacity: 1;
   color: rgb(255 255 255 / var(--tw-text-opacity));
 }
+
+.text-\[\] {
+  color: ;
+}
+
 .text-\[\#F6E381\] {
   --tw-text-opacity: 1;
   color: rgb(246 227 129 / var(--tw-text-opacity));

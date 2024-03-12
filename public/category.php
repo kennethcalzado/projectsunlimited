@@ -44,9 +44,7 @@ ob_start();
     <div class="absolute inset-0 bg-black opacity-50"></div>
     <div class="absolute inset-0 flex items-center justify-center">
     <p class="text-[#F6E381] font-bold text-4xl">CUSTOMIZE PRODUCTS</p>
-    <p class="text-white font-semibold text-2xl">Many of our products can be customized to the requirements of our clients. These may include the dimensions, colors, textures, and materials used in the item.</p>
 </div>
-
 </div>
 <div id="customcontainer">
     <h3 class="font-bold text-3xl p-4 px-8">INQUIRE</h3>
