@@ -13,7 +13,7 @@
 
 <body class="bg-gray-100">
     <!-- Header -->
-    <header class="bg-blue-500 text-white p-4">
+    <header class="bg-black text-white p-4">
         <div class="container mx-auto">
             <nav class="p-4">
                 <div class="container mx-auto flex items-center justify-between">
@@ -22,12 +22,12 @@
                     </div>
                     <div class="hidden md:flex space-x-4">
                         <ul class="flex space-x-4">
-                            <li><a href="../public/home.php" class="text-white">Home</a></li>
-                            <li><a href="../public/about.php" class="text-white">About Us</a></li>
-                            <li><a href="../public/arno.php" class="text-white">Brands</a></li>
-                            <li><a href="../public/category.php" class="text-white">Products</a></li>
-                            <li><a href="../public/blogs.php" class="text-white">Blogs</a></li>
-                            <li><a href="../public/contact.php" class="text-white">Contact</a></li>
+                            <li><a href="../public/home.php" class="text-white font-semibold">Home</a></li>
+                            <li><a href="../public/about.php" class="text-white font-semibold">About Us</a></li>
+                            <li><a href="../public/arno.php" class="text-white font-semibold">Brands</a></li>
+                            <li><a href="../public/category.php" class="text-white font-semibold">Products</a></li>
+                            <li><a href="../public/blogs.php" class="text-white font-semibold">Blogs</a></li>
+                            <li><a href="../public/contact.php" class="text-white font-semibold">Contact</a></li>
                         </ul>
                     </div>
                     <div class="md:hidden">
@@ -47,7 +47,7 @@
         </main>
 
     <!-- Footer -->
-    <footer class="bg-gray-800 text-white py-4">
+    <footer class="bg-black text-white py-4">
         <div class="container mx-auto text-center">
            <i> Copyright &copy; 2024 Projects Unlimited Powered by Projects Unlimited </i>
         </div>

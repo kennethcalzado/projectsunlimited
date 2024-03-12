@@ -47,13 +47,13 @@ ob_start();
 </div>
 </div>
 <div id="customcontainer">
-    <h3 class="font-bold text-3xl p-4 px-8">INQUIRE</h3>
+    <h3 class="text-gray-800 font-bold text-3xl p-4 px-8">INQUIRE</h3>
     <p class="font-semibold text-2xl p-4 px-8">Ask about the product and set an official appointment with Projects Unlimited. We are willing to get in touch with you directly and know your ideas.</p>
-    <h3 class="text-right font-bold text-3xl p-4 px-8">PLAN</h3>
+    <h3 class="text-gray-800 text-right font-bold text-3xl p-4 px-8">PLAN</h3>
     <p class="text-right font-semibold text-2xl p-4 px-8">Discuss your desired dimension, color, texture, and materials for your customized products and we’ll do it for you. The budget and timeline will be discussed as well.</p>
-    <h3 class="font-bold text-3xl p-4 px-8">CREATE</h3>
+    <h3 class="text-gray-800 font-bold text-3xl p-4 px-8">CREATE</h3>
     <p class="font-semibold text-2xl p-4 px-8">Our team will proceed to create your desired products and we’ll give you an estimated time of completion and we’ll keep you updated at all time.</p>
-    <h3 class="text-right font-bold text-3xl p-4 px-8">DELIVER & INSTALL</h3>
+    <h3 class="text-gray-800 text-right font-bold text-3xl p-4 px-8">DELIVER & INSTALL</h3>
     <p class=" text-right font-semibold text-2xl p-4 px-8">Once the products are completed, we will proceed to delivering and installing the products to your place.</p>
 </div>
 </div>
