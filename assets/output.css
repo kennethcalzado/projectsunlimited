@@ -590,13 +590,58 @@ video {
   inset: 0px;
 }
 
+<<<<<<< Updated upstream
+=======
+.left-0 {
+  left: 0px;
+}
+
+.top-0 {
+  top: 0px;
+}
+
+>>>>>>> Stashed changes
 .z-10 {
   z-index: 10;
+}
+
+.m-20 {
+  margin: 5rem;
+}
+
+.mx-10 {
+  margin-left: 2.5rem;
+  margin-right: 2.5rem;
 }
 
 .mx-auto {
   margin-left: auto;
   margin-right: auto;
+}
+
+.my-10 {
+  margin-top: 2.5rem;
+  margin-bottom: 2.5rem;
+}
+
+.\!mt-10 {
+  margin-top: 2.5rem !important;
+}
+
+.mb-2 {
+  margin-bottom: 0.5rem;
+}
+
+.ml-10 {
+  margin-left: 2.5rem;
+}
+
+.mr-10 {
+  margin-right: 2.5rem;
+}
+
+.mt-4 {
+  margin-top: 1rem;
 }
 
 .flex {
@@ -607,8 +652,17 @@ video {
   display: none;
 }
 
+<<<<<<< Updated upstream
 .h-20 {
   height: 5rem;
+=======
+.\!h-dvh {
+  height: 100dvh !important;
+}
+
+.h-16 {
+  height: 4rem;
+>>>>>>> Stashed changes
 }
 
 .h-32 {
@@ -621,6 +675,7 @@ video {
 
 .h-96 {
   height: 24rem;
+<<<<<<< Updated upstream
 }
 
 .h-4 {
@@ -641,14 +696,71 @@ video {
 
 .w-6 {
   width: 1.5rem;
+=======
+>>>>>>> Stashed changes
+}
+
+.h-dvh {
+  height: 100dvh;
+}
+
+.h-full {
+  height: 100%;
+}
+
+.h-screen {
+  height: 100vh;
+}
+
+.max-h-full {
+  max-height: 100%;
+}
+
+<<<<<<< Updated upstream
+=======
+.w-1\/4 {
+  width: 25%;
+}
+
+.w-4\/5 {
+  width: 80%;
+}
+
+.w-6 {
+  width: 1.5rem;
+}
+
+.w-80 {
+  width: 20rem;
 }
 
 .w-full {
   width: 100%;
 }
 
+.w-screen {
+  width: 100vw;
+}
+
+>>>>>>> Stashed changes
 .transform {
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+
+.list-inside {
+  list-style-position: inside;
+}
+
+.list-disc {
+  list-style-type: disc;
+}
+
+.flex-col {
+  flex-direction: column;
+}
+
+.place-items-start {
+  place-items: start;
 }
 
 .items-center {
@@ -667,6 +779,10 @@ video {
   --tw-space-x-reverse: 0;
   margin-right: calc(1rem * var(--tw-space-x-reverse));
   margin-left: calc(1rem * calc(1 - var(--tw-space-x-reverse)));
+}
+
+.rounded-full {
+  border-radius: 9999px;
 }
 
 .rounded-lg {
@@ -708,6 +824,43 @@ video {
   background-color: rgb(255 255 255 / var(--tw-bg-opacity));
 }
 
+<<<<<<< Updated upstream
+=======
+.bg-yellow-200 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(254 240 138 / var(--tw-bg-opacity));
+}
+
+.bg-yellow-300 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(253 224 71 / var(--tw-bg-opacity));
+}
+
+.bg-yellow-950 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(66 32 6 / var(--tw-bg-opacity));
+}
+
+.bg-gradient-to-t {
+  background-image: linear-gradient(to top, var(--tw-gradient-stops));
+}
+
+.from-yellow-300 {
+  --tw-gradient-from: #fde047 var(--tw-gradient-from-position);
+  --tw-gradient-to: rgb(253 224 71 / 0) var(--tw-gradient-to-position);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+}
+
+.to-transparent {
+  --tw-gradient-to: transparent var(--tw-gradient-to-position);
+}
+
+.object-contain {
+  -o-object-fit: contain;
+     object-fit: contain;
+}
+
+>>>>>>> Stashed changes
 .object-cover {
   -o-object-fit: cover;
      object-fit: cover;
@@ -724,6 +877,28 @@ video {
 .px-24 {
   padding-left: 6rem;
   padding-right: 6rem;
+<<<<<<< Updated upstream
+=======
+}
+
+.py-10 {
+  padding-top: 2.5rem;
+  padding-bottom: 2.5rem;
+}
+
+.py-4 {
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
+
+.py-5 {
+  padding-top: 1.25rem;
+  padding-bottom: 1.25rem;
+}
+
+.pl-10 {
+  padding-left: 2.5rem;
+>>>>>>> Stashed changes
 }
 
 .py-10 {
@@ -771,14 +946,19 @@ video {
   text-align: justify;
 }
 
-.text-2xl {
-  font-size: 1.5rem;
-  line-height: 2rem;
+.text-3xl {
+  font-size: 1.875rem;
+  line-height: 2.25rem;
 }
 
 .text-4xl {
   font-size: 2.25rem;
   line-height: 2.5rem;
+}
+
+.text-lg {
+  font-size: 1.125rem;
+  line-height: 1.75rem;
 }
 
 .text-xl {
@@ -795,10 +975,29 @@ video {
   font-weight: 700;
 }
 
+.font-extrabold {
+  font-weight: 800;
+}
+
+.font-medium {
+  font-weight: 500;
+}
+
+.font-normal {
+  font-weight: 400;
+}
+
 .font-semibold {
   font-weight: 600;
 }
 
+<<<<<<< Updated upstream
+=======
+.leading-relaxed {
+  line-height: 1.625;
+}
+
+>>>>>>> Stashed changes
 .text-black {
   --tw-text-opacity: 1;
   color: rgb(0 0 0 / var(--tw-text-opacity));
@@ -814,6 +1013,7 @@ video {
   color: rgb(255 255 255 / var(--tw-text-opacity));
 }
 
+<<<<<<< Updated upstream
 .text-\[\] {
   color: ;
 }
@@ -821,10 +1021,21 @@ video {
 .text-\[\#F6E381\] {
   --tw-text-opacity: 1;
   color: rgb(246 227 129 / var(--tw-text-opacity));
+=======
+.text-yellow-950 {
+  --tw-text-opacity: 1;
+  color: rgb(66 32 6 / var(--tw-text-opacity));
+>>>>>>> Stashed changes
 }
 
 .opacity-50 {
   opacity: 0.5;
+}
+
+.shadow-md {
+  --tw-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --tw-shadow-colored: 0 4px 6px -1px var(--tw-shadow-color), 0 2px 4px -2px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
 }
 
 /**nav bar**/
@@ -885,6 +1096,26 @@ video {
   right: 10px;
 }
 
+.hover\:bg-gray-700:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(55 65 81 / var(--tw-bg-opacity));
+}
+
+.hover\:bg-yellow-200:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(254 240 138 / var(--tw-bg-opacity));
+}
+
+.hover\:font-semibold:hover {
+  font-weight: 600;
+}
+
+.hover\:shadow-md:hover {
+  --tw-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --tw-shadow-colored: 0 4px 6px -1px var(--tw-shadow-color), 0 2px 4px -2px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+
 @media (min-width: 768px) {
   .md\:flex {
     display: flex;
@@ -893,4 +1124,29 @@ video {
   .md\:hidden {
     display: none;
   }
+
+  .md\:text-5xl {
+    font-size: 3rem;
+    line-height: 1;
+  }
+
+  .md\:text-xl {
+    font-size: 1.25rem;
+    line-height: 1.75rem;
+  }
 }
+<<<<<<< Updated upstream
+=======
+
+@media (min-width: 1024px) {
+  .lg\:text-2xl {
+    font-size: 1.5rem;
+    line-height: 2rem;
+  }
+
+  .lg\:text-6xl {
+    font-size: 3.75rem;
+    line-height: 1;
+  }
+}
+>>>>>>> Stashed changes
