@@ -9,5 +9,12 @@ module.exports = {
     extend: {},
   },
   plugins: [],
-}
+  fontFamily: {
+    'sans': ['Karla', 'sans-serif']
+  },
+  letterSpacing: {
+    '-0.4px': '-0.4px',
+  }
+};
+
 

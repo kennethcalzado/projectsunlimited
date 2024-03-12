@@ -1,3 +1,15 @@
+/* Include the font link */
+@import url('https://fonts.googleapis.com/css2?family=Karla:ital,wght@0,200..800;1,200..800&display=swap');
+
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css');
+
+/* Apply the font to the body */
+body {
+    font-family: 'Karla', sans-serif;
+    letter-spacing: -0.4px;
+}
+
+/* Tailwind CSS */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -5,18 +17,18 @@
 /**nav bar**/
 .logo-link {
     display: inline-block;
-  }
+}
   
-  .logo-image {
+.logo-image {
     width: 150px; /* Adjust the width according to your design */
-    height:auto; /* Maintain aspect ratio */
-  }
+    height: auto; /* Maintain aspect ratio */
+}
 
-/**carousel**/
+/**banner home**/
 .carousel {
     position: relative;
     overflow: hidden;
-    height: 300px;
+    height: 450px;
 }
 
 .carousel-inner {
@@ -26,7 +38,7 @@
 
 .carousel-item {
     min-width: 100%;
-    height: 300px;
+    height: 450px;
 }
 
 .carousel-arrow {
@@ -35,23 +47,178 @@
     transform: translateY(-50%);
     width: 40px;
     height: 40px;
-    background-color: rgba(0, 0, 0, 0.5);
-    color: white;
+    color: rgb(0, 0, 0);
     display: flex;
     justify-content: center;
     align-items: center;
     cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-.carousel-arrow:hover {
-    background-color: rgba(0, 0, 0, 0.7);
+    background-color: transparent 
 }
 
 .carousel-arrow.prev {
     left: 10px;
+    background-color: transparent 
 }
 
 .carousel-arrow.next {
     right: 10px;
+    background-color: transparent 
 }
+
+/* Additional styles */
+/* homebody */
+p {
+    font-size: 31px;
+    letter-spacing: -0.4px;
+    line-height: 1.2;
+}
+
+/* section home */
+.section {
+    display: flex;
+    padding: 20px 190px;
+}
+
+.section .column {
+    flex: 1;
+    padding: 20px;
+}
+
+.about-us {
+    padding: 20px;
+}
+
+.about-us h2 {
+    margin-bottom: 20px;
+}
+
+/*YELLOW BUTTON*/
+.yellow-btn {
+    background-color: #F6E17A;
+    color: black;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 24px;
+}
+
+.yellow-btn:hover {
+    background-color: #F9E89B;
+}
+
+/* second carousel home*/
+.carousel-section {
+    background: linear-gradient(to bottom, transparent, #F6E17A); /* Gradient background */
+    padding: 50px 0; /* Adjust padding as needed */
+}
+
+
+
+.carousel-section .carousel-dots .dot {
+    width: 12px;
+    height: 12px;
+    margin: 0 5px;
+    border-radius: 50%;
+}
+
+.carousel-section .carousel-dots .dot.active {
+}
+
+.carousel-dots {
+    display: flex;
+    justify-content: center;
+}
+
+.learn-more-btn {
+    background-color: #ffffff; /* Background color */
+    color: #000; /* Text color */
+    border: none; /* Remove border */
+    border-radius: 50px; /* Border radius */
+    padding: 10px 30px; /* Padding */
+    position: absolute;
+    bottom: 70px;
+    right: 100px; /* Align to the left */
+    z-index: 999; /* Ensure it stays on top */
+    font-size: 24px;
+}
+
+.learn-more-btn:hover {
+    background-color: #D9D9D9;
+}
+
+.white-btn {
+    background-color: #ffffff; /* Background color */
+    color: #000; /* Text color */
+    border-radius: 50px;
+    border: none;
+    font-size: 24px;
+}
+
+.white-btn:hover {
+    background-color: #D9D9D9;
+}
+
+.third-carousel-section {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    height: auto;
+}
+
+.third-carousel {
+    background: url(../assets/image/testimonials.png) no-repeat center center;
+    background-size: cover;
+    padding: 50px 0;
+    /* Adjust padding as needed */
+}
+
+.third-carousel-inner {
+    display: flex;
+    transition: transform 0.5s ease;
+}
+
+.third-carousel-item {
+    min-width: 100%;
+    height: 500px;
+    display: flex;
+    flex-direction: column;
+    /* Change flex direction to column */
+    align-items: center;
+    justify-content: center;
+    padding: 0 280px;
+    color: white;
+    text-align: center;
+    /* Center text horizontally */
+}
+.third-carousel-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    z-index: 1;
+    /* Ensure arrows stay above carousel items */
+}
+
+.third-carousel-arrow.prev {
+    left: 20px;
+}
+
+.third-carousel-arrow.next {
+    right: 20px;
+}
+
+.third-dot {
+    width: 10px;
+    /* Adjust dot size as needed */
+    height: 10px;
+    /* Adjust dot size as needed */
+    border-radius: 50%;
+    margin: 0 5px;
+    /* Adjust margin between dots as needed */
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-bottom: 20px;
+}
+
+

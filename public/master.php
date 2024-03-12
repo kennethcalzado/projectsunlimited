@@ -1,24 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
 
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>
-            <?php echo $pageTitle ?? "Projects Unlimited" ?>
-        </title>
-        <!-- Link to your Tailwind CSS file -->
-        <link href="../assets/output.css" rel="stylesheet">
-    </head>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        <?php echo $pageTitle ?? "Projects Unlimited" ?>
+    </title>
+    <!-- Link to your Tailwind CSS file -->
+    <link href="../assets/output.css" rel="stylesheet">
+</head>
 
-<body class="bg-gray-100">
+<body class="bg-white">
     <!-- Header -->
     <header class="bg-blue-500 text-white p-4">
         <div class="container mx-auto">
             <nav class="p-4">
                 <div class="container mx-auto flex items-center justify-between">
                     <div>
-                    <a href="#" class="logo-link"> <img src="../assets/image/projects.png" alt="Logo" class="logo-image"></a>
+                        <a href="#" class="logo-link"> <img src="../assets/image/projects.png" alt="Logo" class="logo-image"></a>
                     </div>
                     <div class="hidden md:flex space-x-4">
                         <ul class="flex space-x-4">
@@ -42,16 +42,18 @@
         </div>
     </header>
 
-        <main>
-            <?php echo $content ?? "" ?>
-        </main>
+    <main>
+        <?php echo $content ?? "" ?>
+    </main>
 
     <!-- Footer -->
     <footer class="bg-gray-800 text-white py-4">
         <div class="container mx-auto text-center">
-           <i> Copyright &copy; 2024 Projects Unlimited Powered by Projects Unlimited </i>
+            <i> Copyright &copy; 2024 Projects Unlimited Powered by Projects Unlimited </i>
         </div>
     </footer>
 
-    </body>
+
+</body>
+
 </html>

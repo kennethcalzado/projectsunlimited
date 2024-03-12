@@ -1,6 +1,19 @@
-/*
-! tailwindcss v3.4.1 | MIT License | https://tailwindcss.com
-*/
+@import url('https://fonts.googleapis.com/css2?family=Karla:ital,wght@0,200..800;1,200..800&display=swap');
+
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css');
+
+/* Include the font link */
+
+/* Apply the font to the body */
+
+body {
+  font-family: 'Karla', sans-serif;
+  letter-spacing: -0.4px;
+}
+
+/* Tailwind CSS */
+
+/* ! tailwindcss v3.4.1 | MIT License | https://tailwindcss.com */
 
 /*
 1. Prevent padding and border from affecting element width. (https://github.com/mozdevs/cssremedy/issues/4)
@@ -444,7 +457,7 @@ video {
   display: none;
 }
 
-*, ::before, ::after {
+*, ::before, ::after{
   --tw-border-spacing-x: 0;
   --tw-border-spacing-y: 0;
   --tw-translate-x: 0;
@@ -494,7 +507,7 @@ video {
   --tw-backdrop-sepia:  ;
 }
 
-::backdrop {
+::backdrop{
   --tw-border-spacing-x: 0;
   --tw-border-spacing-y: 0;
   --tw-translate-x: 0;
@@ -544,270 +557,263 @@ video {
   --tw-backdrop-sepia:  ;
 }
 
-.container {
+.container{
   width: 100%;
 }
 
-@media (min-width: 640px) {
-  .container {
+@media (min-width: 640px){
+  .container{
     max-width: 640px;
   }
 }
 
-@media (min-width: 768px) {
-  .container {
+@media (min-width: 768px){
+  .container{
     max-width: 768px;
   }
 }
 
-@media (min-width: 1024px) {
-  .container {
+@media (min-width: 1024px){
+  .container{
     max-width: 1024px;
   }
 }
 
-@media (min-width: 1280px) {
-  .container {
+@media (min-width: 1280px){
+  .container{
     max-width: 1280px;
   }
 }
 
-@media (min-width: 1536px) {
-  .container {
+@media (min-width: 1536px){
+  .container{
     max-width: 1536px;
   }
 }
 
-.absolute {
+.absolute{
   position: absolute;
 }
 
-.relative {
+.relative{
   position: relative;
 }
 
-.inset-0 {
+.inset-0{
   inset: 0px;
 }
 
-.inset-x-0 {
-  left: 0px;
-  right: 0px;
-}
-
-.bottom-0 {
+.bottom-0{
   bottom: 0px;
 }
 
-.z-10 {
+.bottom-4{
+  bottom: 1rem;
+}
+
+.left-0{
+  left: 0px;
+}
+
+.right-0{
+  right: 0px;
+}
+
+.right-4{
+  right: 1rem;
+}
+
+.z-10{
   z-index: 10;
 }
 
-.mx-auto {
+.mx-auto{
   margin-left: auto;
   margin-right: auto;
 }
 
-.flex {
+.block{
+  display: block;
+}
+
+.flex{
   display: flex;
 }
 
-.hidden {
+.hidden{
   display: none;
 }
 
-.h-6 {
+.h-32{
+  height: 8rem;
+}
+
+.h-6{
   height: 1.5rem;
 }
 
-.w-6 {
-  width: 1.5rem;
-}
-
-.w-full {
-  width: 100%;
-}
-
-.w-1\/4 {
+.w-1\/4{
   width: 25%;
 }
 
-.transform {
+.w-6{
+  width: 1.5rem;
+}
+
+.w-full{
+  width: 100%;
+}
+
+.transform{
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
 
-.items-center {
+.items-center{
   align-items: center;
 }
 
-.justify-between {
+.justify-center{
+  justify-content: center;
+}
+
+.justify-between{
   justify-content: space-between;
 }
 
-.space-x-4 > :not([hidden]) ~ :not([hidden]) {
+.space-x-4 > :not([hidden]) ~ :not([hidden]){
   --tw-space-x-reverse: 0;
   margin-right: calc(1rem * var(--tw-space-x-reverse));
   margin-left: calc(1rem * calc(1 - var(--tw-space-x-reverse)));
 }
 
-.rounded-lg {
+.rounded-full{
+  border-radius: 9999px;
+}
+
+.rounded-lg{
   border-radius: 0.5rem;
 }
 
-.bg-blue-500 {
-  --tw-bg-opacity: 1;
-  background-color: rgb(59 130 246 / var(--tw-bg-opacity));
-}
-
-.bg-gray-100 {
-  --tw-bg-opacity: 1;
-  background-color: rgb(243 244 246 / var(--tw-bg-opacity));
-}
-
-.bg-gray-800 {
-  --tw-bg-opacity: 1;
-  background-color: rgb(31 41 55 / var(--tw-bg-opacity));
-}
-
-.bg-green-500 {
-  --tw-bg-opacity: 1;
-  background-color: rgb(34 197 94 / var(--tw-bg-opacity));
-}
-
-.bg-red-500 {
-  --tw-bg-opacity: 1;
-  background-color: rgb(239 68 68 / var(--tw-bg-opacity));
-}
-
-.bg-black {
+.bg-black{
   --tw-bg-opacity: 1;
   background-color: rgb(0 0 0 / var(--tw-bg-opacity));
 }
 
-.bg-white {
+.bg-blue-500{
+  --tw-bg-opacity: 1;
+  background-color: rgb(59 130 246 / var(--tw-bg-opacity));
+}
+
+.bg-gray-300{
+  --tw-bg-opacity: 1;
+  background-color: rgb(209 213 219 / var(--tw-bg-opacity));
+}
+
+.bg-gray-800{
+  --tw-bg-opacity: 1;
+  background-color: rgb(31 41 55 / var(--tw-bg-opacity));
+}
+
+.bg-green-500{
+  --tw-bg-opacity: 1;
+  background-color: rgb(34 197 94 / var(--tw-bg-opacity));
+}
+
+.bg-red-500{
+  --tw-bg-opacity: 1;
+  background-color: rgb(239 68 68 / var(--tw-bg-opacity));
+}
+
+.bg-white{
   --tw-bg-opacity: 1;
   background-color: rgb(255 255 255 / var(--tw-bg-opacity));
 }
 
-.p-4 {
+.object-cover{
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+
+.p-2{
+  padding: 0.5rem;
+}
+
+.p-4{
   padding: 1rem;
 }
 
-.p-20 {
-  padding: 5rem;
-}
-
-.py-4 {
-  padding-top: 1rem;
-  padding-bottom: 1rem;
-}
-
-.px-2 {
-  padding-left: 0.5rem;
-  padding-right: 0.5rem;
-}
-
-.px-2\.5 {
-  padding-left: 0.625rem;
-  padding-right: 0.625rem;
-}
-
-.py-0 {
-  padding-top: 0px;
-  padding-bottom: 0px;
-}
-
-.py-0\.5 {
-  padding-top: 0.125rem;
-  padding-bottom: 0.125rem;
-}
-
-.px-10 {
-  padding-left: 2.5rem;
-  padding-right: 2.5rem;
-}
-
-.px-5 {
-  padding-left: 1.25rem;
-  padding-right: 1.25rem;
-}
-
-.py-5 {
-  padding-top: 1.25rem;
-  padding-bottom: 1.25rem;
-}
-
-.px-3 {
-  padding-left: 0.75rem;
-  padding-right: 0.75rem;
-}
-
-.px-20 {
-  padding-left: 5rem;
-  padding-right: 5rem;
-}
-
-.py-20 {
-  padding-top: 5rem;
-  padding-bottom: 5rem;
-}
-
-.py-10 {
-  padding-top: 2.5rem;
-  padding-bottom: 2.5rem;
-}
-
-.px-24 {
+.px-24{
   padding-left: 6rem;
   padding-right: 6rem;
 }
 
-.text-center {
+.px-6{
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
+
+.py-10{
+  padding-top: 2.5rem;
+  padding-bottom: 2.5rem;
+}
+
+.py-2{
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+
+.py-4{
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
+
+.text-center{
   text-align: center;
 }
 
-.text-justify {
+.text-justify{
   text-align: justify;
 }
 
-.text-2xl {
-  font-size: 1.5rem;
-  line-height: 2rem;
+.text-3xl{
+  font-size: 1.875rem;
+  line-height: 2.25rem;
 }
 
-.text-4xl {
+.text-4xl{
   font-size: 2.25rem;
   line-height: 2.5rem;
 }
 
-.text-xl {
+.text-xl{
   font-size: 1.25rem;
   line-height: 1.75rem;
 }
 
-.font-bold {
+.font-bold{
   font-weight: 700;
 }
 
-.font-semibold {
+.font-semibold{
   font-weight: 600;
 }
 
-.italic {
-  font-style: italic;
+.text-black{
+  --tw-text-opacity: 1;
+  color: rgb(0 0 0 / var(--tw-text-opacity));
 }
 
-.text-gray-900 {
+.text-gray-900{
   --tw-text-opacity: 1;
   color: rgb(17 24 39 / var(--tw-text-opacity));
 }
 
-.text-white {
+.text-white{
   --tw-text-opacity: 1;
   color: rgb(255 255 255 / var(--tw-text-opacity));
 }
 
-.opacity-50 {
+.opacity-50{
   opacity: 0.5;
 }
 
@@ -820,16 +826,16 @@ video {
 .logo-image {
   width: 150px;
   /* Adjust the width according to your design */
-  height:auto;
+  height: auto;
   /* Maintain aspect ratio */
 }
 
-/**carousel**/
+/**banner home**/
 
 .carousel {
   position: relative;
   overflow: hidden;
-  height: 300px;
+  height: 450px;
 }
 
 .carousel-inner {
@@ -839,7 +845,7 @@ video {
 
 .carousel-item {
   min-width: 100%;
-  height: 300px;
+  height: 450px;
 }
 
 .carousel-arrow {
@@ -848,40 +854,203 @@ video {
   transform: translateY(-50%);
   width: 40px;
   height: 40px;
-  background-color: rgba(0, 0, 0, 0.5);
-  color: white;
+  color: rgb(0, 0, 0);
   display: flex;
   justify-content: center;
   align-items: center;
   cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.carousel-arrow:hover {
-  background-color: rgba(0, 0, 0, 0.7);
+  background-color: transparent
 }
 
 .carousel-arrow.prev {
   left: 10px;
+  background-color: transparent
 }
 
 .carousel-arrow.next {
   right: 10px;
+  background-color: transparent
 }
 
-@media (min-width: 768px) {
-  .md\:flex {
+/* Additional styles */
+
+/* homebody */
+
+p {
+  font-size: 31px;
+  letter-spacing: -0.4px;
+  line-height: 1.2;
+}
+
+/* section home */
+
+.section {
+  display: flex;
+  padding: 20px 190px;
+}
+
+.section .column {
+  flex: 1;
+  padding: 20px;
+}
+
+.about-us {
+  padding: 20px;
+}
+
+.about-us h2 {
+  margin-bottom: 20px;
+}
+
+/*YELLOW BUTTON*/
+
+.yellow-btn {
+  background-color: #F6E17A;
+  color: black;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 24px;
+}
+
+.yellow-btn:hover {
+  background-color: #F9E89B;
+}
+
+/* second carousel home*/
+
+.carousel-section {
+  background: linear-gradient(to bottom, transparent, #F6E17A);
+  /* Gradient background */
+  padding: 50px 0;
+  /* Adjust padding as needed */
+}
+
+.carousel-section .carousel-dots .dot {
+  width: 12px;
+  height: 12px;
+  margin: 0 5px;
+  border-radius: 50%;
+}
+
+.carousel-section .carousel-dots .dot.active {
+}
+
+.carousel-dots {
+  display: flex;
+  justify-content: center;
+}
+
+.learn-more-btn {
+  background-color: #ffffff;
+  /* Background color */
+  color: #000;
+  /* Text color */
+  border: none;
+  /* Remove border */
+  border-radius: 50px;
+  /* Border radius */
+  padding: 10px 30px;
+  /* Padding */
+  position: absolute;
+  bottom: 70px;
+  right: 100px;
+  /* Align to the left */
+  z-index: 999;
+  /* Ensure it stays on top */
+  font-size: 24px;
+}
+
+.learn-more-btn:hover {
+  background-color: #D9D9D9;
+}
+
+.white-btn {
+  background-color: #ffffff;
+  /* Background color */
+  color: #000;
+  /* Text color */
+  border-radius: 50px;
+  border: none;
+  font-size: 24px;
+}
+
+.white-btn:hover {
+  background-color: #D9D9D9;
+}
+
+.third-carousel-section {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  height: auto;
+}
+
+.third-carousel {
+  background: url(../assets/image/testimonials.png) no-repeat center center;
+  background-size: cover;
+  padding: 50px 0;
+  /* Adjust padding as needed */
+}
+
+.third-carousel-inner {
+  display: flex;
+  transition: transform 0.5s ease;
+}
+
+.third-carousel-item {
+  min-width: 100%;
+  height: 500px;
+  display: flex;
+  flex-direction: column;
+  /* Change flex direction to column */
+  align-items: center;
+  justify-content: center;
+  padding: 0 280px;
+  color: white;
+  text-align: center;
+  /* Center text horizontally */
+}
+
+.third-carousel-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  z-index: 1;
+  /* Ensure arrows stay above carousel items */
+}
+
+.third-carousel-arrow.prev {
+  left: 20px;
+}
+
+.third-carousel-arrow.next {
+  right: 20px;
+}
+
+.third-dot {
+  width: 10px;
+  /* Adjust dot size as needed */
+  height: 10px;
+  /* Adjust dot size as needed */
+  border-radius: 50%;
+  margin: 0 5px;
+  /* Adjust margin between dots as needed */
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-bottom: 20px;
+}
+
+@media (min-width: 768px){
+  .md\:flex{
     display: flex;
   }
 
-  .md\:hidden {
+  .md\:hidden{
     display: none;
   }
 }
 
-@media (prefers-color-scheme: dark) {
-  .dark\:text-white {
-    --tw-text-opacity: 1;
-    color: rgb(255 255 255 / var(--tw-text-opacity));
-  }
-}
+
