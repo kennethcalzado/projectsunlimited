@@ -51,12 +51,9 @@
     <footer class="bg-black text-white py-4">
         <div class="flex flex-col md:flex-row mx-16">
             <!-- Left Column -->
-            <div class="md:w-1/2 py-4">
-                <!-- Company Logo -->
-                <div class="mb-4">
+            <div class="md:w-1/3 p-4">    
                     <img src="../assets/image/projects.png" alt="Projects Unlimited Logo" class="w-56 h-66">
-                </div>
-                <!-- Addresses -->
+                        
                 <div class="mb-4 my-8">
                     <p class="font-bold  text-xl">HEAD OFFICE</p>
                     <p class=" text-xl">Address: 620 Tytana St., Binondo, Manila,
@@ -64,7 +61,9 @@
                     <p class=" text-xl">Phone: +632 8243 8888-95</p>
                     <p class=" text-xl">E-mail: info@projectsunlimited.com.ph</p>
                 </div>
-                <div class="mb-4 my-8">
+            </div>
+            <div class="md:w-1/3 p-4">
+                <div class="mb-4 my-20">
                     <p class="font-bold  text-xl">SHOWROOM</p>
                     <p class=" text-xl">Address: Unit 104 Skyway Twin Towers, Cpt. Henry Javier Street, Oranbo, Pasig, Philippines.</p>
                     <p class=" text-xl">Phone: +632 8671 5100</p>
@@ -73,27 +72,21 @@
             </div>
 
             <!-- Right Column -->
-            <div class="md:w-1/2 p-16">
-                <div class="mb-4 my-8">
+            <div class="md:w-1/3 p-4">
+                <div class="mb-4 my-20">
                     <p class="font-bold  text-xl">BRANCH OFFICE</p>
                     <p class=" text-xl">Address: 36 Granada, Quezon City, Metro Manila</p>
                     <p class=" text-xl">Phone: +632 70028005</p>
                     <p class=" text-xl">E-mail: benita_cabral@yahoo.com</p>
                 </div>
-                <div class="mb-4 my-8">
-                    <p class="font-bold  text-xl">OPENING HOURS</p>
-                    <p class=" text-xl">MONDAY TO FRIDAY: 8am - 5pm</p>
-                    <p class=" text-xl">SATURDAY: </p>
-                    <p class=" text-xl">SUNDAY: CLOSED </p>
-                </div>
             </div>
         </div>
         <div class="container mx-auto text-center">
             <div class="flex items-center justify-center mt-4">
-                <p class="mr-2 text-lg">Follow Us:</p>
-                <div class="flex space-x-4 text-xl">
-                    <a href="https://www.facebook.com/projectsunlimitedph"><i class="fab fa-facebook"></i></a>
-                    <a href="https://www.instagram.com/projectsunlimitedph"><i class="fab fa-instagram"></i></a>
+                <p class=" mr-1 text-lg">Follow Us:</p>
+                <div class="flex space-x-4">
+                    <a href="https://www.facebook.com/projectsunlimitedph" class="text-2xl"><i class="fab fa-facebook light"></i></a>
+                    <a href="https://www.instagram.com/projectsunlimitedph" class="text-2xl"><i class="fab fa-instagram light"></i></a>
                 </div>
             </div>
 

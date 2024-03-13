@@ -41,8 +41,9 @@ ob_start();
         </form>
     </div>
     <div class="w-1/2 p-8">
-        <div class="h-64 flex items-center justify-center my-28">
+        <div class="relative h-100 w-full flex items-center justify-center my-4">
         <img src="../assets/image/contactusformimage.jpg" alt="Image Description" class="w-full h-100 object-cover">
+        <div class="absolute inset-0 bg-black opacity-50"></div>
         </div>
     </div>
 </div>
