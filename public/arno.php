@@ -38,7 +38,6 @@ ob_start();
         </div>
     </div>
 
-
     <!-- DESCRIPTION -->
     <div id="brand-definition cotainer">
         <blockquote class="text-xl text-justify px-24 py-10 font-semibold text-gray-900 dark:text-dark">
