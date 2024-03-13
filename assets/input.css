@@ -120,9 +120,6 @@ p {
     border-radius: 50%;
 }
 
-.carousel-section .carousel-dots .dot.active {
-}
-
 .carousel-dots {
     display: flex;
     justify-content: center;
