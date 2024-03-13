@@ -7,10 +7,10 @@ ob_start();
         <img src="../assets/image/stock.png" class="w-full h-96 object-cover">
         <div class="absolute inset-0 bg-black opacity-50"></div>
         <div class="absolute inset-0 flex items-center justify-center">
-        <p class="text-white font-bold text-4xl">PRODUCTS</p>
+        <p class="text-white font-extrabold text-4xl">PRODUCTS</p>
     </div>
     </div>
-    <h1 class="text-4xl font-bold text-center text-black bg-white p-4">PRODUCT CATEGORY</h1>
+    <h1 class="text-4xl font-extrabold text-center text-black bg-white p-4">PRODUCT CATEGORY</h1>
     <div id="categorycontainer">
         <div id="prodcat">
             <div class="relative bg-white p-2">
@@ -19,19 +19,19 @@ ob_start();
                     <div class="flex">
                         <a href="../public/blinds.php" class="w-1/4 bg-white p-4 pt-3 rounded-lg">
                             <!-- Image 1 -->
-                            <img src="../assets/image/blinds.png" alt="Blinds" class="w-full h-70 object-cover">
+                            <img src="../assets/image/blinds.png" alt="Blinds" class="w-full h-70 object-cover max-w-2xl transition duration-300 ease-in-out hover:scale-110">
                         </a>
                         <a href="../public/flooring.php" class="w-1/4 bg-white p-4 pt-3 rounded-lg">
                             <!-- Image 2 -->
-                            <img src="../assets/image/flooring.png" alt="Flooring" class="w-full h-70 object-cover">
+                            <img src="../assets/image/flooring.png" alt="Flooring" class="w-full h-70 object-cover  max-w-2xl transition duration-300 ease-in-out hover:scale-110">
                         </a>
                         <a href="../public/wallpaper.php" class="w-1/4 bg-white p-4 pt-3 rounded-lg">
                             <!-- Image 3 -->
-                            <img src="../assets/image/wallpaper.png" alt="Wallpaper" class="w-full h-70 object-cover">
+                            <img src="../assets/image/wallpaper.png" alt="Wallpaper" class="w-full h-70 object-cover  max-w-2xl transition duration-300 ease-in-out hover:scale-110">
                         </a>
                         <a href="../public/office.php" class="w-1/4 bg-white p-4 pt-3 rounded-lg">
                             <!-- Image 4 -->
-                            <img src="../assets/image/office.png" alt="Office" class="w-full h-70 object-cover">
+                            <img src="../assets/image/office.png" alt="Office" class="w-full h-70 object-cover  max-w-2xl transition duration-300 ease-in-out hover:scale-110">
                         </a>
                     </div>
                 </div>
@@ -43,7 +43,9 @@ ob_start();
     <img src="../assets/image/customizebanner.png" class="w-full h-96 object-cover">
     <div class="absolute inset-0 bg-black opacity-50"></div>
     <div class="absolute inset-0 flex items-center justify-center">
-    <p class="text-[#F6E381] font-bold text-4xl">CUSTOMIZE PRODUCTS</p>
+    <p class="text-[#F6E381] font-extrabold text-4xl text-center">CUSTOMIZE PRODUCTS <br>
+    <span class="text-white text-2xl font-semibold">Many of our products can be customized to the requirements of our clients.<br> These may include the dimensions, colors, textures, and materials used in the item.</span>
+    </p>
 </div>
 </div>
 <div id="customcontainer">
