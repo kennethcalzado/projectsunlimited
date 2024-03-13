@@ -9,6 +9,7 @@
     </title>
     <!-- Link to your Tailwind CSS file -->
     <link href="../assets/output.css" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
 <body class="bg-white">
