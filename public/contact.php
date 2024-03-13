@@ -13,28 +13,28 @@ ob_start();
             </p>
         </div>
     </div>
-    <p class="text-xl font-semibold text-black px-16 mt-8">You can also fill out the form below and send us a message.</p>
+    <p class="text-2xl font-semibold text-black px-16 mt-8">You can also fill out the form below and send us a message.</p>
     <div class="flex px-8">
     <div class="w-1/2 p-8">
         <form action="#" method="post" class="space-y-4">
             <div class="mb-4">
-                <label for="name" class="block text-gray-700 font-bold">Name:</label>
+                <label for="name" class="block text-black font-bold text-xl">Name:</label>
                 <input type="text" id="name" name="name" placeholder="Name" class="w-full p-2 border rounded-md">
             </div>
             <div class="mb-4">
-                <label for="email" class="block text-gray-700 font-bold">E-mail:</label>
+                <label for="email" class="block text-black font-bold text-xl">E-mail:</label>
                 <input type="email" id="email" name="email" placeholder="E-mail" class="w-full p-2 border rounded-md">
             </div>
             <div class="mb-4">
-                <label for="phone" class="block text-gray-700 font-bold">Phone Number:</label>
-                <input type="tel" id="phone" name="phone" placeholder="Phone Number" class="w-full p-2 border rounded-md">
+                <label for="phone" class="block text-black font-bold text-xl">Phone Number:</label>
+                <input type="number" id="phone" name="phone" placeholder="Phone Number" class="w-full p-2 border rounded-md">
             </div>
             <div class="mb-4">
-                <label for="subject" class="block text-gray-700 font-bold">Subject of Concern:</label>
+                <label for="subject" class="block text-black font-bold text-xl">Subject of Concern:</label>
                 <input type="text" id="subject" name="subject" placeholder="Subject of Concern" class="w-full p-2 border rounded-md">
             </div>
             <div class="mb-4">
-                <label for="message" class="block text-gray-700 font-bold">Message:</label>
+                <label for="message" class="block text-black font-bold text-xl">Message:</label>
                 <textarea id="message" name="message" rows="4" placeholder="Message" class="w-full p-2 border rounded-md"></textarea>
             </div>
             <button style="border-radius: 10px;" class="yellow-btn text-xl font-semibold justify-right">Submit</button>
