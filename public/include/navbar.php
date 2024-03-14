@@ -4,17 +4,17 @@
         <nav class="p-4">
             <div class="container mx-auto flex items-center justify-between">
                 <div>
-                    <a href="#" class="logo-link"> <img src="../assets/image/projects.png" alt="Logo"
+                    <a href="../public/home.php" class="logo-link"> <img src="../assets/image/projects.png" alt="Logo"
                             class="logo-image"></a>
                 </div>
                 <div class="hidden md:flex space-x-4">
                     <ul class="flex space-x-4">
-                        <li><a href="../public/home.php" class="text-white font-semibold">Home</a></li>
-                        <li><a href="../public/about.php" class="text-white font-semibold">About Us</a></li>
-                        <li><a href="../public/arno.php" class="text-white font-semibold">Brands</a></li>
-                        <li><a href="../public/category.php" class="text-white font-semibold">Products</a></li>
-                        <li><a href="../public/blogs.php" class="text-white font-semibold">Blogs</a></li>
-                        <li><a href="../public/contact.php" class="text-white font-semibold">Contact</a></li>
+                        <li><a href="../public/home.php" class="text-white font-bold hover:text-[#F6E381]">Home</a></li>
+                        <li><a href="../public/about.php" class="text-white font-bold hover:text-[#F6E381]">About Us</a></li>
+                        <li><a href="../public/arno.php" class="text-white font-bold hover:text-[#F6E381]">Brands</a></li>
+                        <li><a href="../public/category.php" class="text-white font-bold hover:text-[#F6E381]">Products</a></li>
+                        <li><a href="../public/blogs.php" class="text-white font-bold hover:text-[#F6E381]">Blogs</a></li>
+                        <li><a href="../public/contact.php" class="text-white font-bold hover:text-[#F6E381]">Contact</a></li>
                     </ul>
                 </div>
                 <div class="md:hidden">

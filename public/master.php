@@ -72,8 +72,8 @@
                 <div class="flex items-center justify-center mt-4">
                 <p class=" mr-1 text-lg">Follow Us:</p>
                 <div class="flex space-x-4">
-                    <a href="https://www.facebook.com/projectsunlimitedph" class="text-2xl"><i class="fab fa-facebook light"></i></a>
-                    <a href="https://www.instagram.com/projectsunlimitedph" class="text-2xl"><i class="fab fa-instagram light"></i></a>
+                    <a href="https://www.facebook.com/projectsunlimitedph" class="text-2xl hover:text-[#F6E381]"><i class="fab fa-facebook light"></i></a>
+                    <a href="https://www.instagram.com/projectsunlimitedph" class="text-2xl hover:text-[#F6E381]"><i class="fab fa-instagram light"></i></a>
                 </div>
             </div>
 
