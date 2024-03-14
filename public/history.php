@@ -35,19 +35,66 @@ ob_start();
 
     </section>
 
-    <section style="text-align: center; display: flex; justify-content: center; align-items: center;  margin-top: -30px; margin-bottom: -30px;">
-        <div style="display: flex; align-items: center;">
-            <h1 id="years" style="color: #F6E17A; font-size: 800px; font-weight: extrabold; margin: 0; letter-spacing: -0.13em;"></h1>
-            <div style="display: flex; flex-direction: column; margin-left: 10px;">
-                <p style="padding-left: 80px; color: #F6E17A; font-size: 98px; margin: 0; font-weight: extrablack;">Y</p>
-                <p style="padding-left: 80px; color: #F6E17A; font-size: 98px; margin: 0; font-weight: extrablack;">E</p>
-                <p style="padding-left: 80px; color: #F6E17A; font-size: 98px; margin: 0; font-weight: extrablack;">A</p>
-                <p style="padding-left: 80px; color: #F6E17A; font-size: 98px; margin: 0; font-weight: extrablack;">R</p>
-                <p style="padding-left: 80px; color: #F6E17A; font-size: 98px; margin: 0; font-weight: extrablack;">S</p>
+    <section id="achievements" style="padding-top:120px; position: relative; text-align: center; display: flex; justify-content: center; align-items: center; padding-top: 80px;">
+        <h1 style="padding-top: 90px; text-align: center; font-size: 38px; font-weight: 800; position: absolute; top: 0; left: 50%; transform: translateX(-50%); margin: 0;">PROJECTS UNLIMITED THROUGH THE YEARS</h1>
+
+
+        <div class="flex justify-center mt-10" style="padding-left: 190px; position: absolute; z-index: 2; top: 120px; left: 0;">
+            <div style="padding-top:20px ;padding-right: 20px;" class="transition-opacity duration-1000 delay-1000 ease-in-out hover:scale-110 opacity-0">
+                <img src="../assets/image/history1.png" style="width: 450px !important; height: auto !important;">
+            </div>
+        </div>
+        <div class="flex justify-center items-center" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+            <div class="transition-opacity duration-1000 delay-1000 ease-in-out hover:scale-110 opacity-0">
+                <img src="../assets/image/history2.png" style="width: 450px !important; height: auto !important;">
+            </div>
+        </div>
+        <div class="flex justify-center mt-10" style="padding-right: 190px; position: absolute; bottom: 90px; right: 0;">
+            <div style="padding-left: 20px;" class="transition-opacity duration-1000 delay-1000 ease-in-out hover:scale-110 opacity-0">
+                <img src="../assets/image/history3.png" style="width: 450px !important; height: auto !important;">
+            </div>
+        </div>
+
+
+        <div style="position: relative; display: flex; align-items: center; z-index: -1; height: 100vh;">
+            <h1 id="years" style="color: #F6E17A; font-size: 800px; font-weight: font-black; margin: 0; letter-spacing: -0.13em; position: relative; z-index: 1; margin-left: -90px;"></h1>
+
+            <div style="display: flex; flex-direction: column; z-index: 1;">
+                <p style="padding-left: 80px; color: #F6E17A; font-size: 98px; margin: 0; font-weight: font-black;">Y</p>
+                <p style="padding-left: 80px; color: #F6E17A; font-size: 98px; margin: 0; font-weight: font-black;">E</p>
+                <p style="padding-left: 80px; color: #F6E17A; font-size: 98px; margin: 0; font-weight: font-black;">A</p>
+                <p style="padding-left: 80px; color: #F6E17A; font-size: 98px; margin: 0; font-weight: font-black;">R</p>
+                <p style="padding-left: 80px; color: #F6E17A; font-size: 98px; margin: 0; font-weight: font-black;">S</p>
+
             </div>
         </div>
     </section>
-    <p style="text-align: justify; color: black; padding: 0px 190px; margin: 0;">
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const images = document.querySelectorAll(".transition-opacity");
+
+            function fadeInOnScroll() {
+                images.forEach(image => {
+                    const imageTop = image.getBoundingClientRect().top;
+                    const windowHeight = window.innerHeight;
+
+                    if (imageTop < windowHeight) {
+                        image.classList.remove("opacity-0");
+                        image.classList.add("opacity-100");
+                    }
+                });
+            }
+
+            window.addEventListener("scroll", fadeInOnScroll);
+        });
+    </script>
+
+
+
+
+
+    <p style=" text-align: justify; color: black; padding: 0px 190px; margin: 0;">
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla nec diam vitae ligula tincidunt aliquet. Phasellus ultricies, lorem et faucibus mollis, justo mauris hendrerit dolor, a tristique velit neque et purus. Proin non felis eget enim posuere vestibulum. Integer nec augue nec ante malesuada bibendum. Sed euismod turpis sed felis vehicula, eget maximus libero dignissim. Donec sit amet lectus id libero dignissim convallis. Duis non velit at lacus volutpat auctor.
     </p>
 
