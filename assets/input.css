@@ -216,4 +216,17 @@ p {
     margin-bottom: 20px;
 }
 
+/*contact us*/
+.address-item {
+    transition: background-color 0.5s;
+}
+
+.address-item:hover {
+    background-color: #949494; /* Change to your desired color */
+}
+
+.address-item.selected {
+    background-color: #F6E381; /* Change to your desired color for selected item */
+}
+
 
