@@ -27,17 +27,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             // Store user data in session variables
             $_SESSION['user_id'] = $user['user_id'];
-            $_SESSION['user_role'] = $user['level_id']; // Assuming 'level_id' contains the user's role
+
+            // Retrieve user's role from the roles table based on role_id
+            $sql = "SELECT role_name FROM roles WHERE role_id = '" . $user['role_id'] . "'";
+            $result = $conn->query($sql);
+
+            if ($result->num_rows > 0) {
+                $roleData = $result->fetch_assoc();
+                $_SESSION['user_role'] = ucfirst($roleData['role_name']);
+            } else {
+                // Handle the case where the role is not found
+                $_SESSION['user_role'] = 'guest'; // or any default role you prefer
+            }
 
             // Redirect based on user's role
-            if ($_SESSION['user_role'] === '1') {
+            if ($_SESSION['user_role'] === 'Admin' || $_SESSION['user_role'] === 'Marketing') {
                 // Admin dashboard
-                header('Location: ../public/admin/admin-dashboard.php');
+                header('Location: ../public\users\dashboard.php');
                 exit;
-            } elseif ($_SESSION['user_role'] === '2') {
-                // Marketing dashboard
-                header('Location: ../public/marketing/marketing-dashboard.php');
-                exit();
             } else {
                 // Default dashboard for other roles or unauthorized users
                 header('Location: ../public/home.php');
