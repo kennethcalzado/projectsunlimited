@@ -13,6 +13,7 @@ ob_start();
                 <span class="text-white font-semibold text-xl mt-2 hover:text-[#F6E381]">Tables<br></span>
                 <span class="text-white font-semibold text-xl mr-4 mt-2 hover:text-[#F6E381]">Storage<br></span>
                 <span class="text-white font-semibold text-xl mr-12 mt-2 hover:text-[#F6E381]">Accessories<br></span>
+                <span class="text-white font-semibold text-xl mr-8 mt-2 hover:text-[#F6E381]">Partitions<br></span>
             </p>
         </div>
     </div>
@@ -40,6 +41,7 @@ ob_start();
                 <option>Chairs</option>
                 <option>Tables</option>
                 <option>Storage</option>
+                <option>Partitions (Customizable)</option>
             </select>
         </div>
         <div class="relative mb-2 md:mb-0 md:mr-2">
