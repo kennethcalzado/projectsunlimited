@@ -43,7 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Redirect based on user's role
             if ($_SESSION['user_role'] === 'Admin' || $_SESSION['user_role'] === 'Marketing') {
                 // Admin dashboard
-                header('Location: ../public\users\dashboard.php');
+                header('Location: ../public\users\admin\admin-dashboard.php');
                 exit;
             } else {
                 // Default dashboard for other roles or unauthorized users
@@ -59,4 +59,3 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         echo "User not found";
     }
 }
-?>

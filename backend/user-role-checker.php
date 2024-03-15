@@ -11,7 +11,7 @@ if (!isset($_SESSION['user_role'])) {
 }
 
 // Validate and sanitize the user role
-$userRole = filter_var($_SESSION['user_role'], FILTER_SANITIZE_STRING);
+$userRole = $_SESSION['user_role'] ?? "guest";
 
 // Define a list of valid roles
 $validRoles = ['guest', '1', '2'];
@@ -30,4 +30,3 @@ if ($userRole == "guest") {
 } elseif ($userRole == '1' || $userRole == '2') {
     include __DIR__ . "/include/sidebar.php";
 }
-?>

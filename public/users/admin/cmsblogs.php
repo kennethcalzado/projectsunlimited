@@ -1,4 +1,5 @@
 <?php
+session_start();
 $pageTitle = "CMS - Blogs";
 ob_start();
 ?>
@@ -20,7 +21,6 @@ ob_start();
 
 <style>
     body {
-        background-color: #000;
         margin: 0;
         padding: 0;
     }
@@ -84,7 +84,7 @@ ob_start();
 
             <tbody>
                 <?php
-                include("../../backend/conn.php");
+                include("../../../backend/conn.php");
 
                 $sql = 'SELECT * FROM blogs ORDER BY date DESC';
                 $result = mysqli_query($conn, $sql);
@@ -114,6 +114,6 @@ ob_start();
 
 <?php
 $content = ob_get_clean();
-include("../../public/master.php"); // Corrected path to master.php
-include("../../backend/conn.php"); // Corrected path to conn.php
+include("../../../public/master.php"); // Corrected path to master.php
+include("../../../backend/conn.php"); // Corrected path to conn.php
 ?>

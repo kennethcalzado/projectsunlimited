@@ -1,4 +1,5 @@
 <?php
+session_start();
 $pageTitle = "Home";
 ob_start();
 ?>
@@ -21,5 +22,5 @@ ob_start();
 
 <?php
 $content = ob_get_clean();
-include("../../public/master.php");
+include("../../../public/master.php");
 ?>
