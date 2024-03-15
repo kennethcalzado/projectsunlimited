@@ -4,8 +4,51 @@ $pageTitle = "Users";
 ob_start();
 ?>
 <!-- Your page content goes here -->
-<div class="page-content ml-20 transition-all duration-300">
-    <h1 class="text-3xl font-bold mb-4 ml-16">Admin Dashboard</h1>
+<div class="page-content ml-36 mr-20 transition-all duration-300">
+    <h1 class="text-3xl font-bold mb-4 ml-10">Admin Dashboard</h1>
+    <div class="flex justify-between mb-4">
+        <div>
+            <label for="roleFilter" class="mr-2">Filter by Role:</label>
+            <select id="roleFilter" class="border rounded-md px-2 py-1">
+                <option value="">All Roles</option>
+                <!-- Role options will be dynamically added here -->
+            </select>
+        </div>
+        <div>
+            <label for="statusFilter" class="mr-2">Filter by Status:</label>
+            <select id="statusFilter" class="border rounded-md px-2 py-1">
+                <option value="">All Statuses</option>
+                <option value="active">Active</option>
+                <option value="inactive">Inactive</option>
+            </select>
+        </div>
+    </div>
+    <div class="flex justify-between mb-4">
+        <!-- Search input -->
+        <div class="pt-2 relative text-gray-600">
+            <input class="border-2 border-gray-300 bg-white h-10 px-2 py-1 rounded-lg text-sm focus:outline-none"
+                type="text" name="search" placeholder="Search" id="searchInput">
+            <button type="submit" class="absolute right-0 top-0 mt-5 mr-4">
+                <svg class="text-gray-600 h-4 w-4 fill-current" xmlns="http://www.w3.org/2000/svg"
+                    xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1" x="0px" y="0px"
+                    viewBox="0 0 56.966 56.966" style="enable-background:new 0 0 56.966 56.966;" xml:space="preserve"
+                    width="512px" height="512px">
+                    <path
+                        d="M55.146,51.887L41.588,37.786c3.486-4.144,5.396-9.358,5.396-14.786c0-12.682-10.318-23-23-23s-23,10.318-23,23  s10.318,23,23,23c4.761,0,9.298-1.436,13.177-4.162l13.661,14.208c0.571,0.593,1.339,0.92,2.162,0.92  c0.779,0,1.518-0.297,2.079-0.837C56.255,54.982,56.293,53.08,55.146,51.887z M23.984,6c9.374,0,17,7.626,17,17s-7.626,17-17,17  s-17-7.626-17-17S14.61,6,23.984,6z" />
+                </svg>
+            </button>
+        </div>
+        <!-- Pagination dropdown -->
+        <div>
+            <label for="paginationSelect" class="mr-2">Pagination:</label>
+            <select id="paginationSelect" class="border rounded-md px-2 py-1">
+                <option value="5">5 per page</option>
+                <option value="10">10 per page</option>
+                <option value="50">50 per page</option>
+            </select>
+        </div>
+    </div>
+
     <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
         <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
             <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -18,6 +61,15 @@ ob_start();
                     </th>
                     <th scope="col" class="px-6 py-3">
                         Role
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        Status
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        Created At
+                    </th>
+                    <th scope="col" class="px-6 py-3">
+                        Updated At
                     </th>
                     <th scope="col" class="px-6 py-3">
                         Action
@@ -48,6 +100,12 @@ ob_start();
             <div class="mb-4">
                 <label for="editLastName" class="block text-sm font-medium text-gray-700">Last Name:</label>
                 <input type="text" id="editLastName" name="editLastName"
+                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50"
+                    required>
+            </div>
+            <div class="mb-4">
+                <label for="editUsername" class="block text-sm font-medium text-gray-700">Username:</label>
+                <input type="text" id="editUsername" name="editUsername"
                     class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50"
                     required>
             </div>
@@ -101,6 +159,27 @@ ob_start();
     </div>
 </div>
 
+<div class="delete-confirmation-popup hidden fixed inset-0 z-50 flex items-center justify-center">
+    <div class="bg-black opacity-25 w-full h-full absolute inset-0"></div>
+    <div class="bg-white rounded-lg md:max-w-md md:mx-auto p-4 fixed inset-x-0 bottom-0 z-50 mb-4 mx-4 md:relative">
+        <div class="md:flex items-center">
+            <div class="rounded-full flex items-center justify-center w-16 h-16 flex-shrink-0 mx-auto">
+                <i class="bi bi-exclamation-circle text-5xl text-red-400"></i>
+            </div>
+            <div class="mt-4 md:mt-0 md:ml-6 text-center md:text-left">
+                <p class="font-bold text-red-400">Confirm Delete</p>
+                <p class="text-sm text-gray-700 mt-1">Are you sure you want to delete this user?</p>
+            </div>
+        </div>
+        <div class="text-center md:text-right mt-4 md:flex md:justify-end">
+            <button id="confirmDeleteBtn"
+                class="block w-full md:inline-block md:w-auto px-4 py-3 md:py-2 bg-yellow-200 text-black rounded-lg font-semibold text-sm md:ml-2 md:order-2 hover:bg-yellow-400 active:bg-yellow-500 focus:outline-none focus:border-yellow-500 focus:ring focus:ring-yellow-200 disabled:opacity-25 transition">Confirm</button>
+            <button id="cancelDeleteBtn"
+                class="block w-full md:inline-block md:w-auto px-4 py-3 md:py-2 bg-gray-200 rounded-lg font-semibold text-sm mt-4 md:mt-0 md:order-1 hover:bg-gray-300 active:bg-gray-400 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-300 disabled:opacity-25 transition">Cancel</button>
+        </div>
+    </div>
+</div>
+
 <div class="success-popup hidden fixed inset-0 z-50 flex items-center justify-center">
     <div class="bg-black opacity-25 w-full h-full absolute inset-0"></div>
     <div class="bg-white rounded-lg md:max-w-md md:mx-auto p-4 fixed inset-x-0 bottom-0 z-50 mb-4 mx-4 md:relative">
@@ -139,27 +218,6 @@ ob_start();
     </div>
 </div>
 
-<div class="delete-confirmation-popup hidden fixed inset-0 z-50 flex items-center justify-center">
-    <div class="bg-black opacity-25 w-full h-full absolute inset-0"></div>
-    <div class="bg-white rounded-lg md:max-w-md md:mx-auto p-4 fixed inset-x-0 bottom-0 z-50 mb-4 mx-4 md:relative">
-        <div class="md:flex items-center">
-            <div class="rounded-full flex items-center justify-center w-16 h-16 flex-shrink-0 mx-auto">
-                <i class="bi bi-exclamation-circle text-5xl text-red-400"></i>
-            </div>
-            <div class="mt-4 md:mt-0 md:ml-6 text-center md:text-left">
-                <p class="font-bold text-red-400">Confirm Delete</p>
-                <p class="text-sm text-gray-700 mt-1">Are you sure you want to delete this user?</p>
-            </div>
-        </div>
-        <div class="text-center md:text-right mt-4 md:flex md:justify-end">
-            <button id="confirmDeleteBtn"
-                class="block w-full md:inline-block md:w-auto px-4 py-3 md:py-2 bg-yellow-200 text-black rounded-lg font-semibold text-sm md:ml-2 md:order-2 hover:bg-yellow-400 active:bg-yellow-500 focus:outline-none focus:border-yellow-500 focus:ring focus:ring-yellow-200 disabled:opacity-25 transition">Confirm</button>
-            <button id="cancelDeleteBtn"
-                class="block w-full md:inline-block md:w-auto px-4 py-3 md:py-2 bg-gray-200 rounded-lg font-semibold text-sm mt-4 md:mt-0 md:order-1 hover:bg-gray-300 active:bg-gray-400 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-300 disabled:opacity-25 transition">Cancel</button>
-        </div>
-    </div>
-</div>
-
 <?php $content = ob_get_clean();
 ob_start();
 ?>
@@ -187,35 +245,80 @@ ob_start();
             } );
         }
 
+        // Function to filter user data based on role, status, search term, and pagination
+        function filterUserData ( roleFilter, statusFilter, searchTerm, page, limit )
+        {
+            // Send AJAX request to fetch filtered data
+            $.ajax( {
+                url: '../../../backend/users/user-get.php',
+                type: 'GET',
+                dataType: 'json',
+                data: {
+                    roleFilter: roleFilter,
+                    statusFilter: statusFilter,
+                    searchTerm: searchTerm,
+                    page: page,
+                    limit: limit
+                },
+                success: function ( data )
+                {
+                    renderUserData( data );
+                },
+                error: function ( xhr, status, error )
+                {
+                    console.error( 'Error:', error );
+                }
+            } );
+        }
+
+        // Event listeners for dropdown menu changes, search input, and pagination dropdown
+        $( '#roleFilter, #statusFilter, #searchInput, #paginationSelect' ).on( 'change input', function ()
+        {
+            const roleFilter = $( '#roleFilter' ).val();
+            const statusFilter = $( '#statusFilter' ).val();
+            const searchTerm = $( '#searchInput' ).val();
+            const limit = $( '#paginationSelect' ).val();
+            filterUserData( roleFilter, statusFilter, searchTerm, 1, limit ); // Reset to page 1 when filters change
+        } );
+
+        // Function to render user data
         function renderUserData ( data )
         {
             const userList = $( '#user-list' );
             userList.empty(); // Clear existing user data
             data.forEach( function ( user )
             {
+                // Render user row
                 const userRow = $( '<tr>' ).addClass( 'bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600' );
-                const userInfoContainer = $( '<div>' ).addClass( 'flex flex-col justify-center' );
-                userInfoContainer.append( $( '<h6>' ).addClass( 'mb-0 text-sm leading-normal dark:text-white' ).text( user.fname + ' ' + user.lname ) );
-                userInfoContainer.append( $( '<p>' ).addClass( 'mb-0 text-xs leading-tight dark:text-white dark:opacity-80 text-slate-400' ).text( user.email ) );
-                userRow.append( $( '<td>' ).addClass( 'px-6 py-4' ).append( userInfoContainer ) );
+                userRow.append( $( '<td>' ).addClass( 'px-6 py-4' ).text( user.fname + ' ' + user.lname ) );
                 userRow.append( $( '<td>' ).addClass( 'px-6 py-4' ).text( user.username ) );
-                userRow.append( $( '<td>' ).addClass( 'px-6 py-4' ).text( user.role ) );
+                userRow.append( $( '<td>' ).addClass( 'px-6 py-4' ).text( user.role_name ) );
+                userRow.append( $( '<td>' ).addClass( 'px-6 py-4' ).text( user.status ) );
+                userRow.append( $( '<td>' ).addClass( 'px-6 py-4' ).text( user.created_at ) );
+                userRow.append( $( '<td>' ).addClass( 'px-6 py-4' ).text( user.updated_at ) );
+                // Add edit and delete buttons
                 userRow.append( $( '<td>' ).addClass( 'px-6 py-4' ).append(
                     $( '<button>' ).addClass( 'editBtn font-medium text-blue-600 dark:text-blue-500 hover:underline mr-2' )
                         .attr( 'data-toggle', 'modal' )
                         .attr( 'data-target', '#editUserModal' )
                         .data( 'userId', user.user_id )
-                        .text( 'Edit' )
-                        .data( 'user', user ),
-                    $( '<button>' ).addClass( 'font-medium text-red-600 dark:text-red-500 hover:underline' ).text( 'Delete' ).click( function ()
-                    {
-                        // Implement delete functionality here
-                        // console.log('Delete button clicked for user:', user);
-                    } )
+                        .data( 'user', user )
+                        .text( 'Edit' ),
+                    $( '<button>' ).addClass( 'delBtn font-medium text-red-600 dark:text-red-500 hover:underline mr-2' )
+                        .attr( 'data-toggle', 'modal' )
+                        .attr( 'data-target', '#editUserModal' )
+                        .data( 'userId', user.user_id )
+                        .data( 'userStatus', user.status )
+                        .data( 'user', user )
+                        .text( 'Delete' ),
                 ) );
                 userList.append( userRow );
             } );
         }
+
+        // Initial rendering of user data
+        filterUserData( '', '', '', 1, 10 ); // Initially, no filters applied, page 1, limit 10
+
 
         $.ajax( {
             url: '../../../backend/roles/roles-get.php',
@@ -224,10 +327,13 @@ ob_start();
             success: function ( roles )
             {
                 // Render roles data
-                const roleSelect = $( '#editRole' );
+                const roleSelectForm = $( '#editRole' );
+                const roleSelectFilter = $( '#roleFilter' );
+
                 roles.forEach( function ( role )
                 {
-                    roleSelect.append( $( '<option>' ).val( role.role_id ).text( role.role_name ) );
+                    roleSelectForm.append( $( '<option>' ).val( role.role_id ).text( role.role_name ) );
+                    roleSelectFilter.append( $( '<option>' ).val( role.role_name ).text( role.role_name ) );
                 } );
             },
             error: function ( xhr, status, error )
@@ -245,6 +351,7 @@ ob_start();
             $( '#editUserForm' ).data( 'userId', userId );
             $( '#editFirstName' ).val( user.fname );
             $( '#editLastName' ).val( user.lname );
+            $( '#editUsername' ).val( user.username );
             $( '#editEmail' ).val( user.email );
 
             // Open the modal
@@ -259,6 +366,7 @@ ob_start();
             const userId = $( '#editUserForm' ).data( 'userId' );
             const firstName = $( '#editFirstName' ).val();
             const lastName = $( '#editLastName' ).val();
+            const username = $( '#editUsername' ).val();
             const email = $( '#editEmail' ).val();
             const roleId = $( '#editRole' ).val();
 
@@ -271,6 +379,7 @@ ob_start();
                     userId: userId,
                     firstName: firstName,
                     lastName: lastName,
+                    username: username,
                     email: email,
                     roleId: roleId
                 },
@@ -303,7 +412,6 @@ ob_start();
                 error: function ( xhr, status, error )
                 {
                     console.error( 'Error:', error );
-                    // Display error message
                     // Display error message using a pop-up
                     $( '.error-popup .popup-message' ).text( error );
                     $( '.error-popup' ).removeClass( 'hidden' );
@@ -312,6 +420,71 @@ ob_start();
             $( '.confirmation-popup' ).addClass( 'hidden' );
         } );
 
+        // Open modal when edit button is clicked
+        $( document ).on( 'click', '.delBtn', function ()
+        {
+            // Get user information
+            const userId = $( this ).data( 'userId' );
+            $( '#confirmDeleteBtn' ).data( 'userId', userId );
+
+            // Open the modal
+            $( '.delete-confirmation-popup' ).removeClass( 'hidden' );
+        } );
+
+        // Click event listener for confirmDeleteBtn
+        $( document ).on( 'click', '#confirmDeleteBtn', function ()
+        {
+            // Get user information
+            const userId = $( this ).data( 'userId' );
+
+            // AJAX request
+            $.ajax( {
+                url: '../../../backend/users/user-delete.php',
+                type: 'POST',
+                data: { userId: userId },
+                dataType: 'json',
+                success: function ( response )
+                {
+                    console.log( response );
+                    if ( response.message )
+                    {
+                        // Display success message using a pop-up
+                        $( '.success-popup .popup-message' ).text( response.message );
+                        $( '.success-popup' ).removeClass( 'hidden' );
+
+                        // Automatically close the pop-up after 3 seconds (3000 milliseconds)
+                        setTimeout( function ()
+                        {
+                            $( '.success-popup' ).addClass( 'hidden' );
+                            $( '.delete-confirmation-popup' ).addClass( 'hidden' );
+                        }, 3000 );
+
+                        fetchUserData();
+                    } else
+                    {
+                        // Display error message using a pop-up
+                        $( '.error-popup .popup-message' ).text( response.message );
+                        $( '.error-popup' ).removeClass( 'hidden' );
+                    }
+                },
+                error: function ( xhr, status, error )
+                {
+                    // Handle error response
+                    console.error( 'Error deleting user:', error );
+                    // You can show an error message or perform other actions here
+                }
+            } );
+        } );
+
+        // Handle password reset button click
+        $( '#resetPasswordBtn' ).click( function ()
+        {
+            // Perform password reset action here
+            // Display confirmation message
+            alert( 'Password reset successful!' );
+        } );
+
+        //////////////////////close buttons///////////////////////////////
         // Handle cancel update action
         $( '#cancelUpdateBtn' ).click( function ()
         {
@@ -330,6 +503,7 @@ ob_start();
         $( '#closeErrorBtn' ).click( function ()
         {
             $( '.error-popup' ).addClass( 'hidden' );
+            $( '.delete-confirmation-popup' ).addClass( 'hidden' );
         } );
 
         // Handle click on the X button for edit user modal
@@ -346,14 +520,11 @@ ob_start();
             $( '.confirmation-popup' ).removeClass( 'hidden' );
         } );
 
-        // Handle password reset button click
-        $( '#resetPasswordBtn' ).click( function ()
+        // Handle close button click for delete pop-up
+        $( '#cancelDeleteBtn' ).click( function ()
         {
-            // Perform password reset action here
-            // Display confirmation message
-            alert( 'Password reset successful!' );
+            $( '.delete-confirmation-popup' ).addClass( 'hidden' );
         } );
-
 
         fetchUserData();
     } );
