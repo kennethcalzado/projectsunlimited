@@ -306,3 +306,17 @@ Query executed successfully. Rows returned: 1
         FROM users u 
         INNER JOIN roles r ON u.role_id = r.role_id WHERE r.role_name = ? AND u.status = ? LIMIT ? OFFSET ? - Parameters: ["marketing","active","5",0]
 Query executed successfully. Rows returned: 2
+2024-03-15 09:06:31 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id LIMIT ? OFFSET ? - Parameters: ["10",0]
+2024-03-15 09:06:31 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id LIMIT ? OFFSET ? - Parameters: [5,0]
+2024-03-15 09:13:16 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id LIMIT ? OFFSET ? - Parameters: ["10",0]
+Query executed successfully. Rows returned: 4
+2024-03-15 09:13:16 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id LIMIT ? OFFSET ? - Parameters: [5,0]
+Query executed successfully. Rows returned: 4
