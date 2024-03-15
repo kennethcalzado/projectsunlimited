@@ -26,6 +26,7 @@ ob_start();
                         <li><a href="../public/blinds.php" class="text-black font-bold hover:text-gray-700">BLINDS</a></li>
                             <li><a href="../public/flooring.php" class="text-black font-bold hover:text-gray-700">FLOORINGS</a></li>
                             <li><a href="../public/wallpaper.php" class="text-black font-bold hover:text-gray-700">WALLPAPERS</a></li>
+                            <li><a href="../public/modular.php" class="text-black font-bold hover:text-gray-700">MODULAR CABINETS</a></li>
                         </ul>
                     </div>
                 </div>

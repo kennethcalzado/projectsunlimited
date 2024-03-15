@@ -17,21 +17,25 @@ ob_start();
                 <div class="absolute h-30 bg-black "></div>
                 <div class="flex justify-between relative z-10">
                     <div class="flex">
-                        <a href="../public/blinds.php" class="w-1/4 bg-white p-4 pt-3">
+                        <a href="../public/blinds.php" class="w-1/5 bg-white p-4 pt-3">
                             <!-- Image 1 -->
                             <img src="../assets/image/blinds.png" alt="Blinds" class="w-full h-70 object-cover max-w-2xl transition duration-300 ease-in-out hover:scale-110 border-double border-black border-4">
                         </a>
-                        <a href="../public/flooring.php" class="w-1/4 bg-white p-4 pt-3">
+                        <a href="../public/flooring.php" class="w-1/5 bg-white p-4 pt-3">
                             <!-- Image 2 -->
                             <img src="../assets/image/flooring.png" alt="Flooring" class="w-full h-70 object-cover  max-w-2xl transition duration-300 ease-in-out hover:scale-110 border-double border-black border-4">
                         </a>
-                        <a href="../public/wallpaper.php" class="w-1/4 bg-white p-4 pt-3">
+                        <a href="../public/wallpaper.php" class="w-1/5 bg-white p-4 pt-3">
                             <!-- Image 3 -->
                             <img src="../assets/image/wallpaper.png" alt="Wallpaper" class="w-full h-70 object-cover  max-w-2xl transition duration-300 ease-in-out hover:scale-110 border-double border-black border-4">
                         </a>
-                        <a href="../public/office.php" class="w-1/4 bg-white p-4 pt-3">
+                        <a href="../public/office.php" class="w-1/5 bg-white p-4 pt-3">
                             <!-- Image 4 -->
                             <img src="../assets/image/office.png" alt="Office" class="w-full h-70 object-cover  max-w-2xl transition duration-300 ease-in-out hover:scale-110 border-double border-black border-4">
+                        </a>
+                        <a href="../public/modular.php" class="w-1/5 bg-white p-4 pt-3">
+                            <!-- Image 4 -->
+                            <img src="../assets/image/MODULAR CABINETS.png" alt="Office" class="w-full h-70 object-cover  max-w-2xl transition duration-300 ease-in-out hover:scale-110 border-double border-black border-4">
                         </a>
                     </div>
                 </div>
@@ -83,7 +87,6 @@ ob_start();
             <div class="w-10 h-10 border-4 border-gray-800 text-gray-800 flex items-center justify-center rounded-full text-xl font-bold mr-4">4</div>
         </div>
         <div class="flex items-center">
-        <div class="border-l border-[#F6E381] border-solid border-4 h-32 ml-12 my-0"></div>
         <p class=" text-right font-semibold text-2xl pb-2 px-8 pt-2 mx-12">Once the products are completed, we will proceed to delivering and installing the products to your place.</p>
         </div>
     </div>
