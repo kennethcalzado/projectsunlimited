@@ -5,51 +5,64 @@ ob_start();
 ?>
 <!-- Your page content goes here -->
 <div class="page-content ml-36 mr-20 transition-all duration-300">
-    <h1 class="text-3xl font-bold mb-4 ml-10">Admin Dashboard</h1>
-    <div class="flex justify-between mb-4">
-        <div>
-            <label for="roleFilter" class="mr-2">Filter by Role:</label>
-            <select id="roleFilter" class="border rounded-md px-2 py-1">
-                <option value="">All Roles</option>
-                <!-- Role options will be dynamically added here -->
-            </select>
+    <h1 class="text-4xl font-bold mb-2 ml-2 mt-4 text-gray-800">Admin Dashboard</h1>
+    <div class="border-b border-gray-800 flex-grow border-4 mb-4"></div>
+
+    <div class="flex flex-col md:flex-row items-center justify-center">
+        <div class="flex justify-between mb-4">
+            <div class="relative mb-2 mt-2 md:mb-0 md:mr-8">
+                <div>
+                    <label for="roleFilter" class="mr-2">Filter by Role:</label>
+                    <select id="roleFilter" class="border rounded-md px-2 py-1">
+                        <option value="">All Roles</option>
+                        <!-- Role options will be dynamically added here -->
+                    </select>
+                </div>
+            </div>
+            <div>
+                <div class="relative mb-2 mt-2 md:mb-0 md:mr-8">
+                    <label for="statusFilter" class="mr-2">Filter by Status:</label>
+                    <select id="statusFilter" class="border rounded-md px-2 py-1">
+                        <option value="">All Statuses</option>
+                        <option value="active">Active</option>
+                        <option value="inactive">Inactive</option>
+                    </select>
+                </div>
+            </div>
+            <!-- Pagination dropdown -->
+            <div>
+                <div class="relative mb-2 mt-2 md:mb-0 md:mr-8">
+                    <label for="paginationSelect" class="mr-2">Pagination:</label>
+                    <select id="paginationSelect" class="border rounded-md px-2 py-1">
+                        <option value="5">5 per page</option>
+                        <option value="10">10 per page</option>
+                        <option value="50">50 per page</option>
+                    </select>
+                </div>
+            </div>
         </div>
-        <div>
-            <label for="statusFilter" class="mr-2">Filter by Status:</label>
-            <select id="statusFilter" class="border rounded-md px-2 py-1">
-                <option value="">All Statuses</option>
-                <option value="active">Active</option>
-                <option value="inactive">Inactive</option>
-            </select>
-        </div>
-    </div>
-    <div class="flex justify-between mb-4">
-        <!-- Search input -->
-        <div class="pt-2 relative text-gray-600">
-            <input class="border-2 border-gray-300 bg-white h-10 px-2 py-1 rounded-lg text-sm focus:outline-none"
-                type="text" name="search" placeholder="Search" id="searchInput">
-            <button type="submit" class="absolute right-0 top-0 mt-5 mr-4">
-                <svg class="text-gray-600 h-4 w-4 fill-current" xmlns="http://www.w3.org/2000/svg"
-                    xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1" x="0px" y="0px"
-                    viewBox="0 0 56.966 56.966" style="enable-background:new 0 0 56.966 56.966;" xml:space="preserve"
-                    width="512px" height="512px">
-                    <path
-                        d="M55.146,51.887L41.588,37.786c3.486-4.144,5.396-9.358,5.396-14.786c0-12.682-10.318-23-23-23s-23,10.318-23,23  s10.318,23,23,23c4.761,0,9.298-1.436,13.177-4.162l13.661,14.208c0.571,0.593,1.339,0.92,2.162,0.92  c0.779,0,1.518-0.297,2.079-0.837C56.255,54.982,56.293,53.08,55.146,51.887z M23.984,6c9.374,0,17,7.626,17,17s-7.626,17-17,17  s-17-7.626-17-17S14.61,6,23.984,6z" />
-                </svg>
-            </button>
-        </div>
-        <!-- Pagination dropdown -->
-        <div>
-            <label for="paginationSelect" class="mr-2">Pagination:</label>
-            <select id="paginationSelect" class="border rounded-md px-2 py-1">
-                <option value="5">5 per page</option>
-                <option value="10">10 per page</option>
-                <option value="50">50 per page</option>
-            </select>
+        <div class="flex justify-between mb-4">
+            <div class="relative mb-2 md:mb-0 md:mr-8">
+                <!-- Search input -->
+                <div class="relative text-gray-600">
+                    <input
+                        class="border-2 border-gray-300 bg-white h-10 px-2 py-1 rounded-lg text-sm focus:outline-none"
+                        type="text" name="search" placeholder="Search" id="searchInput">
+                    <button type="submit" class="absolute right-0 top-0 mt-3 mr-4">
+                        <svg class="text-gray-600 h-4 w-4 fill-current" xmlns="http://www.w3.org/2000/svg"
+                            xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1" x="0px" y="0px"
+                            viewBox="0 0 56.966 56.966" style="enable-background:new 0 0 56.966 56.966;"
+                            xml:space="preserve" width="512px" height="512px">
+                            <path
+                                d="M55.146,51.887L41.588,37.786c3.486-4.144,5.396-9.358,5.396-14.786c0-12.682-10.318-23-23-23s-23,10.318-23,23  s10.318,23,23,23c4.761,0,9.298-1.436,13.177-4.162l13.661,14.208c0.571,0.593,1.339,0.92,2.162,0.92  c0.779,0,1.518-0.297,2.079-0.837C56.255,54.982,56.293,53.08,55.146,51.887z M23.984,6c9.374,0,17,7.626,17,17s-7.626,17-17,17  s-17-7.626-17-17S14.61,6,23.984,6z" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
         </div>
     </div>
 
-    <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+    <div class="relative overflow-x-auto shadow-md sm:rounded-md mb-4">
         <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
             <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                 <tr>
@@ -224,32 +237,27 @@ ob_start();
 <script src="../../../assets\JS\pop-up.js"></script>
 
 <script>
-    $( document ).ready( function ()
-    {
-        $( '#editUserModal' ).hide();
+    $(document).ready(function () {
+        $('#editUserModal').hide();
 
-        function fetchUserData ()
-        {
-            $.ajax( {
+        function fetchUserData() {
+            $.ajax({
                 url: '../../../backend/users/user-get.php',
                 type: 'GET',
                 dataType: 'json',
-                success: function ( data )
-                {
-                    renderUserData( data );
+                success: function (data) {
+                    renderUserData(data);
                 },
-                error: function ( xhr, status, error )
-                {
-                    console.error( 'Error:', error );
+                error: function (xhr, status, error) {
+                    console.error('Error:', error);
                 }
-            } );
+            });
         }
 
         // Function to filter user data based on role, status, search term, and pagination
-        function filterUserData ( roleFilter, statusFilter, searchTerm, page, limit )
-        {
+        function filterUserData(roleFilter, statusFilter, searchTerm, page, limit) {
             // Send AJAX request to fetch filtered data
-            $.ajax( {
+            $.ajax({
                 url: '../../../backend/users/user-get.php',
                 type: 'GET',
                 dataType: 'json',
@@ -260,118 +268,108 @@ ob_start();
                     page: page,
                     limit: limit
                 },
-                success: function ( data )
-                {
-                    renderUserData( data );
+                success: function (data) {
+                    renderUserData(data);
                 },
-                error: function ( xhr, status, error )
-                {
-                    console.error( 'Error:', error );
+                error: function (xhr, status, error) {
+                    console.error('Error:', error);
                 }
-            } );
+            });
         }
 
         // Event listeners for dropdown menu changes, search input, and pagination dropdown
-        $( '#roleFilter, #statusFilter, #searchInput, #paginationSelect' ).on( 'change input', function ()
-        {
-            const roleFilter = $( '#roleFilter' ).val();
-            const statusFilter = $( '#statusFilter' ).val();
-            const searchTerm = $( '#searchInput' ).val();
-            const limit = $( '#paginationSelect' ).val();
-            filterUserData( roleFilter, statusFilter, searchTerm, 1, limit ); // Reset to page 1 when filters change
-        } );
+        $('#roleFilter, #statusFilter, #searchInput, #paginationSelect').on('change input', function () {
+            const roleFilter = $('#roleFilter').val();
+            const statusFilter = $('#statusFilter').val();
+            const searchTerm = $('#searchInput').val();
+            const limit = $('#paginationSelect').val();
+            filterUserData(roleFilter, statusFilter, searchTerm, 1, limit); // Reset to page 1 when filters change
+        });
 
         // Function to render user data
-        function renderUserData ( data )
-        {
-            const userList = $( '#user-list' );
+        function renderUserData(data) {
+            const userList = $('#user-list');
             userList.empty(); // Clear existing user data
-            data.forEach( function ( user )
-            {
+            data.forEach(function (user) {
                 // Render user row
-                const userRow = $( '<tr>' ).addClass( 'bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600' );
-                userRow.append( $( '<td>' ).addClass( 'px-6 py-4' ).text( user.fname + ' ' + user.lname ) );
-                userRow.append( $( '<td>' ).addClass( 'px-6 py-4' ).text( user.username ) );
-                userRow.append( $( '<td>' ).addClass( 'px-6 py-4' ).text( user.role_name ) );
-                userRow.append( $( '<td>' ).addClass( 'px-6 py-4' ).text( user.status ) );
-                userRow.append( $( '<td>' ).addClass( 'px-6 py-4' ).text( user.created_at ) );
-                userRow.append( $( '<td>' ).addClass( 'px-6 py-4' ).text( user.updated_at ) );
+                const userRow = $('<tr>').addClass('bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600');
+                userRow.append($('<td>').addClass('px-6 py-4').text(user.fname + ' ' + user.lname));
+                userRow.append($('<td>').addClass('px-6 py-4').text(user.username));
+                userRow.append($('<td>').addClass('px-6 py-4').text(user.role_name));
+                userRow.append($('<td>').addClass('px-6 py-4').text(user.status));
+                userRow.append($('<td>').addClass('px-6 py-4').text(user.created_at));
+                userRow.append($('<td>').addClass('px-6 py-4').text(user.updated_at));
                 // Add edit and delete buttons
-                userRow.append( $( '<td>' ).addClass( 'px-6 py-4' ).append(
-                    $( '<button>' ).addClass( 'editBtn font-medium text-blue-600 dark:text-blue-500 hover:underline mr-2' )
-                        .attr( 'data-toggle', 'modal' )
-                        .attr( 'data-target', '#editUserModal' )
-                        .data( 'userId', user.user_id )
-                        .data( 'user', user )
-                        .text( 'Edit' ),
-                    $( '<button>' ).addClass( 'delBtn font-medium text-red-600 dark:text-red-500 hover:underline mr-2' )
-                        .attr( 'data-toggle', 'modal' )
-                        .attr( 'data-target', '#editUserModal' )
-                        .data( 'userId', user.user_id )
-                        .data( 'userStatus', user.status )
-                        .data( 'user', user )
-                        .text( 'Delete' ),
-                ) );
-                userList.append( userRow );
-            } );
+                userRow.append($('<td>').addClass('px-6 py-4').append(
+                    $('<button>').addClass('editBtn font-medium text-blue-600 dark:text-blue-500 hover:underline mr-2')
+                        .attr('data-toggle', 'modal')
+                        .attr('data-target', '#editUserModal')
+                        .data('userId', user.user_id)
+                        .data('user', user)
+                        .text('Edit'),
+                    $('<button>').addClass('delBtn font-medium text-red-600 dark:text-red-500 hover:underline mr-2')
+                        .attr('data-toggle', 'modal')
+                        .attr('data-target', '#editUserModal')
+                        .data('userId', user.user_id)
+                        .data('userStatus', user.status)
+                        .data('user', user)
+                        .text('Delete'),
+                ));
+                userList.append(userRow);
+            });
         }
 
         // Initial rendering of user data
-        filterUserData( '', '', '', 1, 10 ); // Initially, no filters applied, page 1, limit 10
+        filterUserData('', '', '', 1, 10); // Initially, no filters applied, page 1, limit 10
 
 
-        $.ajax( {
+        $.ajax({
             url: '../../../backend/roles/roles-get.php',
             type: 'GET',
             dataType: 'json',
-            success: function ( roles )
-            {
+            success: function (roles) {
                 // Render roles data
-                const roleSelectForm = $( '#editRole' );
-                const roleSelectFilter = $( '#roleFilter' );
+                const roleSelectForm = $('#editRole');
+                const roleSelectFilter = $('#roleFilter');
 
-                roles.forEach( function ( role )
-                {
-                    roleSelectForm.append( $( '<option>' ).val( role.role_id ).text( role.role_name ) );
-                    roleSelectFilter.append( $( '<option>' ).val( role.role_name ).text( role.role_name ) );
-                } );
+                roles.forEach(function (role) {
+                    roleSelectForm.append($('<option>').val(role.role_id).text(role.role_name));
+                    roleSelectFilter.append($('<option>').val(role.role_name).text(role.role_name));
+                });
             },
-            error: function ( xhr, status, error )
-            {
-                console.error( 'Error:', error );
+            error: function (xhr, status, error) {
+                console.error('Error:', error);
             }
-        } );
+        });
 
         // Open modal when edit button is clicked
-        $( document ).on( 'click', '.editBtn', function ()
-        {
+        $(document).on('click', '.editBtn', function () {
             // Get user information
-            const user = $( this ).data( 'user' );
-            const userId = $( this ).data( 'userId' ); // Retrieve userId from button's data
-            $( '#editUserForm' ).data( 'userId', userId );
-            $( '#editFirstName' ).val( user.fname );
-            $( '#editLastName' ).val( user.lname );
-            $( '#editUsername' ).val( user.username );
-            $( '#editEmail' ).val( user.email );
+            const user = $(this).data('user');
+            const userId = $(this).data('userId'); // Retrieve userId from button's data
+            $('#editUserForm').data('userId', userId);
+            $('#editFirstName').val(user.fname);
+            $('#editLastName').val(user.lname);
+            $('#editUsername').val(user.username);
+            $('#editEmail').val(user.email);
 
             // Open the modal
-            $( '#editUserModal' ).removeClass( 'hidden' );
-            $( '#editUserModal' ).show();
-        } );
+            $('#editUserModal').removeClass('hidden');
+            $('#editUserModal').show();
+        });
 
         // Handle confirm update action
-        $( '#confirmUpdateBtn' ).click( function ()
-        {
+        $('#confirmUpdateBtn').click(function () {
             // Perform update action here (call backend API)
-            const userId = $( '#editUserForm' ).data( 'userId' );
-            const firstName = $( '#editFirstName' ).val();
-            const lastName = $( '#editLastName' ).val();
-            const username = $( '#editUsername' ).val();
-            const email = $( '#editEmail' ).val();
-            const roleId = $( '#editRole' ).val();
+            const userId = $('#editUserForm').data('userId');
+            const firstName = $('#editFirstName').val();
+            const lastName = $('#editLastName').val();
+            const username = $('#editUsername').val();
+            const email = $('#editEmail').val();
+            const roleId = $('#editRole').val();
 
             // You need to implement the AJAX call to update the user
-            $.ajax( {
+            $.ajax({
                 url: '../../../backend/users/user-update.php', // Update the URL with your backend endpoint
                 type: 'POST',
                 dataType: 'json',
@@ -383,151 +381,132 @@ ob_start();
                     email: email,
                     roleId: roleId
                 },
-                success: function ( response )
-                {
-                    if ( response.success )
-                    {
+                success: function (response) {
+                    if (response.success) {
                         // Display success message using a pop-up
-                        $( '.success-popup .popup-message' ).text( response.message );
-                        $( '.success-popup' ).removeClass( 'hidden' );
+                        $('.success-popup .popup-message').text(response.message);
+                        $('.success-popup').removeClass('hidden');
 
                         // Automatically close the pop-up after 3 seconds (3000 milliseconds)
-                        setTimeout( function ()
-                        {
-                            $( '.success-popup' ).addClass( 'hidden' );
-                            $( '#editUserModal' ).addClass( 'hidden' );
-                        }, 3000 );
+                        setTimeout(function () {
+                            $('.success-popup').addClass('hidden');
+                            $('#editUserModal').addClass('hidden');
+                        }, 3000);
 
                         fetchUserData();
-                    } else
-                    {
+                    } else {
                         // Display error message using a pop-up
-                        $( '.error-popup .popup-message' ).text( response.message );
-                        $( '.error-popup' ).removeClass( 'hidden' );
+                        $('.error-popup .popup-message').text(response.message);
+                        $('.error-popup').removeClass('hidden');
                     }
 
                     // Close modal regardless of success or failure
-                    $( '#editUserModal' ).modal( 'hide' );
+                    $('#editUserModal').modal('hide');
                 },
-                error: function ( xhr, status, error )
-                {
-                    console.error( 'Error:', error );
+                error: function (xhr, status, error) {
+                    console.error('Error:', error);
                     // Display error message using a pop-up
-                    $( '.error-popup .popup-message' ).text( error );
-                    $( '.error-popup' ).removeClass( 'hidden' );
+                    $('.error-popup .popup-message').text(error);
+                    $('.error-popup').removeClass('hidden');
                 }
-            } );
-            $( '.confirmation-popup' ).addClass( 'hidden' );
-        } );
+            });
+            $('.confirmation-popup').addClass('hidden');
+        });
 
         // Open modal when edit button is clicked
-        $( document ).on( 'click', '.delBtn', function ()
-        {
+        $(document).on('click', '.delBtn', function () {
             // Get user information
-            const userId = $( this ).data( 'userId' );
-            $( '#confirmDeleteBtn' ).data( 'userId', userId );
+            const userId = $(this).data('userId');
+            $('#confirmDeleteBtn').data('userId', userId);
 
             // Open the modal
-            $( '.delete-confirmation-popup' ).removeClass( 'hidden' );
-        } );
+            $('.delete-confirmation-popup').removeClass('hidden');
+        });
 
         // Click event listener for confirmDeleteBtn
-        $( document ).on( 'click', '#confirmDeleteBtn', function ()
-        {
+        $(document).on('click', '#confirmDeleteBtn', function () {
             // Get user information
-            const userId = $( this ).data( 'userId' );
+            const userId = $(this).data('userId');
 
             // AJAX request
-            $.ajax( {
+            $.ajax({
                 url: '../../../backend/users/user-delete.php',
                 type: 'POST',
                 data: { userId: userId },
                 dataType: 'json',
-                success: function ( response )
-                {
-                    console.log( response );
-                    if ( response.message )
-                    {
+                success: function (response) {
+                    console.log(response);
+                    if (response.message) {
                         // Display success message using a pop-up
-                        $( '.success-popup .popup-message' ).text( response.message );
-                        $( '.success-popup' ).removeClass( 'hidden' );
+                        $('.success-popup .popup-message').text(response.message);
+                        $('.success-popup').removeClass('hidden');
 
                         // Automatically close the pop-up after 3 seconds (3000 milliseconds)
-                        setTimeout( function ()
-                        {
-                            $( '.success-popup' ).addClass( 'hidden' );
-                            $( '.delete-confirmation-popup' ).addClass( 'hidden' );
-                        }, 3000 );
+                        setTimeout(function () {
+                            $('.success-popup').addClass('hidden');
+                            $('.delete-confirmation-popup').addClass('hidden');
+                        }, 3000);
 
                         fetchUserData();
-                    } else
-                    {
+                    } else {
                         // Display error message using a pop-up
-                        $( '.error-popup .popup-message' ).text( response.message );
-                        $( '.error-popup' ).removeClass( 'hidden' );
+                        $('.error-popup .popup-message').text(response.message);
+                        $('.error-popup').removeClass('hidden');
                     }
                 },
-                error: function ( xhr, status, error )
-                {
+                error: function (xhr, status, error) {
                     // Handle error response
-                    console.error( 'Error deleting user:', error );
+                    console.error('Error deleting user:', error);
                     // You can show an error message or perform other actions here
                 }
-            } );
-        } );
+            });
+        });
 
         // Handle password reset button click
-        $( '#resetPasswordBtn' ).click( function ()
-        {
+        $('#resetPasswordBtn').click(function () {
             // Perform password reset action here
             // Display confirmation message
-            alert( 'Password reset successful!' );
-        } );
+            alert('Password reset successful!');
+        });
 
         //////////////////////close buttons///////////////////////////////
         // Handle cancel update action
-        $( '#cancelUpdateBtn' ).click( function ()
-        {
+        $('#cancelUpdateBtn').click(function () {
             // Hide the confirmation popup and keep the edit modal open
-            $( '.confirmation-popup' ).addClass( 'hidden' );
-        } );
+            $('.confirmation-popup').addClass('hidden');
+        });
 
         // Handle close button click for success pop-up
-        $( '#closeSuccessBtn' ).click( function ()
-        {
-            $( '.success-popup' ).addClass( 'hidden' );
-            $( '#editUserModal' ).addClass( 'hidden' );
-        } );
+        $('#closeSuccessBtn').click(function () {
+            $('.success-popup').addClass('hidden');
+            $('#editUserModal').addClass('hidden');
+        });
 
         // Handle close button click for error pop-up
-        $( '#closeErrorBtn' ).click( function ()
-        {
-            $( '.error-popup' ).addClass( 'hidden' );
-            $( '.delete-confirmation-popup' ).addClass( 'hidden' );
-        } );
+        $('#closeErrorBtn').click(function () {
+            $('.error-popup').addClass('hidden');
+            $('.delete-confirmation-popup').addClass('hidden');
+        });
 
         // Handle click on the X button for edit user modal
-        $( '#editUserModal .close' ).click( function ()
-        {
-            $( '#editUserModal' ).addClass( 'hidden' );
-        } );
+        $('#editUserModal .close').click(function () {
+            $('#editUserModal').addClass('hidden');
+        });
 
         // Handle form submission (update user)
-        $( '#editUserForm' ).submit( function ( event )
-        {
+        $('#editUserForm').submit(function (event) {
             event.preventDefault();
             // Show confirmation popup
-            $( '.confirmation-popup' ).removeClass( 'hidden' );
-        } );
+            $('.confirmation-popup').removeClass('hidden');
+        });
 
         // Handle close button click for delete pop-up
-        $( '#cancelDeleteBtn' ).click( function ()
-        {
-            $( '.delete-confirmation-popup' ).addClass( 'hidden' );
-        } );
+        $('#cancelDeleteBtn').click(function () {
+            $('.delete-confirmation-popup').addClass('hidden');
+        });
 
         fetchUserData();
-    } );
+    });
 </script>
 
 <?php
