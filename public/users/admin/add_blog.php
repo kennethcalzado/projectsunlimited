@@ -8,14 +8,14 @@ if (session_status() === PHP_SESSION_NONE) {
 include("../../../backend/conn.php");
 
 // Check if form is submitted
-if (
-    $_SERVER["REQUEST_METHOD"] == "POST"
-) {
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Validate form inputs
     $title = $_POST['title'];
-    $date = date("Y-m-d"); // Current date
+    $date = $_POST['date']; // Retrieve the selected date from the form
     $description = $_POST['description'];
     $type = $_POST['type'];
+    $blog_id = $conn->insert_id; // Get the ID of the inserted blog
+    $page = "{$type}_{$blog_id}";
 
     // Check if thumbnail file is uploaded
     if (isset($_FILES['thumbnail'])) {
@@ -45,13 +45,12 @@ if (
     }
 
     // Insert data into the database
-    $sql = "INSERT INTO blogs (title, date, thumbnail, description, images, type) VALUES (?, ?, ?, ?, ?, ?)";
+    $sql = "INSERT INTO blogs (title, date, thumbnail, page, description, images, type) VALUES (?, ?, ?, ?, ?, ?, ?)";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("ssssss", $title, $date, $thumbnail_name, $description, implode(',', $images), $type);
+    $stmt->bind_param("sssssss", $title, $date, $thumbnail_name, $page, $description, implode(',', $images), $type);
 
     if ($stmt->execute()) {
         // Create new PHP file based on blog type and ID
-        $blog_id = $conn->insert_id; // Get the ID of the inserted blog
         $filename = "../../../public/blogs/{$type}_{$blog_id}.php"; // Create filename
         $file_content = "<?php // Content for your new blog file goes here ?>"; // Example content
 

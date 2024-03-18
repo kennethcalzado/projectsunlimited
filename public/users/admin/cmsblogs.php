@@ -121,6 +121,11 @@ ob_start();
                     <input type="file" name="images[]" id="images" class="border rounded px-4 py-2 w-full" accept="image/*" multiple>
                 </div>
                 <div class="mb-4">
+                    <label for="date" class="block font-semibold mb-2">Date</label>
+                    <!-- Date picker input field -->
+                    <input type="date" name="date" id="date" class="border rounded px-4 py-2 w-full" required>
+                </div>
+                <div class="mb-4">
                     <label for="type" class="block font-semibold mb-2">Type</label>
                     <select name="type" id="type" class="border rounded px-4 py-2 w-full" required>
                         <option value="News">News</option>
@@ -134,6 +139,7 @@ ob_start();
             </form>
         </div>
     </div>
+
 
     <div id="deleteModal" class="fixed inset-0 z-50 overflow-auto bg-black bg-opacity-50 flex justify-center items-center hidden">
         <!-- Modal Content -->
