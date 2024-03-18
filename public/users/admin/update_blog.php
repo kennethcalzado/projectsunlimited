@@ -21,7 +21,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $thumbnail_tmp_name = $_FILES['updateThumbnail']['tmp_name'];
 
         // Move uploaded thumbnail file to desired location
-        $target_dir = "../assets/blogs_img/";
+        $target_dir = "../../../assets/blogs_img/";
         $target_file = $target_dir . basename($thumbnail_name);
         move_uploaded_file($thumbnail_tmp_name, $target_file);
     } else {

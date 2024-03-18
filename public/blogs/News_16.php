@@ -1,0 +1,1 @@
+<?php // Content for your new blog file goes here ?>

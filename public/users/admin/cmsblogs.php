@@ -46,6 +46,7 @@ ob_start();
             text-align: left;
             vertical-align: top;
             text-align: center;
+            margin: 0 auto;
             /* Align content at the top */
         }
 
@@ -81,6 +82,12 @@ ob_start();
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
+        }
+
+        td img {
+            display: block;
+            margin: 0 auto;
+            /* Center horizontally */
         }
     </style>
 </head>
@@ -275,7 +282,7 @@ ob_start();
                         echo '<tr>';
                         echo "<td>" . $row['title'] . "</td>";
                         echo "<td>" . $row['date'] . "</td>";
-                        echo "<td><img src='../assets/blogs_img/{$row['thumbnail']}' width='100' height='100'></td>";
+                        echo "<td><img src='../../../assets/blogs_img/{$row['thumbnail']}' width='100' height='100'></td>";
                         echo "<td class='description'>" . $row['description'] . "</td>";
                         echo "<td>" . $row['type'] . "</td>";
                         echo '<td class="action-btns">';
