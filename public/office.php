@@ -23,7 +23,7 @@ ob_start();
                 <div class="container mx-auto flex items-center justify-between">
                     <div class="hidden md:flex flex-grow">
                         <ul class="flex justify-between w-full mx-20">
-                        <li><a href="../public/blinds.php" class="text-black font-bold hover:text-gray-700">BLINDS</a></li>
+                            <li><a href="../public/blinds.php" class="text-black font-bold hover:text-gray-700">BLINDS</a></li>
                             <li><a href="../public/flooring.php" class="text-black font-bold hover:text-gray-700">FLOORINGS</a></li>
                             <li><a href="../public/wallpaper.php" class="text-black font-bold hover:text-gray-700">WALLPAPERS</a></li>
                             <li><a href="../public/modular.php" class="text-black font-bold hover:text-gray-700">MODULAR CABINETS</a></li>
@@ -34,31 +34,33 @@ ob_start();
         </div>
     </header>
     <div class="flex flex-col md:flex-row items-center justify-center">
-    <p class="text-3xl font-extrabold my-2 md:pl-14 md:pr-2">CATEGORY: OFFICE ACCESSORIES</p>
-    <div class="flex flex-col md:flex-row items-center">
-        <div class="relative mb-2 md:mb-0 md:mr-2">
-            <select class="w-full md:w-auto bg-white border border-gray-300 text-gray-700 py-2 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
-                <option>All Office Accessories</option>
-                <option>Chairs</option>
-                <option>Tables</option>
-                <option>Storage</option>
-                <option>Partitions (Customizable)</option>
-            </select>
-        </div>
-        <div class="relative mb-2 md:mb-0 md:mr-2">
-            <select class="w-full md:w-auto bg-white border border-gray-300 text-gray-700 py-2 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
-                <option>Sort By</option>
-                <option>Newest Product</option>
-                <option>Oldest Product</option>
-                <option>Most Popular Product</option>
-            </select>
-        </div>
-        <div class="relative flex items-center">
-            <input type="text" placeholder="Search" class="block appearance-none w-full md:w-auto bg-white border border-gray-300 text-gray-700 py-2 px-4 pr-8 rounded-l-lg focus:outline-none focus:bg-white focus:border-gray-500">
-            <button class="text-white font-bold border border-blue-500 bg-blue-500 py-2 px-4 rounded-r-lg focus:outline-none">Search</button>
+        <p class="text-3xl font-extrabold my-2 md:pl-14 md:pr-2">CATEGORY: OFFICE ACCESSORIES</p>
+        <div class="flex flex-col md:flex-row items-center">
+            <div class="relative mb-2 md:mb-0 md:mr-2">
+                <select class="w-full md:w-auto bg-white border border-gray-300 text-gray-700 py-2 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
+                    <optgroup label="Product Categories">
+                        <option>All Office Accessories</option>
+                        <option>Chairs</option>
+                    </optgroup>
+                    <optgroup label="Tables, Storage, Partitions">
+                        <option>Customize</option>
+                    </optgroup>
+                </select>
+            </div>
+            <div class="relative mb-2 md:mb-0 md:mr-2">
+                <select class="w-full md:w-auto bg-white border border-gray-300 text-gray-700 py-2 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
+                    <option>Sort By</option>
+                    <option>Newest Product</option>
+                    <option>Oldest Product</option>
+                    <option>Most Popular Product</option>
+                </select>
+            </div>
+            <div class="relative flex items-center">
+                <input type="text" placeholder="Search" class="block appearance-none w-full md:w-auto bg-white border border-gray-300 text-gray-700 py-2 px-4 pr-8 rounded-l-lg focus:outline-none focus:bg-white focus:border-gray-500">
+                <button class="text-white font-bold border border-blue-500 bg-blue-500 py-2 px-4 rounded-r-lg focus:outline-none">Search</button>
+            </div>
         </div>
     </div>
-</div>
 
 </div>
 

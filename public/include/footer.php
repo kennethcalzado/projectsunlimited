@@ -66,9 +66,9 @@
         <div class="md:w-1/4 p-2">
             <div class="mb-4 my-2 mx-2 ml-12">
                 <p class="text-xl font-bold text-left">Office Hours</p>
-                <p class="text-sm mt-1 font-semibold text-left  hover:text-[#F6E381]">Mondays - Fridays 8am - 5pm</p>
-                <p class="text-sm mt-1 font-semibold text-left  hover:text-[#F6E381]">Saturdays 8am - 5pm</p>
-                <p class="text-sm mt-1 font-semibold text-left  hover:text-[#F6E381]">Sundays CLOSED</p>
+                <p class="text-sm mt-1 font-semibold text-left  hover:text-[#F6E381]">Mondays - Fridays <u>8am - 5pm</u></p>
+                <p class="text-sm mt-1 font-semibold text-left  hover:text-[#F6E381]">Saturdays <u>8am - 5pm</u></p>
+                <p class="text-sm font-bold text-left">Sundays and Holidays <u>CLOSED</u></p>
             </div>
         </div>
     </div>
