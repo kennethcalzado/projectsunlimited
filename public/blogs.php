@@ -131,10 +131,11 @@ $result = mysqli_query($conn, $sql);
                         echo '
                             <div class="card-group">
                             <a href="' . $row['page'] . '" class="card-link">
+                            <div class="date">' . $row['date'] . '</div>
                                 <div class="placeholder">
                                     <img src="../assets/blogs_img/' . $row['thumbnail'] . '" alt="Thumbnail" class="thumbnail">
                                 </div>
-                                <div class="date">' . $row['date'] . '</div>
+                                
                                 <div class="title">' . $row['title'] . '</div>
                             </a>
                                 </div>';
