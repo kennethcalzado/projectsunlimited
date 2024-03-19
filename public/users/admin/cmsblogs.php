@@ -10,6 +10,8 @@ ob_start();
     <title><?php echo $pageTitle; ?></title>
     <link rel="stylesheet" href="../../../assets/input.css">
 
+    <script src="https://cdn.ckeditor.com/ckeditor5/36.0.1/classic/ckeditor.js"></script>
+
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 
     <style>
@@ -232,20 +234,44 @@ ob_start();
 
 
     <script>
+        // Store CKEditor instances
+        var ckeditors = {};
+
+        // Function to initialize CKEditor for a given ID if not already initialized
+        function initCKEditor(id) {
+            if (!ckeditors.hasOwnProperty(id)) {
+                ClassicEditor
+                    .create(document.querySelector('#' + id))
+                    .then(editor => {
+                        ckeditors[id] = editor; // Store editor instance
+                    })
+                    .catch(error => {
+                        console.error(error);
+                    });
+            }
+        }
+
         // JavaScript to show and hide the update modal
         function openUpdateModal(blogId, title, description, type) {
             document.getElementById('updateModal').classList.remove('hidden');
             // Populate form fields with existing blog data
             document.getElementById('blogIdToUpdate').value = blogId;
             document.getElementById('updateTitle').value = title;
-            document.getElementById('updateDescription').value = description;
-            document.getElementById('updateType').value = type;
+
+            // Initialize CKEditor for the description textarea if not already initialized
+            initCKEditor('updateDescription');
+
+            // Set the CKEditor content to match the description text
+            if (ckeditors.hasOwnProperty('updateDescription')) {
+                ckeditors['updateDescription'].setData(description);
+            }
         }
 
         function closeUpdateModal() {
             document.getElementById('updateModal').classList.add('hidden');
         }
     </script>
+
 
     <script>
         // JavaScript to show and hide the modal
