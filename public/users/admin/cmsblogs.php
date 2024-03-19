@@ -287,7 +287,7 @@ ob_start();
     <div style="padding-top: 15px;" class="container">
         <!-- Content -->
         <div class="flex justify-between items-center">
-            <h1 class="text-4xl font-extrabold">News & Projects</h1>
+            <h1 class="text-4xl font-bold">News & Projects</h1>
             <!-- Add New Button -->
             <button class="btn btn-primary" onclick="openModal()">Add New</button>
         </div>

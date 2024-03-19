@@ -45,6 +45,7 @@ $image_path = $base_url . 'assets/image/projects.png';
             </div>
         </a>
     <?php } ?>
+    <a href="/public/users/admin/admin-products.php" title="Products">
     <div class="p-2.5 mt-3 flex items-center rounded-md px-6 duration-300 cursor-pointer hover:bg-yellow-600 text-white"
         title="Products">
         <div class="tooltip tooltip-right" data-tip="Products">
