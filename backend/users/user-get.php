@@ -40,61 +40,99 @@ if ($searchTerm !== null && $searchTerm !== '') {
     $params[] = "%$searchTerm%";
 }
 
-// Append LIMIT and OFFSET for pagination
-$sql .= " LIMIT ? OFFSET ?";
-
-// Add limit and offset parameters
-$params[] = $limit;
-$params[] = $offset;
-
-// Log the SQL query
-$queryLog = date('Y-m-d H:i:s') . " - SQL: $sql - Parameters: " . json_encode($params) . PHP_EOL;
-file_put_contents('query_log.txt', $queryLog, FILE_APPEND);
-
-// Prepare statement
-$stmt = $conn->prepare($sql);
-if ($stmt) {
+// Prepare statement for counting total rows
+$countSql = "SELECT COUNT(*) AS totalRows FROM ($sql) AS total";
+$countStmt = $conn->prepare($countSql);
+if ($countStmt) {
     // Bind parameters dynamically
-    if (!empty($params)) {
+    if (!empty ($params)) {
         $types = str_repeat('s', count($params)); // Generate type string dynamically (all parameters are strings)
-        $stmt->bind_param($types, ...$params);
+        $countStmt->bind_param($types, ...$params);
     }
 
-    // Execute the statement
-    if ($stmt->execute()) {
-        // Fetch results
-        $result = $stmt->get_result();
+    // Execute the count statement
+    if ($countStmt->execute()) {
+        // Fetch total count
+        $countResult = $countStmt->get_result();
+        $totalCount = $countResult->fetch_assoc()['totalRows'];
 
-        // Fetch user data
-        $users = array();
-        while ($row = $result->fetch_assoc()) {
-            $users[] = $row;
-        }
+        // Close count statement
+        $countStmt->close();
 
-        // Log the number of rows returned
-        $rowsReturned = count($users);
-        $logMessage = "Query executed successfully. Rows returned: $rowsReturned" . PHP_EOL;
-        file_put_contents('query_log.txt', $logMessage, FILE_APPEND);
+        // Append LIMIT and OFFSET for pagination to the original query
+        $sql .= " LIMIT ? OFFSET ?";
+        $params[] = $limit;
+        $params[] = $offset;
 
-        // Return JSON response with user data
-        if (empty($users)) {
-            echo json_encode(["message" => "No users found."]);
+        // Prepare statement for fetching limited data
+        $stmt = $conn->prepare($sql);
+        if ($stmt) {
+            // Bind parameters dynamically
+            if (!empty ($params)) {
+                $types = str_repeat('s', count($params)); // Generate type string dynamically (all parameters are strings)
+                $stmt->bind_param($types, ...$params);
+            }
+
+            // Execute the statement
+            if ($stmt->execute()) {
+                // Fetch results
+                $result = $stmt->get_result();
+
+                // Fetch user data
+                $users = array();
+                while ($row = $result->fetch_assoc()) {
+                    $users[] = $row;
+                }
+
+                // Calculate total pages
+                $totalPages = ceil($totalCount / $limit);
+
+                // Construct pagination response
+                $pagination = array(
+                    "totalRows" => $totalCount,
+                    "totalPages" => $totalPages,
+                    "currentPage" => $page
+                );
+
+                // Combine user data and pagination information
+                $response = array(
+                    "users" => $users,
+                    "pagination" => $pagination
+                );
+
+                // Return JSON response with user data and pagination information
+                if (empty ($users)) {
+                    echo json_encode(["message" => "No users found."]);
+                } else {
+                    header('Content-Type: application/json');
+                    echo json_encode($response);
+                }
+            } else {
+                // Error executing the statement
+                $errorMessage = "Error executing statement: " . $stmt->error . PHP_EOL;
+                file_put_contents('query_log.txt', $errorMessage, FILE_APPEND);
+                http_response_code(500); // Set HTTP response code to indicate internal server error
+                echo json_encode(["error" => $errorMessage]);
+            }
+
+            // Close statement
+            $stmt->close();
         } else {
-            header('Content-Type: application/json');
-            echo json_encode($users);
+            // Error preparing statement for fetching limited data
+            $errorMessage = "Error preparing statement: " . $conn->error . PHP_EOL;
+            file_put_contents('query_log.txt', $errorMessage, FILE_APPEND);
+            http_response_code(500); // Set HTTP response code to indicate internal server error
+            echo json_encode(["error" => $errorMessage]);
         }
     } else {
-        // Error executing the statement
-        $errorMessage = "Error executing statement: " . $stmt->error . PHP_EOL;
+        // Error executing the count statement
+        $errorMessage = "Error executing statement: " . $countStmt->error . PHP_EOL;
         file_put_contents('query_log.txt', $errorMessage, FILE_APPEND);
         http_response_code(500); // Set HTTP response code to indicate internal server error
         echo json_encode(["error" => $errorMessage]);
     }
-
-    // Close statement
-    $stmt->close();
 } else {
-    // Error preparing statement
+    // Error preparing statement for counting total rows
     $errorMessage = "Error preparing statement: " . $conn->error . PHP_EOL;
     file_put_contents('query_log.txt', $errorMessage, FILE_APPEND);
     http_response_code(500); // Set HTTP response code to indicate internal server error

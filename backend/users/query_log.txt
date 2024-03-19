@@ -962,6 +962,654 @@ Query executed successfully. Rows returned: 4
         FROM users u 
         INNER JOIN roles r ON u.role_id = r.role_id LIMIT ? OFFSET ? - Parameters: ["5",0]
 Query executed successfully. Rows returned: 4
+2024-03-19 03:30:31 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id LIMIT ? OFFSET ? - Parameters: ["10",0]
+Query executed successfully. Rows returned: 4
+2024-03-19 03:30:31 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id LIMIT ? OFFSET ? - Parameters: [5,0]
+Query executed successfully. Rows returned: 4
+2024-03-19 03:31:05 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id LIMIT ? OFFSET ? - Parameters: ["10",0]
+Query executed successfully. Rows returned: 4
+2024-03-19 03:31:05 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id LIMIT ? OFFSET ? - Parameters: [5,0]
+Query executed successfully. Rows returned: 4
+2024-03-19 03:31:07 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id LIMIT ? OFFSET ? - Parameters: ["10",0]
+Query executed successfully. Rows returned: 4
+2024-03-19 03:31:07 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id LIMIT ? OFFSET ? - Parameters: [5,0]
+Query executed successfully. Rows returned: 4
+2024-03-19 03:31:08 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id LIMIT ? OFFSET ? - Parameters: ["10",0]
+Query executed successfully. Rows returned: 4
+2024-03-19 03:31:08 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id LIMIT ? OFFSET ? - Parameters: [5,0]
+Query executed successfully. Rows returned: 4
+2024-03-19 03:31:10 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id LIMIT ? OFFSET ? - Parameters: ["10",0]
+Query executed successfully. Rows returned: 4
+2024-03-19 03:31:10 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id LIMIT ? OFFSET ? - Parameters: [5,0]
+Query executed successfully. Rows returned: 4
+2024-03-19 03:31:11 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id LIMIT ? OFFSET ? - Parameters: ["10",0]
+Query executed successfully. Rows returned: 4
+2024-03-19 03:31:11 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id LIMIT ? OFFSET ? - Parameters: [5,0]
+Query executed successfully. Rows returned: 4
+2024-03-19 03:31:14 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id LIMIT ? OFFSET ? - Parameters: ["10",0]
+Query executed successfully. Rows returned: 4
+2024-03-19 03:31:14 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id LIMIT ? OFFSET ? - Parameters: [5,0]
+Query executed successfully. Rows returned: 4
+2024-03-19 03:32:10 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id LIMIT ? OFFSET ? - Parameters: ["10",0]
+Query executed successfully. Rows returned: 4
+2024-03-19 03:32:10 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id LIMIT ? OFFSET ? - Parameters: [5,0]
+Query executed successfully. Rows returned: 4
+2024-03-19 03:32:19 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id LIMIT ? OFFSET ? - Parameters: ["10",0]
+Query executed successfully. Rows returned: 4
+2024-03-19 03:32:19 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id LIMIT ? OFFSET ? - Parameters: [5,0]
+Query executed successfully. Rows returned: 4
+2024-03-19 03:32:34 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id LIMIT ? OFFSET ? - Parameters: ["10",0]
+Query executed successfully. Rows returned: 4
+2024-03-19 03:32:34 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id LIMIT ? OFFSET ? - Parameters: [5,0]
+Query executed successfully. Rows returned: 4
+2024-03-19 03:32:37 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id AND (u.fname LIKE ? OR u.lname LIKE ? OR u.username LIKE ?) LIMIT ? OFFSET ? - Parameters: ["%a%","%a%","%a%","5",0]
+Query executed successfully. Rows returned: 4
+2024-03-19 03:32:37 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id AND (u.fname LIKE ? OR u.lname LIKE ? OR u.username LIKE ?) LIMIT ? OFFSET ? - Parameters: ["%as%","%as%","%as%","5",0]
+Query executed successfully. Rows returned: 0
+2024-03-19 03:32:37 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id AND (u.fname LIKE ? OR u.lname LIKE ? OR u.username LIKE ?) LIMIT ? OFFSET ? - Parameters: ["%asd%","%asd%","%asd%","5",0]
+Query executed successfully. Rows returned: 0
+2024-03-19 03:32:37 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id AND (u.fname LIKE ? OR u.lname LIKE ? OR u.username LIKE ?) LIMIT ? OFFSET ? - Parameters: ["%asda%","%asda%","%asda%","5",0]
+Query executed successfully. Rows returned: 0
+2024-03-19 03:32:37 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id AND (u.fname LIKE ? OR u.lname LIKE ? OR u.username LIKE ?) LIMIT ? OFFSET ? - Parameters: ["%asdas%","%asdas%","%asdas%","5",0]
+Query executed successfully. Rows returned: 0
+2024-03-19 03:32:38 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id LIMIT ? OFFSET ? - Parameters: ["5",0]
+Query executed successfully. Rows returned: 4
+2024-03-19 03:32:42 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id AND (u.fname LIKE ? OR u.lname LIKE ? OR u.username LIKE ?) LIMIT ? OFFSET ? - Parameters: ["%s%","%s%","%s%","5",0]
+Query executed successfully. Rows returned: 3
+2024-03-19 03:32:42 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id AND (u.fname LIKE ? OR u.lname LIKE ? OR u.username LIKE ?) LIMIT ? OFFSET ? - Parameters: ["%sp%","%sp%","%sp%","5",0]
+Query executed successfully. Rows returned: 1
+2024-03-19 03:32:43 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id AND (u.fname LIKE ? OR u.lname LIKE ? OR u.username LIKE ?) LIMIT ? OFFSET ? - Parameters: ["%spi%","%spi%","%spi%","5",0]
+Query executed successfully. Rows returned: 1
+2024-03-19 03:32:43 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id AND (u.fname LIKE ? OR u.lname LIKE ? OR u.username LIKE ?) LIMIT ? OFFSET ? - Parameters: ["%spid%","%spid%","%spid%","5",0]
+Query executed successfully. Rows returned: 1
+2024-03-19 03:32:43 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id AND (u.fname LIKE ? OR u.lname LIKE ? OR u.username LIKE ?) LIMIT ? OFFSET ? - Parameters: ["%spide%","%spide%","%spide%","5",0]
+Query executed successfully. Rows returned: 1
+2024-03-19 03:32:43 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id AND (u.fname LIKE ? OR u.lname LIKE ? OR u.username LIKE ?) LIMIT ? OFFSET ? - Parameters: ["%spider%","%spider%","%spider%","5",0]
+Query executed successfully. Rows returned: 1
+2024-03-19 03:32:44 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id AND (u.fname LIKE ? OR u.lname LIKE ? OR u.username LIKE ?) LIMIT ? OFFSET ? - Parameters: ["%spide%","%spide%","%spide%","5",0]
+Query executed successfully. Rows returned: 1
+2024-03-19 03:32:44 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id AND (u.fname LIKE ? OR u.lname LIKE ? OR u.username LIKE ?) LIMIT ? OFFSET ? - Parameters: ["%spid%","%spid%","%spid%","5",0]
+Query executed successfully. Rows returned: 1
+2024-03-19 03:32:44 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id AND (u.fname LIKE ? OR u.lname LIKE ? OR u.username LIKE ?) LIMIT ? OFFSET ? - Parameters: ["%spi%","%spi%","%spi%","5",0]
+Query executed successfully. Rows returned: 1
+2024-03-19 03:32:44 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id AND (u.fname LIKE ? OR u.lname LIKE ? OR u.username LIKE ?) LIMIT ? OFFSET ? - Parameters: ["%sp%","%sp%","%sp%","5",0]
+Query executed successfully. Rows returned: 1
+2024-03-19 03:32:44 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id AND (u.fname LIKE ? OR u.lname LIKE ? OR u.username LIKE ?) LIMIT ? OFFSET ? - Parameters: ["%s%","%s%","%s%","5",0]
+Query executed successfully. Rows returned: 3
+2024-03-19 03:32:44 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id LIMIT ? OFFSET ? - Parameters: ["5",0]
+Query executed successfully. Rows returned: 4
+2024-03-19 03:33:26 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id LIMIT ? OFFSET ? - Parameters: ["10",0]
+Query executed successfully. Rows returned: 4
+2024-03-19 03:33:26 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id LIMIT ? OFFSET ? - Parameters: [5,0]
+Query executed successfully. Rows returned: 4
+2024-03-19 03:33:39 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id LIMIT ? OFFSET ? - Parameters: ["10",0]
+Query executed successfully. Rows returned: 4
+2024-03-19 03:33:39 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id LIMIT ? OFFSET ? - Parameters: [5,0]
+Query executed successfully. Rows returned: 4
+2024-03-19 03:34:58 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id LIMIT ? OFFSET ? - Parameters: ["10",0]
+Query executed successfully. Rows returned: 4
+2024-03-19 03:34:58 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id LIMIT ? OFFSET ? - Parameters: [5,0]
+Query executed successfully. Rows returned: 4
+2024-03-19 03:35:08 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id LIMIT ? OFFSET ? - Parameters: ["10",0]
+Query executed successfully. Rows returned: 4
+2024-03-19 03:35:08 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id LIMIT ? OFFSET ? - Parameters: [5,0]
+Query executed successfully. Rows returned: 4
+2024-03-19 03:35:30 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id LIMIT ? OFFSET ? - Parameters: ["10",0]
+Query executed successfully. Rows returned: 4
+2024-03-19 03:35:30 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id LIMIT ? OFFSET ? - Parameters: [5,0]
+Query executed successfully. Rows returned: 4
+2024-03-19 03:35:38 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id LIMIT ? OFFSET ? - Parameters: ["10",0]
+Query executed successfully. Rows returned: 4
+2024-03-19 03:35:38 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id LIMIT ? OFFSET ? - Parameters: [5,0]
+Query executed successfully. Rows returned: 4
+2024-03-19 03:35:52 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id LIMIT ? OFFSET ? - Parameters: ["10",0]
+Query executed successfully. Rows returned: 4
+2024-03-19 03:35:52 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id LIMIT ? OFFSET ? - Parameters: [5,0]
+Query executed successfully. Rows returned: 4
+2024-03-19 03:35:58 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id LIMIT ? OFFSET ? - Parameters: ["10",0]
+Query executed successfully. Rows returned: 4
+2024-03-19 03:35:58 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id LIMIT ? OFFSET ? - Parameters: [5,0]
+Query executed successfully. Rows returned: 4
+2024-03-19 03:36:11 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id LIMIT ? OFFSET ? - Parameters: ["10",0]
+Query executed successfully. Rows returned: 4
+2024-03-19 03:36:11 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id LIMIT ? OFFSET ? - Parameters: [5,0]
+Query executed successfully. Rows returned: 4
+2024-03-19 03:36:17 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id LIMIT ? OFFSET ? - Parameters: ["10",0]
+Query executed successfully. Rows returned: 4
+2024-03-19 03:36:17 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id LIMIT ? OFFSET ? - Parameters: [5,0]
+Query executed successfully. Rows returned: 4
+2024-03-19 03:36:54 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id LIMIT ? OFFSET ? - Parameters: ["10",0]
+Query executed successfully. Rows returned: 4
+2024-03-19 03:36:54 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id LIMIT ? OFFSET ? - Parameters: [5,0]
+Query executed successfully. Rows returned: 4
+2024-03-19 03:37:03 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id LIMIT ? OFFSET ? - Parameters: ["10",0]
+Query executed successfully. Rows returned: 4
+2024-03-19 03:37:03 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id LIMIT ? OFFSET ? - Parameters: [5,0]
+Query executed successfully. Rows returned: 4
+2024-03-19 03:37:07 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id LIMIT ? OFFSET ? - Parameters: ["10",0]
+Query executed successfully. Rows returned: 4
+2024-03-19 03:37:07 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id LIMIT ? OFFSET ? - Parameters: [5,0]
+Query executed successfully. Rows returned: 4
+2024-03-19 03:37:13 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id LIMIT ? OFFSET ? - Parameters: ["10",0]
+Query executed successfully. Rows returned: 4
+2024-03-19 03:37:13 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id LIMIT ? OFFSET ? - Parameters: [5,0]
+Query executed successfully. Rows returned: 4
+2024-03-19 03:37:18 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id LIMIT ? OFFSET ? - Parameters: ["10",0]
+Query executed successfully. Rows returned: 4
+2024-03-19 03:37:18 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id LIMIT ? OFFSET ? - Parameters: [5,0]
+Query executed successfully. Rows returned: 4
+2024-03-19 03:37:31 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id LIMIT ? OFFSET ? - Parameters: ["10",0]
+Query executed successfully. Rows returned: 4
+2024-03-19 03:37:31 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id LIMIT ? OFFSET ? - Parameters: [5,0]
+Query executed successfully. Rows returned: 4
+2024-03-19 03:37:41 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id LIMIT ? OFFSET ? - Parameters: ["10",0]
+Query executed successfully. Rows returned: 4
+2024-03-19 03:37:41 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id LIMIT ? OFFSET ? - Parameters: [5,0]
+Query executed successfully. Rows returned: 4
+2024-03-19 03:39:38 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id LIMIT ? OFFSET ? - Parameters: ["10",0]
+Query executed successfully. Rows returned: 4
+2024-03-19 03:39:38 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id LIMIT ? OFFSET ? - Parameters: [5,0]
+Query executed successfully. Rows returned: 4
+2024-03-19 03:44:27 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id LIMIT ? OFFSET ? - Parameters: ["10",0]
+Query executed successfully. Rows returned: 4
+2024-03-19 03:44:27 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id LIMIT ? OFFSET ? - Parameters: [5,0]
+Query executed successfully. Rows returned: 4
+2024-03-19 03:44:48 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id LIMIT ? OFFSET ? - Parameters: ["10",0]
+Query executed successfully. Rows returned: 9
+2024-03-19 03:44:48 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id LIMIT ? OFFSET ? - Parameters: [5,0]
+Query executed successfully. Rows returned: 5
+2024-03-19 03:44:54 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id LIMIT ? OFFSET ? - Parameters: ["10",0]
+Query executed successfully. Rows returned: 9
+2024-03-19 03:44:54 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id LIMIT ? OFFSET ? - Parameters: ["10",0]
+Query executed successfully. Rows returned: 9
+2024-03-19 03:44:57 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id LIMIT ? OFFSET ? - Parameters: ["5",0]
+Query executed successfully. Rows returned: 5
+2024-03-19 03:44:57 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id LIMIT ? OFFSET ? - Parameters: ["5",0]
+Query executed successfully. Rows returned: 5
+2024-03-19 03:44:59 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id LIMIT ? OFFSET ? - Parameters: ["10",0]
+Query executed successfully. Rows returned: 9
+2024-03-19 03:44:59 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id LIMIT ? OFFSET ? - Parameters: ["10",0]
+Query executed successfully. Rows returned: 9
+2024-03-19 03:45:16 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id LIMIT ? OFFSET ? - Parameters: ["50",0]
+Query executed successfully. Rows returned: 9
+2024-03-19 03:45:16 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id LIMIT ? OFFSET ? - Parameters: ["50",0]
+Query executed successfully. Rows returned: 9
+2024-03-19 03:45:18 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id LIMIT ? OFFSET ? - Parameters: ["5",0]
+Query executed successfully. Rows returned: 5
+2024-03-19 03:45:18 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id LIMIT ? OFFSET ? - Parameters: ["5",0]
+Query executed successfully. Rows returned: 5
+2024-03-19 03:45:23 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id LIMIT ? OFFSET ? - Parameters: ["10",0]
+Query executed successfully. Rows returned: 9
+2024-03-19 03:45:23 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id LIMIT ? OFFSET ? - Parameters: ["10",0]
+Query executed successfully. Rows returned: 9
+2024-03-19 03:45:28 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id LIMIT ? OFFSET ? - Parameters: ["5",0]
+Query executed successfully. Rows returned: 5
+2024-03-19 03:45:28 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id LIMIT ? OFFSET ? - Parameters: ["5",0]
+Query executed successfully. Rows returned: 5
+2024-03-19 03:52:17 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id LIMIT ? OFFSET ? - Parameters: ["10",0]
+Query executed successfully. Rows returned: 9
+2024-03-19 03:52:17 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id LIMIT ? OFFSET ? - Parameters: [5,0]
+Query executed successfully. Rows returned: 5
+2024-03-19 04:01:03 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id LIMIT ? OFFSET ? - Parameters: ["10",0]
+2024-03-19 04:01:03 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id LIMIT ? OFFSET ? - Parameters: [5,0]
+2024-03-19 04:01:15 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id LIMIT ? OFFSET ? - Parameters: ["10",0]
+Query executed successfully. Rows returned: 9
+2024-03-19 04:01:15 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id LIMIT ? OFFSET ? - Parameters: [5,0]
+Query executed successfully. Rows returned: 5
+2024-03-19 04:04:32 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id LIMIT ? OFFSET ? - Parameters: ["5",0]
+Query executed successfully. Rows returned: 5
+2024-03-19 04:08:05 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id LIMIT ? OFFSET ? - Parameters: ["5",0]
+2024-03-19 04:08:31 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id LIMIT ? OFFSET ? - Parameters: ["5",0]
+2024-03-19 04:10:07 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id LIMIT ? OFFSET ? - Parameters: ["5",0]
+Query executed successfully. Rows returned: 5
+2024-03-19 04:10:16 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id LIMIT ? OFFSET ? - Parameters: ["5",0]
+Query executed successfully. Rows returned: 5
+2024-03-19 04:14:01 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id LIMIT ? OFFSET ? - Parameters: ["5",0]
+Query executed successfully. Rows returned: 5
+2024-03-19 04:14:35 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id LIMIT ? OFFSET ? - Parameters: ["5",0]
+Query executed successfully. Rows returned: 5
+2024-03-19 04:18:10 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id LIMIT ? OFFSET ? - Parameters: ["5",0]
+Query executed successfully. Rows returned: 5
+2024-03-19 04:24:41 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id - Parameters: []
+Query executed successfully. Rows returned: 9
+2024-03-19 04:25:53 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id - Parameters: []
+Query executed successfully. Rows returned: 9
+2024-03-19 04:26:32 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id - Parameters: []
+Query executed successfully. Rows returned: 9
+2024-03-19 04:31:31 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id - Parameters: []
+Query executed successfully. Rows returned: 9
+2024-03-19 04:31:40 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id - Parameters: []
+Query executed successfully. Rows returned: 9
+2024-03-19 04:33:33 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id - Parameters: []
+Query executed successfully. Rows returned: 9
+2024-03-19 04:34:16 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id - Parameters: []
+Query executed successfully. Rows returned: 9
+2024-03-19 04:34:24 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id - Parameters: []
+Query executed successfully. Rows returned: 9
+2024-03-19 04:35:09 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id - Parameters: []
+Query executed successfully. Rows returned: 9
+2024-03-19 04:35:54 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id - Parameters: []
+Query executed successfully. Rows returned: 9
+2024-03-19 04:37:06 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id - Parameters: []
+Query executed successfully. Rows returned: 9
+2024-03-19 04:38:29 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id - Parameters: []
+Query executed successfully. Rows returned: 9
+2024-03-19 04:38:44 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id - Parameters: []
+Query executed successfully. Rows returned: 9
+2024-03-19 04:38:46 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id - Parameters: []
+Query executed successfully. Rows returned: 9
+2024-03-19 04:39:10 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id AND (u.fname LIKE ? OR u.lname LIKE ? OR u.username LIKE ?) - Parameters: ["%j%","%j%","%j%"]
+Query executed successfully. Rows returned: 4
+2024-03-19 04:39:11 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id AND (u.fname LIKE ? OR u.lname LIKE ? OR u.username LIKE ?) - Parameters: ["%jo%","%jo%","%jo%"]
+Query executed successfully. Rows returned: 1
+2024-03-19 04:39:11 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id AND (u.fname LIKE ? OR u.lname LIKE ? OR u.username LIKE ?) - Parameters: ["%joh%","%joh%","%joh%"]
+Query executed successfully. Rows returned: 1
+2024-03-19 04:39:12 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id AND (u.fname LIKE ? OR u.lname LIKE ? OR u.username LIKE ?) - Parameters: ["%john%","%john%","%john%"]
+Query executed successfully. Rows returned: 1
+2024-03-19 04:39:12 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id AND (u.fname LIKE ? OR u.lname LIKE ? OR u.username LIKE ?) - Parameters: ["%joh%","%joh%","%joh%"]
+Query executed successfully. Rows returned: 1
+2024-03-19 04:39:13 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id AND (u.fname LIKE ? OR u.lname LIKE ? OR u.username LIKE ?) - Parameters: ["%jo%","%jo%","%jo%"]
+Query executed successfully. Rows returned: 1
+2024-03-19 04:39:13 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id AND (u.fname LIKE ? OR u.lname LIKE ? OR u.username LIKE ?) - Parameters: ["%j%","%j%","%j%"]
+Query executed successfully. Rows returned: 4
+2024-03-19 04:39:13 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id - Parameters: []
+Query executed successfully. Rows returned: 9
+2024-03-19 04:39:43 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id - Parameters: []
+Query executed successfully. Rows returned: 9
+2024-03-19 04:39:46 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id AND (u.fname LIKE ? OR u.lname LIKE ? OR u.username LIKE ?) - Parameters: ["%john%","%john%","%john%"]
+Query executed successfully. Rows returned: 1
+2024-03-19 04:39:50 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id - Parameters: []
+Query executed successfully. Rows returned: 9
+2024-03-19 04:39:51 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id AND (u.fname LIKE ? OR u.lname LIKE ? OR u.username LIKE ?) - Parameters: ["%j%","%j%","%j%"]
+Query executed successfully. Rows returned: 4
+2024-03-19 04:39:51 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id AND (u.fname LIKE ? OR u.lname LIKE ? OR u.username LIKE ?) - Parameters: ["%jo%","%jo%","%jo%"]
+Query executed successfully. Rows returned: 1
+2024-03-19 04:39:51 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id AND (u.fname LIKE ? OR u.lname LIKE ? OR u.username LIKE ?) - Parameters: ["%joh%","%joh%","%joh%"]
+Query executed successfully. Rows returned: 1
+2024-03-19 04:39:51 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id AND (u.fname LIKE ? OR u.lname LIKE ? OR u.username LIKE ?) - Parameters: ["%john%","%john%","%john%"]
+Query executed successfully. Rows returned: 1
+2024-03-19 04:39:52 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id - Parameters: []
+Query executed successfully. Rows returned: 9
+2024-03-19 04:42:01 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id - Parameters: []
+Query executed successfully. Rows returned: 9
+2024-03-19 04:42:30 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id - Parameters: []
+Query executed successfully. Rows returned: 9
+2024-03-19 04:42:33 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id - Parameters: []
+Query executed successfully. Rows returned: 9
+2024-03-19 04:42:34 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id - Parameters: []
+Query executed successfully. Rows returned: 9
+2024-03-19 04:42:42 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id - Parameters: []
+Query executed successfully. Rows returned: 9
+2024-03-19 04:42:42 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id - Parameters: []
+Query executed successfully. Rows returned: 9
+2024-03-19 04:42:43 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id - Parameters: []
+Query executed successfully. Rows returned: 9
+2024-03-19 04:42:45 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id - Parameters: []
+Query executed successfully. Rows returned: 9
+2024-03-19 04:42:46 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id - Parameters: []
+Query executed successfully. Rows returned: 9
+2024-03-19 04:42:47 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id - Parameters: []
+Query executed successfully. Rows returned: 9
+2024-03-19 04:42:48 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id - Parameters: []
+Query executed successfully. Rows returned: 9
+2024-03-19 04:42:49 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id - Parameters: []
+Query executed successfully. Rows returned: 9
+2024-03-19 04:42:49 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id - Parameters: []
+Query executed successfully. Rows returned: 9
+2024-03-19 04:42:50 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id - Parameters: []
+Query executed successfully. Rows returned: 9
+2024-03-19 04:42:50 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id - Parameters: []
+Query executed successfully. Rows returned: 9
+2024-03-19 04:42:51 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id - Parameters: []
+Query executed successfully. Rows returned: 9
+2024-03-19 04:42:52 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id - Parameters: []
+Query executed successfully. Rows returned: 9
+2024-03-19 04:42:53 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id - Parameters: []
+Query executed successfully. Rows returned: 9
+2024-03-19 04:42:54 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id - Parameters: []
+Query executed successfully. Rows returned: 9
+2024-03-19 04:42:55 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id - Parameters: []
+Query executed successfully. Rows returned: 9
+2024-03-19 04:43:22 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id - Parameters: []
+Query executed successfully. Rows returned: 9
+2024-03-19 04:44:38 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id - Parameters: []
+Query executed successfully. Rows returned: 9
+2024-03-19 04:44:45 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id - Parameters: []
+Query executed successfully. Rows returned: 9
+2024-03-19 04:45:08 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id - Parameters: []
+Query executed successfully. Rows returned: 9
+2024-03-19 04:51:04 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id - Parameters: []
+Query executed successfully. Rows returned: 9
+2024-03-19 04:51:04 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id - Parameters: []
+Query executed successfully. Rows returned: 9
+2024-03-19 04:51:32 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+        FROM users u 
+        INNER JOIN roles r ON u.role_id = r.role_id - Parameters: []
+Query executed successfully. Rows returned: 9
 2024-03-19 03:21:54 - SQL: SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
         FROM users u 
         INNER JOIN roles r ON u.role_id = r.role_id LIMIT ? OFFSET ? - Parameters: ["10",0]
