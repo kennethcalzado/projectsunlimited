@@ -5,8 +5,8 @@ ob_start();
 ?>
 <!-- Your page content goes here -->
 <div class="page-content ml-36 mr-20 transition-all duration-300">
-    <h1 class="text-4xl font-bold mb-2 ml-2 mt-4 text-gray-800">Admin Dashboard</h1>
-    <div class="border-b border-gray-800 flex-grow border-4 mb-4"></div>
+    <h1 class="text-4xl font-bold mb-2 ml-2 mt-8 text-black">Admin Dashboard</h1>
+    <div class="border-b border-black flex-grow border-4 mb-4"></div>
 
     <div class="flex flex-col md:flex-row items-center justify-center">
         <div class="flex justify-between mb-4">
@@ -62,7 +62,7 @@ ob_start();
         </div>
     </div>
 
-    <div class="relative overflow-x-auto shadow-md sm:rounded-md mb-4">
+    <div class="relative overflow-x-auto shadow-md sm:rounded-md mb-4 mt-4">
         <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
             <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                 <tr>
