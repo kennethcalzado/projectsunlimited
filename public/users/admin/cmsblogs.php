@@ -258,15 +258,14 @@ ob_start();
         }
     </script>
 
-    <div style="padding-top: 80px;" class="container">
+    <div style="padding-top: 15px;" class="container">
         <!-- Content -->
         <div class="flex justify-between items-center">
-            <h1 class="text-3xl font-bold">News & Projects</h1>
+            <h1 class="text-4xl font-extrabold">News & Projects</h1>
             <!-- Add New Button -->
             <button class="btn btn-primary" onclick="openModal()">Add New</button>
         </div>
-
-
+        <div class="border-b border-black flex-grow border-4 mt-4 mb-4"></div>
 
         <table id="blogTable" class="display">
             <thead>

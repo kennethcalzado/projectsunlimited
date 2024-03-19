@@ -49,6 +49,11 @@ ob_start();
 
         </div>
     </div>
+    <div class="flex items-center justify-center p-2 px-16">
+        <div class="border-b border-gray-800 flex-grow border-4 "></div>
+        <h3 class="text-gray-800 text-right font-bold text-3xl mx-4">OR</h3>
+        <div class="border-b border-gray-800 flex-grow border-4 "></div>
+    </div>
     <div class="formcontainer">
         <p class="text-2xl font-semibold text-black px-16 mt-8">You can also fill out the form below and send us a
             message.</p>
@@ -74,9 +79,11 @@ ob_start();
                     </div>
                     <div class="mb-4">
                         <label for="message" class="block text-black font-bold text-xl">Message:</label>
-                        <textarea id="message" name="message" rows="4" placeholder="Message" class="w-full p-2 border resize-none rounded-md"></textarea>
+                        <textarea id="message" name="message" rows="4" placeholder="Message" class="w-full p-2 border resize-none rounded-md" required></textarea>
                     </div>
-                    <button style="border-radius: 10px;" class="yellow-btn text-xl font-semibold justify-right">Submit</button>
+                    <div class="mb-4 flex justify-end"> 
+                    <button style="border-radius: 10px;" class="yellow-btn text-xl w-50 h-12 font-semibold">Submit</button>
+                    </div>
                 </form>
             </div>
             <div class="w-1/2 p-8">

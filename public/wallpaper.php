@@ -9,6 +9,9 @@ ob_start();
         <div class="absolute inset-0 flex items-center justify-end text-center">
             <p class="text-white font-extrabold text-3xl mr-8">WALLPAPERS<br>
                 <span class="text-white font-semibold text-xl mr-2 mt-2">100 items<br></span>
+                <span class="text-white font-semibold text-xl mt-2 hover:text-[#F6E381]">Erica<br></span>
+                <span class="text-white font-semibold text-xl mr-3.5 mt-2 hover:text-[#F6E381]">Denise<br></span>
+                <span class="text-white font-semibold text-xl mr-4 mt-2 hover:text-[#F6E381]">La Casa<br></span>
             </p>
         </div>
     </div>
