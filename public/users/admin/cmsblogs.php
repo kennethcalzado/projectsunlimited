@@ -204,6 +204,10 @@ ob_start();
                     <textarea name="updateDescription" id="updateDescription" class="border rounded px-4 py-2 w-full" required></textarea>
                 </div>
                 <div class="mb-4">
+                    <label for="updateDate" class="block font-semibold mb-2">Date</label>
+                    <input type="date" name="updateDate" id="updateDate" class="border rounded px-4 py-2 w-full">
+                </div>
+                <div class="mb-4">
                     <label for="updateThumbnail" class="block font-semibold mb-2">Thumbnail</label>
                     <input type="file" name="updateThumbnail" id="updateThumbnail" class="border rounded px-4 py-2 w-full" accept="image/*">
                 </div>
@@ -225,6 +229,7 @@ ob_start();
             </form>
         </div>
     </div>
+
 
     <script>
         // JavaScript to show and hide the update modal
