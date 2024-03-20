@@ -10,7 +10,7 @@ ob_start();
     <title><?php echo $pageTitle; ?></title>
     <link rel="stylesheet" href="../../../assets/input.css">
 
-    <script src="https://cdn.ckeditor.com/ckeditor5/36.0.1/classic/ckeditor.js"></script>
+    <script src="https://cdn.tiny.cloud/1/9frvewhh5omzgdpfqvh7kwq6xuau933hnsftejl9bjatfrez/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
 
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 
@@ -30,6 +30,7 @@ ob_start();
         .container {
             width: 80%;
             margin: 0 auto;
+            text-align: center;
             margin-left: 12%;
         }
 
@@ -41,6 +42,7 @@ ob_start();
         table {
             width: 100%;
             border-collapse: collapse;
+            margin: auto;
         }
 
         th,
@@ -50,7 +52,6 @@ ob_start();
             vertical-align: top;
             text-align: center;
             margin: 0 auto;
-            /* Align content at the top */
         }
 
         .action-btns {
@@ -59,15 +60,12 @@ ob_start();
             justify-content: center;
             align-items: center;
             gap: 10px;
-            /* Set height to 100% */
         }
 
         .action-btns button {
             width: auto;
             padding: 6px 12px;
-            /* Adjusted padding */
             font-size: 14px;
-            /* Adjusted font size */
         }
 
         td.description {
@@ -208,9 +206,39 @@ ob_start();
                         <input type="file" name="updateThumbnail" id="updateThumbnail" class="border rounded px-4 py-2 w-full" accept="image/*">
                     </div>
                     <div class="mb-4">
-                        <label for="updateImages" class="block font-semibold mb-2">Images</label>
+                        <label for="updateImages" class="block font-semibold mb-2">Existing Images</label>
+                        <div id="existingImages" class="mb-2">
+                            <!-- Existing images will be displayed here -->
+                            <?php
+                            include("../../../backend/conn.php");
+
+                            $sql = 'SELECT * FROM blogs ORDER BY date DESC';
+                            $result = mysqli_query($conn, $sql);
+
+                            $displayedImages = []; // Array to store displayed image filenames
+
+                            if (mysqli_num_rows($result) > 0) {
+                                while ($row = mysqli_fetch_assoc($result)) {
+                                    // Fetch and explode existing images
+                                    $images = explode(',', $row['images']);
+                                    foreach ($images as $image) {
+                                        // Check if the image has already been displayed
+                                        if (!in_array($image, $displayedImages)) {
+                                            // If not, display it
+                                            echo "<img src='../../../assets/blogs_img/{$image}' width='100' height='100' class='mr-2 mb-2' />";
+                                            // Add the image filename to the displayed images array
+                                            $displayedImages[] = $image;
+                                        }
+                                    }
+                                }
+                            } else {
+                                echo "<p>No blogs found.</p>";
+                            }
+                            ?>
+                        </div>
                         <input type="file" name="updateImages[]" id="updateImages" class="border rounded px-4 py-2 w-full" accept="image/*" multiple>
                     </div>
+
                     <div class="mb-4">
                         <label for="updateType" class="block font-semibold mb-2">Type</label>
                         <select name="updateType" id="updateType" class="border rounded px-4 py-2 w-full" required>
@@ -229,20 +257,46 @@ ob_start();
 
 
     <script>
-        // Store CKEditor instances
-        var ckeditors = {};
+        // Function to preview selected images
+        document.getElementById('updateImages').addEventListener('change', function(event) {
+            var imagesPreview = document.getElementById('existingImages');
+            imagesPreview.innerHTML = ''; // Clear existing preview
 
-        // Function to initialize CKEditor for a given ID if not already initialized
-        function initCKEditor(id) {
-            if (!ckeditors.hasOwnProperty(id)) {
-                ClassicEditor
-                    .create(document.querySelector('#' + id))
-                    .then(editor => {
-                        ckeditors[id] = editor; // Store editor instance
-                    })
-                    .catch(error => {
-                        console.error(error);
-                    });
+            var files = event.target.files; // Get selected files
+
+            // Loop through selected files and display their preview
+            for (var i = 0; i < files.length; i++) {
+                var file = files[i];
+                var reader = new FileReader();
+
+                reader.onload = function(e) {
+                    var img = document.createElement('img');
+                    img.src = e.target.result;
+                    img.width = 100;
+                    img.height = 100;
+                    img.className = 'mr-2 mb-2';
+                    imagesPreview.appendChild(img); // Append preview to the existing images area
+                };
+
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Store TinyMCE instances
+        var tinymces = {};
+
+        // Function to initialize TinyMCE for a given ID if not already initialized
+        function initTinyMCE(id) {
+            if (!tinymces.hasOwnProperty(id)) {
+                tinymce.init({
+                    selector: '#' + id,
+                    plugins: 'advlist autolink lists link image charmap print preview anchor',
+                    toolbar: 'undo redo | formatselect | bold italic backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat | help',
+                    height: 300,
+                    setup: function(editor) {
+                        tinymces[id] = editor; // Store editor instance
+                    }
+                });
             }
         }
 
@@ -256,12 +310,12 @@ ob_start();
             document.getElementById('updateType').value = type;
             document.getElementById('updateDate').value = date;
 
-            // Initialize CKEditor for the description textarea if not already initialized
-            initCKEditor('updateDescription');
+            // Initialize TinyMCE for the description textarea if not already initialized
+            initTinyMCE('updateDescription');
 
-            // Set the CKEditor content to match the description text
-            if (ckeditors.hasOwnProperty('updateDescription')) {
-                ckeditors['updateDescription'].setData(description);
+            // Set the TinyMCE content to match the description text
+            if (tinymces.hasOwnProperty('updateDescription')) {
+                tinymces['updateDescription'].setContent(description);
             }
         }
 
@@ -320,7 +374,7 @@ ob_start();
                         echo "<td>" . $row['type'] . "</td>";
                         echo '<td class="action-btns">';
                         echo "<button onclick=\"editPost('" . $row['id'] . "')\" type='button' class='btn-view'><i class='fas fa-eye'></i> View</button>";
-                        echo "<button onclick=\"openUpdateModal('" . $row['id'] . "', '" . htmlspecialchars($row['title']) . "', '" . htmlspecialchars($row['description']) . "', '" . $row['type'] . "', '" . $row['date'] . "')\" type='button' class='yellow-btn btn-primary' data-title='" . htmlspecialchars($row['title']) . "' data-description='" . htmlspecialchars($row['description']) . "' data-type='" . $row['type'] . "' data-date='" . $row['date'] . "'><i class='fas fa-edit'></i> Update</button>";
+                        echo "<button onclick=\"openUpdateModal('" . $row['id'] . "', '" . htmlspecialchars($row['title']) . "', '" . htmlspecialchars($row['description']) . "', '" . $row['type'] . "', '" . $row['date'] . "', '" . $row['images'] . "')\" type='button' class='yellow-btn btn-primary' data-title='" . htmlspecialchars($row['title']) . "' data-description='" . htmlspecialchars($row['description']) . "' data-type='" . $row['type'] . "' data-date='" . $row['date'] . "' data-images='" . $row['images'] . "'><i class='fas fa-edit'></i> Update</button>";
                         echo "<button onclick=\"openDeleteModal('" . $row['id'] . "')\" type='button' class=' btn-danger'><i class='fas fa-trash-alt'></i> Delete</button>";
                         echo '</td>';
 
