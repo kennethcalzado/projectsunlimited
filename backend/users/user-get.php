@@ -84,14 +84,24 @@ if ($countStmt) {
                     $users[] = $row;
                 }
 
+                // Fetch total count
+                $countResult = $countStmt->get_result();
+                $totalCount = $countResult->fetch_assoc()['totalRows'];
+
+                // Close count statement
+                $countStmt->close();
+
                 // Calculate total pages
                 $totalPages = ceil($totalCount / $limit);
 
-                // Construct pagination response
+                // Construct pagination data
                 $pagination = array(
                     "totalRows" => $totalCount,
                     "totalPages" => $totalPages,
-                    "currentPage" => $page
+                    "currentPage" => $page,
+                    "perPage" => $limit,
+                    "startItem" => $offset + 1, // Calculate startItem based on offset
+                    "endItem" => min($offset + $limit, $totalCount) // Calculate endItem based on offset and limit
                 );
 
                 // Combine user data and pagination information

@@ -104,34 +104,35 @@ ob_start();
     <div class="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
         <div class="flex justify-between items-center">
             <h2 class="text-xl font-semibold">Create User</h2>
-            <button class="close text-gray-600 hover:text-gray-800 focus:outline-none" data-twe-toggle="modal"
-                data-twe-target="#createUserModal" aria-label="Close modal">&times;</button>
+            <button
+                class="close rounded-full text-gray-600 px-2 hover:text-gray-800 focus:outline-none hover:bg-gray-300"
+                data-twe-toggle="modal" data-twe-target="#createUserModal" aria-label="Close modal">&times;</button>
         </div>
         <form id="createUserForm" class="mt-4">
             <div class="mb-4">
                 <label for="createFirstName" class="block text-sm font-medium text-gray-700">First Name:</label>
                 <input type="text" id="createFirstName" name="createFirstName" placeholder="Enter first name"
-                    class="mt-1 w-full rounded-md  shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50">
+                    class="pl-2 mt-1 w-full rounded-md border border-gray-700 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50">
             </div>
             <div class="mb-4">
                 <label for="createLastName" class="block text-sm font-medium text-gray-700">Last Name:</label>
                 <input type="text" id="createLastName" name="createLastName" placeholder="Enter last name"
-                    class="mt-1 block w-full rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50">
+                    class="pl-2 mt-1 block w-full rounded-md border border-gray-700 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50">
             </div>
             <div class="mb-4">
                 <label for="createUsername" class="block text-sm font-medium text-gray-700">Username:</label>
                 <input type="text" id="createUsername" name="createUsername" placeholder="Enter username"
-                    class="mt-1 block w-full rounded-md  shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50">
+                    class="pl-2 mt-1 block w-full rounded-md border border-gray-700 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50">
             </div>
             <div class="mb-4">
                 <label for="createEmail" class="block text-sm font-medium text-gray-700">Email:</label>
                 <input type="email" id="createEmail" name="createEmail" placeholder="Enter email address"
-                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50">
+                    class="pl-2 mt-1 block w-full rounded-md border border-gray-700 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50">
             </div>
             <div class="mb-4">
                 <label for="createRole" class="block text-sm font-medium text-gray-700">Role:</label>
                 <select id="createRole" name="createRole"
-                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50">
+                    class="pl-2 mt-1 block w-full rounded-md border border-gray-700 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50">
                     <option value="" disabled selected>Select Role</option>
                     <!-- Roles options will be dynamically added here -->
                 </select>
@@ -166,31 +167,31 @@ ob_start();
             <div class="mb-4">
                 <label for="editFirstName" class="block text-sm font-medium text-gray-700">First Name:</label>
                 <input type="text" id="editFirstName" name="editFirstName"
-                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50"
+                    class="pl-2 mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50"
                     required>
             </div>
             <div class="mb-4">
                 <label for="editLastName" class="block text-sm font-medium text-gray-700">Last Name:</label>
                 <input type="text" id="editLastName" name="editLastName"
-                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50"
+                    class="pl-2 mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50"
                     required>
             </div>
             <div class="mb-4">
                 <label for="editUsername" class="block text-sm font-medium text-gray-700">Username:</label>
                 <input type="text" id="editUsername" name="editUsername"
-                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50"
+                    class="pl-2 mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50"
                     required>
             </div>
             <div class="mb-4">
                 <label for="editEmail" class="block text-sm font-medium text-gray-700">Email:</label>
                 <input type="email" id="editEmail" name="editEmail"
-                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50"
+                    class="pl-2 mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50"
                     required>
             </div>
             <div class="mb-4">
                 <label for="editRole" class="block text-sm font-medium text-gray-700">Role:</label>
                 <select id="editRole" name="editRole"
-                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50">
+                    class="pl-2 mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50">
                     <!-- Roles options will be dynamically added here -->
                 </select>
             </div>
@@ -337,7 +338,6 @@ ob_start();
             filterUserData( roleFilter, statusFilter, searchTerm, 1, limit ); // Reset to page 1 when filters change
         } );
 
-        // Function to render user data
         function renderUserData ( data, pagination )
         {
             const userList = $( '#user-list' );
@@ -346,14 +346,17 @@ ob_start();
             {
                 // Render user row
                 const userRow = $( '<tr>' ).addClass( 'bg-white-200 border-b hover:bg-yellow-200 dark:hover:bg-yellow-200' );
-                userRow.append( $( '<td>' ).addClass( 'px-6 py-4' ).text( user.fname + ' ' + user.lname ) );
+                const userInfoContainer = $( '<div>' ).addClass( 'flex flex-col justify-center' );
+                userInfoContainer.append( $( '<h6>' ).addClass( 'text-left px-auto w-full' ).text( user.fname + ' ' + user.lname ) );
+                userInfoContainer.append( $( '<p>' ).addClass( 'text-left text-xs leading-tight text-slate-400' ).text( user.email ) );
+                userRow.append( $( '<td>' ).addClass( 'px-6 py-4' ).append( userInfoContainer ) );
                 userRow.append( $( '<td>' ).addClass( 'px-6 py-4' ).text( user.username ) );
                 userRow.append( $( '<td>' ).addClass( 'px-6 py-4' ).text( user.role_name ) );
                 userRow.append( $( '<td>' ).addClass( 'px-6 py-4' ).text( user.status ) );
                 userRow.append( $( '<td>' ).addClass( 'px-6 py-4' ).text( user.created_at ) );
                 userRow.append( $( '<td>' ).addClass( 'px-6 py-4' ).text( user.updated_at ) );
                 // Add edit and delete buttons
-                userRow.append( $( '<td>' ).addClass( 'px-6 py-4' ).append(
+                userRow.append( $( '<td>' ).addClass( 'py-4 justify-between w-auto' ).append(
                     $( '<button>' ).addClass( 'editBtn font-medium text-bl-200 ue-600 dark:text-blue-500 hover:underline mr-2' )
                         .attr( 'data-toggle', 'modal' )
                         .attr( 'data-target', '#editUserModal' )
@@ -371,21 +374,25 @@ ob_start();
                 userList.append( userRow );
             } );
 
-            console.log( "data: ", data );
-            console.log( "page: ", pagination );
-
             // Update item count display
             const currentPage = parseInt( pagination.currentPage );
             const totalRows = parseInt( pagination.totalRows );
-            const perPage = Math.min( totalRows, data.length ); // Calculate perPage based on number of rows returned
-            const startItem = ( currentPage - 1 ) * perPage + 1;
-            const endItem = Math.min( currentPage * perPage, totalRows );
-            $( '#itemCount' ).text( `Showing ${ startItem }-${ endItem } of ${ totalRows } items` );
+            const perPage = parseInt( pagination.perPage );
+            const startItem = parseInt( pagination.startItem );
+            let endItem = parseInt( pagination.endItem );
 
+            // Adjust endItem if it's on the last page and there are fewer items than perPage
+            if ( currentPage === pagination.totalPages && totalRows % perPage < perPage )
+            {
+                endItem = totalRows;
+            }
+
+            $( '#itemCount' ).text( `Showing ${ startItem }-${ endItem } of ${ totalRows } items` );
             // Generate pagination buttons
             const totalPages = parseInt( pagination.totalPages );
             generatePagination( totalPages, currentPage );
         }
+
 
         $.ajax( {
             url: '../../../backend/roles/roles-get.php',
@@ -402,7 +409,7 @@ ob_start();
                 {
                     roleSelectForm.append( $( '<option>' ).val( role.role_id ).text( role.role_name ) );
                     roleSelectFilter.append( $( '<option>' ).val( role.role_name ).text( role.role_name ) );
-                    roleSelectCreate.append( $( '<option>' ).val( role.role_name ).text( role.role_name ) );
+                    roleSelectCreate.append( $( '<option>' ).val( role.role_id ).text( role.role_name ) );
                 } );
             },
             error: function ( xhr, status, error )
@@ -511,17 +518,38 @@ ob_start();
             {
                 // If form is valid, submit the form using AJAX or any other method
                 $.ajax( {
-                    url: 'your-backend-endpoint-for-creating-user',
+                    url: '../../../backend/users/user-create.php',
                     type: 'POST',
                     data: $( this ).serialize(), // Serialize form data
                     success: function ( response )
                     {
-                        // Handle success response
+                        if ( response.success )
+                        {
+                            // Display success message using a pop-up
+                            $( '.success-popup .popup-message' ).text( response.message );
+                            $( '.success-popup' ).removeClass( 'hidden' );
+
+                            // Automatically close the pop-up after 3 seconds (3000 milliseconds)
+                            setTimeout( function ()
+                            {
+                                $( '.success-popup' ).addClass( 'hidden' );
+                                $( '#createUserModal' ).addClass( 'hidden' );
+                            }, 3000 );
+
+                            // Refresh user data (assuming you have a function to fetch and display user data)
+                            filterUserData( '', '', '', 1, 5 );
+                        } else
+                        {
+                            // Display error message using a pop-up
+                            displayErrorPopup( 'An error occurred. Please try again later.' );
+                        }
                     },
                     error: function ( xhr, status, error )
                     {
-                        // Display error message using popup
-                        displayErrorPopup( 'An error occurred. Please try again later.' );
+                        console.error( 'Error:', error );
+                        // Display error message using a pop-up
+                        $( '.error-popup .popup-message' ).text( error );
+                        $( '.error-popup' ).removeClass( 'hidden' );
                     }
                 } );
             }
@@ -589,63 +617,6 @@ ob_start();
             $( '#createUserModal' ).removeClass( 'hidden' );
         } );
 
-        // Handle submit action for creating a new user
-        $( '#submitCreateUserBtn' ).click( function ()
-        {
-            // Retrieve input values
-            const firstName = $( '#createFirstName' ).val();
-            const lastName = $( '#createLastName' ).val();
-            const username = $( '#createUsername' ).val();
-            const email = $( '#createEmail' ).val();
-            const roleId = $( '#createRole' ).val(); // Assuming you have a select element with id="createRole"
-
-            // You need to implement the AJAX call to create the user
-            $.ajax( {
-                url: '../../../backend/users/user-create.php', // Update the URL with your backend endpoint
-                type: 'POST',
-                dataType: 'json',
-                data: {
-                    firstName: firstName,
-                    lastName: lastName,
-                    username: username,
-                    email: email,
-                    roleId: roleId
-                },
-                success: function ( response )
-                {
-                    if ( response.success )
-                    {
-                        // Display success message using a pop-up
-                        $( '.success-popup .popup-message' ).text( response.message );
-                        $( '.success-popup' ).removeClass( 'hidden' );
-
-                        // Automatically close the pop-up after 3 seconds (3000 milliseconds)
-                        setTimeout( function ()
-                        {
-                            $( '.success-popup' ).addClass( 'hidden' );
-                            $( '#createUserModal' ).addClass( 'hidden' );
-                        }, 3000 );
-
-                        // Refresh user data (assuming you have a function to fetch and display user data)
-                        filterUserData( '', '', '', 1, 5 );
-                    } else
-                    {
-                        // Display error message using a pop-up
-                        displayErrorPopup( 'An error occurred. Please try again later.' );
-                    }
-                },
-                error: function ( xhr, status, error )
-                {
-                    console.error( 'Error:', error );
-                    // Display error message using a pop-up
-                    $( '.error-popup .popup-message' ).text( error );
-                    $( '.error-popup' ).removeClass( 'hidden' );
-                }
-            } );
-            $( '.confirmation-popup' ).addClass( 'hidden' );
-        } );
-
-
         // Handle password reset button click
         $( '#resetPasswordBtn' ).click( function ()
         {
@@ -679,8 +650,28 @@ ob_start();
         $( '#editUserModal .close, #createUserModal .close' ).click( function ()
         {
             $( '#editUserModal, #createUserModal' ).addClass( 'hidden' );
-        } );
 
+            $( '#createFirstName' ).addClass( 'border-gray-300' );
+            $( '#createFirstName' ).removeClass( 'border-2 border-red-200 bg-red-100' );
+            $( '#createFirstName' ).prev( 'label' ).removeClass( 'text-red-500' );
+
+            $( '#createLastName' ).addClass( 'border-gray-300' );
+            $( '#createLastName' ).removeClass( 'border-2 border-red-200 bg-red-100' );
+            $( '#createLastName' ).prev( 'label' ).removeClass( 'text-red-500' );
+
+            $( '#createUsername' ).addClass( 'border-gray-300' );
+            $( '#createUsername' ).removeClass( 'border-2 border-red-200 bg-red-100' );
+            $( '#createUsername' ).prev( 'label' ).removeClass( 'text-red-500' );
+
+            $( '#createEmail' ).addClass( 'border-gray-300' );
+            $( '#createEmail' ).removeClass( 'border-2 border-red-200 bg-red-100' );
+            $( '#createEmail' ).prev( 'label' ).removeClass( 'text-red-500' );
+
+            $( '#createRole' ).addClass( 'border-gray-300' );
+            $( '#createRole' ).removeClass( 'border-2 border-red-200 bg-red-100' );
+            $( '#createRole' ).prev( 'label' ).removeClass( 'text-red-500' );
+
+        } );
 
         // Handle form submission (update user)
         $( '#editUserForm' ).submit( function ( event )
