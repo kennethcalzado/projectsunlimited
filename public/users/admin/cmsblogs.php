@@ -30,6 +30,7 @@ ob_start();
         .container {
             width: 80%;
             margin: 0 auto;
+            margin-left: 12%;
         }
 
         h1 {
@@ -52,31 +53,21 @@ ob_start();
             /* Align content at the top */
         }
 
-        .btn {
-            background-color: #F6E17A;
-            color: black;
-            border: none;
-            padding: 10px 20px;
-            cursor: pointer;
-            border-radius: 5px;
-        }
-
-        .btn:hover {
-            background-color: #FFD700;
-        }
-
         .action-btns {
             display: flex;
             flex-direction: row;
             justify-content: center;
             align-items: center;
             gap: 10px;
-            height: 100%;
             /* Set height to 100% */
         }
 
         .action-btns button {
             width: auto;
+            padding: 6px 12px;
+            /* Adjusted padding */
+            font-size: 14px;
+            /* Adjusted font size */
         }
 
         td.description {
@@ -89,7 +80,8 @@ ob_start();
         td img {
             display: block;
             margin: 0 auto;
-            /* Center horizontally */
+            max-width: 50px;
+            max-height: 50px;
         }
     </style>
 </head>
@@ -100,58 +92,60 @@ ob_start();
 
 
 <body>
-
     <div id="modal" class="fixed inset-0 z-50 overflow-auto bg-black bg-opacity-50 flex justify-center items-center hidden">
-        <!-- Modal Content -->
-        <div class="bg-white p-6 rounded-lg">
-            <h2 class="text-xl font-bold mb-4">Add New Blog</h2>
-            <form action="add_blog.php" method="POST" enctype="multipart/form-data">
-                <div class="mb-4">
-                    <label for="title" class="block font-semibold mb-2">Title</label>
-                    <input type="text" name="title" id="title" class="border rounded px-4 py-2 w-full" required>
-                </div>
-                <div class="mb-4">
-                    <label for="description" class="block font-semibold mb-2">Description</label>
-                    <textarea name="description" id="description" class="border rounded px-4 py-2 w-full" required></textarea>
-                </div>
-                <div class="mb-4">
-                    <label for="thumbnail" class="block font-semibold mb-2">Thumbnail</label>
-                    <input type="file" name="thumbnail" id="thumbnail" class="border rounded px-4 py-2 w-full" accept="image/*">
-                </div>
-                <div class="mb-4">
-                    <label for="images" class="block font-semibold mb-2">Images</label>
-                    <input type="file" name="images[]" id="images" class="border rounded px-4 py-2 w-full" accept="image/*" multiple>
-                </div>
-                <div class="mb-4">
-                    <label for="date" class="block font-semibold mb-2">Date</label>
-                    <!-- Date picker input field -->
-                    <input type="date" name="date" id="date" class="border rounded px-4 py-2 w-full" required>
-                </div>
-                <div class="mb-4">
-                    <label for="type" class="block font-semibold mb-2">Type</label>
-                    <select name="type" id="type" class="border rounded px-4 py-2 w-full" required>
-                        <option value="News">News</option>
-                        <option value="Projects">Projects</option>
-                    </select>
-                </div>
-                <div class="text-right">
-                    <button type="submit" class="btn btn-primary">Add Blog</button>
-                    <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancel</button>
-                </div>
-            </form>
+        <div class="max-w-3xl w-full h-[90vh] overflow-auto">
+            <!-- Modal Content -->
+            <div class="bg-white p-6 rounded-lg">
+                <h2 class="text-xl font-bold mb-4">Add New Blog</h2>
+                <form action="add_blog.php" method="POST" enctype="multipart/form-data">
+                    <div class="mb-4">
+                        <label for="title" class="block font-semibold mb-2">Title</label>
+                        <input type="text" name="title" id="title" class="border rounded px-4 py-2 w-full" required>
+                    </div>
+                    <div class="mb-4">
+                        <label for="description" class="block font-semibold mb-2">Description</label>
+                        <textarea name="description" id="description" class="border rounded px-4 py-2 w-full" required></textarea>
+                    </div>
+                    <div class="mb-4">
+                        <label for="thumbnail" class="block font-semibold mb-2">Thumbnail</label>
+                        <input type="file" name="thumbnail" id="thumbnail" class="border rounded px-4 py-2 w-full" accept="image/*">
+                    </div>
+                    <div class="mb-4">
+                        <label for="images" class="block font-semibold mb-2">Images</label>
+                        <input type="file" name="images[]" id="images" class="border rounded px-4 py-2 w-full" accept="image/*" multiple>
+                    </div>
+                    <div class="mb-4">
+                        <label for="date" class="block font-semibold mb-2">Date</label>
+                        <!-- Date picker input field -->
+                        <input type="date" name="date" id="date" class="border rounded px-4 py-2 w-full" required>
+                    </div>
+                    <div class="mb-4">
+                        <label for="type" class="block font-semibold mb-2">Type</label>
+                        <select name="type" id="type" class="border rounded px-4 py-2 w-full" required>
+                            <option value="News">News</option>
+                            <option value="Projects">Projects</option>
+                        </select>
+                    </div>
+                    <div class="text-right">
+                        <button type="submit" class="btn btn-primary">Add Blog</button>
+                        <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 
 
     <div id="deleteModal" class="fixed inset-0 z-50 overflow-auto bg-black bg-opacity-50 flex justify-center items-center hidden">
-        <!-- Modal Content -->
-        <div class="bg-white p-6 rounded-lg">
-            <h2 class="text-xl font-bold mb-4">Delete Blog</h2>
-            <p class="mb-4">Are you sure you want to delete this blog?</p>
-            <div class="text-right">
-                <input type="hidden" id="blogIdToDelete">
-                <button onclick="deleteBlog()" class="btn btn-danger">Delete</button>
-                <button onclick="closeDeleteModal()" class="btn btn-secondary">Cancel</button>
+        <div class="max-w-3xl w-full h-[90vh] overflow-auto">
+            <div class="bg-white p-6 rounded-lg">
+                <h2 class="text-xl font-bold mb-4">Delete Blog</h2>
+                <p style="font-size:large" class="mb-4">Are you sure you want to delete this blog?</p>
+                <div class="text-right">
+                    <input type="hidden" id="blogIdToDelete">
+                    <button onclick="deleteBlog()" class="btn btn-primary">Delete</button>
+                    <button onclick="closeDeleteModal()" class="btn btn-secondary">Cancel</button>
+                </div>
             </div>
         </div>
     </div>
@@ -191,44 +185,45 @@ ob_start();
     </script>
 
     <div id="updateModal" class="fixed inset-0 z-50 overflow-auto bg-black bg-opacity-50 flex justify-center items-center hidden">
-        <!-- Modal Content -->
-        <div class="bg-white p-6 rounded-lg">
-            <h2 class="text-xl font-bold mb-4">Update Blog</h2>
-            <!-- Form for updating the blog post -->
-            <form id="updateForm" action="update_blog.php" method="POST" enctype="multipart/form-data">
-                <input type="hidden" name="blogIdToUpdate" id="blogIdToUpdate">
-                <div class="mb-4">
-                    <label for="updateTitle" class="block font-semibold mb-2">Title</label>
-                    <input type="text" name="updateTitle" id="updateTitle" class="border rounded px-4 py-2 w-full" required>
-                </div>
-                <div class="mb-4">
-                    <label for="updateDescription" class="block font-semibold mb-2">Description</label>
-                    <textarea name="updateDescription" id="updateDescription" class="border rounded px-4 py-2 w-full" required></textarea>
-                </div>
-                <div class="mb-4">
-                    <label for="updateDate" class="block font-semibold mb-2">Date</label>
-                    <input type="date" name="updateDate" id="updateDate" class="border rounded px-4 py-2 w-full">
-                </div>
-                <div class="mb-4">
-                    <label for="updateThumbnail" class="block font-semibold mb-2">Thumbnail</label>
-                    <input type="file" name="updateThumbnail" id="updateThumbnail" class="border rounded px-4 py-2 w-full" accept="image/*">
-                </div>
-                <div class="mb-4">
-                    <label for="updateImages" class="block font-semibold mb-2">Images</label>
-                    <input type="file" name="updateImages[]" id="updateImages" class="border rounded px-4 py-2 w-full" accept="image/*" multiple>
-                </div>
-                <div class="mb-4">
-                    <label for="updateType" class="block font-semibold mb-2">Type</label>
-                    <select name="updateType" id="updateType" class="border rounded px-4 py-2 w-full" required>
-                        <option value="News">News</option>
-                        <option value="Projects">Projects</option>
-                    </select>
-                </div>
-                <div class="text-right">
-                    <button type="submit" class="btn btn-primary">Update Blog</button>
-                    <button type="button" onclick="closeUpdateModal()" class="btn btn-secondary">Cancel</button>
-                </div>
-            </form>
+        <div class="max-w-3xl w-full h-[90vh] overflow-auto">
+            <div class="bg-white p-6 rounded-lg">
+                <h2 class="text-xl font-bold mb-4">Update Blog</h2>
+                <!-- Form for updating the blog post -->
+                <form id="updateForm" action="update_blog.php" method="POST" enctype="multipart/form-data">
+                    <input type="hidden" name="blogIdToUpdate" id="blogIdToUpdate">
+                    <div class="mb-4">
+                        <label for="updateTitle" class="block font-semibold mb-2">Title</label>
+                        <input type="text" name="updateTitle" id="updateTitle" class="border rounded px-4 py-2 w-full" required>
+                    </div>
+                    <div class="mb-4">
+                        <label for="updateDescription" class="block font-semibold mb-2">Description</label>
+                        <textarea name="updateDescription" id="updateDescription" class="border rounded px-4 py-2 w-full" required></textarea>
+                    </div>
+                    <div class="mb-4">
+                        <label for="updateDate" class="block font-semibold mb-2">Date</label>
+                        <input type="date" name="updateDate" id="updateDate" class="border rounded px-4 py-2 w-full">
+                    </div>
+                    <div class="mb-4">
+                        <label for="updateThumbnail" class="block font-semibold mb-2">Thumbnail</label>
+                        <input type="file" name="updateThumbnail" id="updateThumbnail" class="border rounded px-4 py-2 w-full" accept="image/*">
+                    </div>
+                    <div class="mb-4">
+                        <label for="updateImages" class="block font-semibold mb-2">Images</label>
+                        <input type="file" name="updateImages[]" id="updateImages" class="border rounded px-4 py-2 w-full" accept="image/*" multiple>
+                    </div>
+                    <div class="mb-4">
+                        <label for="updateType" class="block font-semibold mb-2">Type</label>
+                        <select name="updateType" id="updateType" class="border rounded px-4 py-2 w-full" required>
+                            <option value="News">News</option>
+                            <option value="Projects">Projects</option>
+                        </select>
+                    </div>
+                    <div class="text-right">
+                        <button type="submit" class="btn btn-primary">Update Blog</button>
+                        <button type="button" onclick="closeUpdateModal()" class="btn btn-secondary">Cancel</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 
@@ -252,11 +247,14 @@ ob_start();
         }
 
         // JavaScript to show and hide the update modal
-        function openUpdateModal(blogId, title, description, type) {
+        function openUpdateModal(blogId, title, description, type, date) {
             document.getElementById('updateModal').classList.remove('hidden');
             // Populate form fields with existing blog data
             document.getElementById('blogIdToUpdate').value = blogId;
             document.getElementById('updateTitle').value = title;
+            document.getElementById('updateDescription').value = description;
+            document.getElementById('updateType').value = type;
+            document.getElementById('updateDate').value = date;
 
             // Initialize CKEditor for the description textarea if not already initialized
             initCKEditor('updateDescription');
@@ -288,10 +286,9 @@ ob_start();
         <!-- Content -->
         <div class="flex justify-between items-center">
             <h1 class="text-4xl font-bold">News & Projects</h1>
-            <!-- Add New Button -->
-            <button class="btn btn-primary" onclick="openModal()">Add New</button>
+            <button class="yellow-btn btn-primary" onclick="openModal()">Add New</button>
         </div>
-        <div class="border-b border-black flex-grow border-4 mt-4 mb-4"></div>
+        <div class="border-b border-black flex-grow border-4 mt-2 mb-2"></div>
 
         <table id="blogTable" class="display">
             <thead>
@@ -322,9 +319,9 @@ ob_start();
                         echo "<td class='description'>" . $row['description'] . "</td>";
                         echo "<td>" . $row['type'] . "</td>";
                         echo '<td class="action-btns">';
-                        echo "<button onclick=\"editPost('" . $row['id'] . "')\" type='button' class='btn btn-primary'><i class='fas fa-eye'></i> View</button>";
-                        echo "<button onclick=\"openUpdateModal('" . $row['id'] . "', '" . $row['title'] . "', '" . $row['description'] . "', '" . $row['type'] . "')\" type='button' class='btn btn-secondary'><i class='fas fa-edit'></i> Update</button>";
-                        echo "<button onclick=\"openDeleteModal('" . $row['id'] . "')\" type='button' class='btn btn-danger'><i class='fas fa-trash-alt'></i> Delete</button>";
+                        echo "<button onclick=\"editPost('" . $row['id'] . "')\" type='button' class='btn-view'><i class='fas fa-eye'></i> View</button>";
+                        echo "<button onclick=\"openUpdateModal('" . $row['id'] . "', '" . htmlspecialchars($row['title']) . "', '" . htmlspecialchars($row['description']) . "', '" . $row['type'] . "', '" . $row['date'] . "')\" type='button' class='yellow-btn btn-primary' data-title='" . htmlspecialchars($row['title']) . "' data-description='" . htmlspecialchars($row['description']) . "' data-type='" . $row['type'] . "' data-date='" . $row['date'] . "'><i class='fas fa-edit'></i> Update</button>";
+                        echo "<button onclick=\"openDeleteModal('" . $row['id'] . "')\" type='button' class=' btn-danger'><i class='fas fa-trash-alt'></i> Delete</button>";
                         echo '</td>';
 
                         echo "</tr>";

@@ -15,8 +15,8 @@ $result = mysqli_query($conn, $sql);
     <link rel="stylesheet" href="../assets/input.css">
     <style>
         .card-group {
-            width: 350px;
-            height: 450px;
+            width: 250px;
+            height: 330px;
             margin: 1%;
             display: inline-block;
             background-color: #D9D9D9;
@@ -28,8 +28,8 @@ $result = mysqli_query($conn, $sql);
         }
 
         .placeholder {
-            width: 310px;
-            height: 320px;
+            width: 210px;
+            height: 215px;
             background-color: black;
             margin: auto;
             margin-bottom: 10px;
@@ -43,7 +43,7 @@ $result = mysqli_query($conn, $sql);
             font-weight: bold;
             color: black;
             position: relative;
-            font-size: x-large;
+            font-size: 16px;
             text-align: left;
         }
 
@@ -51,8 +51,8 @@ $result = mysqli_query($conn, $sql);
             content: "";
             background-image: url('../assets/image/arrowgold.png');
             background-size: contain;
-            width: 40px;
-            height: 40px;
+            width: 30px;
+            height: 30px;
             position: absolute;
             top: 50%;
             right: -10px;
@@ -70,9 +70,9 @@ $result = mysqli_query($conn, $sql);
         }
 
         .date {
-            font-size: 22px;
+            font-size: 19px;
             color: black;
-            margin-bottom: 10px;
+            margin-bottom: 5px;
         }
 
         .thumbnail {
@@ -80,7 +80,7 @@ $result = mysqli_query($conn, $sql);
             max-height: auto;
             position: absolute;
             z-index: 2;
-            border: 15px solid black;
+            border: 10px solid black;
         }
 
         .clearfix::after {
