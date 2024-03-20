@@ -41,7 +41,7 @@
                 <p class="text-xl font-bold text-center justify-center">Category</p>
                 <p class="text-sm mt-1 font-semibold text-center justify-center  hover:text-[#F6E381]">Blinds</p>
                 <p class="text-sm mt-1 font-semibold text-center justify-center  hover:text-[#F6E381]">Floorings</p>
-                <p class="text-sm mt-1 font-semibold text-center justify-center  hover:text-[#F6E381]">Wallpaper</p>
+                <p class="text-sm mt-1 font-semibold text-center justify-center  hover:text-[#F6E381]">Wallcovering</p>
                 <p class="text-sm mt-1 font-semibold text-center justify-center  hover:text-[#F6E381]">Office</p>
                 <p class="text-sm mt-1 font-semibold text-center justify-center  hover:text-[#F6E381]">Modular Cabinets</p>
             </div>
