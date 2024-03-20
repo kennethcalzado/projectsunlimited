@@ -63,8 +63,8 @@ ob_start();
     </div>
 
     <div class="relative overflow-x-auto mb-1 rounded-lg mt-4">
-        <table class="rounded-sm w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+        <table class="display">
+            <thead class="">
                 <tr>
                     <th scope="col" class="px-6 py-3">
                         Name
@@ -345,7 +345,7 @@ ob_start();
             data.forEach( function ( user )
             {
                 // Render user row
-                const userRow = $( '<tr>' ).addClass( 'bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600' );
+                const userRow = $( '<tr>' ).addClass( 'bg-white-200 border-b hover:bg-yellow-200 dark:hover:bg-yellow-200' );
                 userRow.append( $( '<td>' ).addClass( 'px-6 py-4' ).text( user.fname + ' ' + user.lname ) );
                 userRow.append( $( '<td>' ).addClass( 'px-6 py-4' ).text( user.username ) );
                 userRow.append( $( '<td>' ).addClass( 'px-6 py-4' ).text( user.role_name ) );
@@ -354,7 +354,7 @@ ob_start();
                 userRow.append( $( '<td>' ).addClass( 'px-6 py-4' ).text( user.updated_at ) );
                 // Add edit and delete buttons
                 userRow.append( $( '<td>' ).addClass( 'px-6 py-4' ).append(
-                    $( '<button>' ).addClass( 'editBtn font-medium text-blue-600 dark:text-blue-500 hover:underline mr-2' )
+                    $( '<button>' ).addClass( 'editBtn font-medium text-bl-200 ue-600 dark:text-blue-500 hover:underline mr-2' )
                         .attr( 'data-toggle', 'modal' )
                         .attr( 'data-target', '#editUserModal' )
                         .data( 'userId', user.user_id )
