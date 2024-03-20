@@ -53,6 +53,7 @@ $image_path = $base_url . 'assets/image/projects.png';
         </div>
         <span class="text-[15px] ml-4 text-gray-200 font-bold">Products</span>
     </div>
+    </a>
     <div class="p-2.5 mt-3 flex items-center rounded-md px-6 duration-300 cursor-pointer hover:bg-yellow-600 text-white"
         onclick="dropdown()" title="Brands">
         <div class="tooltip tooltip-right" data-tip="Brands">
