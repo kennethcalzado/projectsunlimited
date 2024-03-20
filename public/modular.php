@@ -20,7 +20,7 @@ ob_start();
                         <ul class="flex justify-between w-full mx-20">
                             <li><a href="../public/blinds.php" class="text-black font-bold hover:text-gray-700">BLINDS</a></li>
                             <li><a href="../public/flooring.php" class="text-black font-bold hover:text-gray-700">FLOORINGS</a></li>
-                            <li><a href="../public/wallpaper.php" class="text-black font-bold hover:text-gray-700">WALLPAPERS</a></li>
+                            <li><a href="../public/wallcover.php" class="text-black font-bold hover:text-gray-700">WALLCOVERING</a></li>
                             <li><a href="../public/office.php" class="text-black font-bold hover:text-gray-700">OFFICE ACCESSORIES</a></li>
                         </ul>
                     </div>

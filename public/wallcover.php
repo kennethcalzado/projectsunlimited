@@ -1,19 +1,18 @@
 <?php
-$pageTitle = "Products - Blinds";
+$pageTitle = "Products - Wallpaper";
 ob_start();
 ?>
 <div class="content">
     <div class="relative">
-        <img src="../assets/image/blindsproduct.jpg" class="w-full h-96 object-cover object-top">
+        <img src="../assets/image/1-1.jpg" class="w-full h-96 object-cover">
         <div class="absolute inset-0 bg-black opacity-50"></div>
         <div class="absolute inset-0 flex items-center justify-end text-center">
-            <p class="text-white font-extrabold text-3xl mr-8">BLINDS<br>
+            <p class="text-white font-extrabold text-3xl mr-8">WALLCOVERING<br>
                 <span class="text-white font-semibold text-xl mr-2 mt-2">100 items<br></span>
-                <span class="text-white font-semibold text-xl mr-10 mt-2 hover:text-[#F6E381]">Combi Blinds<br></span>
-                <span class="text-white font-semibold text-xl mr-9 mt-2 hover:text-[#F6E381]">Roller Blinds<br></span>
-                <span class="text-white font-semibold text-xl mr-16 mt-2 hover:text-[#F6E381]">Blackout Blinds<br></span>
-                <span class="text-white font-semibold text-xl mr-14 mt-2 hover:text-[#F6E381]">Vertical Blinds<br></span>
-                <span class="text-white font-semibold text-xl mr-20 mt-2 hover:text-[#F6E381]">Horizontal Blinds</span>
+                <span class="text-white font-semibold text-xl mt-2 hover:text-[#F6E381]">Erica<br></span>
+                <span class="text-white font-semibold text-xl mr-3.5 mt-2 hover:text-[#F6E381]">Denise<br></span>
+                <span class="text-white font-semibold text-xl mr-4 mt-2 hover:text-[#F6E381]">La Casa<br></span>
+                <span class="text-white font-semibold text-xl mr-4 mt-2 hover:text-[#F6E381]">Wood Cladding<br></span>
             </p>
         </div>
     </div>
@@ -23,8 +22,8 @@ ob_start();
                 <div class="container mx-auto flex items-center justify-between">
                     <div class="hidden md:flex flex-grow">
                         <ul class="flex justify-between w-full mx-20">
+                            <li><a href="../public/blinds.php" class="text-black font-bold hover:text-gray-700">BLINDS</a></li>
                             <li><a href="../public/flooring.php" class="text-black font-bold hover:text-gray-700">FLOORINGS</a></li>
-                            <li><a href="../public/wallcover.php" class="text-black font-bold hover:text-gray-700">WALLCOVERING</a></li>
                             <li><a href="../public/office.php" class="text-black font-bold hover:text-gray-700">OFFICE ACCESSORIES</a></li>
                             <li><a href="../public/modular.php" class="text-black font-bold hover:text-gray-700">MODULAR CABINETS</a></li>
                         </ul>
@@ -34,21 +33,18 @@ ob_start();
         </div>
     </header>
     <div class="flex flex-col md:flex-row items-center justify-center">
-        <p class="text-3xl font-extrabold my-2 md:pl-14 md:pr-2">CATEGORY: BLINDS</p>
+        <p class="text-3xl font-extrabold my-2 md:pl-14 md:pr-2">CATEGORY: WALLPAPER</p>
         <div class="flex flex-col md:flex-row items-center">
             <div class="relative mb-2 md:mb-0 md:mr-2">
                 <select class="w-full md:w-auto bg-white border border-gray-300 text-gray-700 py-2 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
-                    <optgroup label="Blinds">
-                        <option>All Blinds</option>
-                        <option>Combi Blinds</option>
-                        <option>Roller Blinds</option>
-                        <option>Blackout Blinds</option>
-                        <option>Vertical Blinds</option>
-                        <option>Horizontal Blinds</option>
+                    <optgroup label="Wallpaper">
+                        <option>All Wallpaper</option>
+                        <option>Erica</option>
+                        <option>Denise</option>
+                        <option>La Casa</option>
                     </optgroup>
-                    <optgroup label="Wooden Blinds">
-                        <option>Real Wood</option>
-                        <option>PVC</option>
+                    <optgroup label="Others">
+                        <option>Wood Cladding</option>
                     </optgroup>
                 </select>
             </div>
@@ -77,6 +73,7 @@ ob_start();
     </div>
 
 </div>
+
 <?php
 $content = ob_get_clean();
 include("../public/master.php");

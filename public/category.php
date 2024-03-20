@@ -25,9 +25,9 @@ ob_start();
                             <!-- Image 2 -->
                             <img src="../assets/image/flooring.png" alt="Flooring" class="w-full h-70 object-cover  max-w-2xl transition duration-300 ease-in-out hover:scale-110 border-double border-black border-4">
                         </a>
-                        <a href="../public/wallpaper.php" class="w-1/5 bg-white p-4 pt-3">
+                        <a href="../public/wallcover.php" class="w-1/5 bg-white p-4 pt-3">
                             <!-- Image 3 -->
-                            <img src="../assets/image/wallpaper.png" alt="Wallpaper" class="w-full h-70 object-cover  max-w-2xl transition duration-300 ease-in-out hover:scale-110 border-double border-black border-4">
+                            <img src="../assets/image/wallcover.png" alt="Wallpaper" class="w-full h-70 object-cover  max-w-2xl transition duration-300 ease-in-out hover:scale-110 border-double border-black border-4">
                         </a>
                         <a href="../public/office.php" class="w-1/5 bg-white p-4 pt-3">
                             <!-- Image 4 -->
