@@ -63,7 +63,7 @@ ob_start();
     </div>
 
     <div class="relative overflow-x-auto mb-1 rounded-lg mt-4">
-        <table class="display">
+        <table class="display !w-full  ">
             <thead class="">
                 <tr>
                     <th scope="col" class="px-6 py-3">
