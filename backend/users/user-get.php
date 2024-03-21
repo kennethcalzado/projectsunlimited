@@ -84,13 +84,6 @@ if ($countStmt) {
                     $users[] = $row;
                 }
 
-                // Fetch total count
-                $countResult = $countStmt->get_result();
-                $totalCount = $countResult->fetch_assoc()['totalRows'];
-
-                // Close count statement
-                $countStmt->close();
-
                 // Calculate total pages
                 $totalPages = ceil($totalCount / $limit);
 
@@ -112,7 +105,8 @@ if ($countStmt) {
 
                 // Return JSON response with user data and pagination information
                 if (empty ($users)) {
-                    echo json_encode(["message" => "No users found."]);
+                    header('Content-Type: application/json');
+                    echo json_encode($response);
                 } else {
                     header('Content-Type: application/json');
                     echo json_encode($response);
