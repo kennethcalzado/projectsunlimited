@@ -5,11 +5,10 @@ ob_start();
 ?>
 
 <!-- Your page content goes here -->
-<div class="transition-all duration-300 page-content sm:ml-36 mr-4 sm:mr-20">
+<div class="transition-all duration-300 page-content sm:ml-36 mr-4 sm:mr-20 mb-10">
     <div class="flex flex-col sm:flex-row justify-between items-center">
         <h1 class="text-4xl font-bold mb-2 ml-2 mt-8 text-black">User Accounts List</h1>
-        <button id="openCreateUserModal"
-            class="yellow-btn rounded-full text-center h-10 mt-3 sm:mt-4 !px-4 py-0 text-lg">
+        <button id="openCreateUserModal" class="yellow-btn text-center h-10 mt-3 sm:mt-4 !px-4 py-0 text-[19px]">
             Add User Account
         </button>
     </div>
@@ -66,25 +65,22 @@ ob_start();
         <table class="display !w-full  ">
             <thead class="">
                 <tr>
-                    <th scope="col" class="px-6 py-3">
+                    <th scope="col" class="text-left px-6 py-3">
                         Name
                     </th>
-                    <th scope="col" class="px-6 py-3">
-                        Username
-                    </th>
-                    <th scope="col" class="px-6 py-3">
+                    <th scope="col" class="text-left px-6 py-3">
                         Role
                     </th>
-                    <th scope="col" class="px-6 py-3">
+                    <th scope="col" class="text-left px-6 py-3">
                         Status
                     </th>
-                    <th scope="col" class="px-6 py-3">
+                    <th scope="col" class="text-center py-3">
                         Created At
                     </th>
-                    <th scope="col" class="px-6 py-3">
+                    <th scope="col" class="text-center py-3">
                         Updated At
                     </th>
-                    <th scope="col" class="px-6 py-3">
+                    <th scope="col" class="text-center py-3">
                         Action
                     </th>
                 </tr>
@@ -101,7 +97,8 @@ ob_start();
 </div>
 
 <div id="createUserModal" class="fixed inset-0 z-50 flex items-center justify-center hidden">
-    <div class="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
+    <div class="bg-black opacity-25 w-full h-full absolute -z-10"></div>
+    <div class="bg-white rounded-lg shadow-2xl p-6 w-full max-w-md">
         <div class="flex justify-between items-center">
             <h2 class="text-xl font-semibold">Create User</h2>
             <button
@@ -157,7 +154,7 @@ ob_start();
 </div>
 
 <div id="editUserModal" class="fixed inset-0 z-50 flex items-center justify-center">
-    <div class="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
+    <div class="bg-white rounded-lg shadow-2xl p-6 w-full max-w-md">
         <div class="flex justify-between items-center">
             <h2 class="text-xl font-semibold">Edit User</h2>
             <button class="close text-gray-600 hover:text-gray-800 focus:outline-none" data-twe-toggle="modal"
@@ -240,8 +237,8 @@ ob_start();
                 <i class="bi bi-exclamation-circle text-5xl text-red-400"></i>
             </div>
             <div class="mt-4 md:mt-0 md:ml-6 text-center md:text-left">
-                <p class="font-bold text-red-400">Confirm Delete</p>
-                <p class="text-sm text-gray-700 mt-1">Are you sure you want to delete this user?</p>
+                <p class="font-bold text-red-400">Confirm to Change Account Status?</p>
+                <p class="text-sm text-gray-700 mt-1">Are you sure you want to change the status of this user?</p>
             </div>
         </div>
         <div class="text-center md:text-right mt-4 md:flex md:justify-end">
@@ -342,37 +339,47 @@ ob_start();
         {
             const userList = $( '#user-list' );
             userList.empty(); // Clear existing user data
-            data.forEach( function ( user )
+
+            if ( data.length === 0 )
             {
-                // Render user row
-                const userRow = $( '<tr>' ).addClass( 'bg-white-200 border-b hover:bg-yellow-200 dark:hover:bg-yellow-200' );
-                const userInfoContainer = $( '<div>' ).addClass( 'flex flex-col justify-center' );
-                userInfoContainer.append( $( '<h6>' ).addClass( 'text-left px-auto w-full' ).text( user.fname + ' ' + user.lname ) );
-                userInfoContainer.append( $( '<p>' ).addClass( 'text-left text-xs leading-tight text-slate-400' ).text( user.email ) );
-                userRow.append( $( '<td>' ).addClass( 'px-6 py-4' ).append( userInfoContainer ) );
-                userRow.append( $( '<td>' ).addClass( 'px-6 py-4' ).text( user.username ) );
-                userRow.append( $( '<td>' ).addClass( 'px-6 py-4' ).text( user.role_name ) );
-                userRow.append( $( '<td>' ).addClass( 'px-6 py-4' ).text( user.status ) );
-                userRow.append( $( '<td>' ).addClass( 'px-6 py-4' ).text( user.created_at ) );
-                userRow.append( $( '<td>' ).addClass( 'px-6 py-4' ).text( user.updated_at ) );
-                // Add edit and delete buttons
-                userRow.append( $( '<td>' ).addClass( 'py-4 justify-between w-auto' ).append(
-                    $( '<button>' ).addClass( 'editBtn font-medium text-bl-200 ue-600 dark:text-blue-500 hover:underline mr-2' )
-                        .attr( 'data-toggle', 'modal' )
-                        .attr( 'data-target', '#editUserModal' )
-                        .data( 'userId', user.user_id )
-                        .data( 'user', user )
-                        .text( 'Edit' ),
-                    $( '<button>' ).addClass( 'delBtn font-medium text-red-600 dark:text-red-500 hover:underline mr-2' )
-                        .attr( 'data-toggle', 'modal' )
-                        .attr( 'data-target', '#editUserModal' )
-                        .data( 'userId', user.user_id )
-                        .data( 'userStatus', user.status )
-                        .data( 'user', user )
-                        .text( 'Delete' ),
-                ) );
-                userList.append( userRow );
-            } );
+                const noUserRow = $( '<tr>' ).addClass( 'bg-white-200 border-b' );
+                const messageCell = $( '<td>' ).addClass( 'px-6 py-4 text-center text-red-800 font-bold' ).attr( 'colspan', '7' ).text( 'No users found' );
+                noUserRow.append( messageCell );
+                userList.append( noUserRow );
+            } else
+            {
+                data.forEach( function ( user )
+                {
+                    // Render user row
+                    const userRow = $( '<tr>' ).addClass( 'bg-white-200 border-b hover:bg-yellow-200 dark:hover:bg-yellow-200' );
+                    const userInfoContainer = $( '<div>' ).addClass( 'flex flex-col justify-center' );
+                    userInfoContainer.append( $( '<h6>' ).addClass( 'text-left px-auto w-full' ).text( user.fname + ' ' + user.lname ) );
+                    userInfoContainer.append( $( '<p>' ).addClass( 'text-left text-xs leading-tight text-slate-400' ).text( user.email ) );
+                    userRow.append( $( '<td>' ).addClass( 'px-6 py-4' ).append( userInfoContainer ) );
+                    userRow.append( $( '<td>' ).addClass( 'px-6 py-4' ).text( user.role_name ) );
+                    userRow.append( $( '<td>' ).addClass( 'px-6 py-4' ).text( user.status ) );
+                    userRow.append( $( '<td>' ).addClass( 'text-center px-6 py-4' ).text( user.created_at ) );
+                    userRow.append( $( '<td>' ).addClass( 'text-center px-6 py-4' ).text( user.updated_at ) );
+                    // Add edit and delete buttons
+                    const delBtnText = user.status === 'active' ? 'Deactivate' : 'Activate';
+                    userRow.append( $( '<td>' ).addClass( 'py-6 w-auto px-auto flex justify-center' ).append(
+                        $( '<button>' ).addClass( 'editBtn btn-primary hover:underline text-[14px] mx-auto ' )
+                            .attr( 'data-toggle', 'modal' )
+                            .attr( 'data-target', '#editUserModal' )
+                            .data( 'userId', user.user_id )
+                            .data( 'user', user )
+                            .text( 'Edit' ),
+                        $( '<button>' ).addClass( 'delBtn btn-danger hover:underline text-[14px] mx-auto' )
+                            .attr( 'data-toggle', 'modal' )
+                            .attr( 'data-target', '#editUserModal' )
+                            .data( 'userId', user.user_id )
+                            .data( 'userStatus', user.status )
+                            .data( 'user', user )
+                            .text( delBtnText )
+                    ) );
+                    userList.append( userRow );
+                } );
+            }
 
             // Update item count display
             const currentPage = parseInt( pagination.currentPage );
@@ -652,25 +659,59 @@ ob_start();
             $( '#editUserModal, #createUserModal' ).addClass( 'hidden' );
 
             $( '#createFirstName' ).addClass( 'border-gray-300' );
-            $( '#createFirstName' ).removeClass( 'border-2 border-red-200 bg-red-100' );
-            $( '#createFirstName' ).prev( 'label' ).removeClass( 'text-red-500' );
+            $( '#createFirstName' ).text( '' ).val( '' );
 
             $( '#createLastName' ).addClass( 'border-gray-300' );
-            $( '#createLastName' ).removeClass( 'border-2 border-red-200 bg-red-100' );
-            $( '#createLastName' ).prev( 'label' ).removeClass( 'text-red-500' );
+            $( '#createLastName' ).text( '' ).val( '' );
 
             $( '#createUsername' ).addClass( 'border-gray-300' );
-            $( '#createUsername' ).removeClass( 'border-2 border-red-200 bg-red-100' );
-            $( '#createUsername' ).prev( 'label' ).removeClass( 'text-red-500' );
+            $( '#createUsername' ).text( '' ).val( '' );
 
             $( '#createEmail' ).addClass( 'border-gray-300' );
-            $( '#createEmail' ).removeClass( 'border-2 border-red-200 bg-red-100' );
-            $( '#createEmail' ).prev( 'label' ).removeClass( 'text-red-500' );
+            $( '#createEmail' ).text( '' ).val( '' );
 
             $( '#createRole' ).addClass( 'border-gray-300' );
-            $( '#createRole' ).removeClass( 'border-2 border-red-200 bg-red-100' );
-            $( '#createRole' ).prev( 'label' ).removeClass( 'text-red-500' );
+            $( '#createRole' ).val( '' );
 
+            removeErrorClasses();
+        } );
+
+        function removeErrorClasses ()
+        {
+            $( '#createUserModal input, #editUserModal input, #createUserModal select, #editUserModal select' )
+                .removeClass( 'border-red-200 bg-red-100' );
+            $( '#createUserModal label, #editUserModal label' ).removeClass( 'text-red-500' );
+        }
+
+        $( '#createUserModal input' ).on( 'input', function ()
+        {
+            const inputId = $( this ).attr( 'id' );
+            const value = $( this ).val();
+
+            // Check individual input validity
+            switch ( inputId )
+            {
+                case 'createFirstName':
+                case 'editFirstName':
+                    validateFirstName( value );
+                    break;
+                case 'createLastName':
+                case 'editLastName':
+                    validateLastName( value );
+                    break;
+                case 'createUsername':
+                case 'editUsername':
+                    validateUsername( value );
+                    break;
+                case 'createEmail':
+                case 'editEmail':
+                    validateEmail( value );
+                    break;
+                case 'createRole':
+                case 'editRole':
+                    validateRole( value );
+                    break;
+            }
         } );
 
         // Handle form submission (update user)

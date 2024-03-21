@@ -14,7 +14,7 @@ $image_path = $base_url . 'assets/image/projects.png';
             onclick="toggleSidebar()">
             <i class="bi bi-list px-2 text-3xl rounded-md hover:bg-yellow-600" title="Toggle Sidebar"></i>
         </span>
-        <div class="p-2.5 mt-1 ml-32 flex items-center">
+        <div class="p-3 mt-1 ml-32 flex items-center">
             <img src="<?php echo $image_path; ?>" class="h-[35px] w-auto icon">
         </div>
     </div>

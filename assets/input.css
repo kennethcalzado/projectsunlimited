@@ -269,6 +269,10 @@ p {
      border-radius: 5px;
      font-size: 19px;
  }
+ 
+ .btn-primary:hover {
+    background-color: #F9E89B;
+}
 
  .btn-view:hover {
      background-color: #b6cde2;

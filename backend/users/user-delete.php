@@ -1,13 +1,19 @@
 <?php
+include '../../backend/conn.php'; // Include the database connection script
+
 // Check if user ID is provided via POST method
-if (isset($_POST['userId'])) {
+if (isset ($_POST['userId'])) {
     $userId = $_POST['userId'];
 
-    // Database connection
-    include '../../backend/conn.php'; // Include the database connection script
-
     // SQL to update user status to inactive and set updated_at
-    $sql = "UPDATE users SET status = 'inactive', updated_at = CURRENT_TIMESTAMP WHERE user_id = ?";
+    $sql = "UPDATE users 
+    SET status = CASE 
+        WHEN status = 'active' THEN 'inactive'
+        ELSE 'active'
+    END,
+    updated_at = CURRENT_TIMESTAMP 
+    WHERE user_id = ?;
+    ";
 
     // Prepare statement
     if ($stmt = $conn->prepare($sql)) {

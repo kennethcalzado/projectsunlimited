@@ -17,15 +17,27 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     if (empty ($firstName)) {
         $errors[] = 'First Name is required.';
     }
+
     if (empty ($lastName)) {
         $errors[] = 'Last Name is required.';
     }
+
     if (empty ($username)) {
         $errors[] = 'Username is required.';
     }
+
     if (empty ($email) || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
         $errors[] = 'Valid Email is required.';
+    } else {
+        // Check if email is already registered
+        $sql_check_email = "SELECT COUNT(*) AS count FROM users WHERE email = '$email'";
+        $result_check_email = $conn->query($sql_check_email);
+        $row_check_email = $result_check_email->fetch_assoc();
+        if ($row_check_email['count'] > 0) {
+            $errors[] = 'Email is already registered.';
+        }
     }
+
     if (empty ($role)) {
         $errors[] = 'Role is required.';
     }
