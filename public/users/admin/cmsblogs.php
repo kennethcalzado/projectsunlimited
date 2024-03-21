@@ -2,6 +2,7 @@
 session_start();
 $pageTitle = "CMS - Blogs";
 ob_start();
+
 ?>
 
 <head>
@@ -31,7 +32,7 @@ ob_start();
             width: 80%;
             margin: 0 auto;
             text-align: center;
-            margin-left: 12%;
+            margin-left: 13%;
         }
 
         h1 {
@@ -84,12 +85,8 @@ ob_start();
     </style>
 </head>
 
-<style>
-
-</style>
-
-
 <body>
+    <!-- ADD NEW MODAL -->
     <div id="modal" class="fixed inset-0 z-50 overflow-auto bg-black bg-opacity-50 flex justify-center items-center hidden">
         <div class="max-w-3xl w-full h-[90vh] overflow-auto">
             <!-- Modal Content -->
@@ -133,7 +130,7 @@ ob_start();
         </div>
     </div>
 
-
+    <!-- DELETE MODAL -->
     <div id="deleteModal" class="fixed inset-0 z-50 overflow-auto bg-black bg-opacity-50 flex justify-center items-center hidden">
         <div class="max-w-3xl w-full h-[90vh] overflow-auto">
             <div class="bg-white p-6 rounded-lg">
@@ -148,40 +145,7 @@ ob_start();
         </div>
     </div>
 
-    <script>
-        // JavaScript to show and hide the delete modal
-        function openDeleteModal(blogId) {
-            document.getElementById('deleteModal').classList.remove('hidden');
-            // Pass the blog ID to the modal for deletion
-            document.getElementById('blogIdToDelete').value = blogId;
-        }
-
-        function closeDeleteModal() {
-            document.getElementById('deleteModal').classList.add('hidden');
-        }
-
-        // AJAX function to delete blog
-        function deleteBlog() {
-            var blogId = document.getElementById('blogIdToDelete').value;
-            // Send AJAX request to delete blog
-            var xhr = new XMLHttpRequest();
-            xhr.onreadystatechange = function() {
-                if (xhr.readyState == XMLHttpRequest.DONE) {
-                    if (xhr.status == 200) {
-                        // If deletion is successful, reload the page
-                        window.location.reload();
-                    } else {
-                        // Handle errors
-                        alert('Failed to delete blog. Please try again.');
-                    }
-                }
-            };
-            xhr.open('POST', 'delete_blog.php', true);
-            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-            xhr.send('blogId=' + blogId);
-        }
-    </script>
-
+    <!-- UPDATE MODAL -->
     <div id="updateModal" class="fixed inset-0 z-50 overflow-auto bg-black bg-opacity-50 flex justify-center items-center hidden">
         <div class="max-w-3xl w-full h-[90vh] overflow-auto">
             <div class="bg-white p-6 rounded-lg">
@@ -255,16 +219,44 @@ ob_start();
         </div>
     </div>
 
-
+    <!-- MODAL SCRIPTS -->
     <script>
-        // Function to preview selected images
+        // DELETE MODAL
+
+        function openDeleteModal(blogId) {
+            document.getElementById('deleteModal').classList.remove('hidden');
+            document.getElementById('blogIdToDelete').value = blogId;
+        }
+
+        function closeDeleteModal() {
+            document.getElementById('deleteModal').classList.add('hidden');
+        }
+
+        function deleteBlog() {
+            var blogId = document.getElementById('blogIdToDelete').value;
+            var xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState == XMLHttpRequest.DONE) {
+                    if (xhr.status == 200) {
+                        window.location.reload();
+                    } else {
+                        alert('Failed to delete blog. Please try again.');
+                    }
+                }
+            };
+            xhr.open('POST', 'delete_blog.php', true);
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xhr.send('blogId=' + blogId);
+        }
+
+        // UPDATE MODAL
+        // IMAGES
         document.getElementById('updateImages').addEventListener('change', function(event) {
             var imagesPreview = document.getElementById('existingImages');
-            imagesPreview.innerHTML = ''; // Clear existing preview
+            imagesPreview.innerHTML = '';
 
-            var files = event.target.files; // Get selected files
+            var files = event.target.files;
 
-            // Loop through selected files and display their preview
             for (var i = 0; i < files.length; i++) {
                 var file = files[i];
                 var reader = new FileReader();
@@ -275,17 +267,17 @@ ob_start();
                     img.width = 100;
                     img.height = 100;
                     img.className = 'mr-2 mb-2';
-                    imagesPreview.appendChild(img); // Append preview to the existing images area
+                    imagesPreview.appendChild(img);
                 };
 
                 reader.readAsDataURL(file);
             }
         });
 
-        // Store TinyMCE instances
+        // TINYMCE EDITOR - UPDATE MODAL
         var tinymces = {};
 
-        // Function to initialize TinyMCE for a given ID if not already initialized
+
         function initTinyMCE(id) {
             if (!tinymces.hasOwnProperty(id)) {
                 tinymce.init({
@@ -294,26 +286,22 @@ ob_start();
                     toolbar: 'undo redo | formatselect | bold italic backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat | help',
                     height: 300,
                     setup: function(editor) {
-                        tinymces[id] = editor; // Store editor instance
+                        tinymces[id] = editor;
                     }
                 });
             }
         }
 
-        // JavaScript to show and hide the update modal
         function openUpdateModal(blogId, title, description, type, date) {
             document.getElementById('updateModal').classList.remove('hidden');
-            // Populate form fields with existing blog data
             document.getElementById('blogIdToUpdate').value = blogId;
             document.getElementById('updateTitle').value = title;
             document.getElementById('updateDescription').value = description;
             document.getElementById('updateType').value = type;
             document.getElementById('updateDate').value = date;
 
-            // Initialize TinyMCE for the description textarea if not already initialized
             initTinyMCE('updateDescription');
 
-            // Set the TinyMCE content to match the description text
             if (tinymces.hasOwnProperty('updateDescription')) {
                 tinymces['updateDescription'].setContent(description);
             }
@@ -322,19 +310,33 @@ ob_start();
         function closeUpdateModal() {
             document.getElementById('updateModal').classList.add('hidden');
         }
-    </script>
 
-
-    <script>
-        // JavaScript to show and hide the modal
+        // ADD NEW MODAL
         function openModal() {
             document.getElementById('modal').classList.remove('hidden');
+            initTinyMCEForModal(); // Initialize TinyMCE for description textarea
+        }
+
+        function initTinyMCEForModal() {
+            tinymce.init({
+                selector: '#description', // ID of the textarea
+                plugins: 'advlist autolink lists link image charmap print preview anchor',
+                toolbar: 'undo redo | formatselect | bold italic backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat | help',
+                height: 300,
+                setup: function(editor) {
+                    editor.on('change', function() {
+                        editor.save(); // Update textarea when content changes
+                    });
+                }
+            });
         }
 
         function closeModal() {
             document.getElementById('modal').classList.add('hidden');
+            tinymce.remove(); // Remove TinyMCE instance when modal is closed
         }
     </script>
+
 
     <div style="padding-top: 15px;" class="container">
         <!-- Content -->
@@ -343,6 +345,39 @@ ob_start();
             <button class="yellow-btn btn-primary" onclick="openModal()">Add New</button>
         </div>
         <div class="border-b border-black flex-grow border-4 mt-2 mb-2"></div>
+        <div class="flex flex-col sm:flex-row items-center justify-center">
+            <div class="relative mb-2 mt-2 sm:mb-0 sm:mr-8">
+                <label for="categoryFilter" class="mr-2">Filter by Category</label>
+                <select id="categoryFilter" class="border rounded-md px-2 py-1">
+                    <option value="">All Categories</option>
+                    <option value="News">News</option>
+                    <option value="Projects">Projects</option>
+                </select>
+            </div>
+            <div class="relative mb-2 mt-2 sm:mb-0 sm:mr-8">
+                <label for="sortFilter" class="mr-2">Sort</label>
+                <select id="sortFilter" class="border rounded-md px-2 py-1">
+                    <optgroup label="Sort By:">
+                        <option>Sort By</option>
+                        <option>Newest to Oldest</option>
+                        <option>Oldest to Newest</option>
+                </select>
+            </div>
+            <div class="flex justify-between">
+                <div class="relative mb-1 mt-1 sm:mb-0 sm:mr-2">
+                    <!-- Search input -->
+                    <div class="relative text-gray-600">
+                        <input class="border-2 border-gray-300 bg-white h-9 w-64 px-2 rounded-md text-sm focus:outline-none" type="text" name="search" placeholder="Search" id="searchInput">
+                        <button type="submit" class="absolute right-0 top-0 mt-3 mr-4">
+                            <svg class="text-gray-600 h-4 w-4 fill-current" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1" x="0px" y="0px" viewBox="0 0 56.966 56.966" style="enable-background:new 0 0 56.966 56.966;" xml:space="preserve" width="512px" height="512px">
+                                <path d="M55.146,51.887L41.588,37.786c3.486-4.144,5.396-9.358,5.396-14.786c0-12.682-10.318-23-23-23s-23,10.318-23,23  s10.318,23,23,23c4.761,0,9.298-1.436,13.177-4.162l13.661,14.208c0.571,0.593,1.339,0.92,2.162,0.92  c0.779,0,1.518-0.297,2.079-0.837C56.255,54.982,56.293,53.08,55.146,51.887z M23.984,6c9.374,0,17,7.626,17,17s-7.626,17-17,17  s-17-7.626-17-17S14.61,6,23.984,6z" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
 
         <table id="blogTable" class="display">
             <thead>
@@ -388,10 +423,12 @@ ob_start();
             </tbody>
         </table>
     </div>
+    </div>
 </body>
 
 <?php
 $content = ob_get_clean();
-include("../../../public/master.php"); // Corrected path to master.php
-include("../../../backend/conn.php"); // Corrected path to conn.php
+
+include("../../../public/master.php");
+include("../../../backend/conn.php");
 ?>
