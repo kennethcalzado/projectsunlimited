@@ -2,8 +2,8 @@
 session_start();
 $pageTitle = "CMS - Blogs";
 ob_start();
-
 ?>
+
 
 <head>
     <meta charset="UTF-8">
@@ -83,6 +83,9 @@ ob_start();
             max-height: 50px;
         }
     </style>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 </head>
 
 <body>
@@ -219,8 +222,77 @@ ob_start();
         </div>
     </div>
 
-    <!-- MODAL SCRIPTS -->
+
     <script>
+        //FILTER SCRIPTS
+        $(document).ready(function() {
+            // Event listener for category and sort filters
+            $('#categoryFilter, #sortFilter').change(function() {
+                // Get the selected category and sort option
+                var category = $('#categoryFilter').val();
+                var sortOption = $('#sortFilter').val();
+
+                // Call the function to fetch data based on the selected category and sort option
+                fetchData(category, sortOption);
+            });
+
+            // Event listener for search input
+            $('#searchInput').on('input', function() {
+                // Get the search query
+                var query = $(this).val();
+
+                // Get the selected category and sort option
+                var category = $('#categoryFilter').val();
+                var sortOption = $('#sortFilter').val();
+
+                // Call the function to fetch data based on the selected category, sort option, and search query
+                fetchData(category, sortOption, query);
+            });
+
+            // Function to fetch data based on category, sort option, and search query
+            function fetchData(category, sortOption, query = '') {
+                $.ajax({
+                    url: '../../../backend/blogs/fetch_data.php',
+                    method: 'POST',
+                    data: {
+                        category: category,
+                        sortOption: sortOption,
+                        query: query // Include search query in the AJAX request
+                    },
+                    dataType: 'json',
+                    success: function(data) {
+                        updateTable(data);
+                    }
+                });
+            }
+
+            // Function to update the table with fetched data
+            function updateTable(data) {
+                var html = '';
+                if (data.length > 0) {
+                    $.each(data, function(index, item) {
+                        html += '<tr>';
+                        html += '<td>' + item.title + '</td>';
+                        html += '<td>' + item.date + '</td>';
+                        html += '<td><img src="../../../assets/blogs_img/' + item.thumbnail + '" width="100" height="100"></td>';
+                        html += '<td class="description">' + item.description + '</td>';
+                        html += '<td>' + item.type + '</td>';
+                        html += '<td class="action-btns">';
+                        html += '<button onclick="editPost(' + item.id + ')" class="btn btn-view"><i class="fas fa-eye"></i> View</button>';
+                        html += '<button onclick="openUpdateModal(' + item.id + ', \'' + item.title.replace(/'/g, "\\'") + '\', \'' + item.description.replace(/'/g, "\\'") + '\', \'' + item.type + '\', \'' + item.date + '\', \'' + item.images + '\')" class="yellow-btn btn-primary" data-title="' + item.title.replace(/'/g, "\\'") + '" data-description="' + item.description.replace(/'/g, "\\'") + '" data-type="' + item.type + '" data-date="' + item.date + '" data-images="' + item.images + '"><i class="fas fa-edit"></i> Update</button>';
+                        html += '<button onclick="openDeleteModal(' + item.id + ')" class="btn btn-danger"><i class="fas fa-trash-alt"></i> Delete</button>';
+                        // Add more action buttons if needed
+                        html += '</td>';
+                        html += '</tr>';
+                    });
+                } else {
+                    html += '<tr><td colspan="6">No records found</td></tr>';
+                }
+                $('#blogTable tbody').html(html);
+            }
+        });
+
+        // MODAL SCRIPTS
         // DELETE MODAL
 
         function openDeleteModal(blogId) {
@@ -274,24 +346,6 @@ ob_start();
             }
         });
 
-        // TINYMCE EDITOR - UPDATE MODAL
-        var tinymces = {};
-
-
-        function initTinyMCE(id) {
-            if (!tinymces.hasOwnProperty(id)) {
-                tinymce.init({
-                    selector: '#' + id,
-                    plugins: 'advlist autolink lists link image charmap print preview anchor',
-                    toolbar: 'undo redo | formatselect | bold italic backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat | help',
-                    height: 300,
-                    setup: function(editor) {
-                        tinymces[id] = editor;
-                    }
-                });
-            }
-        }
-
         function openUpdateModal(blogId, title, description, type, date) {
             document.getElementById('updateModal').classList.remove('hidden');
             document.getElementById('blogIdToUpdate').value = blogId;
@@ -299,12 +353,6 @@ ob_start();
             document.getElementById('updateDescription').value = description;
             document.getElementById('updateType').value = type;
             document.getElementById('updateDate').value = date;
-
-            initTinyMCE('updateDescription');
-
-            if (tinymces.hasOwnProperty('updateDescription')) {
-                tinymces['updateDescription'].setContent(description);
-            }
         }
 
         function closeUpdateModal() {
@@ -314,26 +362,10 @@ ob_start();
         // ADD NEW MODAL
         function openModal() {
             document.getElementById('modal').classList.remove('hidden');
-            initTinyMCEForModal(); // Initialize TinyMCE for description textarea
-        }
-
-        function initTinyMCEForModal() {
-            tinymce.init({
-                selector: '#description', // ID of the textarea
-                plugins: 'advlist autolink lists link image charmap print preview anchor',
-                toolbar: 'undo redo | formatselect | bold italic backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat | help',
-                height: 300,
-                setup: function(editor) {
-                    editor.on('change', function() {
-                        editor.save(); // Update textarea when content changes
-                    });
-                }
-            });
         }
 
         function closeModal() {
             document.getElementById('modal').classList.add('hidden');
-            tinymce.remove(); // Remove TinyMCE instance when modal is closed
         }
     </script>
 
@@ -358,9 +390,8 @@ ob_start();
                 <label for="sortFilter" class="mr-2">Sort</label>
                 <select id="sortFilter" class="border rounded-md px-2 py-1">
                     <optgroup label="Sort By:">
-                        <option>Sort By</option>
-                        <option>Newest to Oldest</option>
-                        <option>Oldest to Newest</option>
+                        <option value="new">Newest to Oldest</option>
+                        <option value="old">Oldest to Newest</option>
                 </select>
             </div>
             <div class="flex justify-between">
@@ -368,7 +399,7 @@ ob_start();
                     <!-- Search input -->
                     <div class="relative text-gray-600">
                         <input class="border-2 border-gray-300 bg-white h-9 w-64 px-2 rounded-md text-sm focus:outline-none" type="text" name="search" placeholder="Search" id="searchInput">
-                        <button type="submit" class="absolute right-0 top-0 mt-3 mr-4">
+                        <button type="button" id="searchButton" class="absolute right-0 top-0 mt-3 mr-4">
                             <svg class="text-gray-600 h-4 w-4 fill-current" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1" x="0px" y="0px" viewBox="0 0 56.966 56.966" style="enable-background:new 0 0 56.966 56.966;" xml:space="preserve" width="512px" height="512px">
                                 <path d="M55.146,51.887L41.588,37.786c3.486-4.144,5.396-9.358,5.396-14.786c0-12.682-10.318-23-23-23s-23,10.318-23,23  s10.318,23,23,23c4.761,0,9.298-1.436,13.177-4.162l13.661,14.208c0.571,0.593,1.339,0.92,2.162,0.92  c0.779,0,1.518-0.297,2.079-0.837C56.255,54.982,56.293,53.08,55.146,51.887z M23.984,6c9.374,0,17,7.626,17,17s-7.626,17-17,17  s-17-7.626-17-17S14.61,6,23.984,6z" />
                             </svg>
@@ -422,7 +453,6 @@ ob_start();
                 ?>
             </tbody>
         </table>
-    </div>
     </div>
 </body>
 
