@@ -4,20 +4,19 @@ include '../../backend/conn.php'; // Include the database connection script
 // Check if the request method is POST
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Check if all required fields are present
-    if (isset($_POST['userId'], $_POST['firstName'], $_POST['lastName'], $_POST['username'], $_POST['email'], $_POST['roleId'])) {
+    if (isset($_POST['userId'], $_POST['firstName'], $_POST['lastName'], $_POST['email'], $_POST['role'])) {
         $userId = $_POST['userId'];
         $firstName = $_POST['firstName'];
         $lastName = $_POST['lastName'];
-        $username = $_POST['username'];
         $email = $_POST['email'];
-        $roleId = $_POST['roleId'];
+        $roleId = $_POST['role'];
 
         // Perform the update query including the role ID and updated_at
-        $sql = "UPDATE users SET fname = ?, lname = ?, username = ?, email = ?, role_id = ?, updated_at = CURRENT_TIMESTAMP WHERE user_id = ?";
+        $sql = "UPDATE users SET fname = ?, lname = ?, email = ?, role_id = ?, updated_at = CURRENT_TIMESTAMP WHERE user_id = ?";
         $stmt = $conn->prepare($sql);
         if ($stmt) {
             // Bind parameters and execute the statement
-            $stmt->bind_param("ssssii", $firstName, $lastName, $username, $email, $roleId, $userId);
+            $stmt->bind_param("sssii", $firstName, $lastName, $username, $email, $roleId, $userId);
             if ($stmt->execute()) {
                 // Update successful
                 $response = ["success" => true, "message" => "User updated successfully"];

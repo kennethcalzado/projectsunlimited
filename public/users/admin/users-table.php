@@ -96,113 +96,58 @@ ob_start();
     </div>
 </div>
 
-<div id="createUserModal" class="fixed inset-0 z-50 flex items-center justify-center hidden">
+<div id="userModal" class="fixed inset-0 z-50 flex items-center justify-center hidden">
     <div class="bg-black opacity-25 w-full h-full absolute -z-10"></div>
     <div class="bg-white rounded-lg shadow-2xl p-6 w-full max-w-md">
         <div class="flex justify-between items-center">
-            <h2 class="text-xl font-semibold">Create User</h2>
-            <button
+            <h2 id="userModalTitle" class="text-xl font-semibold">User Details</h2>
+            <button id="closeUserModal"
                 class="close rounded-full text-gray-600 px-2 hover:text-gray-800 focus:outline-none hover:bg-gray-300"
-                data-twe-toggle="modal" data-twe-target="#createUserModal" aria-label="Close modal">&times;</button>
+                aria-label="Close modal">&times;</button>
         </div>
-        <form id="createUserForm" class="mt-4">
+        <form id="userForm" class="mt-4">
             <div class="mb-4">
-                <label for="createFirstName" class="block text-sm font-medium text-gray-700">First Name:</label>
-                <input type="text" id="createFirstName" name="createFirstName" placeholder="Enter first name"
+                <label for="firstName" class="block text-sm font-medium text-gray-700">First Name:</label>
+                <input type="text" id="firstName" name="firstName" placeholder="Enter first name"
                     class="pl-2 mt-1 w-full rounded-md border border-gray-700 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50">
+                <div id="firstNameError" class="text-red-500 text-sm mt-1"></div> <!-- Error message space -->
             </div>
             <div class="mb-4">
-                <label for="createLastName" class="block text-sm font-medium text-gray-700">Last Name:</label>
-                <input type="text" id="createLastName" name="createLastName" placeholder="Enter last name"
-                    class="pl-2 mt-1 block w-full rounded-md border border-gray-700 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50">
+                <label for="lastName" class="block text-sm font-medium text-gray-700">Last Name:</label>
+                <input type="text" id="lastName" name="lastName" placeholder="Enter last name"
+                    class="pl-2 mt-1 w-full rounded-md border border-gray-700 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50">
+                <div id="lastNameError" class="text-red-500 text-sm mt-1"></div> <!-- Error message space -->
             </div>
             <div class="mb-4">
-                <label for="createUsername" class="block text-sm font-medium text-gray-700">Username:</label>
-                <input type="text" id="createUsername" name="createUsername" placeholder="Enter username"
-                    class="pl-2 mt-1 block w-full rounded-md border border-gray-700 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50">
+                <label for="email" class="block text-sm font-medium text-gray-700">Email:</label>
+                <input type="text" id="email" name="email" placeholder="Enter email address"
+                    class="pl-2 mt-1 w-full rounded-md border border-gray-700 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50">
+                <div id="emailError" class="text-red-500 text-sm mt-1"></div> <!-- Error message space -->
             </div>
             <div class="mb-4">
-                <label for="createEmail" class="block text-sm font-medium text-gray-700">Email:</label>
-                <input type="email" id="createEmail" name="createEmail" placeholder="Enter email address"
-                    class="pl-2 mt-1 block w-full rounded-md border border-gray-700 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50">
-            </div>
-            <div class="mb-4">
-                <label for="createRole" class="block text-sm font-medium text-gray-700">Role:</label>
-                <select id="createRole" name="createRole"
+                <label for="role" class="block text-sm font-medium text-gray-700">Role:</label>
+                <select id="role" name="role"
                     class="pl-2 mt-1 block w-full rounded-md border border-gray-700 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50">
                     <option value="" disabled selected>Select Role</option>
                     <!-- Roles options will be dynamically added here -->
                 </select>
+                <div id="roleError" class="text-red-500 text-sm mt-1"></div> <!-- Error message space -->
             </div>
-            <div class="flex justify-end">
-                <button type="submit" id="updateUserBtn" class="inline-flex items-center px-4 py-2 bg-green-500 border border-transparent 
-                    rounded-md font-semibold text-xs text-white uppercase tracking-widest 
-                    hover:bg-green-600 active:bg-green-700 focus:outline-none focus:border-green-700 
-                    focus:ring focus:ring-green-200 disabled:opacity-25 transition">
-                    Create
-                </button>
-                <button type="button" class="close inline-flex items-center justify-center ml-4 px-4 py-2 border 
-                    border-transparent rounded-md font-semibold text-xs text-gray-700 uppercase 
-                    tracking-widest bg-gray-200 hover:bg-gray-300 active:bg-gray-400 focus:outline-none 
-                    focus:border-gray-400 focus:ring focus:ring-gray-300 disabled:opacity-25 transition"
-                    data-twe-toggle="modal">
-                    Cancel
-                </button>
-            </div>
-        </form>
-    </div>
-</div>
-
-<div id="editUserModal" class="fixed inset-0 z-50 flex items-center justify-center">
-    <div class="bg-white rounded-lg shadow-2xl p-6 w-full max-w-md">
-        <div class="flex justify-between items-center">
-            <h2 class="text-xl font-semibold">Edit User</h2>
-            <button class="close text-gray-600 hover:text-gray-800 focus:outline-none" data-twe-toggle="modal"
-                data-twe-target="#editUserModal" aria-label="Close modal">&times;</button>
-        </div>
-        <form id="editUserForm" class="mt-4">
-            <div class="mb-4">
-                <label for="editFirstName" class="block text-sm font-medium text-gray-700">First Name:</label>
-                <input type="text" id="editFirstName" name="editFirstName"
-                    class="pl-2 mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50"
-                    required>
-            </div>
-            <div class="mb-4">
-                <label for="editLastName" class="block text-sm font-medium text-gray-700">Last Name:</label>
-                <input type="text" id="editLastName" name="editLastName"
-                    class="pl-2 mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50"
-                    required>
-            </div>
-            <div class="mb-4">
-                <label for="editUsername" class="block text-sm font-medium text-gray-700">Username:</label>
-                <input type="text" id="editUsername" name="editUsername"
-                    class="pl-2 mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50"
-                    required>
-            </div>
-            <div class="mb-4">
-                <label for="editEmail" class="block text-sm font-medium text-gray-700">Email:</label>
-                <input type="email" id="editEmail" name="editEmail"
-                    class="pl-2 mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50"
-                    required>
-            </div>
-            <div class="mb-4">
-                <label for="editRole" class="block text-sm font-medium text-gray-700">Role:</label>
-                <select id="editRole" name="editRole"
-                    class="pl-2 mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50">
-                    <!-- Roles options will be dynamically added here -->
-                </select>
-            </div>
-            <div class="mb-4">
+            <div class="mb-4" id="resetPasswordContainer">
                 <button type="button" id="resetPasswordBtn"
                     class="inline-flex items-center px-4 py-2 bg-blue-500 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-600 active:bg-blue-700 focus:outline-none focus:border-blue-700 focus:ring focus:ring-blue-200 disabled:opacity-25 transition">Reset
                     Password</button>
             </div>
             <div class="flex justify-end">
-                <button type="submit" id="updateUserBtn"
-                    class="inline-flex items-center px-4 py-2 bg-green-500 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-green-600 active:bg-green-700 focus:outline-none focus:border-green-700 focus:ring focus:ring-green-200 disabled:opacity-25 transition">Update</button>
-                <button type="button"
-                    class="close inline-flex items-center justify-center ml-4 px-4 py-2 border border-transparent rounded-md font-semibold text-xs text-gray-700 uppercase tracking-widest bg-gray-200 hover:bg-gray-300 active:bg-gray-400 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-300 disabled:opacity-25 transition"
-                    data-twe-toggle="modal">Cancel</button>
+                <button type="submit" id="submitUserBtn" class="inline-flex items-center px-4 py-2 bg-green-500 border border-transparent 
+                    rounded-md font-semibold text-xs text-white uppercase tracking-widest 
+                    hover:bg-green-600 active:bg-green-700 focus:outline-none focus:border-green-700 
+                    focus:ring focus:ring-green-200 disabled:opacity-25 transition">Submit</button>
+                <button type="button" id="cancelUserBtn"
+                    class="close inline-flex items-center justify-center ml-4 px-4 py-2 border 
+                    border-transparent rounded-md font-semibold text-xs text-gray-700 uppercase 
+                    tracking-widest bg-gray-200 hover:bg-gray-300 active:bg-gray-400 focus:outline-none 
+                    focus:border-gray-400 focus:ring focus:ring-gray-300 disabled:opacity-25 transition">Cancel</button>
             </div>
         </form>
     </div>
@@ -296,7 +241,7 @@ ob_start();
 <script>
     $( document ).ready( function ()
     {
-        $( '#editUserModal' ).hide();
+        //////////////////// GET DATA ///////////////////////////
 
         // Function to filter user data based on role, status, search term, and pagination
         function filterUserData ( roleFilter, statusFilter, searchTerm, page, limit )
@@ -324,6 +269,28 @@ ob_start();
                 }
             } );
         }
+
+        $.ajax( {
+            url: '../../../backend/roles/roles-get.php',
+            type: 'GET',
+            dataType: 'json',
+            success: function ( roles )
+            {
+                // Render roles data
+                const roleSelectForm = $( '#role' );
+                const roleSelectFilter = $( '#roleFilter' );
+
+                roles.forEach( function ( role )
+                {
+                    roleSelectForm.append( $( '<option>' ).val( role.role_name ).text( role.role_name ) );
+                    roleSelectFilter.append( $( '<option>' ).val( role.role_name ).text( role.role_name ) );
+                } );
+            },
+            error: function ( xhr, status, error )
+            {
+                console.error( 'Error:', error );
+            }
+        } );
 
         // Event listeners for dropdown menu changes, search input, and pagination dropdown
         $( '#roleFilter, #statusFilter, #searchInput, #paginationSelect' ).on( 'change input', function ()
@@ -365,13 +332,13 @@ ob_start();
                     userRow.append( $( '<td>' ).addClass( 'py-6 w-auto px-auto flex justify-center' ).append(
                         $( '<button>' ).addClass( 'editBtn btn-primary hover:underline text-[14px] mx-auto ' )
                             .attr( 'data-toggle', 'modal' )
-                            .attr( 'data-target', '#editUserModal' )
+                            .attr( 'data-target', '#userModal' )
                             .data( 'userId', user.user_id )
                             .data( 'user', user )
                             .text( 'Edit' ),
                         $( '<button>' ).addClass( 'delBtn btn-danger hover:underline text-[14px] mx-auto' )
                             .attr( 'data-toggle', 'modal' )
-                            .attr( 'data-target', '#editUserModal' )
+                            .attr( 'data-target', '#userModal' )
                             .data( 'userId', user.user_id )
                             .data( 'userStatus', user.status )
                             .data( 'user', user )
@@ -400,134 +367,139 @@ ob_start();
             generatePagination( totalPages, currentPage );
         }
 
+        //////////////////// OPEN FORMS /////////////////////////////////
 
-        $.ajax( {
-            url: '../../../backend/roles/roles-get.php',
-            type: 'GET',
-            dataType: 'json',
-            success: function ( roles )
-            {
-                // Render roles data
-                const roleSelectForm = $( '#editRole' );
-                const roleSelectFilter = $( '#roleFilter' );
-                const roleSelectCreate = $( '#createRole' );
-
-                roles.forEach( function ( role )
-                {
-                    roleSelectForm.append( $( '<option>' ).val( role.role_id ).text( role.role_name ) );
-                    roleSelectFilter.append( $( '<option>' ).val( role.role_name ).text( role.role_name ) );
-                    roleSelectCreate.append( $( '<option>' ).val( role.role_id ).text( role.role_name ) );
-                } );
-            },
-            error: function ( xhr, status, error )
-            {
-                console.error( 'Error:', error );
-            }
-        } );
-
-        // Open modal when edit button is clicked
+        // Event listener to open modal when edit button is clicked
         $( document ).on( 'click', '.editBtn', function ()
         {
-            // Get user information
             const user = $( this ).data( 'user' );
-            const userId = $( this ).data( 'userId' ); // Retrieve userId from button's data
-            $( '#editUserForm' ).data( 'userId', userId );
-            $( '#editFirstName' ).val( user.fname );
-            $( '#editLastName' ).val( user.lname );
-            $( '#editUsername' ).val( user.username );
-            $( '#editEmail' ).val( user.email );
-
-            // Open the modal
-            $( '#editUserModal' ).removeClass( 'hidden' );
-            $( '#editUserModal' ).show();
+            populateModalWithData( user );
         } );
 
-        // Function to display error message popup
-        function displayErrorPopup ( message )
+        // Event listener to open modal when "Add User Account" button is clicked
+        $( document ).on( 'click', '#openCreateUserModal', function ()
         {
-            $( '.error-popup .popup-message' ).text( message );
-            $( '.error-popup' ).removeClass( 'hidden' );
+            $( '#userModalTitle' ).text( 'Create User' );
+            $( '#userForm' )[0].reset(); // Reset form fields
+            $( '#resetPasswordContainer' ).hide();
+            $( '#userModal' ).removeClass( 'hidden' );
+        } );
+
+        // Function to populate modal with user data
+        function populateModalWithData ( user )
+        {
+            $( '#userModalTitle' ).text( 'Edit User' );
+            const userId = user.user_id
+            $( '#userModal' ).data( 'userId', userId );
+
+            console.log( userId );
+
+            $( '#firstName' ).val( user.fname );
+            $( '#lastName' ).val( user.lname );
+            $( '#username' ).val( user.username );
+            $( '#email' ).val( user.email );
+            // Populate role select options dynamically here
+            $( '#role' ).val( user.role_name );
+            // Show or hide reset password button based on user's status or any condition
+            if ( user.status === 'active' )
+            {
+                $( '#resetPasswordContainer' ).show();
+            } else
+            {
+                $( '#resetPasswordContainer' ).hide();
+            }
+            $( '#userModal' ).removeClass( 'hidden' );
         }
 
-        // Function to validate the create user form
-        function validateCreateUserForm ()
+        ////////////////// VALIDATION OF FORMS /////////////////////
+
+        // Function to validate the user form
+        function validateUserForm ()
         {
-            // Remove any existing error styling
+            // Remove any existing error styling and messages
             $( '.border-red-500' ).removeClass( 'border-red-500' );
             $( '.text-red-500' ).removeClass( 'text-red-500' );
+            $( '.error-message' ).empty();
 
             // Get form inputs
-            const firstName = $( '#createFirstName' ).val();
-            const lastName = $( '#createLastName' ).val();
-            const username = $( '#createUsername' ).val();
-            const email = $( '#createEmail' ).val();
-            const role = $( '#createRole' ).val();
+            const firstName = $( '#firstName' ).val();
+            const lastName = $( '#lastName' ).val();
+            const email = $( '#email' ).val();
+            const role = $( '#role' ).val();
+
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
             // Initialize error message
-            let errorMessage = '';
+            let isValid = true;
 
             // Check if any required field is empty and build error message
             if ( !firstName || firstName.trim() === '' )
             {
-                errorMessage += 'First Name is required.\n';
-                $( '#createFirstName' ).removeClass( 'border-gray-300' );
-                $( '#createFirstName' ).addClass( 'border-2 border-red-200 bg-red-100' );
-                $( '#createFirstName' ).prev( 'label' ).addClass( 'text-red-500' );
+                $( '#firstName' ).addClass( 'border-red-500' );
+                $( '#firstNameError' ).addClass( 'text-sm text-red-500 mt-1 error-message' ).text( 'First Name is required.' );
+                isValid = false;
             }
             if ( !lastName || lastName.trim() === '' )
             {
-                errorMessage += 'Last Name is required.\n';
-                $( '#createLastName' ).removeClass( 'border-gray-300' );
-                $( '#createLastName' ).addClass( 'border-2 border-red-200 bg-red-100' );
-                $( '#createLastName' ).prev( 'label' ).addClass( 'text-red-500' );
-            }
-            if ( !username || username.trim() === '' )
-            {
-                errorMessage += 'Username is required.\n';
-                $( '#createUsername' ).removeClass( 'border-gray-300' );
-                $( '#createUsername' ).addClass( 'border-2 border-red-200 bg-red-100' );
-                $( '#createUsername' ).prev( 'label' ).addClass( 'text-red-500' );
+                $( '#lastName' ).addClass( 'border-red-500' );
+                $( '#lastNameError' ).addClass( 'text-sm text-red-500 mt-1 error-message' ).text( 'Last Name is required.' );
+                isValid = false;
             }
             if ( !email || email.trim() === '' )
             {
-                errorMessage += 'Email is required.\n';
-                $( '#createEmail' ).removeClass( 'border-gray-300' );
-                $( '#createEmail' ).addClass( 'border-2 border-red-200 bg-red-100' );
-                $( '#createEmail' ).prev( 'label' ).addClass( 'text-red-500' );
+                $( '#email' ).addClass( 'border-red-500' );
+                $( '#emailError' ).addClass( 'text-sm text-red-500 mt-1 error-message' ).text( 'Email is required.' );
+                isValid = false;
+            } else if ( !emailRegex.test( email ) )
+            {
+                $( '#email' ).addClass( 'border-red-500' );
+                $( '#emailError' ).addClass( 'text-sm text-red-500 mt-1 error-message' ).text( 'Invalid email format.' );
+                isValid = false;
             }
+
             if ( !role || role.trim() === '' )
             {
-                errorMessage += 'Role is required.\n';
-                $( '#createRole' ).removeClass( 'border-gray-300' );
-                $( '#createRole' ).addClass( 'border-2 border-red-200 bg-red-100' );
-                $( '#createRole' ).prev( 'label' ).addClass( 'text-red-500' );
+                $( '#role' ).addClass( 'border-red-500' );
+                $( '#roleError' ).addClass( 'text-sm text-red-500 mt-1 error-message' ).text( 'Role is required.' );
+                isValid = false;
             }
 
-            // Display error message if any field is empty
-            if ( errorMessage )
-            {
-                displayErrorPopup( errorMessage );
-                return false; // Prevent form submission
-            }
-
-            // If all validations pass, return true to allow form submission
-            return true;
+            return isValid;
         }
 
+        ////////////////////// SUBMIT EVENT HANDLER ///////////////////////////
+
         // Event listener for form submission
-        $( '#createUserForm' ).submit( function ( event )
+        $( '#userForm' ).submit( function ( event )
         {
             // Prevent default form submission behavior
             event.preventDefault();
 
             // Validate the form
-            if ( validateCreateUserForm() )
+            if ( validateUserForm() )
             {
-                // If form is valid, submit the form using AJAX or any other method
+                let formData = $( this ).serialize(); // Serialize form data
+
+                // Determine the URL based on whether it's an update or create action
+                let url;
+                const userId = $( '#userModal' ).data( 'userId' );
+                if ( userId )
+                {
+                    // Update user URL
+                    url = '../../../backend/users/user-update.php';
+                    formData += '&userId=' + userId;
+                } else
+                {
+                    // Create user URL
+                    url = '../../../backend/users/user-create.php';
+                }
+
+                // Submit the form using AJAX
                 $.ajax( {
-                    url: '../../../backend/users/user-create.php',
+                    url: url,
                     type: 'POST',
-                    data: $( this ).serialize(), // Serialize form data
+                    data: formData,
+                    dataType: 'json',
                     success: function ( response )
                     {
                         if ( response.success )
@@ -540,15 +512,30 @@ ob_start();
                             setTimeout( function ()
                             {
                                 $( '.success-popup' ).addClass( 'hidden' );
-                                $( '#createUserModal' ).addClass( 'hidden' );
+                                $( '#userModal' ).addClass( 'hidden' );
                             }, 3000 );
 
                             // Refresh user data (assuming you have a function to fetch and display user data)
-                            filterUserData( '', '', '', 1, 5 );
+                            fetchUserData();
                         } else
                         {
+                            if ( response.message )
+                            {
+                                // Reset error messages and styles
+                                $( '.error-message' ).text( '' );
+                                $( '.form-control' ).removeClass( 'border-red-500' );
+
+                                // Display error messages received from the backend
+                                Object.keys( response.message ).forEach( function ( fieldName )
+                                {
+                                    $( '#' + fieldName + 'Error' ).text( response.message[fieldName] );
+                                    $( '#' + fieldName ).addClass( 'border-red-500' );
+                                } );
+                            }
+
                             // Display error message using a pop-up
-                            displayErrorPopup( 'An error occurred. Please try again later.' );
+                            $( '.error-popup .popup-message' ).text( response.message );
+                            $( '.error-popup' ).removeClass( 'hidden' );
                         }
                     },
                     error: function ( xhr, status, error )
@@ -561,6 +548,7 @@ ob_start();
                 } );
             }
         } );
+
 
         // Open modal when edit button is clicked
         $( document ).on( 'click', '.delBtn', function ()
@@ -618,21 +606,13 @@ ob_start();
             } );
         } );
 
-        // Open modal when "Add User Account" button is clicked
-        $( document ).on( 'click', '#openCreateUserModal', function ()
+        //////////////////////close buttons///////////////////////////////  
+        // Function to display error message popup
+        function displayErrorPopup ( message )
         {
-            $( '#createUserModal' ).removeClass( 'hidden' );
-        } );
-
-        // Handle password reset button click
-        $( '#resetPasswordBtn' ).click( function ()
-        {
-            // Perform password reset action here
-            // Display confirmation message
-            alert( 'Password reset successful!' );
-        } );
-
-        //////////////////////close buttons///////////////////////////////
+            $( '.error-popup .popup-message' ).text( message );
+            $( '.error-popup' ).removeClass( 'hidden' );
+        }
         // Handle cancel update action
         $( '#cancelUpdateBtn' ).click( function ()
         {
@@ -653,35 +633,6 @@ ob_start();
             $( '.error-popup' ).addClass( 'hidden' );
             $( '.delete-confirmation-popup' ).addClass( 'hidden' );
         } );
-
-        $( '#editUserModal .close, #createUserModal .close' ).click( function ()
-        {
-            $( '#editUserModal, #createUserModal' ).addClass( 'hidden' );
-
-            $( '#createFirstName' ).addClass( 'border-gray-300' );
-            $( '#createFirstName' ).text( '' ).val( '' );
-
-            $( '#createLastName' ).addClass( 'border-gray-300' );
-            $( '#createLastName' ).text( '' ).val( '' );
-
-            $( '#createUsername' ).addClass( 'border-gray-300' );
-            $( '#createUsername' ).text( '' ).val( '' );
-
-            $( '#createEmail' ).addClass( 'border-gray-300' );
-            $( '#createEmail' ).text( '' ).val( '' );
-
-            $( '#createRole' ).addClass( 'border-gray-300' );
-            $( '#createRole' ).val( '' );
-
-            removeErrorClasses();
-        } );
-
-        function removeErrorClasses ()
-        {
-            $( '#createUserModal input, #editUserModal input, #createUserModal select, #editUserModal select' )
-                .removeClass( 'border-red-200 bg-red-100' );
-            $( '#createUserModal label, #editUserModal label' ).removeClass( 'text-red-500' );
-        }
 
         $( '#createUserModal input' ).on( 'input', function ()
         {
@@ -728,6 +679,8 @@ ob_start();
             $( '.delete-confirmation-popup' ).addClass( 'hidden' );
         } );
 
+        ////////////////////// PAGINATION //////////////////////////
+
         function generatePagination ( totalPages, currentPage )
         {
             const paginationDiv = $( '#pagination' );
@@ -758,6 +711,19 @@ ob_start();
             filterUserData( roleFilter, statusFilter, searchTerm, page, limit );
         } );
 
+
+        /////////////////// CLOSE / CANCEL EVENTS ////////////////////////////
+        // Function to handle modal closing
+        $( document ).on( 'click', '#closeUserModal, #cancelUserBtn', function ()
+        {
+            // Reset error markers and messages
+            $( '.border-red-500' ).removeClass( 'border-red-500' );
+            $( '.text-red-800' ).removeClass( 'text-red-800' );
+            $( '.error-message' ).empty();
+
+            // Hide the modal
+            $( '#userModal' ).addClass( 'hidden' );
+        } );
         filterUserData( '', '', '', 1, 5 );
     } );
 </script>

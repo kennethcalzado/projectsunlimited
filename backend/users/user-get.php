@@ -12,7 +12,7 @@ $limit = $_GET['limit'] ?? 5; // Default limit to 5 if not provided
 $offset = ($page - 1) * $limit;
 
 // Base SQL query
-$sql = "SELECT u.user_id, u.username, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
+$sql = "SELECT u.user_id, u.fname, u.lname, u.email, u.status, r.role_name, u.created_at, u.updated_at
         FROM users u 
         INNER JOIN roles r ON u.role_id = r.role_id";
 
@@ -34,7 +34,7 @@ if ($statusFilter !== null && $statusFilter !== '') {
 // Append WHERE clause for search term (if provided)
 if ($searchTerm !== null && $searchTerm !== '') {
     $sql .= ($roleFilter !== null || $statusFilter !== null && $statusFilter !== '') ? " AND" : " WHERE";
-    $sql .= " (u.fname LIKE ? OR u.lname LIKE ? OR u.username LIKE ?)";
+    $sql .= " (u.fname LIKE ? OR u.lname LIKE ? OR u.email LIKE ?)";
     $params[] = "%$searchTerm%";
     $params[] = "%$searchTerm%";
     $params[] = "%$searchTerm%";
