@@ -60,6 +60,9 @@ ob_start();
                         Name
                     </th>
                     <th scope="col" class="px-6 py-3">
+                        Brand
+                    </th>
+                    <th scope="col" class="px-6 py-3">
                         Description
                     </th>
                     <th scope="col" class="px-6 py-3">
@@ -93,20 +96,26 @@ ob_start();
                 <input type="text" id="addproductName" name="productName" placeholder="Enter Product Name" class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent">
             </div>
             <div class="mb-4 flex flex-col">
-                <label for="addproductImage" class="text-sm font-medium text-gray-700 mb-1">Insert Product Image</label>
-                <input type="file" id="addproductImage" name="productImage" accept="image/*" class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent">
+                <label for="addproductCategory" class="text-sm font-medium text-gray-700 mb-1">Brand</label>
+                <select id="addproductBrand" name="productBrand" class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent">
+                    <option></option>
+                </select>
             </div>
             <div class="mb-4 flex flex-col">
                 <label for="addproductDescription" class="text-sm font-medium text-gray-700 mb-1">Description</label>
                 <textarea id="addproductDescription" name="productDescription" rows="4" placeholder="Enter Product Description" class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent"></textarea>
             </div>
             <div class="mb-4 flex flex-col">
+                <label for="addproductImage" class="text-sm font-medium text-gray-700 mb-1">Insert Product Image</label>
+                <input type="file" id="addproductImage" name="productImage" accept=".jpg, .jpeg, .png" class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent" onchange="previewImage(event)">
+            </div>
+            <div id="imagePreview"></div>
+            <div class="mb-4 flex flex-col">
                 <label for="addproductCategory" class="text-sm font-medium text-gray-700 mb-1">Category</label>
                 <select id="addproductCategory" name="productCategory" class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent">
-                    <option value="">Select Category</option>
+                    <option></option>
                 </select>
             </div>
-
             <div class="flex justify-end">
                 <button type="submit" id="addProductbtn" class="btn btn-primary rounded-md text-center h-10 mt-3 sm:mt-4 !px-4 py-0 text-lg flex items-center mr-2">Add Product</button>
                 <button type="button" id="closeModal" class="btn btn-secondary rounded-md text-center h-10 mt-3 sm:mt-4 !px-4 py-0 text-lg flex items-center">Close</button>
@@ -114,7 +123,6 @@ ob_start();
         </form>
     </div>
 </div>
-
 
 <?php $content = ob_get_clean();
 ob_start();
@@ -136,7 +144,10 @@ ob_start();
                             <td>${product.image}</td>
                             <td>${product.category}</td>
                             <td>${product.date_added}</td>
-                            <td>Action</td>
+                            <td>
+                                <button class="editproduct" data-id="${product.id}">Edit</button>
+                                <button class="deleteproduct" data-id="${product.id}">Delete</button>
+                            </td>
                         `;
                         productListing.appendChild(tr);
                     });
@@ -204,6 +215,26 @@ ob_start();
             }));
         }
     });
+
+    function previewImage(event) {
+        const preview = document.getElementById('imagePreview');
+        const file = event.target.files[0];
+        const reader = new FileReader();
+
+        reader.onloadend = function() {
+            const img = document.createElement('img');
+            img.setAttribute('src', reader.result);
+            img.setAttribute('class', 'previewproductimage');
+            preview.innerHTML = '';
+            preview.appendChild(img);
+        }
+
+        if (file) {
+            reader.readAsDataURL(file);
+        } else {
+            preview.innerHTML = '';
+        }
+    }
 
     // Start the server
     const PORT = process.env.PORT || 3000;
