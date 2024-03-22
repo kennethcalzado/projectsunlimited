@@ -49,7 +49,7 @@ $image_path = $base_url . 'assets/image/projects.png';
     <div class="p-2.5 mt-3 flex items-center rounded-md px-6 duration-300 cursor-pointer hover:bg-yellow-600 text-white"
         title="Products">
         <div class="tooltip tooltip-right" data-tip="Products">
-            <i class="bi bi-bookmark-fill"></i>
+            <i class="bi bi-box2-fill"></i>
         </div>
         <span class="text-[15px] ml-4 text-gray-200 font-bold">Products</span>
     </div>
