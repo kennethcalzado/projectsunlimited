@@ -18,10 +18,12 @@ body {
 .logo-link {
     display: inline-block;
 }
-  
+
 .logo-image {
-    width: 150px; /* Adjust the width according to your design */
-    height: auto; /* Maintain aspect ratio */
+    width: 150px;
+    /* Adjust the width according to your design */
+    height: auto;
+    /* Maintain aspect ratio */
 }
 
 /**banner home**/
@@ -52,17 +54,17 @@ body {
     justify-content: center;
     align-items: center;
     cursor: pointer;
-    background-color: transparent 
+    background-color: transparent
 }
 
 .carousel-arrow.prev {
     left: 10px;
-    background-color: transparent 
+    background-color: transparent
 }
 
 .carousel-arrow.next {
     right: 10px;
-    background-color: transparent 
+    background-color: transparent
 }
 
 /* Additional styles */
@@ -109,8 +111,10 @@ p {
 
 /* second carousel home*/
 .carousel-section {
-    background: linear-gradient(to bottom, transparent, #F6E17A); /* Gradient background */
-    padding: 50px 0; /* Adjust padding as needed */
+    background: linear-gradient(to bottom, transparent, #F6E17A);
+    /* Gradient background */
+    padding: 50px 0;
+    /* Adjust padding as needed */
 }
 
 .carousel-section .carousel-dots .dot {
@@ -126,15 +130,22 @@ p {
 }
 
 .learn-more-btn {
-    background-color: #ffffff; /* Background color */
-    color: #000; /* Text color */
-    border: none; /* Remove border */
-    border-radius: 50px; /* Border radius */
-    padding: 10px 30px; /* Padding */
+    background-color: #ffffff;
+    /* Background color */
+    color: #000;
+    /* Text color */
+    border: none;
+    /* Remove border */
+    border-radius: 50px;
+    /* Border radius */
+    padding: 10px 30px;
+    /* Padding */
     position: absolute;
     bottom: 70px;
-    right: 100px; /* Align to the left */
-    z-index: 999; /* Ensure it stays on top */
+    right: 100px;
+    /* Align to the left */
+    z-index: 999;
+    /* Ensure it stays on top */
     font-size: 24px;
 }
 
@@ -143,8 +154,10 @@ p {
 }
 
 .white-btn {
-    background-color: #ffffff; /* Background color */
-    color: #000; /* Text color */
+    background-color: #ffffff;
+    /* Background color */
+    color: #000;
+    /* Text color */
     border-radius: 50px;
     border: none;
     font-size: 24px;
@@ -186,6 +199,7 @@ p {
     text-align: center;
     /* Center text horizontally */
 }
+
 .third-carousel-arrow {
     position: absolute;
     top: 50%;
@@ -222,73 +236,83 @@ p {
 }
 
 .address-item:hover {
-    background-color: #949494; /* Change to your desired color */
+    background-color: #949494;
+    /* Change to your desired color */
 }
 
 .address-item.selected {
-    background-color: #F6E381; /* Change to your desired color for selected item */
+    background-color: #F6E381;
+    /* Change to your desired color for selected item */
 }
 
 
- .btn-primary {
-     background-color: #F6E17A;
-     color: black;
-     border: none;
-     padding: 5px 20px;
-     cursor: pointer;
-     border-radius: 5px;
-     font-size: 19px;
- }
+.btn-primary {
+    background-color: #F6E17A;
+    color: black;
+    border: none;
+    padding: 5px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 19px;
+}
 
- .btn-secondary {
-     background-color: #d9d9d9;
-     color: black;
-     border: none;
-     padding: 5px 20px;
-     cursor: pointer;
-     border-radius: 5px;
-     font-size: 19px;
- }
+.btn-secondary {
+    background-color: #d9d9d9;
+    color: black;
+    border: none;
+    padding: 5px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 19px;
+}
 
- .btn-danger {
-     background-color: #f87474;
-     color: black;
-     border: none;
-     padding: 5px 20px;
-     cursor: pointer;
-     border-radius: 5px;
-     font-size: 19px;
- }
+.btn-danger {
+    background-color: #f87474;
+    color: black;
+    border: none;
+    padding: 5px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 19px;
+}
 
- .btn-view {
-     background-color: #a8c4dc;
-     color: black;
-     border: none;
-     padding: 5px 20px;
-     cursor: pointer;
-     border-radius: 5px;
-     font-size: 19px;
- }
- 
- .btn-primary:hover {
+.btn-view {
+    background-color: #a8c4dc;
+    color: black;
+    border: none;
+    padding: 5px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 19px;
+}
+
+.btn-primary:hover {
     background-color: #F9E89B;
 }
 
- .btn-view:hover {
-     background-color: #b6cde2;
- }
+.btn-view:hover {
+    background-color: #b6cde2;
+}
 
- .btn-danger:hover {
-     background-color: #f98686;
- }
+.btn-danger:hover {
+    background-color: #f98686;
+}
 
- .btn-secondary:hover {
-     background-color: #e6e6e6;
- }
+.btn-secondary:hover {
+    background-color: #e6e6e6;
+}
 
- .previewproductimage {
+.previewproductimage {
     max-width: 100px;
     max-height: 100px;
     margin-top: 10px;
 }
 
+td,
+th {
+    text-align: center;
+}
+.centered-image {
+    display: block;
+    margin: 0 auto; /* This will center the image horizontally */
+}

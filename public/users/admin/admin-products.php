@@ -157,11 +157,12 @@ ob_start();
                     data.forEach(product => {
                         const tr = document.createElement("tr");
                         tr.innerHTML = `
-                            <td>${product.name}</td>
-                            <td>${product.description}</td>
-                            <td>${product.image}</td>
-                            <td>${product.category}</td>
-                            <td>${product.date_added}</td>
+                            <td>${product.ProductName}</td>
+                            <td>${product.brand_name}</td>
+                            <td>${product.Description}</td>
+                            <td><img class="centered-image" src="../../../assets/products/${product.image_urls}" alt="Product Image" style="max-width: 100px; max-height: 100px;"></td>
+                            <td>${product.CategoryName}</td>
+                            <td>${product.created_at}</td>
                             <td>
                                 <button class="editproduct" data-id="${product.id}">Edit</button>
                                 <button class="deleteproduct" data-id="${product.id}">Delete</button>
@@ -176,7 +177,7 @@ ob_start();
             .catch(error => {
                 console.error("Error fetching data:", error);
                 const productListing = document.getElementById("productlisting");
-                productListing.innerHTML = "<tr><td colspan='6'class='text-center font-bold text-red-800'>Failed to fetch products</td></tr>";
+                productListing.innerHTML = "<tr><td colspan='6'class='text-center justify-center font-bold text-red-800'>Failed to fetch products</td></tr>";
             });
     });
 
