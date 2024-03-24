@@ -40,6 +40,11 @@ if ($searchTerm !== null && $searchTerm !== '') {
     $params[] = "%$searchTerm%";
 }
 
+// Handle sorting
+$sortBy = $_GET['sortBy'] ?? 'user_id'; // Default to sorting by user_id if not provided
+$sortOrder = $_GET['sortOrder'] ?? 'asc'; // Default to ascending order if not provided
+$sql .= " ORDER BY $sortBy $sortOrder";
+
 // Prepare statement for counting total rows
 $countSql = "SELECT COUNT(*) AS totalRows FROM ($sql) AS total";
 $countStmt = $conn->prepare($countSql);

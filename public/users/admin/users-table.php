@@ -8,9 +8,22 @@ ob_start();
 <div class="transition-all duration-300 page-content sm:ml-36 mr-4 sm:mr-20 mb-10">
     <div class="flex flex-col sm:flex-row justify-between items-center">
         <h1 class="text-4xl font-bold mb-2 ml-2 mt-8 text-black">User Accounts List</h1>
-        <button id="openCreateUserModal" class="yellow-btn text-center h-10 mt-3 sm:mt-4 !px-4 py-0 text-[19px]">
-            Add User Account
-        </button>
+        <div class=" flex flex-row justify-between items-cent">
+            <button id="openCreateRoleModal"
+                class="yellow-btn btn-primary rounded-md text-center h-10 mt-3 mx-1 sm:mt-4 !px-4 py-0 text-lg items-center flex">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                </svg> Add Role</button>
+            <button id="openCreateUserModal"
+                class="yellow-btn btn-primary rounded-md text-center h-10 mt-3 mx-1 sm:mt-4 !px-4 py-0 text-lg items-center flex">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                </svg> Add User Accounts</button>
+        </div>
     </div>
 
     <div class="border-b border-black flex-grow border-4 mt-2 mb-3"></div>
@@ -59,6 +72,13 @@ ob_start();
                 </div>
             </div>
         </div>
+        <button id="resetFiltersBtn"
+            class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded inline-flex items-center">
+            <i class="bi bi-arrow-counterclockwise mr-2" width="16" height="16">
+            </i>
+            Reset
+        </button>
+
     </div>
 
     <div class="relative overflow-x-auto mb-1 rounded-lg mt-4">
@@ -66,19 +86,42 @@ ob_start();
             <thead class="">
                 <tr>
                     <th scope="col" class="text-left px-6 py-3">
-                        Name
+                        <span id="NameOrder" class="">
+                            <i class="bi-caret-down-fill"></i>
+                            <i class="bi-caret-up-fill"></i>
+                            <span class="ml-1">Name</span>
+                        </span>
                     </th>
                     <th scope="col" class="text-left px-6 py-3">
-                        Role
+                        <span id="RoleOrder" class="">
+                            <i class="bi-caret-down-fill"></i>
+                            <i class="bi-caret-up-fill"></i>
+                            <span class="ml-1">Role</span>
+                        </span>
                     </th>
-                    <th scope="col" class="text-left px-6 py-3">
-                        Status
+                    <th scope="col" class="text-center px-6 py-3">
+                        <span id="StatusOrder" class="">
+                            <i class="bi-caret-down-fill"></i>
+                            <i class="bi-caret-up-fill"></i>
+                            <span class="ml-1">Status</span>
+                        </span>
+
                     </th>
                     <th scope="col" class="text-center py-3">
-                        Created At
+                        <span id="CreatedAtOrder" class="">
+                            <i class="bi-caret-down-fill"></i>
+                            <i class="bi-caret-up-fill"></i>
+                            <span class="ml-1"> Created At
+                            </span>
+                        </span>
                     </th>
                     <th scope="col" class="text-center py-3">
-                        Updated At
+                        <span id="UpdatedAtOrder" class="">
+                            <i class="bi-caret-down-fill"></i>
+                            <i class="bi-caret-up-fill"></i>
+                            <span class="ml-1"> Updated At
+                            </span>
+                        </span>
                     </th>
                     <th scope="col" class="text-center py-3">
                         Action
@@ -153,84 +196,7 @@ ob_start();
     </div>
 </div>
 
-<div class="confirmation-popup hidden fixed inset-0 z-50 flex items-center justify-center">
-    <div class="bg-black opacity-25 w-full h-full absolute inset-0"></div>
-    <div class="bg-white rounded-lg md:max-w-md md:mx-auto p-4 fixed inset-x-0 bottom-0 z-50 mb-4 mx-4 md:relative">
-        <div class="md:flex items-center">
-            <div class="rounded-full flex items-center justify-center w-16 h-16 flex-shrink-0 mx-auto">
-                <i class="bi bi-exclamation-circle text-5xl"></i>
-            </div>
-            <div class="mt-4 md:mt-0 md:ml-6 text-center md:text-left">
-                <p class="font-bold">Confirm Update</p>
-                <p class="text-sm text-gray-700 mt-1">Are you sure you want to update this user?</p>
-            </div>
-        </div>
-        <div class="text-center md:text-right mt-4 md:flex md:justify-end">
-            <button id="confirmUpdateBtn"
-                class="block w-full md:inline-block md:w-auto px-4 py-3 md:py-2 bg-yellow-200 text-black rounded-lg font-semibold text-sm md:ml-2 md:order-2 hover:bg-yellow-400 active:bg-yellow-500 focus:outline-none focus:border-yellow-500 focus:ring focus:ring-yellow-200 disabled:opacity-25 transition">Confirm</button>
-            <button id="cancelUpdateBtn"
-                class="block w-full md:inline-block md:w-auto px-4 py-3 md:py-2 bg-gray-200 rounded-lg font-semibold text-sm mt-4 md:mt-0 md:order-1 hover:bg-gray-300 active:bg-gray-400 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-300 disabled:opacity-25 transition">Cancel</button>
-        </div>
-    </div>
-</div>
-
-<div class="delete-confirmation-popup hidden fixed inset-0 z-50 flex items-center justify-center">
-    <div class="bg-black opacity-25 w-full h-full absolute inset-0"></div>
-    <div class="bg-white rounded-lg md:max-w-md md:mx-auto p-4 fixed inset-x-0 bottom-0 z-50 mb-4 mx-4 md:relative">
-        <div class="md:flex items-center">
-            <div class="rounded-full flex items-center justify-center w-16 h-16 flex-shrink-0 mx-auto">
-                <i class="bi bi-exclamation-circle text-5xl text-red-400"></i>
-            </div>
-            <div class="mt-4 md:mt-0 md:ml-6 text-center md:text-left">
-                <p class="font-bold text-red-400">Confirm to Change Account Status?</p>
-                <p class="text-sm text-gray-700 mt-1">Are you sure you want to change the status of this user?</p>
-            </div>
-        </div>
-        <div class="text-center md:text-right mt-4 md:flex md:justify-end">
-            <button id="confirmDeleteBtn"
-                class="block w-full md:inline-block md:w-auto px-4 py-3 md:py-2 bg-yellow-200 text-black rounded-lg font-semibold text-sm md:ml-2 md:order-2 hover:bg-yellow-400 active:bg-yellow-500 focus:outline-none focus:border-yellow-500 focus:ring focus:ring-yellow-200 disabled:opacity-25 transition">Confirm</button>
-            <button id="cancelDeleteBtn"
-                class="block w-full md:inline-block md:w-auto px-4 py-3 md:py-2 bg-gray-200 rounded-lg font-semibold text-sm mt-4 md:mt-0 md:order-1 hover:bg-gray-300 active:bg-gray-400 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-300 disabled:opacity-25 transition">Cancel</button>
-        </div>
-    </div>
-</div>
-
-<div class="success-popup hidden fixed inset-0 z-50 flex items-center justify-center">
-    <div class="bg-black opacity-25 w-full h-full absolute inset-0"></div>
-    <div class="bg-white rounded-lg md:max-w-md md:mx-auto p-4 fixed inset-x-0 bottom-0 z-50 mb-4 mx-4 md:relative">
-        <div class="md:flex items-center">
-            <div class="rounded-full flex items-center justify-center w-16 h-16 flex-shrink-0 mx-auto">
-                <i class="bi bi-check-circle text-5xl"></i>
-            </div>
-            <div class="mt-4 md:mt-0 md:ml-6 text-center md:text-left">
-                <p class="font-bold">Update Successful</p>
-                <p class="text-sm text-gray-700 mt-1">The user has been updated successfully.</p>
-            </div>
-        </div>
-        <div class="text-center md:text-right mt-4 md:flex md:justify-end">
-            <button id="closeSuccessBtn"
-                class="close block w-full md:inline-block md:w-auto px-4 py-3 md:py-2 bg-blue-200 text-blue-700 rounded-lg font-semibold text-sm md:ml-2 md:order-2">Close</button>
-        </div>
-    </div>
-</div>
-
-<div class="error-popup hidden fixed inset-0 z-50 flex items-center justify-center">
-    <div class="bg-black opacity-25 w-full h-full absolute inset-0"></div>
-    <div class="bg-white rounded-lg md:max-w-md md:mx-auto p-4 fixed inset-x-0 bottom-0 z-50 mb-4 mx-4 md:relative">
-        <div class="md:flex items-center">
-            <div class="rounded-full flex items-center justify-center w-16 h-16 flex-shrink-0 mx-auto">
-                <i class="bx bi-exclamation-triangle text-5xl text-red-400"></i>
-            </div>
-            <div class="mt-4 md:mt-0 md:ml-6 text-center md:text-left">
-                <p class="font-bold text-red-400">Update Failed</p>
-                <p class="text-sm text-gray-700 mt-1">Failed to update the user. Please try again later.</p>
-            </div>
-        </div>
-        <div class="text-center md:text-right mt-4 md:flex md:justify-end">
-            <button id="closeErrorBtn"
-                class="close block w-full md:inline-block md:w-auto px-4 py-3 md:py-2 bg-red-200 text-red-700 rounded-lg font-semibold text-sm md:ml-2 md:order-2">Close</button>
-        </div>
-    </div>
+<div id="popup-handler">
 </div>
 
 <?php $content = ob_get_clean();
@@ -242,33 +208,6 @@ ob_start();
     $( document ).ready( function ()
     {
         //////////////////// GET DATA ///////////////////////////
-
-        // Function to filter user data based on role, status, search term, and pagination
-        function filterUserData ( roleFilter, statusFilter, searchTerm, page, limit )
-        {
-            // Send AJAX request to fetch filtered data
-            $.ajax( {
-                url: '../../../backend/users/user-get.php',
-                type: 'GET',
-                dataType: 'json',
-                data: {
-                    roleFilter: roleFilter,
-                    statusFilter: statusFilter,
-                    searchTerm: searchTerm,
-                    page: page,
-                    limit: limit
-                },
-                success: function ( data )
-                {
-                    console.log( data );
-                    renderUserData( data.users, data.pagination );
-                },
-                error: function ( xhr, status, error )
-                {
-                    console.error( 'Error:', error );
-                }
-            } );
-        }
 
         $.ajax( {
             url: '../../../backend/roles/roles-get.php',
@@ -292,15 +231,114 @@ ob_start();
             }
         } );
 
-        // Event listeners for dropdown menu changes, search input, and pagination dropdown
-        $( '#roleFilter, #statusFilter, #searchInput, #paginationSelect' ).on( 'change input', function ()
+        // Function to handle header click
+        function handleHeaderClick ( headerId )
+        {
+            const { roleFilter, statusFilter, searchTerm, limit } = updateFiltersAndSort();
+            const columnMap = {
+                'NameOrder': 'lname',
+                'RoleOrder': 'role_name',
+                'StatusOrder': 'status',
+                'CreatedAtOrder': 'created_at',
+                'UpdatedAtOrder': 'updated_at'
+            };
+
+            const column = columnMap[headerId]; // Get the column name from the headerId
+
+            const sortOrder = $( `#${ headerId }` ).data( 'sortOrder' ) || 'asc'; // Get current sort order from data attribute
+
+            // Toggle sort order
+            const newSortOrder = sortOrder === 'asc' ? 'desc' : 'asc';
+            $( `#${ headerId }` ).data( 'sortOrder', newSortOrder ); // Update sort order in data attribute
+
+            // Update caret icons based on sort order
+            $( `#${ headerId } .bi-caret-down-fill` ).toggleClass( 'hidden', newSortOrder !== 'asc' );
+            $( `#${ headerId } .bi-caret-up-fill` ).toggleClass( 'hidden', newSortOrder !== 'desc' );
+
+            // Call filter function with sorting parameters
+            filterUserData( roleFilter, statusFilter, searchTerm, 1, limit, column, newSortOrder ); // Pass column name and sort order
+        }
+
+        // Event listeners for header clicks
+        $( '#NameOrder, #RoleOrder, #StatusOrder, #CreatedAtOrder, #UpdatedAtOrder' ).on( 'click', function ()
+        {
+            handleHeaderClick( $( this ).attr( 'id' ) );
+        } );
+
+        function updateFiltersAndSort ()
         {
             const roleFilter = $( '#roleFilter' ).val();
             const statusFilter = $( '#statusFilter' ).val();
             const searchTerm = $( '#searchInput' ).val();
             const limit = $( '#paginationSelect' ).val();
-            filterUserData( roleFilter, statusFilter, searchTerm, 1, limit ); // Reset to page 1 when filters change
+            const headerId = $( '.caret-header.active' ).attr( 'id' );
+            return { roleFilter, statusFilter, searchTerm, limit, headerId };
+        }
+
+        // Event listener for filter inputs and pagination select
+        $( '#roleFilter, #statusFilter, #searchInput, #paginationSelect' ).on( 'change input', function ()
+        {
+            handleFilterChange();
         } );
+
+        // Function to handle filter and search input changes
+        function handleFilterChange ()
+        {
+            const { roleFilter, statusFilter, searchTerm, limit, headerId } = updateFiltersAndSort();
+            handleHeaderClick( headerId, roleFilter, statusFilter, searchTerm, limit );
+        }
+
+        // Event listener for reset filters button
+        $( '#resetFiltersBtn' ).on( 'click', function ()
+        {
+            resetFilters();
+        } );
+
+        // Function to reset all filters, search input, and sorting order
+        function resetFilters ()
+        {
+            // Reset filter inputs
+            $( '#roleFilter, #statusFilter' ).val( '' );
+
+            // Reset search input
+            $( '#searchInput' ).val( '' );
+
+            // Reset sorting order and icons
+            $( '.bi-caret-down-fill, .bi-caret-up-fill' ).addClass( 'hidden' );
+            $( '.caret-header' ).removeData( 'sortOrder' );
+
+            // Trigger filter change handler to update data
+            handleFilterChange();
+        }
+
+        // Function to filter user data with sorting
+        function filterUserData ( roleFilter, statusFilter, searchTerm, page, limit, sortBy, sortOrder )
+        {
+            // Send AJAX request to fetch filtered and sorted data
+            $.ajax( {
+                url: '../../../backend/users/user-get.php',
+                type: 'GET',
+                dataType: 'json',
+                data: {
+                    roleFilter: roleFilter,
+                    statusFilter: statusFilter,
+                    searchTerm: searchTerm,
+                    page: page,
+                    limit: limit,
+                    sortBy: sortBy,
+                    sortOrder: sortOrder
+                },
+                success: function ( data )
+                {
+                    console.log( data );
+                    renderUserData( data.users, data.pagination );
+                },
+                error: function ( xhr, status, error )
+                {
+                    console.error( 'Error:', error );
+                }
+            } );
+        }
 
         function renderUserData ( data, pagination )
         {
@@ -467,7 +505,7 @@ ob_start();
             return isValid;
         }
 
-        ////////////////////// SUBMIT EVENT HANDLER ///////////////////////////
+        ////////////////////// SUBMIT EVENT HANDLER (HANDLES BOTH UPDATE AND CREATE USER) ///////////////////////////
 
         // Event listener for form submission
         $( '#userForm' ).submit( function ( event )
@@ -482,201 +520,178 @@ ob_start();
 
                 // Determine the URL based on whether it's an update or create action
                 let url;
+                let actionType;
                 const userId = $( '#userModal' ).data( 'userId' );
-                if ( userId )
+                console.log( userId );
+
+                if ( userId !== undefined )
                 {
-                    // Update user URL
+                    // Update user
+                    actionType = 'update';
+                    showPopup( 'confirmation', 'Confirm Update', null, actionType ); // Pass null for message
                     url = '../../../backend/users/user-update.php';
                     formData += '&userId=' + userId;
                 } else
                 {
-                    // Create user URL
+                    // Create user
+                    actionType = 'create';
+                    showPopup( 'confirmation', 'Confirm Create', null, actionType ); // Pass null for message
                     url = '../../../backend/users/user-create.php';
                 }
 
-                // Submit the form using AJAX
-                $.ajax( {
-                    url: url,
-                    type: 'POST',
-                    data: formData,
-                    dataType: 'json',
-                    success: function ( response )
-                    {
-                        if ( response.success )
-                        {
-                            // Display success message using a pop-up
-                            $( '.success-popup .popup-message' ).text( response.message );
-                            $( '.success-popup' ).removeClass( 'hidden' );
-
-                            // Automatically close the pop-up after 3 seconds (3000 milliseconds)
-                            setTimeout( function ()
-                            {
-                                $( '.success-popup' ).addClass( 'hidden' );
-                                $( '#userModal' ).addClass( 'hidden' );
-                            }, 3000 );
-
-                            // Refresh user data (assuming you have a function to fetch and display user data)
-                            fetchUserData();
-                        } else
-                        {
-                            if ( response.message )
-                            {
-                                // Reset error messages and styles
-                                $( '.error-message' ).text( '' );
-                                $( '.form-control' ).removeClass( 'border-red-500' );
-
-                                // Display error messages received from the backend
-                                Object.keys( response.message ).forEach( function ( fieldName )
-                                {
-                                    $( '#' + fieldName + 'Error' ).text( response.message[fieldName] );
-                                    $( '#' + fieldName ).addClass( 'border-red-500' );
-                                } );
-                            }
-
-                            // Display error message using a pop-up
-                            $( '.error-popup .popup-message' ).text( response.message );
-                            $( '.error-popup' ).removeClass( 'hidden' );
-                        }
-                    },
-                    error: function ( xhr, status, error )
-                    {
-                        console.error( 'Error:', error );
-                        // Display error message using a pop-up
-                        $( '.error-popup .popup-message' ).text( error );
-                        $( '.error-popup' ).removeClass( 'hidden' );
-                    }
-                } );
+                // Store form data and action type for later use
+                $( document ).data( 'formData', formData );
+                $( document ).data( 'actionType', actionType );
+                $( document ).data( 'url', url );
             }
         } );
 
+        // Event listener for confirmation button click
+        $( document ).on( 'click', '#confirmBtn', function ()
+        {
+            // Hide confirmation pop-up
+            $( '.confirmation-popup' ).addClass( 'hidden' );
 
-        // Open modal when edit button is clicked
+            // Retrieve stored form data and action type
+            let formData = $( document ).data( 'formData' );
+            const actionType = $( document ).data( 'actionType' );
+            const url = $( document ).data( 'url' );
+
+            // Submit the form using AJAX
+            $.ajax( {
+                url: url,
+                type: 'POST',
+                data: formData,
+                dataType: 'json',
+                success: function ( response )
+                {
+                    if ( response.success )
+                    {
+                        // Hide create user form
+                        $( '#userModal' ).addClass( 'hidden' );
+
+                        // Display success message using a pop-up
+                        if ( actionType === 'update' )
+                        {
+                            showPopup( 'success', 'Success', null, actionType ); // Pass null for message
+                        } else if ( actionType === 'create' )
+                        {
+                            showPopup( 'success', 'Success', null, actionType ); // Pass null for message
+                        }
+
+                        // Automatically close the success pop-up after 3 seconds
+                        setTimeout( function ()
+                        {
+                            $( '.success-popup' ).addClass( 'hidden' );
+                        }, 3000 );
+
+                        // Refresh user data 
+                        filterUserData( '', '', '', 1, 5 );
+                    } else
+                    {
+                        // Display error messages received from the backend
+                        if ( response.message )
+                        {
+                            Object.keys( response.message ).forEach( function ( fieldName )
+                            {
+                                $( '#' + fieldName + 'Error' ).addClass( 'text-sm text-red-500 mt-1 error-message' )
+                                    .text( response.message[fieldName] );
+                                $( '#' + fieldName ).addClass( 'border-red-500' );
+                                // Display error message using a pop-up
+                                showPopup( 'error', 'Error', response.message[fieldName] );
+                            } );
+                        }
+                    }
+                },
+                error: function ( xhr, status, error )
+                {
+                    console.error( 'Error:', error );
+                    // Display error message using a pop-up
+                    showPopup( 'error', 'Error', 'An error occurred. Please try again later.' );
+                }
+            } );
+
+            // Clear stored formData, actionType, and URL
+            $( document ).data( 'formData', null );
+            $( document ).data( 'actionType', null );
+            $( document ).data( 'url', null );
+            $( '#userModal' ).removeData( 'userId' );
+            $( '#popup-handler' ).empty();
+        } );
+
+        //////////////////// ACTIVATE / DEACTIVATE ///////////////////////////
+
+        // Open modal when delete button is clicked
         $( document ).on( 'click', '.delBtn', function ()
         {
             // Get user information
             const userId = $( this ).data( 'userId' );
-            $( '#confirmDeleteBtn' ).data( 'userId', userId );
+            const userStatus = $( this ).data( 'userStatus' );
+            console.log( userStatus );
+            const delBtnText = "Delete"; // Assuming delBtnText is defined somewhere
+            const popupMessage = userStatus === 'active' ? 'Are you sure you want to deactivate this user?' : 'Are you sure you want to activate this user?';
+            const header = userStatus === 'active' ? 'Confirm Deactivation' : 'Confirm Activation';
 
-            // Open the modal
-            $( '.delete-confirmation-popup' ).removeClass( 'hidden' );
+            // Call showPopup function with confirmation parameters
+            showPopup( 'delete', header, popupMessage, userStatus === 'active' ? 'deactivate' : 'activate' );
+
+            // Store user ID for later use
+            $( '#confirmDeleteBtn' ).data( 'userId', userId );
+            $( '#confirmDeleteBtn' ).data( 'userStatus', userStatus );
+
         } );
 
         // Click event listener for confirmDeleteBtn
         $( document ).on( 'click', '#confirmDeleteBtn', function ()
         {
             // Get user information
-            const userId = $( this ).data( 'userId' );
+            const userId = $( '#confirmDeleteBtn' ).data( 'userId' );
+            const userStatus = $( '#confirmDeleteBtn' ).data( 'userStatus' );
 
-            // AJAX request
-            $.ajax( {
-                url: '../../../backend/users/user-delete.php',
-                type: 'POST',
-                data: { userId: userId },
-                dataType: 'json',
-                success: function ( response )
-                {
-                    console.log( response );
-                    if ( response.message )
+            // Check if userId exists
+            if ( userId )
+            {
+                // AJAX request
+                $.ajax( {
+                    url: '../../../backend/users/user-delete.php',
+                    type: 'POST',
+                    data: { userId: userId },
+                    dataType: 'json',
+                    success: function ( response )
                     {
-                        // Display success message using a pop-up
-                        $( '.success-popup .popup-message' ).text( response.message );
-                        $( '.success-popup' ).removeClass( 'hidden' );
-
-                        // Automatically close the pop-up after 3 seconds (3000 milliseconds)
-                        setTimeout( function ()
+                        if ( response.success )
                         {
-                            $( '.success-popup' ).addClass( 'hidden' );
-                            $( '.delete-confirmation-popup' ).addClass( 'hidden' );
-                        }, 3000 );
+                            // Display success message using a pop-up
+                            const successMessage = response.message || 'User operation successful.';
+                            showPopup( 'success', 'Success', null, userStatus === 'active' ? 'deactivate' : 'activate' );
 
-                        filterUserData( '', '', '', 1, 5 );
-                    } else
+                            // Automatically close the pop-up after 3 seconds
+                            setTimeout( function ()
+                            {
+                                $( '.success-popup' ).addClass( 'hidden' );
+                            }, 3000 );
+
+                            filterUserData( '', '', '', 1, 5 );
+                        } else
+                        {
+                            // Display error message using a pop-up
+                            const errorMessage = response.message || 'An error occurred. Please try again later.';
+                            showPopup( 'error', 'Error', errorMessage );
+                        }
+                    },
+                    error: function ( xhr, status, error )
                     {
                         // Display error message using a pop-up
-                        displayErrorPopup( 'An error occurred. Please try again later.' );
-
+                        showPopup( 'error', 'Error', 'An error occurred. Please try again later.' );
+                        console.error( 'Error:', error );
                     }
-                },
-                error: function ( xhr, status, error )
-                {
-                    // Handle error response
-                    console.error( 'Error deleting user:', error );
-                    // You can show an error message or perform other actions here
-                }
-            } );
-        } );
-
-        //////////////////////close buttons///////////////////////////////  
-        // Function to display error message popup
-        function displayErrorPopup ( message )
-        {
-            $( '.error-popup .popup-message' ).text( message );
-            $( '.error-popup' ).removeClass( 'hidden' );
-        }
-        // Handle cancel update action
-        $( '#cancelUpdateBtn' ).click( function ()
-        {
-            // Hide the confirmation popup and keep the edit modal open
-            $( '.confirmation-popup' ).addClass( 'hidden' );
-        } );
-
-        // Handle close button click for success pop-up
-        $( '#closeSuccessBtn' ).click( function ()
-        {
-            $( '.success-popup' ).addClass( 'hidden' );
-            $( '#editUserModal' ).addClass( 'hidden' );
-        } );
-
-        // Handle close button click for error pop-up
-        $( '#closeErrorBtn' ).click( function ()
-        {
-            $( '.error-popup' ).addClass( 'hidden' );
-            $( '.delete-confirmation-popup' ).addClass( 'hidden' );
-        } );
-
-        $( '#createUserModal input' ).on( 'input', function ()
-        {
-            const inputId = $( this ).attr( 'id' );
-            const value = $( this ).val();
-
-            // Check individual input validity
-            switch ( inputId )
+                } );
+            } else
             {
-                case 'createFirstName':
-                case 'editFirstName':
-                    validateFirstName( value );
-                    break;
-                case 'createLastName':
-                case 'editLastName':
-                    validateLastName( value );
-                    break;
-                case 'createUsername':
-                case 'editUsername':
-                    validateUsername( value );
-                    break;
-                case 'createEmail':
-                case 'editEmail':
-                    validateEmail( value );
-                    break;
-                case 'createRole':
-                case 'editRole':
-                    validateRole( value );
-                    break;
+                // If userId does not exist, show an error message
+                showPopup( 'error', 'Error', 'User ID not provided.' );
             }
-        } );
-
-        // Handle form submission (update user)
-        $( '#editUserForm' ).submit( function ( event )
-        {
-            event.preventDefault();
-            // Show confirmation popup
-            $( '.confirmation-popup' ).removeClass( 'hidden' );
-        } );
-
-        // Handle close button click for delete pop-up
-        $( '#cancelDeleteBtn' ).click( function ()
-        {
-            $( '.delete-confirmation-popup' ).addClass( 'hidden' );
+            $( '#popup-handler' ).empty();
         } );
 
         ////////////////////// PAGINATION //////////////////////////
@@ -724,6 +739,164 @@ ob_start();
             // Hide the modal
             $( '#userModal' ).addClass( 'hidden' );
         } );
+
+        /////////////////// POP UP FUNCTION ////////////////////////////
+        function showPopup ( type, header, message, actionType )
+        {
+            const popupConfig = {
+                confirmation: {
+                    iconClass: 'bi-exclamation-circle',
+                    buttonClass: 'confirmBtn',
+                    buttonText: 'Confirm',
+                    buttonBgColor: 'bg-yellow-200',
+                    buttonTextColor: 'text-black',
+                    hoverBgColor: 'hover:bg-yellow-400',
+                    activeBgColor: 'active:bg-yellow-500',
+                    focusStyles: 'focus:outline-none focus:border-yellow-500 focus:ring focus:ring-yellow-200',
+                    transition: 'transition disabled:opacity-25',
+                    iconColor: 'text-black'
+                },
+                success: {
+                    iconClass: 'bi-check-circle',
+                    buttonClass: 'closeSuccessBtn',
+                    buttonText: 'Close',
+                    buttonBgColor: 'bg-gray-200',
+                    buttonTextColor: 'text-black',
+                    hoverBgColor: 'hover:bg-gray-300',
+                    activeBgColor: 'active:bg-gray-400',
+                    focusStyles: 'focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-300',
+                    transition: 'transition disabled:opacity-25',
+                    iconColor: 'text-green-400'
+                },
+                error: {
+                    iconClass: 'bi-exclamation-triangle',
+                    buttonClass: 'closeErrorBtn',
+                    buttonText: 'Close',
+                    buttonBgColor: 'bg-gray-200',
+                    buttonTextColor: 'text-black',
+                    hoverBgColor: 'hover:bg-gray-300',
+                    activeBgColor: 'active:bg-gray-400',
+                    focusStyles: 'focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-300',
+                    transition: 'transition disabled:opacity-25',
+                    iconColor: 'text-red-400'
+                },
+                delete: { // Configuration for delete action
+                    iconClass: 'bi-trash',
+                    buttonClass: 'confirmDeleteBtn',
+                    buttonText: 'Confirm',
+                    buttonBgColor: 'bg-red-500',
+                    buttonTextColor: 'text-white',
+                    hoverBgColor: 'hover:bg-red-600',
+                    activeBgColor: 'active:bg-red-700',
+                    focusStyles: 'focus:outline-none focus:border-red-600 focus:ring focus:ring-red-400',
+                    transition: 'transition disabled:opacity-25',
+                    iconColor: 'text-red-400'
+                }
+            };
+
+            const {
+                iconClass,
+                buttonClass,
+                buttonText,
+                buttonBgColor,
+                buttonTextColor,
+                hoverBgColor,
+                activeBgColor,
+                focusStyles,
+                transition,
+                iconColor
+            } = popupConfig[type];
+
+            // Adjust message based on actionType
+            if ( actionType === 'update' )
+            {
+                if ( type === 'confirmation' )
+                {
+                    message = 'Are you sure you want to update this user?';
+                } else if ( type === 'success' )
+                {
+                    message = 'User updated successfully.';
+                }
+            } else if ( actionType === 'create' )
+            {
+                if ( type === 'confirmation' )
+                {
+                    message = 'Are you sure you want to create this user?';
+                } else if ( type === 'success' )
+                {
+                    message = 'User created successfully.';
+                }
+            } else if ( actionType === 'delete' )
+            { // Adjust for delete action
+                if ( type === 'confirmation' )
+                {
+                    message = 'Are you sure you want to delete this user?';
+                } else if ( type === 'success' )
+                {
+                    message = 'User deleted successfully.';
+                }
+            } else if ( actionType === 'activate' )
+            { // Adjust for activate action
+                if ( type === 'confirmation' )
+                {
+                    message = 'Are you sure you want to activate this user?';
+                } else if ( type === 'success' )
+                {
+                    message = 'User activated successfully.';
+                }
+            } else if ( actionType === 'deactivate' )
+            { // Adjust for deactivate action
+                if ( type === 'confirmation' )
+                {
+                    message = 'Are you sure you want to deactivate this user?';
+                } else if ( type === 'success' )
+                {
+                    message = 'User deactivated successfully.';
+                }
+            }
+
+            // Create the pop-up HTML using jQuery
+            const popupHtml = $( '<div>' ).addClass( `${ type }-popup hidden fixed inset-0 z-50 flex items-center justify-center` ).append(
+                $( '<div>' ).addClass( 'bg-black opacity-25 w-full h-full absolute inset-0' ),
+                $( '<div>' ).addClass( 'bg-white rounded-lg md:max-w-md md:mx-auto p-4 fixed inset-x-0 bottom-0 z-50 mb-4 mx-4 md:relative' ).append(
+                    $( '<div>' ).addClass( 'md:flex items-center' ).append(
+                        $( '<div>' ).addClass( 'rounded-full flex items-center justify-center w-16 h-16 flex-shrink-0 mx-auto' ).append(
+                            $( '<i>' ).addClass( `bi ${ iconClass } text-5xl ${ iconColor }` )
+                        ),
+                        $( '<div>' ).addClass( 'mt-4 md:mt-0 md:ml-6 text               -center md:text-left' ).append(
+                            $( '<p>' ).addClass( `font-bold ${ iconColor }` ).text( header ),
+                            $( '<p>' ).addClass( 'text-sm text-gray-700 mt-1' ).text( message )
+                        )
+                    ),
+                    $( '<div>' ).addClass( 'text-center md:text-right mt-4 md:flex md:justify-end' ).append(
+                        $( '<button>' ).attr( 'id', buttonClass ).addClass( `block w-full md:inline-block md:w-auto px-4 py-3 md:py-2 rounded-lg font-semibold text-sm md:ml-2 md:order-2 ${ buttonBgColor } ${ buttonTextColor } ${ hoverBgColor } ${ activeBgColor } ${ focusStyles } ${ transition }` ).text( buttonText ),
+                        type === 'confirmation' || type === 'delete' ? $( '<button>' ).addClass( 'cancel block w-full md:inline-block md:w-auto px-4 py-3 md:py-2 rounded-lg font-semibold text-sm mt-4 md:mt-0 md:order-1 bg-gray-200 hover:bg-gray-300 active:bg-gray-400 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-300 disabled:opacity-25 transition' ).text( 'Cancel' ) : null
+                    )
+                )
+            );
+
+            // Append the pop-up HTML to the specified div
+            $( '#popup-handler' ).append( popupHtml );
+
+            // Show the pop-up
+            $( `.${ type }-popup` ).removeClass( 'hidden' );
+
+            // Add event listener to close button using event delegation
+            $( '#popup-handler' ).on( 'click', `#${ buttonClass }`, function ()
+            {
+                $( `.${ type }-popup` ).hide();
+            } );
+
+            // Add event listener to cancel button if it exists
+            if ( type === 'confirmation' || type === 'delete' )
+            {
+                $( '.cancel' ).click( function ()
+                {
+                    $( `.${ type }-popup` ).hide();
+                } );
+            }
+        }
+
         filterUserData( '', '', '', 1, 5 );
     } );
 </script>
