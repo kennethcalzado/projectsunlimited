@@ -58,13 +58,15 @@ ob_start();
             <div class="relative mb-1 mt-2 sm:mb-0 sm:mr-2">
                 <!-- Search input -->
                 <div class="relative text-gray-600">
-                    <input class="border-2 border-gray-300 bg-white h-9 w-64 px-2 rounded-lg text-sm focus:outline-none"
+                    <input
+                        class="border-2 border-gray-300 bg-white h-11 w-64 px-2 mt-4 sm:!mt-0 rounded-lg text-[16px] focus:outline-none"
                         type="text" name="search" placeholder="Search" id="searchInput">
-                    <button type="submit" class="absolute right-0 top-0 mt-3 mr-4">
-                        <svg class="text-gray-600 h-4 w-4 fill-current" xmlns="http://www.w3.org/2000/svg"
-                            xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1" x="0px" y="0px"
-                            viewBox="0 0 56.966 56.966" style="enable-background:new 0 0 56.966 56.966;"
-                            xml:space="preserve" width="512px" height="512px">
+                    <button type="submit" class="absolute right-0 top-0 mt-7 mr-4 sm:mt-3 ">
+                        <svg class="text-gray-600 h-5 w-5 fill-current hover:text-yellow-500"
+                            xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1"
+                            id="Capa_1" x="0px" y="0px" viewBox="0 0 56.966 56.966"
+                            style="enable-background:new 0 0 56.966 56.966;" xml:space="preserve" width="512px"
+                            height="512px">
                             <path
                                 d="M55.146,51.887L41.588,37.786c3.486-4.144,5.396-9.358,5.396-14.786c0-12.682-10.318-23-23-23s-23,10.318-23,23  s10.318,23,23,23c4.761,0,9.298-1.436,13.177-4.162l13.661,14.208c0.571,0.593,1.339,0.92,2.162,0.92  c0.779,0,1.518-0.297,2.079-0.837C56.255,54.982,56.293,53.08,55.146,51.887z M23.984,6c9.374,0,17,7.626,17,17s-7.626,17-17,17  s-17-7.626-17-17S14.61,6,23.984,6z" />
                         </svg>
@@ -73,10 +75,9 @@ ob_start();
             </div>
         </div>
         <button id="resetFiltersBtn"
-            class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-4 rounded inline-flex items-center">
-            <i class="bi bi-arrow-counterclockwise mr-2" width="16" height="16">
-            </i>
+            class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold mt-6 py-2 px-3 rounded inline-flex items-center sm:mt-2">
             Reset
+            <i class="bi bi-arrow-counterclockwise ml-2 mt-1" width="16" height="16"></i>
         </button>
 
     </div>
@@ -87,38 +88,42 @@ ob_start();
                 <tr>
                     <th scope="col" class="text-left px-6 py-3">
                         <span id="NameOrder" class="">
-                            <i class="bi-caret-down-fill"></i>
-                            <i class="bi-caret-up-fill"></i>
+                            <i id="downArrow" class="bi bi-caret-down-fill cursor-pointer"></i>
+                            <i id="upArrow" class="bi bi-caret-up-fill cursor-pointer"></i>
                             <span class="ml-1">Name</span>
                         </span>
                     </th>
                     <th scope="col" class="text-left px-6 py-3">
                         <span id="RoleOrder" class="">
-                            <i class="bi-caret-down-fill"></i>
-                            <i class="bi-caret-up-fill"></i>
+                            <i id="downArrow" class="bi bi-caret-down-fill cursor-pointer"></i>
+                            <i id="upArrow" class="bi bi-caret-up-fill cursor-pointer"></i>
+
                             <span class="ml-1">Role</span>
                         </span>
                     </th>
                     <th scope="col" class="text-center px-6 py-3">
                         <span id="StatusOrder" class="">
-                            <i class="bi-caret-down-fill"></i>
-                            <i class="bi-caret-up-fill"></i>
+                            <i id="downArrow" class="bi bi-caret-down-fill cursor-pointer"></i>
+                            <i id="upArrow" class="bi bi-caret-up-fill cursor-pointer"></i>
+
                             <span class="ml-1">Status</span>
                         </span>
 
                     </th>
                     <th scope="col" class="text-center py-3">
                         <span id="CreatedAtOrder" class="">
-                            <i class="bi-caret-down-fill"></i>
-                            <i class="bi-caret-up-fill"></i>
+                            <i id="downArrow" class="bi bi-caret-down-fill cursor-pointer"></i>
+                            <i id="upArrow" class="bi bi-caret-up-fill cursor-pointer"></i>
+
                             <span class="ml-1"> Created At
                             </span>
                         </span>
                     </th>
                     <th scope="col" class="text-center py-3">
                         <span id="UpdatedAtOrder" class="">
-                            <i class="bi-caret-down-fill"></i>
-                            <i class="bi-caret-up-fill"></i>
+                            <i id="downArrow" class="bi bi-caret-down-fill cursor-pointer"></i>
+                            <i id="upArrow" class="bi bi-caret-up-fill cursor-pointer"></i>
+
                             <span class="ml-1"> Updated At
                             </span>
                         </span>
@@ -207,6 +212,16 @@ ob_start();
 <script>
     $( document ).ready( function ()
     {
+
+        // Add yellow ring effect on hover, toggle, and focus with transition
+        $( '#downArrow, #upArrow' ).on( 'mouseenter focus', function ()
+        {
+            $( this ).addClass( 'ring bg-yellow-200 ring-transparent transition' );
+        } ).on( 'mouseleave blur', function ()
+        {
+            $( this ).removeClass( 'ring bg-yellow-200 ring-transparent transition' );
+        } )
+
         //////////////////// GET DATA ///////////////////////////
 
         $.ajax( {
@@ -245,15 +260,15 @@ ob_start();
 
             const column = columnMap[headerId]; // Get the column name from the headerId
 
-            const sortOrder = $( `#${ headerId }` ).data( 'sortOrder' ) || 'asc'; // Get current sort order from data attribute
+            const sortOrder = $( `#${ headerId }` ).data( 'sortOrder' ) || 'desc'; // Get current sort order from data attribute
 
             // Toggle sort order
-            const newSortOrder = sortOrder === 'asc' ? 'desc' : 'asc';
+            const newSortOrder = sortOrder === 'desc' ? 'asc' : 'desc';
             $( `#${ headerId }` ).data( 'sortOrder', newSortOrder ); // Update sort order in data attribute
 
             // Update caret icons based on sort order
-            $( `#${ headerId } .bi-caret-down-fill` ).toggleClass( 'hidden', newSortOrder !== 'asc' );
-            $( `#${ headerId } .bi-caret-up-fill` ).toggleClass( 'hidden', newSortOrder !== 'desc' );
+            $( `#${ headerId } .bi-caret-down-fill` ).toggleClass( 'hidden', newSortOrder !== 'desc' );
+            $( `#${ headerId } .bi-caret-up-fill` ).toggleClass( 'hidden', newSortOrder !== 'asc' );
 
             // Call filter function with sorting parameters
             filterUserData( roleFilter, statusFilter, searchTerm, 1, limit, column, newSortOrder ); // Pass column name and sort order
@@ -288,6 +303,8 @@ ob_start();
             handleHeaderClick( headerId, roleFilter, statusFilter, searchTerm, limit );
         }
 
+        /////////////// RESET  FILTERS AND SORTING //////////////////
+
         // Event listener for reset filters button
         $( '#resetFiltersBtn' ).on( 'click', function ()
         {
@@ -304,8 +321,7 @@ ob_start();
             $( '#searchInput' ).val( '' );
 
             // Reset sorting order and icons
-            $( '.bi-caret-down-fill, .bi-caret-up-fill' ).addClass( 'hidden' );
-            $( '.caret-header' ).removeData( 'sortOrder' );
+            $( '.bi-caret-down-fill, .bi-caret-up-fill' ).removeClass( 'hidden' );
 
             // Trigger filter change handler to update data
             handleFilterChange();
@@ -705,10 +721,10 @@ ob_start();
                 let button = $( '<button>' ).addClass( 'pagination-btn mx-1 py-1 px-3 rounded-lg' );
                 if ( i === currentPage )
                 {
-                    button.addClass( 'bg-blue-500 text-white' );
+                    button.addClass( 'bg-yellow-200 text-black font-bold transition' );
                 } else
                 {
-                    button.addClass( 'bg-gray-200 text-gray-700 hover:bg-gray-300' );
+                    button.addClass( 'bg-gray-200 text-gray-700 hover:bg-gray-300 hover:underline transition' );
                 }
                 button.text( i );
                 paginationDiv.append( button );

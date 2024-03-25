@@ -24,16 +24,21 @@
         // Include appropriate navigation component based on user role
         if ($userRole == "guest") {
             include __DIR__ . "/include/navbar.php";
-            // Include footer for guests
-            include __DIR__ . "/include/footer.php";
+            if ($pageTitle == "Login") {
+                echo "<main>";
+                echo $content ?? "";
+                echo "</main>";
+            } else {
+                include __DIR__ . "/include/footer.php";
+            }
         } elseif ($userRole == 'Admin' || $userRole == 'Marketing') {
             include __DIR__ . "/include/sidebar.php";
             echo "<main>";
             echo $content ?? "";
             echo "</main>";
         }
-        ?>
 
+        ?>
 
     </body>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"
