@@ -2,7 +2,7 @@
 $pageTitle = "Login";
 ob_start();
 ?>
-<div class="container mx-auto my-4">
+<div class="container mx-auto my-10">
     <!-- Outer Row -->
     <div class="flex justify-center">
         <div class="w-full lg:w-10/12 md:w-9/12">
@@ -62,5 +62,5 @@ ob_start();
 
 <?php
 $content = ob_get_clean();
-include("../public/master.php");
+include ("../public/master.php");
 ?>
