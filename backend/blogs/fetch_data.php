@@ -5,7 +5,10 @@ if (isset($_POST['category'])) {
     $category = $_POST['category'];
     $sortOption = $_POST['sortOption'];
     $searchTerm = isset($_POST['query']) ? $_POST['query'] : '';
+    $page = isset($_POST['page']) ? $_POST['page'] : 1; // New: Get the current page
 
+    $limit = 10; // Number of records per page
+    $offset = ($page - 1) * $limit; // Calculate the offset
 
     // Start building the SQL query
     $sql = "SELECT * FROM blogs";
@@ -21,26 +24,27 @@ if (isset($_POST['category'])) {
         $sql .= " (title LIKE '%$searchTerm%' OR description LIKE '%$searchTerm%')";
     }
 
-
-    // Adjust the SQL query based on the selected sorting option
-    if ($sortOption === 'new') {
-        $sql .= " ORDER BY date DESC";
-    } elseif ($sortOption === 'old') {
-        $sql .= " ORDER BY date ASC";
+    // Execute the SQL query to get filtered records count
+    $countSql = "SELECT COUNT(*) AS count FROM ($sql) AS filtered";
+    $countResult = mysqli_query($conn, $countSql);
+    $totalCount = 0;
+    if ($countResult && $countRow = mysqli_fetch_assoc($countResult)) {
+        $totalCount = $countRow['count'];
     }
 
-    // Execute the SQL query
+    // Adjust the original SQL query with pagination
+    $sql .= " ORDER BY date DESC LIMIT $limit OFFSET $offset";
+
+    // Execute the SQL query to fetch data
     $result = mysqli_query($conn, $sql);
     $data = array();
     if ($result) {
-        if (mysqli_num_rows($result) > 0) {
-            while ($row = mysqli_fetch_assoc($result)) {
-                $data[] = $row;
-            }
+        while ($row = mysqli_fetch_assoc($result)) {
+            $data[] = $row;
         }
         mysqli_free_result($result);
     }
 
-    // Return the fetched data as JSON
-    echo json_encode($data);
+    // Return the fetched data as JSON along with total number of filtered records
+    echo json_encode(array('data' => $data, 'total' => $totalCount));
 }

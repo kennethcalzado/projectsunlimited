@@ -9,11 +9,12 @@ ob_start();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo $pageTitle; ?></title>
+
     <link rel="stylesheet" href="../../../assets/input.css">
 
-    <script src="https://cdn.tiny.cloud/1/9frvewhh5omzgdpfqvh7kwq6xuau933hnsftejl9bjatfrez/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
-
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <style>
         body,
@@ -83,8 +84,6 @@ ob_start();
             max-height: 50px;
         }
     </style>
-
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 </head>
 
@@ -179,32 +178,34 @@ ob_start();
                             <?php
                             include("../../../backend/conn.php");
 
-                            $sql = 'SELECT * FROM blogs ORDER BY date DESC';
-                            $result = mysqli_query($conn, $sql);
+                            // Fetch images for the specific blog post being updated
+                            $blogIdToUpdate = $_POST['blogIdToUpdate']; // Assuming this value is passed through a hidden input field
+                            $sql = "SELECT images FROM blogs WHERE id = ?";
+                            $stmt = $conn->prepare($sql);
+                            $stmt->bind_param("i", $blogIdToUpdate);
+                            $stmt->execute();
+                            $result = $stmt->get_result();
 
-                            $displayedImages = []; // Array to store displayed image filenames
+                            if ($result->num_rows > 0) {
+                                $row = $result->fetch_assoc();
+                                $images = explode(',', $row['images']);
 
-                            if (mysqli_num_rows($result) > 0) {
-                                while ($row = mysqli_fetch_assoc($result)) {
-                                    // Fetch and explode existing images
-                                    $images = explode(',', $row['images']);
-                                    foreach ($images as $image) {
-                                        // Check if the image has already been displayed
-                                        if (!in_array($image, $displayedImages)) {
-                                            // If not, display it
-                                            echo "<img src='../../../assets/blogs_img/{$image}' width='100' height='100' class='mr-2 mb-2' />";
-                                            // Add the image filename to the displayed images array
-                                            $displayedImages[] = $image;
-                                        }
-                                    }
+                                // Display the images with delete buttons
+                                foreach ($images as $image) {
+                                    echo '<div class="inline-block mr-2 mb-2">';
+                                    echo "<img src='../../../assets/blogs_img/{$image}' width='100' height='100' class='mr-2 mb-2' />";
+                                    echo '<button type="button" class="btn btn-danger btn-sm" onclick="deleteImage(\'' . $blogIdToUpdate . '\', \'' . $image . '\')">Delete</button>';
+                                    echo '</div>';
                                 }
                             } else {
-                                echo "<p>No blogs found.</p>";
+                                echo "<p>No images found for this blog post.</p>";
                             }
+
                             ?>
                         </div>
                         <input type="file" name="updateImages[]" id="updateImages" class="border rounded px-4 py-2 w-full" accept="image/*" multiple>
                     </div>
+
 
                     <div class="mb-4">
                         <label for="updateType" class="block font-semibold mb-2">Type</label>
@@ -222,7 +223,7 @@ ob_start();
         </div>
     </div>
 
-
+    <!-- FILTER SCRIPTS -->
     <script>
         //FILTER SCRIPTS
         $(document).ready(function() {
@@ -231,6 +232,9 @@ ob_start();
                 // Get the selected category and sort option
                 var category = $('#categoryFilter').val();
                 var sortOption = $('#sortFilter').val();
+
+                // Reset search input
+                $('#searchInput').val('');
 
                 // Call the function to fetch data based on the selected category and sort option
                 fetchData(category, sortOption);
@@ -250,18 +254,20 @@ ob_start();
             });
 
             // Function to fetch data based on category, sort option, and search query
-            function fetchData(category, sortOption, query = '') {
+            function fetchData(category, sortOption, query = '', page = 1) {
                 $.ajax({
                     url: '../../../backend/blogs/fetch_data.php',
                     method: 'POST',
                     data: {
                         category: category,
                         sortOption: sortOption,
-                        query: query // Include search query in the AJAX request
+                        query: query, // Include search query in the AJAX request
+                        page: page // Include page parameter for pagination
                     },
                     dataType: 'json',
-                    success: function(data) {
-                        updateTable(data);
+                    success: function(response) {
+                        updateTable(response.data); // Update table with fetched data
+                        updatePagination(response.total, page); // Update pagination controls
                     }
                 });
             }
@@ -290,8 +296,47 @@ ob_start();
                 }
                 $('#blogTable tbody').html(html);
             }
-        });
 
+            // Function to update pagination controls
+            function updatePagination(totalCount, currentPage) {
+                var totalPages = Math.ceil(totalCount / 10); // Calculate total pages
+                var pagination = $('#pagination');
+                pagination.empty(); // Clear previous pagination buttons
+
+                // Hide pagination if there is only one page of results or if no results are found
+                if (totalPages <= 1) {
+                    pagination.hide();
+                    return;
+                }
+
+                // Create Page buttons
+                for (var i = 1; i <= totalPages; i++) {
+                    var pageBtn = $('<button>').text(i).addClass('pagination-btn mx-1 py-1 px-3 rounded-lg');
+                    if (i === currentPage) {
+                        pageBtn.addClass('bg-blue-500 text-white');
+                    } else {
+                        pageBtn.addClass('bg-gray-200 text-gray-700 hover:bg-gray-300');
+                    }
+                    pageBtn.click(function(page) {
+                        return function() {
+                            fetchData($('#categoryFilter').val(), $('#sortFilter').val(), $('#searchInput').val(), page);
+                        };
+                    }(i));
+                    pagination.append(pageBtn);
+                }
+                pagination.addClass('flex justify-end pr-[70px]');
+                pagination.show(); // Show pagination if there are multiple pages
+            }
+
+
+            // Fetch initial data
+            fetchData('', 'new');
+        });
+    </script>
+
+
+    <!-- MODAL SCRIPTS -->
+    <script>
         // MODAL SCRIPTS
         // DELETE MODAL
 
@@ -346,6 +391,27 @@ ob_start();
             }
         });
 
+        function deleteImage(blogId, imageName) {
+            // Perform an AJAX request to delete the image
+            var xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState == XMLHttpRequest.DONE) {
+                    if (xhr.status == 200) {
+                        // If deletion is successful, remove the image element from the DOM
+                        var imageElement = document.querySelector('.existing-images [src*="' + imageName + '"]').parentNode;
+                        imageElement.parentNode.removeChild(imageElement);
+                    } else {
+                        alert('Failed to delete image. Please try again.');
+                    }
+                }
+            };
+            xhr.open('POST', 'update_blog.php', true);
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xhr.send('blogIdToUpdate=' + blogId + '&deletedImages[]=' + imageName);
+        }
+
+
+
         function openUpdateModal(blogId, title, description, type, date) {
             document.getElementById('updateModal').classList.remove('hidden');
             document.getElementById('blogIdToUpdate').value = blogId;
@@ -370,44 +436,46 @@ ob_start();
     </script>
 
 
-    <div style="padding-top: 15px;" class="container">
-        <!-- Content -->
-        <div class="flex justify-between items-center">
-            <h1 class="text-4xl font-bold">News & Projects</h1>
-            <button class="yellow-btn btn-primary" onclick="openModal()">Add New</button>
-        </div>
-        <div class="border-b border-black flex-grow border-4 mt-2 mb-2"></div>
-        <div class="flex flex-col sm:flex-row items-center justify-center">
-            <div class="relative mb-2 mt-2 sm:mb-0 sm:mr-8">
-                <label for="categoryFilter" class="mr-2">Filter by Category</label>
-                <select id="categoryFilter" class="border rounded-md px-2 py-1">
-                    <option value="">All Categories</option>
-                    <option value="News">News</option>
-                    <option value="Projects">Projects</option>
-                </select>
+    <div style="padding-top: 15px; padding-bottom: 15px;" class="container">
+        <section>
+            <!-- Content -->
+            <div class="flex justify-between items-center">
+                <h1 class="text-4xl font-bold">News & Projects</h1>
+                <button class="yellow-btn btn-primary" onclick="openModal()">Add New</button>
             </div>
-            <div class="relative mb-2 mt-2 sm:mb-0 sm:mr-8">
-                <label for="sortFilter" class="mr-2">Sort</label>
-                <select id="sortFilter" class="border rounded-md px-2 py-1">
-                    <optgroup label="Sort By:">
-                        <option value="new">Newest to Oldest</option>
-                        <option value="old">Oldest to Newest</option>
-                </select>
-            </div>
-            <div class="flex justify-between">
-                <div class="relative mb-1 mt-1 sm:mb-0 sm:mr-2">
-                    <!-- Search input -->
-                    <div class="relative text-gray-600">
-                        <input class="border-2 border-gray-300 bg-white h-9 w-64 px-2 rounded-md text-sm focus:outline-none" type="text" name="search" placeholder="Search" id="searchInput">
-                        <button type="button" id="searchButton" class="absolute right-0 top-0 mt-3 mr-4">
-                            <svg class="text-gray-600 h-4 w-4 fill-current" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1" x="0px" y="0px" viewBox="0 0 56.966 56.966" style="enable-background:new 0 0 56.966 56.966;" xml:space="preserve" width="512px" height="512px">
-                                <path d="M55.146,51.887L41.588,37.786c3.486-4.144,5.396-9.358,5.396-14.786c0-12.682-10.318-23-23-23s-23,10.318-23,23  s10.318,23,23,23c4.761,0,9.298-1.436,13.177-4.162l13.661,14.208c0.571,0.593,1.339,0.92,2.162,0.92  c0.779,0,1.518-0.297,2.079-0.837C56.255,54.982,56.293,53.08,55.146,51.887z M23.984,6c9.374,0,17,7.626,17,17s-7.626,17-17,17  s-17-7.626-17-17S14.61,6,23.984,6z" />
-                            </svg>
-                        </button>
+            <div class="border-b border-black flex-grow border-4 mt-2 mb-2"></div>
+            <div class="flex flex-col sm:flex-row items-center justify-center">
+                <div class="relative mb-2 mt-2 sm:mb-0 sm:mr-8">
+                    <label for="categoryFilter" class="mr-2">Filter by Category</label>
+                    <select id="categoryFilter" class="border rounded-md px-2 py-1">
+                        <option value="">All Categories</option>
+                        <option value="News">News & Updates</option>
+                        <option value="Projects">Projects</option>
+                    </select>
+                </div>
+                <div class="relative mb-2 mt-2 sm:mb-0 sm:mr-8">
+                    <label for="sortFilter" class="mr-2">Sort</label>
+                    <select id="sortFilter" class="border rounded-md px-2 py-1">
+                        <optgroup label="Sort By:">
+                            <option value="new">Newest to Oldest</option>
+                            <option value="old">Oldest to Newest</option>
+                    </select>
+                </div>
+                <div class="flex justify-between">
+                    <div class="relative mb-1 mt-1 sm:mb-0 sm:mr-2">
+                        <!-- Search input -->
+                        <div class="relative text-gray-600">
+                            <input class="border-2 border-gray-300 bg-white h-9 w-64 px-2 rounded-md text-sm focus:outline-none" type="text" name="search" placeholder="Search" id="searchInput">
+                            <button type="button" id="searchButton" class="absolute right-0 top-0 mt-3 mr-4">
+                                <svg class="text-gray-600 h-4 w-4 fill-current" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1" x="0px" y="0px" viewBox="0 0 56.966 56.966" style="enable-background:new 0 0 56.966 56.966;" xml:space="preserve" width="512px" height="512px">
+                                    <path d="M55.146,51.887L41.588,37.786c3.486-4.144,5.396-9.358,5.396-14.786c0-12.682-10.318-23-23-23s-23,10.318-23,23  s10.318,23,23,23c4.761,0,9.298-1.436,13.177-4.162l13.661,14.208c0.571,0.593,1.339,0.92,2.162,0.92  c0.779,0,1.518-0.297,2.079-0.837C56.255,54.982,56.293,53.08,55.146,51.887z M23.984,6c9.374,0,17,7.626,17,17s-7.626,17-17,17  s-17-7.626-17-17S14.61,6,23.984,6z" />
+                                </svg>
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </section>
 
 
         <table id="blogTable" class="display">
@@ -440,10 +508,9 @@ ob_start();
                         echo "<td>" . $row['type'] . "</td>";
                         echo '<td class="action-btns">';
                         echo "<button onclick=\"editPost('" . $row['id'] . "')\" type='button' class='btn-view'><i class='fas fa-eye'></i> View</button>";
-                        echo "<button onclick=\"openUpdateModal('" . $row['id'] . "', '" . htmlspecialchars($row['title']) . "', '" . htmlspecialchars($row['description']) . "', '" . $row['type'] . "', '" . $row['date'] . "', '" . $row['images'] . "')\" type='button' class='yellow-btn btn-primary' data-title='" . htmlspecialchars($row['title']) . "' data-description='" . htmlspecialchars($row['description']) . "' data-type='" . $row['type'] . "' data-date='" . $row['date'] . "' data-images='" . $row['images'] . "'><i class='fas fa-edit'></i> Update</button>";
+                        echo "<button onclick=\"openUpdateModal('" . $row['id'] . "', '" . htmlspecialchars($row['title']) . "', '" . htmlspecialchars($row['description']) . "', '" . $row['type'] . "', '" . $row['date'] . "')\" type='button' class='yellow-btn btn-primary' data-title='" . htmlspecialchars($row['title']) . "' data-description='" . htmlspecialchars($row['description']) . "' data-type='" . $row['type'] . "' data-date='" . $row['date'] . "'><i class='fas fa-edit'></i> Update</button>";
                         echo "<button onclick=\"openDeleteModal('" . $row['id'] . "')\" type='button' class=' btn-danger'><i class='fas fa-trash-alt'></i> Delete</button>";
                         echo '</td>';
-
                         echo "</tr>";
                     }
                 } else {
@@ -453,7 +520,11 @@ ob_start();
                 ?>
             </tbody>
         </table>
-    </div>
+        <div id="pagination" class="mt-4"></div>
+
+
+
+
 </body>
 
 <?php
