@@ -27,8 +27,8 @@ ob_start();
     </div>
 
     <div class="border-b border-black flex-grow border-4 mt-2 mb-3"></div>
-    <div class="flex flex-col sm:flex-row items-center justify-center">
-        <div class="flex flex-col sm:flex-row justify-between mb-4 sm:mb-0">
+    <div class="flex sm:flex-row items-center justify-center">
+        <div class="flex sm:flex-row mb-4 sm:mb-0">
             <div class="relative mb-2 mt-2 sm:mb-0 sm:mr-8">
                 <label for="roleFilter" class="mr-2">Filter by Role:</label>
                 <select id="roleFilter" class="border rounded-md px-2 py-1">
