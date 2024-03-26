@@ -173,39 +173,37 @@ ob_start();
                     </div>
                     <div class="mb-4">
                         <label for="updateImages" class="block font-semibold mb-2">Existing Images</label>
-                        <div id="existingImages" class="mb-2">
+                        <div id="existingImages" class="mb-2 flex">
                             <!-- Existing images will be displayed here -->
                             <?php
                             include("../../../backend/conn.php");
 
-                            // Fetch images for the specific blog post being updated
-                            $blogIdToUpdate = $_POST['blogIdToUpdate']; // Assuming this value is passed through a hidden input field
-                            $sql = "SELECT images FROM blogs WHERE id = ?";
-                            $stmt = $conn->prepare($sql);
-                            $stmt->bind_param("i", $blogIdToUpdate);
-                            $stmt->execute();
-                            $result = $stmt->get_result();
+                            $sql = 'SELECT * FROM blogs ORDER BY date DESC';
+                            $result = mysqli_query($conn, $sql);
 
-                            if ($result->num_rows > 0) {
-                                $row = $result->fetch_assoc();
-                                $images = explode(',', $row['images']);
+                            $displayedImages = []; // Array to store displayed image filenames
 
-                                // Display the images with delete buttons
-                                foreach ($images as $image) {
-                                    echo '<div class="inline-block mr-2 mb-2">';
-                                    echo "<img src='../../../assets/blogs_img/{$image}' width='100' height='100' class='mr-2 mb-2' />";
-                                    echo '<button type="button" class="btn btn-danger btn-sm" onclick="deleteImage(\'' . $blogIdToUpdate . '\', \'' . $image . '\')">Delete</button>';
-                                    echo '</div>';
+                            if (mysqli_num_rows($result) > 0) {
+                                while ($row = mysqli_fetch_assoc($result)) {
+                                    // Fetch and explode existing images
+                                    $images = explode(',', $row['images']);
+                                    foreach ($images as $image) {
+                                        // Check if the image has already been displayed
+                                        if (!in_array($image, $displayedImages)) {
+                                            // If not, display it
+                                            echo "<img src='../../../assets/blogs_img/{$image}' width='100' height='100' class='mr-2 mb-2' />";
+                                            // Add the image filename to the displayed images array
+                                            $displayedImages[] = $image;
+                                        }
+                                    }
                                 }
                             } else {
-                                echo "<p>No images found for this blog post.</p>";
+                                echo "<p>No blogs found.</p>";
                             }
-
                             ?>
                         </div>
                         <input type="file" name="updateImages[]" id="updateImages" class="border rounded px-4 py-2 w-full" accept="image/*" multiple>
                     </div>
-
 
                     <div class="mb-4">
                         <label for="updateType" class="block font-semibold mb-2">Type</label>
@@ -222,6 +220,7 @@ ob_start();
             </div>
         </div>
     </div>
+
 
     <!-- FILTER SCRIPTS -->
     <script>
@@ -391,27 +390,6 @@ ob_start();
             }
         });
 
-        function deleteImage(blogId, imageName) {
-            // Perform an AJAX request to delete the image
-            var xhr = new XMLHttpRequest();
-            xhr.onreadystatechange = function() {
-                if (xhr.readyState == XMLHttpRequest.DONE) {
-                    if (xhr.status == 200) {
-                        // If deletion is successful, remove the image element from the DOM
-                        var imageElement = document.querySelector('.existing-images [src*="' + imageName + '"]').parentNode;
-                        imageElement.parentNode.removeChild(imageElement);
-                    } else {
-                        alert('Failed to delete image. Please try again.');
-                    }
-                }
-            };
-            xhr.open('POST', 'update_blog.php', true);
-            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-            xhr.send('blogIdToUpdate=' + blogId + '&deletedImages[]=' + imageName);
-        }
-
-
-
         function openUpdateModal(blogId, title, description, type, date) {
             document.getElementById('updateModal').classList.remove('hidden');
             document.getElementById('blogIdToUpdate').value = blogId;
@@ -477,7 +455,6 @@ ob_start();
             </div>
         </section>
 
-
         <table id="blogTable" class="display">
             <thead>
                 <tr>
@@ -508,9 +485,10 @@ ob_start();
                         echo "<td>" . $row['type'] . "</td>";
                         echo '<td class="action-btns">';
                         echo "<button onclick=\"editPost('" . $row['id'] . "')\" type='button' class='btn-view'><i class='fas fa-eye'></i> View</button>";
-                        echo "<button onclick=\"openUpdateModal('" . $row['id'] . "', '" . htmlspecialchars($row['title']) . "', '" . htmlspecialchars($row['description']) . "', '" . $row['type'] . "', '" . $row['date'] . "')\" type='button' class='yellow-btn btn-primary' data-title='" . htmlspecialchars($row['title']) . "' data-description='" . htmlspecialchars($row['description']) . "' data-type='" . $row['type'] . "' data-date='" . $row['date'] . "'><i class='fas fa-edit'></i> Update</button>";
+                        echo "<button onclick=\"openUpdateModal('" . $row['id'] . "', '" . htmlspecialchars($row['title']) . "', '" . htmlspecialchars($row['description']) . "', '" . $row['type'] . "', '" . $row['date'] . "', '" . $row['images'] . "')\" type='button' class='yellow-btn btn-primary' data-title='" . htmlspecialchars($row['title']) . "' data-description='" . htmlspecialchars($row['description']) . "' data-type='" . $row['type'] . "' data-date='" . $row['date'] . "' data-images='" . $row['images'] . "'><i class='fas fa-edit'></i> Update</button>";
                         echo "<button onclick=\"openDeleteModal('" . $row['id'] . "')\" type='button' class=' btn-danger'><i class='fas fa-trash-alt'></i> Delete</button>";
                         echo '</td>';
+
                         echo "</tr>";
                     }
                 } else {
