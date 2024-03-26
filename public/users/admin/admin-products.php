@@ -23,23 +23,23 @@ ob_start();
             <div class="relative mb-2 mt-2 sm:mb-0 sm:mr-8">
                 <label for="brandFilter" class="mr-2">Brands</label>
                 <select id="brandFilter" class="border rounded-md px-2 py-1">
-                <option value="" disabled selected>Filter by Brand</option>
-                        <!-- Add your brand options here -->
+                    <option value="" disabled selected>Filter by Brand</option>
+                    <!-- Add your brand options here -->
                 </select>
             </div>
             <div class="relative mb-2 mt-2 sm:mb-0 sm:mr-8">
                 <label for="categoryFilter" class="mr-2">Category</label>
                 <select id="categoryFilter" class="border rounded-md px-2 py-1">
                     <option value="" disabled selected>Filter by Category</option>
-                        <!-- Add your brand options here -->
+                    <!-- Add your brand options here -->
                 </select>
             </div>
             <div class="relative mb-2 mt-2 sm:mb-0 sm:mr-8">
                 <label for="sortFilter" class="mr-2">Sort</label>
                 <select id="sortFilter" class="border rounded-md px-2 py-1">
-                <option value="" disabled selected>Sort By</option>
-                        <option>Newest to Oldest</option>
-                        <option>Oldest to Newest</option>
+                    <option value="" disabled selected>Sort By</option>
+                    <option>Newest to Oldest</option>
+                    <option>Oldest to Newest</option>
                 </select>
             </div>
             <div class="flex justify-between">
@@ -61,25 +61,25 @@ ob_start();
         <table class="display !w-full  ">
             <thead class="">
                 <tr>
-                    <th scope="col" class="px-6 py-3">
+                    <th scope="col" class="px-6 py-3 w-1/6">
                         Name
                     </th>
-                    <th scope="col" class="px-6 py-3">
+                    <th scope="col" class="px-6 py-3 w-1/12">
                         Brand
                     </th>
                     <!-- <th scope="col" class="px-6 py-3">
                         Description
                     </th> -->
-                    <th scope="col" class="px-6 py-3">
+                    <th scope="col" class="px-6 py-3 w-1/6">
                         Image
                     </th>
-                    <th scope="col" class="px-6 py-3">
+                    <th scope="col" class="px-6 py-3 w-1/12">
                         Category
                     </th>
-                    <th scope="col" class="px-6 py-3">
+                    <th scope="col" class="px-6 py-3 w-1/6">
                         Date Added
                     </th>
-                    <th scope="col" class="px-6 py-3">
+                    <th scope="col" class="px-6 py-3 w-1/6">
                         Action
                     </th>
                 </tr>
@@ -95,7 +95,7 @@ ob_start();
     <div class="bg-white p-4 rounded-md shadow-md w-full sm:w-[80%] md:w-[60%] lg:w-[40%] xl:w-[30%]">
         <h2 class="text-2xl font-bold">Add Product</h2>
         <div class="border-b border-black flex-grow border-2 mt-2 mb-3"></div>
-        <form id="addProductForm" class="mt-4">
+        <form id="addProductForm" action="your-backend-endpoint-url" method="POST" enctype="multipart/form-data" class="mt-4">
             <div class="mb-4 flex flex-col">
                 <label for="addproductName" class="text-sm font-medium text-gray-700 mb-1">Product Name</label>
                 <input type="text" id="addproductName" name="productName" placeholder="Enter Product Name" class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent">
@@ -151,9 +151,11 @@ ob_start();
                             <td>${product.CategoryName}</td>
                             <td>${product.created_at}</td>
                             <td>
-                            <button id="editProduct" class="" data-id="${product.id}">View</button>
-                            <button id="addProduct" class="" data-id="${product.id}">Edit</button>
-                            <button id="deleteProduct" class="" data-id="${product.id}">Delete</button>
+                            <div class="flex justify-end">
+                            <button id="editProduct" class="btn btn-view rounded-md text-center h-9 mt-3 sm:mt-4 !px-4 py-0 text-lg flex items-center mr-1 hover:underline" data-id="${product.id}">View</button>
+                            <button id="addProduct" class="btn btn-primary rounded-md text-center h-9 mt-3 sm:mt-4 !px-4 py-0 text-lg flex items-center mr-1 hover:underline" data-id="${product.id}">Edit</button>
+                            <button id="deleteProduct" class=" btn btn-danger rounded-md text-center h-9 mt-3 sm:mt-4 !px-4 py-0 text-lg flex items-center mr-1 hover:underline" data-id="${product.id}">Delete</button>
+                            </div>
                             </td>
                         `;
                         productListing.appendChild(tr);
@@ -270,9 +272,34 @@ ob_start();
             console.error('Error fetching brands:', error);
         }
     });
+    
+    // SCRIPT FOR ADDING PRODUCTS //
+    $(document).ready(function() {
+        $('#addProductForm').submit(function(event) {
+            event.preventDefault(); // Prevent default form submission
+
+            // Collect form data
+            var formData = new FormData(this);
+
+            // Send AJAX request
+            $.ajax({
+                url: '../../../backend/product/addproduct.php',
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(response) {
+                    // Handle success response
+                    console.log(response);
+                },
+                error: function(xhr, status, error) {
+                    // Handle error
+                    console.error(error);
+                }
+            });
+        });
+    });
 </script>
-
-
 <?php
 $script = ob_get_clean();
 include("../../../public/master.php");
