@@ -11,8 +11,7 @@ ob_start();
                     <!-- Nested Row within Card Body -->
                     <div class="flex flex-wrap  ">
                         <div class="lg:w-6/12 bg-login-image lg:block hidden">
-                            <img class="w-full h-full object-cover"
-                                src="../assets/image/pexels-mentatdgt-1799790-1024x683.jpg" alt="Login Image">
+                            <img class="w-full h-full object-cover" src="../assets/image/pexels-mentatdgt-1799790-1024x683.jpg" alt="Login Image">
                         </div>
 
                         <div class="w-full lg:w-6/12">
@@ -23,16 +22,11 @@ ob_start();
                                 <form class="user" method="POST" action="../backend\login-authorization.php">
                                     <div class="mb-4">
                                         <label>Email</label>
-                                        <input type="email"
-                                            class="w-full px-3 py-2 border rounded-md focus:outline-none focus:border-blue-500"
-                                            id="exampleInputEmail" aria-describedby="emailHelp"
-                                            placeholder="Enter Email Address..." name="email">
+                                        <input type="email" class="w-full px-3 py-2 border rounded-md focus:outline-none focus:border-blue-500" id="exampleInputEmail" aria-describedby="emailHelp" placeholder="Enter Email Address..." name="email">
                                     </div>
                                     <div class="mb-4">
                                         <label>Password</label>
-                                        <input type="password"
-                                            class="w-full px-3 py-2 border rounded-md focus:outline-none focus:border-blue-500"
-                                            id="exampleInputPassword" placeholder="Password" name="password">
+                                        <input type="password" class="w-full px-3 py-2 border rounded-md focus:outline-none focus:border-blue-500" id="exampleInputPassword" placeholder="Password" name="password">
                                     </div>
                                     <div class="mb-4">
                                         <label class="inline-flex items-center">
@@ -58,9 +52,15 @@ ob_start();
 
     </div>
 
+    <footer>
+        <div class="container mx-auto">
+            <p class="text-center text-sm font-bold text-gray-700 justify-center"><i>Copyright &copy; 2024 Projects Unlimited Powered by Projects Unlimited</i></p>
+        </div>
+    </footer>
+
 </div>
 
 <?php
 $content = ob_get_clean();
-include ("../public/master.php");
+include("../public/master.php");
 ?>
