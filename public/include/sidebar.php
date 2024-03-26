@@ -34,7 +34,7 @@ $image_path = $base_url . 'assets/image/projects.png';
     $userRole = $_SESSION['user_role'] ?? "guest"; // Default to 'guest' if the role is not set
     
     // Include appropriate navigation component based on user role
-    if ($userRole == 'Admin') { ?>
+    if ($userRole == 'admin') { ?>
         <a href="/public/users/admin/users-table.php">
             <div class="p-2.5 mt-3 flex items-center rounded-md px-6 duration-300 cursor-pointer hover:bg-yellow-600 text-white"
                 title="Users">
@@ -46,13 +46,13 @@ $image_path = $base_url . 'assets/image/projects.png';
         </a>
     <?php } ?>
     <a href="/public/users/admin/admin-products.php" title="Products">
-    <div class="p-2.5 mt-3 flex items-center rounded-md px-6 duration-300 cursor-pointer hover:bg-yellow-600 text-white"
-        title="Products">
-        <div class="tooltip tooltip-right" data-tip="Products">
-            <i class="bi bi-box2-fill"></i>
+        <div class="p-2.5 mt-3 flex items-center rounded-md px-6 duration-300 cursor-pointer hover:bg-yellow-600 text-white"
+            title="Products">
+            <div class="tooltip tooltip-right" data-tip="Products">
+                <i class="bi bi-box2-fill"></i>
+            </div>
+            <span class="text-[15px] ml-4 text-gray-200 font-bold">Products</span>
         </div>
-        <span class="text-[15px] ml-4 text-gray-200 font-bold">Products</span>
-    </div>
     </a>
     <div class="p-2.5 mt-3 flex items-center rounded-md px-6 duration-300 cursor-pointer hover:bg-yellow-600 text-white"
         onclick="dropdown()" title="Brands">

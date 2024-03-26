@@ -31,13 +31,12 @@
             } else {
                 include __DIR__ . "/include/footer.php";
             }
-        } elseif ($userRole == 'Admin' || $userRole == 'Marketing') {
+        } elseif (strtolower($userRole) == 'admin' || strtolower($userRole) == 'marketing') {
             include __DIR__ . "/include/sidebar.php";
             echo "<main>";
             echo $content ?? "";
             echo "</main>";
         }
-
         ?>
 
     </body>

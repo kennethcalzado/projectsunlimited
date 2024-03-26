@@ -74,12 +74,11 @@ ob_start();
                 </div>
             </div>
         </div>
-        <button id="resetFiltersBtn"
-            class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold mt-6 py-2 px-3 rounded inline-flex items-center sm:mt-2">
+        <button id="resetFiltersBtn" class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold 
+            mt-6 py-2 px-3 rounded inline-flex items-center sm:mt-2">
             Reset
             <i class="bi bi-arrow-counterclockwise ml-2 mt-1" width="16" height="16"></i>
         </button>
-
     </div>
 
     <div class="relative overflow-x-auto mb-1 rounded-lg mt-4">
@@ -97,7 +96,6 @@ ob_start();
                         <span id="RoleOrder" class="">
                             <i id="downArrow" class="bi bi-caret-down-fill cursor-pointer"></i>
                             <i id="upArrow" class="bi bi-caret-up-fill cursor-pointer"></i>
-
                             <span class="ml-1">Role</span>
                         </span>
                     </th>
@@ -105,7 +103,6 @@ ob_start();
                         <span id="StatusOrder" class="">
                             <i id="downArrow" class="bi bi-caret-down-fill cursor-pointer"></i>
                             <i id="upArrow" class="bi bi-caret-up-fill cursor-pointer"></i>
-
                             <span class="ml-1">Status</span>
                         </span>
 
@@ -114,7 +111,6 @@ ob_start();
                         <span id="CreatedAtOrder" class="">
                             <i id="downArrow" class="bi bi-caret-down-fill cursor-pointer"></i>
                             <i id="upArrow" class="bi bi-caret-up-fill cursor-pointer"></i>
-
                             <span class="ml-1"> Created At
                             </span>
                         </span>
@@ -123,7 +119,6 @@ ob_start();
                         <span id="UpdatedAtOrder" class="">
                             <i id="downArrow" class="bi bi-caret-down-fill cursor-pointer"></i>
                             <i id="upArrow" class="bi bi-caret-up-fill cursor-pointer"></i>
-
                             <span class="ml-1"> Updated At
                             </span>
                         </span>
@@ -326,6 +321,8 @@ ob_start();
             // Trigger filter change handler to update data
             handleFilterChange();
         }
+
+        /////////////// USER DATA FETCH //////////////////
 
         // Function to filter user data with sorting
         function filterUserData ( roleFilter, statusFilter, searchTerm, page, limit, sortBy, sortOrder )
@@ -613,6 +610,7 @@ ob_start();
                                 $( '#' + fieldName + 'Error' ).addClass( 'text-sm text-red-500 mt-1 error-message' )
                                     .text( response.message[fieldName] );
                                 $( '#' + fieldName ).addClass( 'border-red-500' );
+                                
                                 // Display error message using a pop-up
                                 showPopup( 'error', 'Error', response.message[fieldName] );
                             } );

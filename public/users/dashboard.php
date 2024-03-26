@@ -1,5 +1,6 @@
 <?php
 session_start();
+
 $pageTitle = $_SESSION['user_role'] . " Dashboard";
 ob_start();
 ?>
@@ -22,7 +23,11 @@ ob_start();
     </div>
 </div>
 
+<?php $content = ob_get_clean();
+ob_start();
+?>
+
 <?php
-$content = ob_get_clean();
-include("../../public/master.php");
+$script = ob_get_clean();
+include ("../../public/master.php");
 ?>
