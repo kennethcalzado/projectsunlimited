@@ -10,14 +10,9 @@ ob_start();
                 <div class="card-body p-0">
                     <!-- Nested Row within Card Body -->
                     <div class="flex flex-wrap  ">
-<<<<<<< Updated upstream
-                        <div class="lg:w-6/12 bg-login-image lg:block hidden">
-                            <img class="w-full h-full object-cover" src="../assets/image/pexels-mentatdgt-1799790-1024x683.jpg" alt="Login Image">
-=======
                         <div class="lg:w-6/12 bg-login-image lg:block hidden items-center justify-center">
                             <img class="w-full h-full object-cover"
                                 src="../assets/image/pexels-mentatdgt-1799790-1024x683.jpg" alt="Login Image">
->>>>>>> Stashed changes
                         </div>
 
                         <div class="w-full lg:w-6/12 h-[440px]">
@@ -28,9 +23,6 @@ ob_start();
                                 <form class="user" id="loginForm">
                                     <div class="mb-2">
                                         <label>Email</label>
-<<<<<<< Updated upstream
-                                        <input type="email" class="w-full px-3 py-2 border rounded-md focus:outline-none focus:border-blue-500" id="exampleInputEmail" aria-describedby="emailHelp" placeholder="Enter Email Address..." name="email">
-=======
                                         <input type="type"
                                             class="w-full px-3 py-2 border rounded-md focus:outline-none focus:border-blue-500"
                                             id="email" aria-describedby="emailHelp" placeholder="Enter Email Address..."
@@ -39,13 +31,9 @@ ob_start();
                                             <!-- Error message space -->
 
                                         </div>
->>>>>>> Stashed changes
                                     </div>
                                     <div class="mb-2">
                                         <label>Password</label>
-<<<<<<< Updated upstream
-                                        <input type="password" class="w-full px-3 py-2 border rounded-md focus:outline-none focus:border-blue-500" id="exampleInputPassword" placeholder="Password" name="password">
-=======
                                         <input type="password"
                                             class="w-full px-3 py-2 border rounded-md focus:outline-none focus:border-blue-500"
                                             id="password" placeholder="Password" name="password">
@@ -53,7 +41,6 @@ ob_start();
                                             <!-- Error message space -->
 
                                         </div>
->>>>>>> Stashed changes
                                     </div>
                                     <div class="mb-4">
                                         <label class="inline-flex items-center">
@@ -76,7 +63,6 @@ ob_start();
             </div>
         </div>
     </div>
-<<<<<<< Updated upstream
 
     <footer>
         <div class="container mx-auto">
@@ -84,8 +70,6 @@ ob_start();
         </div>
     </footer>
 
-=======
->>>>>>> Stashed changes
 </div>
 
 <div id="popup-handler"></div> <!-- Pop-up space -->
@@ -355,11 +339,6 @@ ob_start();
 </script>>
 
 <?php
-<<<<<<< Updated upstream
-$content = ob_get_clean();
-include("../public/master.php");
-=======
 $script = ob_get_clean();
 include ("../public/master.php");
->>>>>>> Stashed changes
 ?>
