@@ -94,7 +94,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $_SESSION['error'] = "Failed to create PHP file. Please check file permissions.";
             header("Location: " . $_SERVER['HTTP_REFERER']);
             exit();
-        }
+        } 
     } else {
         // Redirect back to the page with error message
         $_SESSION['error'] = "Failed to add blog. Please try again.";

@@ -2,7 +2,7 @@
 $pageTitle = "Login";
 ob_start();
 ?>
-<div class="container mx-auto my-2">
+<div class="container mx-auto my-2 mt-28">
     <!-- Outer Row -->
     <div class="flex justify-center">
         <div class="w-full lg:w-10/12 md:w-9/12">

@@ -4,7 +4,7 @@ include '../../backend/conn.php';
 // Check if the connection is established successfully
 if ($conn) {
     // Fetching data from the database
-    $sql = "SELECT p.ProductName, b.brand_name, p.image_urls, pc.CategoryName, DATE_FORMAT(p.created_at, '%m-%d-%Y') AS created_at
+    $sql = "SELECT p.ProductName, b.brand_name, p.Description, p.image_urls, pc.CategoryName, DATE_FORMAT(p.created_at, '%m-%d-%Y') AS created_at
     FROM product p 
     INNER JOIN brands b ON p.brand_id = b.brand_id 
     INNER JOIN productcategory pc ON p.CategoryID = pc.CategoryID";
