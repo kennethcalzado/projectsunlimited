@@ -41,8 +41,8 @@ if ($searchTerm !== null && $searchTerm !== '') {
 }
 
 // Handle sorting
-$sortBy = $_GET['sortBy'] ?? 'user_id'; // Default to sorting by user_id if not provided
-$sortOrder = $_GET['sortOrder'] ?? 'asc'; // Default to ascending order if not provided
+$sortBy = $_GET['sortBy'] ?? 'created_at'; // Default to sorting by user_id if not provided
+$sortOrder = $_GET['sortOrder'] ?? 'desc'; // Default to ascending order if not provided
 $sql .= " ORDER BY $sortBy $sortOrder";
 
 // Prepare statement for counting total rows
@@ -50,7 +50,7 @@ $countSql = "SELECT COUNT(*) AS totalRows FROM ($sql) AS total";
 $countStmt = $conn->prepare($countSql);
 if ($countStmt) {
     // Bind parameters dynamically
-    if (!empty ($params)) {
+    if (!empty($params)) {
         $types = str_repeat('s', count($params)); // Generate type string dynamically (all parameters are strings)
         $countStmt->bind_param($types, ...$params);
     }
@@ -73,7 +73,7 @@ if ($countStmt) {
         $stmt = $conn->prepare($sql);
         if ($stmt) {
             // Bind parameters dynamically
-            if (!empty ($params)) {
+            if (!empty($params)) {
                 $types = str_repeat('s', count($params)); // Generate type string dynamically (all parameters are strings)
                 $stmt->bind_param($types, ...$params);
             }
@@ -109,7 +109,7 @@ if ($countStmt) {
                 );
 
                 // Return JSON response with user data and pagination information
-                if (empty ($users)) {
+                if (empty($users)) {
                     header('Content-Type: application/json');
                     echo json_encode($response);
                 } else {

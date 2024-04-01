@@ -1,6 +1,6 @@
 <?php
 session_start();
-$pageTitle = "Users";
+$pageTitle = "Users Table";
 ob_start();
 ?>
 
@@ -50,12 +50,12 @@ ob_start();
         <div class="flex justify-between">
             <div class="relative mb-1 mt-2 sm:mb-0 sm:mr-2">
                 <!-- Search input -->
-                <div class="relative text-gray-600">
+                <div class="relative">
                     <input
-                        class="border-2 border-gray-300 bg-white h-11 w-64 px-2 mt-4 sm:!mt-0 rounded-lg text-[16px] focus:outline-none"
+                        class="border-2 border-gray-300 bg-white h-11 w-64 px-2 pr-10 mt-4 sm:!mt-0 rounded-lg text-[16px] focus:outline-none"
                         type="text" name="search" placeholder="Search" id="searchInput">
-                    <button type="submit" class="absolute right-0 top-0 mt-7 mr-4 sm:mt-3 ">
-                        <svg class="text-gray-600 h-5 w-5 fill-current hover:text-yellow-500"
+                    <button type="submit" class="absolute right-0 top-0 mt-7 mr-4 sm:mt-3">
+                        <svg class="text-gray-600 h-5 w-5 fill-current hover:text-gray-500 "
                             xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1"
                             id="Capa_1" x="0px" y="0px" viewBox="0 0 56.966 56.966"
                             style="enable-background:new 0 0 56.966 56.966;" xml:space="preserve" width="512px"
@@ -369,13 +369,13 @@ ob_start();
                     userRow.append( $( '<td>' ).addClass( 'px-6 py-4' ).append( userInfoContainer ) );
                     userRow.append( $( '<td>' ).addClass( 'px-6 py-4' ).text( user.role_name ) );
                     userRow.append( $( '<td>' ).addClass( 'px-6 py-4' ).text( user.status ) );
+
                     const dateTd = $( '<td>' ).addClass( 'text-center px-4 py-2' ).append(
                         $( '<div>' ).text( formatDate( user.created_at ) ).addClass( 'text-sm' ), // Date with smaller text
                         $( '<div>' ).text( formatTime( user.created_at ) ).addClass( 'text-xs text-gray-500' ) // Time with even smaller and gray text
                     );
                     userRow.append( dateTd );
 
-                    // Repeat the same for updated_at
                     const updateDateTd = $( '<td>' ).addClass( 'text-center px-4 py-2' ).append(
                         $( '<div>' ).text( formatDate( user.updated_at ) ).addClass( 'text-sm' ), // Date with smaller text
                         $( '<div>' ).text( formatTime( user.updated_at ) ).addClass( 'text-xs text-gray-500' ) // Time with even smaller and gray text
@@ -383,16 +383,16 @@ ob_start();
                     userRow.append( updateDateTd );
 
                     const delBtnText = user.status === 'active' ? 'Deactivate' : 'Activate';
-                    const delBtnIconClass = user.status === 'active' ? 'fas fa-trash-alt pr-[2px]' : 'fas fa-check-circle pr-[2px]'; // Change the icon based on user status
+                    const delBtnIconClass = user.status === 'active' ? 'fas fa-trash-alt pr-[3px]' : 'fas fa-check-circle pr-[3px]'; // Change the icon based on user status
 
-                    const editButton = $( '<button>' ).addClass( 'yellow-btn btn-primary hover:underline text-[14px]' )
+                    const editButton = $( '<button>' ).addClass( 'editBtn yellow-btn btn-primary hover:underline text-[14px]' )
                         .attr( 'data-toggle', 'modal' )
                         .attr( 'data-target', '#userModal' )
                         .data( 'userId', user.user_id )
                         .data( 'user', user );
 
                     editButton.append(
-                        $( '<i>' ).addClass( 'fas fa-edit pr-[2px]' ),
+                        $( '<i>' ).addClass( 'fas fa-edit pr-[3px]' ),
                         $( '<span>' ).text( 'Update' )
                     );
 
