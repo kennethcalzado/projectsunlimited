@@ -25,15 +25,6 @@ ob_start();
 
         body {
             background-color: #000;
-            margin: 0;
-            padding: 0;
-        }
-
-        .container {
-            width: 80%;
-            margin: 0 auto;
-            text-align: center;
-            margin-left: 13%;
         }
 
         h1 {
@@ -43,31 +34,8 @@ ob_start();
 
         table {
             width: 100%;
-            border-collapse: collapse;
             margin: auto;
-        }
-
-        th,
-        td {
-            padding: 10px;
-            text-align: left;
-            vertical-align: top;
-            text-align: center;
-            margin: 0 auto;
-        }
-
-        .action-btns {
-            display: flex;
-            flex-direction: row;
-            justify-content: center;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .action-btns button {
-            width: auto;
-            padding: 6px 12px;
-            font-size: 14px;
+            vertical-align: center;
         }
 
         td.description {
@@ -80,8 +48,32 @@ ob_start();
         td img {
             display: block;
             margin: 0 auto;
-            max-width: 50px;
-            max-height: 50px;
+            max-width: 90px;
+            max-height: 90px;
+        }
+
+        .action-btns button {
+            width: auto;
+            padding: 6px 12px;
+            font-size: 14px;
+            margin-right: 10px;
+        }
+
+
+        tr {
+            border-bottom: 1px solid #e5e7eb;
+            /* Light Gray */
+            vertical-align: center;
+        }
+
+        tr:hover {
+            background-color: #f5f4f4;
+            /* Gray */
+        }
+
+        tr.dark:hover {
+            background-color: #f5f4f4;
+            /* Off White */
         }
     </style>
 
@@ -155,6 +147,7 @@ ob_start();
                 <!-- Form for updating the blog post -->
                 <form id="updateForm" action="update_blog.php" method="POST" enctype="multipart/form-data">
                     <input type="hidden" name="blogIdToUpdate" id="blogIdToUpdate">
+                    <input type="hidden" name="removedImages" id="removedImages" value="">
                     <div class="mb-4">
                         <label for="updateTitle" class="block font-semibold mb-2">Title</label>
                         <input type="text" name="updateTitle" id="updateTitle" class="border rounded px-4 py-2 w-full" required>
@@ -172,35 +165,9 @@ ob_start();
                         <input type="file" name="updateThumbnail" id="updateThumbnail" class="border rounded px-4 py-2 w-full" accept="image/*">
                     </div>
                     <div class="mb-4">
-                        <label for="updateImages" class="block font-semibold mb-2">Existing Images</label>
-                        <div id="existingImages" class="mb-2 flex">
+                        <label class="block font-semibold mb-2">Existing Images</label>
+                        <div id="existingImages" class="mb-2 flex flex-wrap">
                             <!-- Existing images will be displayed here -->
-                            <?php
-                            include("../../../backend/conn.php");
-
-                            $sql = 'SELECT * FROM blogs ORDER BY date DESC';
-                            $result = mysqli_query($conn, $sql);
-
-                            $displayedImages = []; // Array to store displayed image filenames
-
-                            if (mysqli_num_rows($result) > 0) {
-                                while ($row = mysqli_fetch_assoc($result)) {
-                                    // Fetch and explode existing images
-                                    $images = explode(',', $row['images']);
-                                    foreach ($images as $image) {
-                                        // Check if the image has already been displayed
-                                        if (!in_array($image, $displayedImages)) {
-                                            // If not, display it
-                                            echo "<img src='../../../assets/blogs_img/{$image}' width='100' height='100' class='mr-2 mb-2' />";
-                                            // Add the image filename to the displayed images array
-                                            $displayedImages[] = $image;
-                                        }
-                                    }
-                                }
-                            } else {
-                                echo "<p>No blogs found.</p>";
-                            }
-                            ?>
                         </div>
                         <input type="file" name="updateImages[]" id="updateImages" class="border rounded px-4 py-2 w-full" accept="image/*" multiple>
                     </div>
@@ -220,7 +187,6 @@ ob_start();
             </div>
         </div>
     </div>
-
 
     <!-- FILTER SCRIPTS -->
     <script>
@@ -298,7 +264,7 @@ ob_start();
 
             // Function to update pagination controls
             function updatePagination(totalCount, currentPage) {
-                var totalPages = Math.ceil(totalCount / 10); // Calculate total pages
+                var totalPages = Math.ceil(totalCount / 5); // Calculate total pages
                 var pagination = $('#pagination');
                 pagination.empty(); // Clear previous pagination buttons
 
@@ -312,9 +278,9 @@ ob_start();
                 for (var i = 1; i <= totalPages; i++) {
                     var pageBtn = $('<button>').text(i).addClass('pagination-btn mx-1 py-1 px-3 rounded-lg');
                     if (i === currentPage) {
-                        pageBtn.addClass('bg-blue-500 text-white');
+                        pageBtn.addClass('bg-yellow-200 text-black font-bold transition');
                     } else {
-                        pageBtn.addClass('bg-gray-200 text-gray-700 hover:bg-gray-300');
+                        pageBtn.addClass('bg-gray-200 text-gray-700 hover:bg-gray-300 hover:underline transition');
                     }
                     pageBtn.click(function(page) {
                         return function() {
@@ -367,37 +333,68 @@ ob_start();
 
         // UPDATE MODAL
         // IMAGES
-        document.getElementById('updateImages').addEventListener('change', function(event) {
-            var imagesPreview = document.getElementById('existingImages');
-            imagesPreview.innerHTML = '';
-
-            var files = event.target.files;
-
-            for (var i = 0; i < files.length; i++) {
-                var file = files[i];
-                var reader = new FileReader();
-
-                reader.onload = function(e) {
-                    var img = document.createElement('img');
-                    img.src = e.target.result;
-                    img.width = 100;
-                    img.height = 100;
-                    img.className = 'mr-2 mb-2';
-                    imagesPreview.appendChild(img);
-                };
-
-                reader.readAsDataURL(file);
-            }
-        });
-
-        function openUpdateModal(blogId, title, description, type, date) {
+        function openUpdateModal(blogId, title, description, type, date, images) {
             document.getElementById('updateModal').classList.remove('hidden');
             document.getElementById('blogIdToUpdate').value = blogId;
             document.getElementById('updateTitle').value = title;
             document.getElementById('updateDescription').value = description;
             document.getElementById('updateType').value = type;
             document.getElementById('updateDate').value = date;
+
+            // Display existing images preview
+            var imagesPreview = document.getElementById('existingImages');
+            imagesPreview.innerHTML = ''; // Clear existing images preview
+
+            if (images.trim() === '') { // Check if images string is empty
+                var noImageText = document.createTextNode("No image uploaded");
+                imagesPreview.appendChild(noImageText);
+            } else {
+                var imagesArray = images.split(','); // Split the images string into an array
+                for (var i = 0; i < imagesArray.length; i++) {
+                    var imgContainer = document.createElement('div'); // Container for each image and remove button
+                    imgContainer.className = 'relative inline-block';
+                    imgContainer.setAttribute('data-image-index', i); // Store image index as a data attribute
+
+                    var img = document.createElement('img'); // Image element
+                    img.src = '../../../assets/blogs_img/' + imagesArray[i];
+                    img.width = 100;
+                    img.height = 100;
+                    img.className = 'mr-2 mb-2';
+                    imgContainer.appendChild(img);
+
+                    var removeBtn = document.createElement('button'); // Remove button
+                    removeBtn.textContent = 'X';
+                    removeBtn.className = 'absolute top-0 right-0 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center';
+                    removeBtn.style.fontSize = '0.75rem'; // Adjust font size if needed
+
+                    // Add event listener to remove button
+                    removeBtn.addEventListener('click', function() {
+                        var imageIndex = this.parentElement.getAttribute('data-image-index'); // Get image index
+                        this.parentElement.remove(); // Remove the container when the remove button is clicked
+                        updateRemovedImages(imageIndex); // Update the list of removed images
+                    });
+                    imgContainer.appendChild(removeBtn);
+
+                    imagesPreview.appendChild(imgContainer); // Append the container to the images preview
+                }
+            }
         }
+
+        function updateRemovedImages(imageIndex) {
+            var removedImagesInput = document.getElementById('removedImages');
+            var removedImages = removedImagesInput.value.split(',');
+            removedImages.push(imageIndex); // Add the image index to the list of removed images
+            removedImagesInput.value = removedImages.join(','); // Update the value of the hidden input
+        }
+
+        // Event listener for the remove button
+        document.getElementById('existingImages').addEventListener('click', function(event) {
+            if (event.target.classList.contains('remove-btn')) {
+                var imageIndex = event.target.parentNode.getAttribute('data-image-index');
+                event.target.parentNode.remove(); // Remove the container when the remove button is clicked
+                updateRemovedImages(imageIndex); // Update the list of removed images
+            }
+        });
 
         function closeUpdateModal() {
             document.getElementById('updateModal').classList.add('hidden');
@@ -413,13 +410,14 @@ ob_start();
         }
     </script>
 
-
-    <div style="padding-top: 15px; padding-bottom: 15px;" class="container">
-        <section>
+    <div class="transition-all duration-300 page-content sm:ml-36 mr-4 sm:mr-20">
+        <div style="padding-top: 15px; padding-bottom: 15px;" class="container">
             <!-- Content -->
             <div class="flex justify-between items-center">
                 <h1 class="text-4xl font-bold">News & Projects</h1>
-                <button class="yellow-btn btn-primary" onclick="openModal()">Add New</button>
+                <button class="yellow-btn btn-primary rounded-md text-center h-10 mt-3 sm:mt-4 !px-4 py-0 text-lg flex items-center" onclick="openModal()"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                    </svg>Add New</button>
             </div>
             <div class="border-b border-black flex-grow border-4 mt-2 mb-2"></div>
             <div class="flex flex-col sm:flex-row items-center justify-center">
@@ -453,52 +451,50 @@ ob_start();
                     </div>
                 </div>
             </div>
-        </section>
 
-        <table id="blogTable" class="display">
-            <thead>
-                <tr>
-                    <th>Title</th>
-                    <th>Date</th>
-                    <th>Thumbnail</th>
-                    <th>Description</th>
-                    <th>Type</th>
-                    <th>Actions</th>
-                </tr>
+            <table id="blogTable" class="display">
+                <thead>
+                    <th scope="col" class="px-6 py-3 w-1/12">Title</th>
+                    <th scope="col" class="px-6 py-3 w-1/12">Date</th>
+                    <th scope="col" class="px-6 py-3 w-1/12">Thumbnail</th>
+                    <th scope="col" class="px-6 py-3 w-1/12">Description</th>
+                    <th scope="col" class="px-6 py-3 w-1/12">Type</th>
+                    <th scope="col" class="px-6 py-3 w-1/6">Actions</th>
+                </thead>
 
-            </thead>
+                <tbody>
+                    <?php
+                    include("../../../backend/conn.php");
 
-            <tbody>
-                <?php
-                include("../../../backend/conn.php");
+                    $sql = 'SELECT * FROM blogs ORDER BY date DESC';
+                    $result = mysqli_query($conn, $sql);
 
-                $sql = 'SELECT * FROM blogs ORDER BY date DESC';
-                $result = mysqli_query($conn, $sql);
-
-                if (mysqli_num_rows($result) > 0) {
-                    while ($row = mysqli_fetch_assoc($result)) {
-                        echo '<tr>';
-                        echo "<td>" . $row['title'] . "</td>";
-                        echo "<td>" . $row['date'] . "</td>";
-                        echo "<td><img src='../../../assets/blogs_img/{$row['thumbnail']}' width='100' height='100'></td>";
-                        echo "<td class='description'>" . $row['description'] . "</td>";
-                        echo "<td>" . $row['type'] . "</td>";
-                        echo '<td class="action-btns">';
-                        echo "<button onclick=\"editPost('" . $row['id'] . "')\" type='button' class='btn-view'><i class='fas fa-eye'></i> View</button>";
-                        echo "<button onclick=\"openUpdateModal('" . $row['id'] . "', '" . htmlspecialchars($row['title']) . "', '" . htmlspecialchars($row['description']) . "', '" . $row['type'] . "', '" . $row['date'] . "', '" . $row['images'] . "')\" type='button' class='yellow-btn btn-primary' data-title='" . htmlspecialchars($row['title']) . "' data-description='" . htmlspecialchars($row['description']) . "' data-type='" . $row['type'] . "' data-date='" . $row['date'] . "' data-images='" . $row['images'] . "'><i class='fas fa-edit'></i> Update</button>";
-                        echo "<button onclick=\"openDeleteModal('" . $row['id'] . "')\" type='button' class=' btn-danger'><i class='fas fa-trash-alt'></i> Delete</button>";
-                        echo '</td>';
-
-                        echo "</tr>";
+                    if (mysqli_num_rows($result) > 0) {
+                        while ($row = mysqli_fetch_assoc($result)) {
+                    ?>
+                            <tr>
+                                <td><?php echo $row['title']; ?></td>
+                                <td><?php echo $row['date']; ?></td>
+                                <td><img src="../../../assets/blogs_img/<?php echo $row['thumbnail']; ?>"></td>
+                                <td class="description"><?php echo $row['description']; ?></td>
+                                <td><?php echo $row['type']; ?></td>
+                                <td class="action-btns" valign="middle">
+                                    <button onclick="editPost('<?php echo $row['id']; ?>')" type="button" class="btn btn-view rounded-md text-center h-9 mt-3 sm:mt-4 !px-4 py-0 text-lg mr-2 hover:underline"><i class="fas fa-eye"></i> View</button>
+                                    <button onclick="openUpdateModal('<?php echo $row['id']; ?>', '<?php echo $row['title']; ?>', '<?php echo $row['description']; ?>', '<?php echo $row['type']; ?>', '<?php echo $row['date']; ?>', '<?php echo $row['images']; ?>')" type="button" class="btn btn-primary rounded-md text-center h-9 mt-3 sm:mt-4 !px-4 py-0 text-lg mr-2 hover:underline" data-title="<?php echo $row['title']; ?>" data-description="<?php echo $row['description']; ?>" data-type="<?php echo $row['type']; ?>" data-date="<?php echo $row['date']; ?>" data-images="<?php echo $row['images']; ?>"><i class="fas fa-edit"></i> Update</button>
+                                    <button onclick="openDeleteModal('<?php echo $row['id']; ?>')" type="button" class=" btn btn-danger rounded-md text-center h-9 mt-3 sm:mt-4 !px-4 py-0 text-lg hover:underline"><i class="fas fa-trash-alt"></i> Delete</button>
+                                </td>
+                            </tr>
+                    <?php
+                        }
+                    } else {
+                        echo "<tr><td colspan='9'>No records found</td></tr>";
                     }
-                } else {
-                    echo "<tr><td colspan='9'>No records found</td></tr>";
-                }
+                    ?>
+                </tbody>
 
-                ?>
-            </tbody>
-        </table>
-        <div id="pagination" class="mt-4"></div>
+            </table>
+            <div id="pagination" class="mt-4"></div>
+        </div>
 
 
 

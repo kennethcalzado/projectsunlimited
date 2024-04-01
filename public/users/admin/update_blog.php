@@ -64,6 +64,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $images = explode(',', $row_select_images['images']);
     }
 
+    // Handle removal of images
+    if (!empty($_POST['removedImages'])) {
+        foreach ($_POST['removedImages'] as $removed_image_index) {
+            // Remove the image from the array based on its index
+            unset($images[$removed_image_index]);
+        }
+
+        // Remove empty elements and re-index the array
+        $images = array_values(array_filter($images));
+
+        // Update the 'images' column in the database
+        $images_str = implode(',', $images);
+        $sql_update_images = "UPDATE blogs SET images = ? WHERE id = ?";
+        $stmt_update_images = $conn->prepare($sql_update_images);
+        $stmt_update_images->bind_param("si", $images_str, $blogId);
+        $stmt_update_images->execute();
+    }
+
     // Update data in the database
     $sql = "UPDATE blogs SET title = ?, description = ?, type = ?";
     $param_types = "sss";
@@ -76,17 +94,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $param_values[] = $date;
     }
 
-    // Add thumbnail and images to the update query if they are not empty
+    // Add thumbnail to the update query if it is not empty
     if (!empty($thumbnail_name)) {
         $sql .= ", thumbnail = ?";
         $param_types .= "s";
         $param_values[] = $thumbnail_name;
-    }
-
-    if (!empty($images)) {
-        $sql .= ", images = ?";
-        $param_types .= "s";
-        $param_values[] = implode(',', $images);
     }
 
     $sql .= " WHERE id = ?";
