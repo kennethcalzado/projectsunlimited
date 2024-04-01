@@ -7,7 +7,7 @@ if (isset($_POST['category'])) {
     $searchTerm = isset($_POST['query']) ? $_POST['query'] : '';
     $page = isset($_POST['page']) ? $_POST['page'] : 1; // New: Get the current page
 
-    $limit = 10; // Number of records per page
+    $limit = 5; // Number of records per page
     $offset = ($page - 1) * $limit; // Calculate the offset
 
     // Start building the SQL query
@@ -24,6 +24,13 @@ if (isset($_POST['category'])) {
         $sql .= " (title LIKE '%$searchTerm%' OR description LIKE '%$searchTerm%')";
     }
 
+    // Append sorting option
+    if ($sortOption === 'new') {
+        $sql .= " ORDER BY date DESC";
+    } elseif ($sortOption === 'old') {
+        $sql .= " ORDER BY date ASC";
+    }
+
     // Execute the SQL query to get filtered records count
     $countSql = "SELECT COUNT(*) AS count FROM ($sql) AS filtered";
     $countResult = mysqli_query($conn, $countSql);
@@ -33,7 +40,8 @@ if (isset($_POST['category'])) {
     }
 
     // Adjust the original SQL query with pagination
-    $sql .= " ORDER BY date DESC LIMIT $limit OFFSET $offset";
+    $sql .= " LIMIT $limit OFFSET $offset";
+
 
     // Execute the SQL query to fetch data
     $result = mysqli_query($conn, $sql);

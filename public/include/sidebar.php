@@ -3,7 +3,7 @@
 $base_url = 'http://' . $_SERVER['HTTP_HOST'] . '/'; // Example: http://localhost/
 
 // Concatenate the base URL with the image path
-$image_path = $base_url . 'assets/image/projects.png';
+$image_path = $base_url . 'assets/image/projectslogo.png';
 ?>
 
 <div id="sidebar-container" class="sidebar minimized fixed top-0 bottom-0 lg:left-0 p-2 w-[80px] 
