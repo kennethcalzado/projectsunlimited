@@ -22,7 +22,7 @@
     <div class="flex flex-col md:flex-row mx-16">
         <!-- Left Column -->
         <div class="md:w-1/4 p-2 my-2 mt-8 items-center justify-center">
-            <img src="../assets/image/projects.png" alt="Projects Unlimited Logo" class="w-56 h-66 ml-7">
+            <img src="../assets/image/projectslogo.png" alt="Projects Unlimited Logo" class="w-56 h-66 ml-7">
             <p class="text-sm mt-2">620 Tytana St., Binondo, Manila, Philippines, 1006</p>
             <div class="container mx-auto text-center">
                 <div class="flex items-center ml-6 mt-2">

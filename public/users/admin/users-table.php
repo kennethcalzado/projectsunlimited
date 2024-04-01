@@ -362,7 +362,7 @@ ob_start();
                 data.forEach( function ( user )
                 {
                     // Render user row
-                    const userRow = $( '<tr>' ).addClass( 'bg-white-200 border-b hover:bg-gray-200 dark:hover:bg-zinc-100' );
+                    const userRow = $( '<tr>' ).addClass( 'bg-white-200 border-b hover:bg-zinc-100 dark:hover:bg-zinc-100' );
                     const userInfoContainer = $( '<div>' ).addClass( 'flex flex-col justify-center' );
                     userInfoContainer.append( $( '<h6>' ).addClass( 'text-left px-auto w-full' ).text( user.fname + ' ' + user.lname ) );
                     userInfoContainer.append( $( '<p>' ).addClass( 'text-left text-xs leading-tight text-slate-400' ).text( user.email ) );

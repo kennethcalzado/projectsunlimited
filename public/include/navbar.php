@@ -4,7 +4,7 @@
         <nav class="p-4">
             <div class="container mx-auto flex items-center justify-between">
                 <div>
-                    <a href="../public/home.php" class="logo-link"> <img src="../assets/image/projects.png" alt="Logo"
+                    <a href="../public/home.php" class="logo-link"> <img src="../assets/image/projectslogo.png" alt="Logo"
                             class="logo-image"></a>
                 </div>
                 <div class="hidden md:flex space-x-4">
