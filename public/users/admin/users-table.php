@@ -9,13 +9,6 @@ ob_start();
     <div class="flex flex-col sm:flex-row justify-between items-center">
         <h1 class="text-4xl font-bold mb-2 ml-2 mt-8 text-black">User Accounts List</h1>
         <div class=" flex flex-row justify-between items-cent">
-            <button id="openCreateRoleModal"
-                class="yellow-btn btn-primary rounded-md text-center h-10 mt-3 mx-1 sm:mt-4 !px-4 py-0 text-lg items-center flex">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24"
-                    stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                </svg> Add Role</button>
             <button id="openCreateUserModal"
                 class="yellow-btn btn-primary rounded-md text-center h-10 mt-3 mx-1 sm:mt-4 !px-4 py-0 text-lg items-center flex">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24"
@@ -369,32 +362,57 @@ ob_start();
                 data.forEach( function ( user )
                 {
                     // Render user row
-                    const userRow = $( '<tr>' ).addClass( 'bg-white-200 border-b hover:bg-yellow-200 dark:hover:bg-yellow-200' );
+                    const userRow = $( '<tr>' ).addClass( 'bg-white-200 border-b hover:bg-gray-200 dark:hover:bg-zinc-100' );
                     const userInfoContainer = $( '<div>' ).addClass( 'flex flex-col justify-center' );
                     userInfoContainer.append( $( '<h6>' ).addClass( 'text-left px-auto w-full' ).text( user.fname + ' ' + user.lname ) );
                     userInfoContainer.append( $( '<p>' ).addClass( 'text-left text-xs leading-tight text-slate-400' ).text( user.email ) );
                     userRow.append( $( '<td>' ).addClass( 'px-6 py-4' ).append( userInfoContainer ) );
                     userRow.append( $( '<td>' ).addClass( 'px-6 py-4' ).text( user.role_name ) );
                     userRow.append( $( '<td>' ).addClass( 'px-6 py-4' ).text( user.status ) );
-                    userRow.append( $( '<td>' ).addClass( 'text-center px-6 py-4' ).text( user.created_at ) );
-                    userRow.append( $( '<td>' ).addClass( 'text-center px-6 py-4' ).text( user.updated_at ) );
-                    // Add edit and delete buttons
+                    const dateTd = $( '<td>' ).addClass( 'text-center px-4 py-2' ).append(
+                        $( '<div>' ).text( formatDate( user.created_at ) ).addClass( 'text-sm' ), // Date with smaller text
+                        $( '<div>' ).text( formatTime( user.created_at ) ).addClass( 'text-xs text-gray-500' ) // Time with even smaller and gray text
+                    );
+                    userRow.append( dateTd );
+
+                    // Repeat the same for updated_at
+                    const updateDateTd = $( '<td>' ).addClass( 'text-center px-4 py-2' ).append(
+                        $( '<div>' ).text( formatDate( user.updated_at ) ).addClass( 'text-sm' ), // Date with smaller text
+                        $( '<div>' ).text( formatTime( user.updated_at ) ).addClass( 'text-xs text-gray-500' ) // Time with even smaller and gray text
+                    );
+                    userRow.append( updateDateTd );
+
                     const delBtnText = user.status === 'active' ? 'Deactivate' : 'Activate';
-                    userRow.append( $( '<td>' ).addClass( 'py-6 w-auto px-auto flex justify-center' ).append(
-                        $( '<button>' ).addClass( 'editBtn btn-primary hover:underline text-[14px] mx-auto ' )
-                            .attr( 'data-toggle', 'modal' )
-                            .attr( 'data-target', '#userModal' )
-                            .data( 'userId', user.user_id )
-                            .data( 'user', user )
-                            .text( 'Edit' ),
-                        $( '<button>' ).addClass( 'delBtn btn-danger hover:underline text-[14px] mx-auto' )
-                            .attr( 'data-toggle', 'modal' )
-                            .attr( 'data-target', '#userModal' )
-                            .data( 'userId', user.user_id )
-                            .data( 'userStatus', user.status )
-                            .data( 'user', user )
-                            .text( delBtnText )
-                    ) );
+                    const delBtnIconClass = user.status === 'active' ? 'fas fa-trash-alt pr-[2px]' : 'fas fa-check-circle pr-[2px]'; // Change the icon based on user status
+
+                    const editButton = $( '<button>' ).addClass( 'yellow-btn btn-primary hover:underline text-[14px]' )
+                        .attr( 'data-toggle', 'modal' )
+                        .attr( 'data-target', '#userModal' )
+                        .data( 'userId', user.user_id )
+                        .data( 'user', user );
+
+                    editButton.append(
+                        $( '<i>' ).addClass( 'fas fa-edit pr-[2px]' ),
+                        $( '<span>' ).text( 'Update' )
+                    );
+
+                    const deleteButton = $( '<button>' ).addClass( 'delBtn btn-danger hover:underline text-[14px]' )
+                        .attr( 'data-toggle', 'modal' )
+                        .attr( 'data-target', '#userModal' )
+                        .data( 'userId', user.user_id )
+                        .data( 'userStatus', user.status )
+                        .data( 'user', user );
+
+                    deleteButton.append(
+                        $( '<i>' ).addClass( delBtnIconClass ), // Delete icon with dynamic class
+                        $( '<span>' ).text( delBtnText ) // "Delete" button with dynamic text
+                    );
+
+                    const td = $( '<td>' ).addClass( 'py-6 w-auto px-auto flex justify-center space-x-2' )
+                        .append( editButton, deleteButton );
+                    userRow.append( td );
+
+
                     userList.append( userRow );
                 } );
             }
@@ -610,7 +628,7 @@ ob_start();
                                 $( '#' + fieldName + 'Error' ).addClass( 'text-sm text-red-500 mt-1 error-message' )
                                     .text( response.message[fieldName] );
                                 $( '#' + fieldName ).addClass( 'border-red-500' );
-                                
+
                                 // Display error message using a pop-up
                                 showPopup( 'error', 'Error', response.message[fieldName] );
                             } );
@@ -910,6 +928,23 @@ ob_start();
                 } );
             }
         }
+
+        // Function to format date
+        function formatDate ( dateString )
+        {
+            const date = new Date( dateString );
+            const options = { year: 'numeric', month: 'short', day: 'numeric' };
+            return date.toLocaleDateString( undefined, options );
+        }
+
+        // Function to format time
+        function formatTime ( dateString )
+        {
+            const date = new Date( dateString );
+            const options = { hour: 'numeric', minute: 'numeric' };
+            return date.toLocaleTimeString( undefined, options );
+        }
+
 
         filterUserData( '', '', '', 1, 5 );
     } );

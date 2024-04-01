@@ -2,7 +2,7 @@
 $pageTitle = "Login";
 ob_start();
 ?>
-<div class="container mx-auto my-2 mt-28">
+<div class="container mx-auto my-2 mt-16">
     <!-- Outer Row -->
     <div class="flex justify-center">
         <div class="w-full lg:w-10/12 md:w-9/12">
@@ -66,7 +66,8 @@ ob_start();
 
     <footer>
         <div class="container mx-auto">
-            <p class="text-center text-sm font-bold text-gray-700 justify-center"><i>Copyright &copy; 2024 Projects Unlimited Powered by Projects Unlimited</i></p>
+            <p class="text-center text-sm font-bold text-gray-700 justify-center"><i>Copyright &copy; 2024 Projects
+                    Unlimited Powered by Projects Unlimited</i></p>
         </div>
     </footer>
 
