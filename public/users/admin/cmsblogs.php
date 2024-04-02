@@ -331,10 +331,13 @@ ob_start();
             xhr.send('blogId=' + blogId);
         }
 
-        // UPDATE MODAL
-        // IMAGES
+        // Update modal functions
+        // Open the update modal with blog details
         function openUpdateModal(blogId, title, description, type, date, images) {
-            document.getElementById('updateModal').classList.remove('hidden');
+            var modal = document.getElementById('updateModal');
+            modal.classList.remove('hidden');
+
+            // Set input values
             document.getElementById('blogIdToUpdate').value = blogId;
             document.getElementById('updateTitle').value = title;
             document.getElementById('updateDescription').value = description;
@@ -351,28 +354,36 @@ ob_start();
             } else {
                 var imagesArray = images.split(','); // Split the images string into an array
                 for (var i = 0; i < imagesArray.length; i++) {
-                    var imgContainer = document.createElement('div'); // Container for each image and remove button
+                    // Create container for each image and remove button
+                    var imgContainer = document.createElement('div');
                     imgContainer.className = 'relative inline-block';
                     imgContainer.setAttribute('data-image-index', i); // Store image index as a data attribute
 
-                    var img = document.createElement('img'); // Image element
+                    // Create image element
+                    var img = document.createElement('img');
                     img.src = '../../../assets/blogs_img/' + imagesArray[i];
                     img.width = 100;
                     img.height = 100;
                     img.className = 'mr-2 mb-2';
                     imgContainer.appendChild(img);
 
-                    var removeBtn = document.createElement('button'); // Remove button
+                    // Create remove button
+                    var removeBtn = document.createElement('button');
                     removeBtn.textContent = 'X';
                     removeBtn.className = 'absolute top-0 right-0 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center';
                     removeBtn.style.fontSize = '0.75rem'; // Adjust font size if needed
+                    removeBtn.dataset.imageIndex = i; // Store image index as a data attribute
 
-                    // Add event listener to remove button
+                    // Add click event listener to remove button
                     removeBtn.addEventListener('click', function() {
-                        var imageIndex = this.parentElement.getAttribute('data-image-index'); // Get image index
-                        this.parentElement.remove(); // Remove the container when the remove button is clicked
-                        updateRemovedImages(imageIndex); // Update the list of removed images
+                        var indexToRemove = parseInt(this.dataset.imageIndex);
+                        var removedImagesInput = document.getElementById('removedImages');
+                        var removedIndexes = removedImagesInput.value ? JSON.parse(removedImagesInput.value) : [];
+                        removedIndexes.push(indexToRemove);
+                        removedImagesInput.value = JSON.stringify(removedIndexes);
+                        this.parentElement.remove();
                     });
+
                     imgContainer.appendChild(removeBtn);
 
                     imagesPreview.appendChild(imgContainer); // Append the container to the images preview
@@ -380,25 +391,12 @@ ob_start();
             }
         }
 
-        function updateRemovedImages(imageIndex) {
-            var removedImagesInput = document.getElementById('removedImages');
-            var removedImages = removedImagesInput.value.split(',');
-            removedImages.push(imageIndex); // Add the image index to the list of removed images
-            removedImagesInput.value = removedImages.join(','); // Update the value of the hidden input
-        }
-
-        // Event listener for the remove button
-        document.getElementById('existingImages').addEventListener('click', function(event) {
-            if (event.target.classList.contains('remove-btn')) {
-                var imageIndex = event.target.parentNode.getAttribute('data-image-index');
-                event.target.parentNode.remove(); // Remove the container when the remove button is clicked
-                updateRemovedImages(imageIndex); // Update the list of removed images
-            }
-        });
-
+        // Close the update modal
         function closeUpdateModal() {
-            document.getElementById('updateModal').classList.add('hidden');
+            var modal = document.getElementById('updateModal');
+            modal.classList.add('hidden');
         }
+
 
         // ADD NEW MODAL
         function openModal() {

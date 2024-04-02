@@ -63,19 +63,44 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $row_select_images = $result_select_images->fetch_assoc();
         $images = explode(',', $row_select_images['images']);
     }
-
     // Handle removal of images
     if (!empty($_POST['removedImages'])) {
-        foreach ($_POST['removedImages'] as $removed_image_index) {
-            // Remove the image from the array based on its index
-            unset($images[$removed_image_index]);
+        $removedImageIndexes = json_decode($_POST['removedImages']);
+
+        // Debug statement to check the value of removedImages
+        echo "<script>console.log('Removed Images: " . json_encode($_POST['removedImages']) . "');</script>";
+
+        // Debug statement to check the removed image indexes
+        echo "<script>console.log('Removed Image Indexes: " . json_encode($removedImageIndexes) . "');</script>";
+
+        // Explode the images column result to get separate image filenames
+        $existingImages = explode(
+            ',',
+            $row_select_images['images']
+        );
+
+        // Debug statement to check the existing images before removal
+        echo "<script>console.log('Existing Images Before Removal: " . json_encode($existingImages) . "');</script>";
+
+        // Loop through each removed image index
+        foreach ($removedImageIndexes as $index) {
+            // Check if the index is valid
+            if (isset($existingImages[$index])) {
+                // Remove the image
+                unset($existingImages[$index]);
+            }
         }
 
         // Remove empty elements and re-index the array
-        $images = array_values(array_filter($images));
+        $existingImages = array_values($existingImages);
+
+        // Debug statement to check the existing images after removal
+        echo "<script>console.log('Existing Images After Removal: " . json_encode($existingImages) . "');</script>";
+
+        // Implode the remaining images to update the 'images' column in the database
+        $images_str = implode(',', $existingImages);
 
         // Update the 'images' column in the database
-        $images_str = implode(',', $images);
         $sql_update_images = "UPDATE blogs SET images = ? WHERE id = ?";
         $stmt_update_images = $conn->prepare($sql_update_images);
         $stmt_update_images->bind_param("si", $images_str, $blogId);
@@ -99,6 +124,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $sql .= ", thumbnail = ?";
         $param_types .= "s";
         $param_values[] = $thumbnail_name;
+    }
+
+    if (!empty($images)) {
+        $sql .= ", images = ?";
+        $param_types .= "s";
+        $param_values[] = implode(',', $images);
     }
 
     $sql .= " WHERE id = ?";
