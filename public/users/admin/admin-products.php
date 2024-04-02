@@ -11,10 +11,16 @@ ob_start();
 <div class="transition-all duration-300 page-content sm:ml-36 mr-4 sm:mr-20 mb-10">
     <div class="flex flex-col sm:flex-row justify-between items-center">
         <h1 class="text-4xl font-bold mb-2 ml-2 mt-8 text-black">Products</h1>
+        <div class="flex justify-end">
+        <button id="uploadImage" class="yellow-btn btn-primary rounded-md text-center h-10 mt-3 sm:mt-4 !px-4 py-0 text-lg flex items-center mr-4">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+            </svg> Upload Image </button>
         <button id="addProduct" class="yellow-btn btn-primary rounded-md text-center h-10 mt-3 sm:mt-4 !px-4 py-0 text-lg flex items-center">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
             </svg> Add Product </button>
+        </div>
 
     </div>
     <div class="border-b border-black flex-grow border-4 mt-2 mb-3"></div>
@@ -116,7 +122,7 @@ ob_start();
                 <label for="addproductDescription" class="text-sm font-medium text-gray-700 mb-1">Description</label>
                 <textarea id="addproductDescription" name="productDescription" rows="4" placeholder="Enter Product Description" class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent"></textarea>
             </div>
-            <div class="flex mx-10">
+            <div class="flex mx-4">
                 <div class="mb-4 flex flex-col mr-8">
                     <label for="addproductBrand" class="text-sm font-medium text-gray-700 mb-2">Brand</label>
                     <select id="addproductBrand" name="productBrand" class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent">
@@ -199,33 +205,25 @@ ob_start();
                     const productListing = $("#productlisting");
                     productListing.empty(); // Clear existing table rows
                     if (data.length > 0) {
-                        // Sort products by their creation date and time in ascending order
-                        data.sort((a, b) => {
-                            // Parse date strings into Date objects
-                            const dateA = new Date(a.created_at);
-                            const dateB = new Date(b.created_at);
-                            // Compare dates in descending order
-                            return dateB - dateA;
-                        });
                         $.each(data, function(index, product) {
                             // Create table row for each product
                             const tr = $("<tr>").addClass("hover:bg-zinc-100 border-b bg-white-200");
                             tr.html(`
-                    <td>${product.ProductName}</td>
-                    <td><img class="centered-image" src="../../../assets/products/${product.image_urls}" alt="Product Image" style="max-width: 100px; max-height: 100px;"></td>
-                    <td>${product.brand_name}</td>
-                    <td>${product.Description}</td>
-                    <td>${product.CategoryName}</td>
-                    <td>${product.created_at}</td>
-                    <td>
-                        <div class="flex justify-center">
-                            <button class="btn btn-view rounded-md text-center h-8 mt-3 sm:mt-4 !px-4 py-0 text-sm flex items-center mr-2"><i class="fas fa-eye mr-2 fa-sm"></i><span class="hover:underline">View</span></button>
-                            <button class="btn btn-primary rounded-md text-center h-8 mt-3 sm:mt-4 !px-4 py-0 text-sm flex items-center mr-2 hover:underline editProduct" data-id="${product.id}"><i class="fas fa-edit mr-2 fa-sm"></i>Edit</button>
-                            <button class="btn btn-danger rounded-md text-center h-8 mt-3 sm:mt-4 !px-4 py-0 text-sm flex items-center mr-2 hover:underline deleteProduct" data-id="${product.id}"><i class="fas fa-trash-alt mr-2 fa-sm"></i>Delete</button>
-                        </div>
-                    </td>
-                `);
-                            productListing.append(tr);; // Append at the beginning to maintain descending order
+                            <td>${product.ProductName}</td>
+                            <td><img class="centered-image" src="../../../assets/products/${product.image_urls}" alt="Product Image" style="max-width: 100px; max-height: 100px;"></td>
+                            <td>${product.brand_name}</td>
+                            <td>${product.Description}</td>
+                            <td>${product.CategoryName}</td>
+                            <td>${product.created_at}</td>
+                            <td>
+                                <div class="flex justify-center">
+                                    <button class="btn btn-view rounded-md text-center h-8 mt-3 sm:mt-4 !px-4 py-0 text-sm flex items-center mr-2"><i class="fas fa-eye mr-2 fa-sm"></i><span class="hover:underline">View</span></button>
+                                    <button class="btn btn-primary rounded-md text-center h-8 mt-3 sm:mt-4 !px-4 py-0 text-sm flex items-center mr-2 hover:underline editProduct" data-id="${product.id}"><i class="fas fa-edit mr-2 fa-sm"></i>Edit</button>
+                                    <button class="btn btn-danger rounded-md text-center h-8 mt-3 sm:mt-4 !px-4 py-0 text-sm flex items-center mr-2 hover:underline deleteProduct" data-id="${product.id}"><i class="fas fa-trash-alt mr-2 fa-sm"></i>Delete</button>
+                                </div>
+                            </td>
+                        `);
+                            productListing.append(tr);
                         });
                     } else {
                         productListing.html("<tr><td colspan='6' class='text-center font-bold text-red-800'>No products available</td></tr>");
@@ -241,80 +239,110 @@ ob_start();
 
         // Fetch products on page load
         fetchProducts();
+    });
 
-        // Open modal when Add Product button is clicked
-        $("#addProduct").click(function() {
-            $("#addProductModal").removeClass("hidden");
-        });
-
-        // Close modal when Close button or "x" button is clicked
-        $("#closeModal, #closeAddModal").click(function() {
-            $("#addProductModal").addClass("hidden");
-        });
-
-        // Close modal when clicking outside the modal
-        $("#addProductModal").click(function(event) {
-            if (event.target === this) {
-                $(this).addClass("hidden");
-            }
-        });
-
-        // Preview image function
-        function previewImage(event) {
-            const preview = $('#imagePreview');
-            const file = event.target.files[0];
-            const reader = new FileReader();
-
-            reader.onloadend = function() {
-                const img = $('<img>').attr('src', reader.result).addClass('previewproductimage');
-                preview.empty().append(img);
-            };
-
-            if (file) {
-                reader.readAsDataURL(file);
+    function validateForm() {
+        let isValid = true;
+        // Loop through each input field
+        $('#addProductForm input[type="text"], #addProductForm textarea, #addProductForm select').each(function() {
+            // If the field is empty, add red border and show error message
+            if (!$(this).val()) {
+                $(this).addClass('border-red-600');
+                $(this).siblings('.error-message').text('Please fill this field').show();
+                isValid = false;
             } else {
-                preview.empty();
+                $(this).removeClass('border-red-600'); // Remove red border when field is filled
+                $(this).siblings('.error-message').hide();
             }
+        });
+        // Check if a file is selected
+        const fileInput = $('#addproductImage');
+        if (!fileInput.val()) {
+            fileInput.addClass('border-red-600');
+            fileInput.siblings('.error-message').text('Please choose an image').show();
+            isValid = false;
+        } else {
+            fileInput.removeClass('border-red-600');
+            fileInput.siblings('.error-message').hide();
         }
+        return isValid;
+    }
 
-        // Fetch and populate dropdowns for brand and category
-        $.ajax({
-            url: '../../../backend/product/getproductcategory.php',
-            type: 'GET',
-            dataType: 'json',
-            success: function(categories) {
-                const categoryForm = $('#addproductCategory');
-                categoryForm.empty();
-                categoryForm.append($('<option>').prop('disabled', true).prop('selected', true).text('Select a Category'));
-                $.each(categories, function(index, category) {
-                    categoryForm.append($('<option>').val(category.CategoryID).text(category.CategoryName));
-                });
-            },
-            error: function(xhr, status, error) {
-                console.error('Error:', error);
-            }
-        });
+    // Open modal when Add Product button is clicked
+    $("#addProduct").click(function() {
+        $("#addProductModal").removeClass("hidden");
+    });
 
-        $.ajax({
-            url: '../../../backend/product/getbrand.php',
-            type: 'GET',
-            dataType: 'json',
-            success: function(brands) {
-                const brandForm = $('#addproductBrand');
-                brandForm.empty();
-                brandForm.append($('<option>').prop('disabled', true).prop('selected', true).text('Select a Brand'));
-                $.each(brands, function(index, brand) {
-                    brandForm.append($('<option>').val(brand.brand_id).text(brand.brand_name));
-                });
-            },
-            error: function(xhr, status, error) {
-                console.error('Error fetching brands:', error);
-            }
-        });
+    // Close modal when Close button or "x" button is clicked
+    $("#closeModal, #closeAddModal").click(function() {
+        $("#addProductModal").addClass("hidden");
+    });
 
-        // Handle form submission to add a new product
-        $('#addProductForm').on('submit', function(event) {
-            event.preventDefault();
+    // Close modal when clicking outside the modal
+    $("#addProductModal").click(function(event) {
+        if (event.target === this) {
+            $(this).addClass("hidden");
+        }
+    });
+
+    // Preview image function
+    function previewImage(event) {
+        const preview = $('#imagePreview');
+        const file = event.target.files[0];
+        const reader = new FileReader();
+
+        reader.onloadend = function() {
+            const img = $('<img>').attr('src', reader.result).addClass('previewproductimage');
+            preview.empty().append(img);
+        };
+
+        if (file) {
+            reader.readAsDataURL(file);
+        } else {
+            preview.empty();
+        }
+    }
+
+    // Fetch and populate dropdowns for brand and category
+    $.ajax({
+        url: '../../../backend/product/getproductcategory.php',
+        type: 'GET',
+        dataType: 'json',
+        success: function(categories) {
+            const categoryForm = $('#addproductCategory');
+            categoryForm.empty();
+            categoryForm.append($('<option>').prop('disabled', true).prop('selected', true).text('Select a Category'));
+            $.each(categories, function(index, category) {
+                categoryForm.append($('<option>').val(category.CategoryID).text(category.CategoryName));
+            });
+        },
+        error: function(xhr, status, error) {
+            console.error('Error:', error);
+        }
+    });
+
+    $.ajax({
+        url: '../../../backend/product/getbrand.php',
+        type: 'GET',
+        dataType: 'json',
+        success: function(brands) {
+            const brandForm = $('#addproductBrand');
+            brandForm.empty();
+            brandForm.append($('<option>').prop('disabled', true).prop('selected', true).text('Select a Brand'));
+            $.each(brands, function(index, brand) {
+                brandForm.append($('<option>').val(brand.brand_id).text(brand.brand_name));
+            });
+        },
+        error: function(xhr, status, error) {
+            console.error('Error fetching brands:', error);
+        }
+    });
+
+    // Handle form submission to add a new product
+    $('#addProductForm').on('submit', function(event) {
+        event.preventDefault();
+        // Validate form fields
+        if (validateForm()) {
             var formData = new FormData(this);
             $.ajax({
                 url: "../../../backend/product/addproduct.php",
@@ -341,7 +369,7 @@ ob_start();
                     }
                 },
             });
-        });
+        }
     });
 </script>
 

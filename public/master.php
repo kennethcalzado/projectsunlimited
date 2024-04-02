@@ -8,7 +8,7 @@
             <?php echo $pageTitle . " - Projects Unlimited" ?>
         </title>
         <!-- Link to your Tailwind CSS file -->
-        <link href="../assets/input.css" rel="stylesheet">
+        <!-- <link href="../assets/input.css" rel="stylesheet"> -->
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.0/font/bootstrap-icons.css" />
         <link rel="stylesheet" href="../../../assets/input.css">
         <script src="https://cdn.tailwindcss.com"></script>
