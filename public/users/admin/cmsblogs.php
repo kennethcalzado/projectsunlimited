@@ -372,13 +372,13 @@ ob_start();
                     removeBtn.textContent = 'X';
                     removeBtn.className = 'absolute top-0 right-0 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center';
                     removeBtn.style.fontSize = '0.75rem'; // Adjust font size if needed
-                    removeBtn.dataset.imageIndex = i; // Store image index as a data attribute
 
                     // Add click event listener to remove button
                     removeBtn.addEventListener('click', function() {
-                        var indexToRemove = parseInt(this.dataset.imageIndex);
+                        var indexToRemove = parseInt(this.parentElement.getAttribute('data-image-index'));
                         var removedImagesInput = document.getElementById('removedImages');
                         var removedIndexes = removedImagesInput.value ? JSON.parse(removedImagesInput.value) : [];
+                        console.log('Removing image at index:', indexToRemove); // Log the index to be removed
                         removedIndexes.push(indexToRemove);
                         removedImagesInput.value = JSON.stringify(removedIndexes);
                         this.parentElement.remove();
@@ -391,10 +391,16 @@ ob_start();
             }
         }
 
+
+
         // Close the update modal
         function closeUpdateModal() {
             var modal = document.getElementById('updateModal');
             modal.classList.add('hidden');
+
+            // Log the value of removedImages before form submission
+            var removedImagesInput = document.getElementById('removedImages');
+            console.log('Removed images:', removedImagesInput.value);
         }
 
 
