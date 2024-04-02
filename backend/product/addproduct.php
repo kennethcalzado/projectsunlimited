@@ -12,7 +12,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $brand_id = $_POST["productBrand"];
     $description = $_POST["productDescription"];
     $categoryID = $_POST["productCategory"];
-    $created_at = date("Y-m-d H:i:s"); // Current timestamp
 
     // Handle image upload
     $imagePath = "../../assets/products/";
@@ -35,7 +34,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         // Construct the SQL query
         $sql = "INSERT INTO product (ProductName, brand_id, Description, image_urls, CategoryID, created_at) 
-                VALUES ('$productName', '$brand_id', '$description', '$imageName', '$categoryID', '$created_at')";
+        VALUES ('$productName', '$brand_id', '$description', '$imageName', '$categoryID', NOW())";
 
         // Execute the query
         if (mysqli_query($conn, $sql)) {

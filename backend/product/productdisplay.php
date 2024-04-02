@@ -1,15 +1,18 @@
 <?php
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 include '../../backend/conn.php';
 
 // Check if the connection is established successfully
 if ($conn) {
     // Fetching data from the database
     $sql = "SELECT p.ProductName, b.brand_name, p.Description, p.image_urls, pc.CategoryName, DATE_FORMAT(p.created_at, '%b %d, %Y') AS created_at
-        FROM product p 
-        INNER JOIN brands b ON p.brand_id = b.brand_id 
-        INNER JOIN productcategory pc ON p.CategoryID = pc.CategoryID
-        ORDER BY p.created_at DESC";
-
+    FROM product p 
+    LEFT JOIN brands b ON p.brand_id = b.brand_id 
+    LEFT JOIN productcategory pc ON p.CategoryID = pc.CategoryID
+    WHERE p.image_urls IS NOT NULL AND p.image_urls != ''
+    ORDER BY p.created_at DESC;";
 
     $result = mysqli_query($conn, $sql);
 
@@ -24,6 +27,15 @@ if ($conn) {
             while ($row = mysqli_fetch_assoc($result)) {
                 // Convert image URLs string to an array
                 $imageUrls = explode(',', $row['image_urls']);
+                
+                // Remove empty elements from the image URLs array
+                $imageUrls = array_filter($imageUrls);
+
+                // Replace null or empty values with a dash (-)
+                $row['ProductName'] = $row['ProductName'] ?: '-';
+                $row['brand_name'] = $row['brand_name'] ?: '-';
+                $row['Description'] = $row['Description'] ?: '-';
+                $row['CategoryName'] = $row['CategoryName'] ?: '-';
 
                 // Add the row to the products array with the image URLs
                 $row['image_urls'] = $imageUrls;
@@ -44,3 +56,4 @@ if ($conn) {
     // Return an error message if connection fails
     echo json_encode(["error" => "Failed to connect to the database"]);
 }
+?>
