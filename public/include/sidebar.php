@@ -78,21 +78,7 @@ $image_path = $base_url . 'assets/image/projectslogo.png';
         </div>
     </div>
     <div class="text-left text-sm mt-2 w-4/5 mx-auto text-gray-200 font-bold" id="submenu">
-        <h1 class="cursor-pointer p-2 hover:bg-yellow-600 rounded-md mt-1">
-            Arno
-        </h1>
-        <h1 class="cursor-pointer p-2 hover:bg-yellow-600 rounded-md mt-1">
-            Cabitech
-        </h1>
-        <h1 class="cursor-pointer p-2 hover:bg-yellow-600 rounded-md mt-1">
-            Decoria
-        </h1>
-        <h1 class="cursor-pointer p-2 hover:bg-yellow-600 rounded-md mt-1">
-            Sunpro
-        </h1>
-        <h1 class="cursor-pointer p-2 hover:bg-yellow-600 rounded-md mt-1">
-            Turnils
-        </h1>
+
     </div>
     <a href="/public/users/admin/cmsblogs.php" title="News & Blogs">
         <div class="p-2.5 mt-3 flex items-center rounded-md px-6 duration-300 cursor-pointer hover:bg-yellow-600 text-white"
@@ -206,7 +192,31 @@ $image_path = $base_url . 'assets/image/projectslogo.png';
 
         // Adjust main content padding when sidebar is toggled
         const mainContent = document.querySelector( ".page-content" );
-        // mainContent.classList.toggle( "ml-20" );
         mainContent.classList.toggle( "!ml-[400px]" );
     }
+</script>
+
+<script>
+    $( document ).ready( function ()
+    {
+        $.ajax( {
+            url: '../../../backend/brands/brands-get.php',
+            type: 'GET',
+            dataType: 'json',
+            success: function ( brands )
+            {
+                // Render brand data
+                const submenu = $( '#submenu' );
+
+                brands.forEach( function ( brand )
+                {
+                    submenu.append( $( '<h1>' ).text( brand.brand_name ).addClass( 'cursor-pointer p-2 hover:bg-yellow-600 rounded-md mt-1' ) );
+                } );
+            },
+            error: function ( xhr, status, error )
+            {
+                console.error( 'Error:', error );
+            }
+        } );
+    } );
 </script>
