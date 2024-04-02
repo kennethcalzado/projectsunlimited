@@ -4,34 +4,38 @@ session_start();
 $pageTitle = $_SESSION['user_role'] . " Dashboard";
 ob_start();
 ?>
-<div class="page-content ml-[300px] transition-all duration-300">
+<div class="page-content ml-[100px] transition-all duration-300">
     <h1 class="text-3xl font-bold mb-8">Welcome to the
         <?php echo $_SESSION['user_role']; ?> Dashboard
     </h1>
     <!-- Sample Content -->
     <div class="container mx-auto">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div class="bg-white rounded-lg shadow-md p-6">
+            <!-- <div class="bg-white rounded-lg shadow-md p-6">
                 <div class="text-lg font-semibold mb-4">Total Users</div>
                 <p class="text-gray-700">There are currently 1000 registered users.</p>
             </div>
             <div class="bg-white rounded-lg shadow-md p-6">
                 <div class="text-lg font-semibold mb-4">Total Products</div>
                 <p class="text-gray-700">There are 500 products in the inventory.</p>
-            </div>
+            </div> -->
         </div>
     </div>
 
     <!-- component -->
     <div class="flex flex-row items-center">
         <div class='flex flex-col justify-center items-center'>
-            <div class='bg-[#8e5f27] h-4 w-8 rounded-t-md'></div>
-            <div class='w-12 h-60 bg-[#0c2e41] rounded-t-md'></div>
-            <div class='w-12 h-2 bg-yellow-600 rounded-t-full -mt-2'></div>
-            <div class='bg-[#8e5f27] h-4 w-8 rounded-t-md'></div>
+            <div class='bg-zinc-900 h-4 w-8 rounded-t-md'></div>
+            <div class='w-12 h-60 bg-yellow-600 rounded-t-md'></div>
+            <div class='w-12 h-2 bg-sky-900 rounded-t-full -mt-2'></div>
+            <div class='bg-zinc-900 h-4 w-8 rounded-b-md'></div>
         </div>
-        <div class=' box-content relative h-52 w-[500px] relative border-[#0c2e41] 
+        <div class=' box-content relative h-52 w-[1200px] relative border-yellow-600 
         border-8 slide-ltr sliding-ltr flex flex-row ease'>
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <div class="text-lg font-semibold mb-4">Total Users</div>
+                <p class="text-gray-700">There are currently 1000 registered users.</p>
+            </div>
             <div class="bg-white rounded-lg shadow-md p-6">
                 <div class="text-lg font-semibold mb-4">Total Users</div>
                 <p class="text-gray-700">There are currently 1000 registered users.</p>

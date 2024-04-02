@@ -5,9 +5,11 @@ include '../../backend/conn.php';
 if ($conn) {
     // Fetching data from the database
     $sql = "SELECT p.ProductName, b.brand_name, p.Description, p.image_urls, pc.CategoryName, DATE_FORMAT(p.created_at, '%b %d, %Y') AS created_at
-    FROM product p 
-    INNER JOIN brands b ON p.brand_id = b.brand_id 
-    INNER JOIN productcategory pc ON p.CategoryID = pc.CategoryID";
+        FROM product p 
+        INNER JOIN brands b ON p.brand_id = b.brand_id 
+        INNER JOIN productcategory pc ON p.CategoryID = pc.CategoryID
+        ORDER BY p.created_at DESC";
+
 
     $result = mysqli_query($conn, $sql);
 
@@ -42,4 +44,3 @@ if ($conn) {
     // Return an error message if connection fails
     echo json_encode(["error" => "Failed to connect to the database"]);
 }
-?>

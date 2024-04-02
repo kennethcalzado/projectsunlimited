@@ -3,7 +3,6 @@ session_start();
 $pageTitle = "Users Table";
 ob_start();
 ?>
-
 <!-- Your page content goes here -->
 <div class="transition-all duration-300 page-content sm:ml-36 mr-4 sm:mr-20 mb-10">
     <div class="flex flex-col sm:flex-row justify-between items-center">
@@ -19,7 +18,8 @@ ob_start();
         </div>
     </div>
 
-    <div class="border-b border-black flex-grow border-4 mt-2 mb-3"></div>
+    <div class="border-b border-black flex-grow border-4 mt-2 mb-3"></div> <!--Divider-->
+
     <div class="flex sm:flex-row items-center justify-center">
         <div class="flex sm:flex-row mb-4 sm:mb-0">
             <div class="relative mb-2 mt-2 sm:mb-0 sm:mr-8">
@@ -200,7 +200,6 @@ ob_start();
 <script>
     $( document ).ready( function ()
     {
-
         // Add yellow ring effect on hover, toggle, and focus with transition
         $( '#downArrow, #upArrow' ).on( 'mouseenter focus', function ()
         {
