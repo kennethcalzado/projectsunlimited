@@ -31,51 +31,51 @@ ob_start();
     </div>
     <div class="border-b border-black flex-grow border-4 mt-2 mb-3"></div>
     <div class="flex flex-col sm:flex-row items-center justify-center">
-    <div class="flex flex-col sm:flex-row justify-between mb-4 sm:mb-0">
-        <div class="relative mb-2 mt-4 sm:mb-0 sm:mr-8">
-            <label for="brandFilter" class="mr-2">Brands</label>
-            <select id="brandFilter" class="border rounded-md px-2 py-1">
-                <option value="" disabled selected>Filter by Brand</option>
-                <!-- Add your brand options here -->
-            </select>
+        <div class="flex flex-col sm:flex-row justify-between mb-4 sm:mb-0">
+            <div class="relative mb-2 mt-4 sm:mb-0 sm:mr-8">
+                <label for="brandFilter" class="mr-2">Brands</label>
+                <select id="brandFilter" class="border rounded-md px-2 py-1">
+                    <option value="" disabled selected>Filter by Brand</option>
+                    <!-- Add your brand options here -->
+                </select>
+            </div>
+            <div class="relative mb-2 mt-4 sm:mb-0 sm:mr-8">
+                <label for="categoryFilter" class="mr-2">Category</label>
+                <select id="categoryFilter" class="border rounded-md px-2 py-1">
+                    <option value="" disabled selected>Filter by Category</option>
+                    <!-- Add your category options here -->
+                </select>
+            </div>
+            <div class="relative mb-2 mt-4 sm:mb-0 sm:mr-8">
+                <label for="sortFilter" class="mr-2">Sort</label>
+                <select id="sortFilter" class="border rounded-md px-2 py-1">
+                    <option value="" disabled selected>Sort By</option>
+                    <option>Newest to Oldest</option>
+                    <option>Oldest to Newest</option>
+                </select>
+            </div>
         </div>
-        <div class="relative mb-2 mt-4 sm:mb-0 sm:mr-8">
-            <label for="categoryFilter" class="mr-2">Category</label>
-            <select id="categoryFilter" class="border rounded-md px-2 py-1">
-                <option value="" disabled selected>Filter by Category</option>
-                <!-- Add your category options here -->
-            </select>
-        </div>
-        <div class="relative mb-2 mt-4 sm:mb-0 sm:mr-8">
-            <label for="sortFilter" class="mr-2">Sort</label>
-            <select id="sortFilter" class="border rounded-md px-2 py-1">
-                <option value="" disabled selected>Sort By</option>
-                <option>Newest to Oldest</option>
-                <option>Oldest to Newest</option>
-            </select>
-        </div>
-    </div>
-    <div class="flex justify-between">
-        <div class="relative mb-1 mt-2 sm:mb-0 sm:mr-2">
-            <!-- Search input -->
-            <div class="relative">
-                <input
-                    class="border-2 border-gray-300 bg-white h-10 w-64 px-2 pr-10 mt-4 sm:!mt-0 rounded-lg text-[16px] focus:outline-none"
-                    type="text" name="search" placeholder="Search" id="searchInput">
-                <button type="submit" class="absolute right-0 top-0 mt-7 mr-4 sm:mt-3">
-                    <svg class="text-gray-600 h-5 w-5 fill-current hover:text-gray-500 "
-                        xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-                        version="1.1" id="Capa_1" x="0px" y="0px" viewBox="0 0 56.966 56.966"
-                        style="enable-background:new 0 0 56.966 56.966;" xml:space="preserve" width="512px"
-                        height="512px">
-                        <path
-                            d="M55.146,51.887L41.588,37.786c3.486-4.144,5.396-9.358,5.396-14.786c0-12.682-10.318-23-23-23s-23,10.318-23,23  s10.318,23,23,23c4.761,0,9.298-1.436,13.177-4.162l13.661,14.208c0.571,0.593,1.339,0.92,2.162,0.92  c0.779,0,1.518-0.297,2.079-0.837C56.255,54.982,56.293,53.08,55.146,51.887z M23.984,6c9.374,0,17,7.626,17,17s-7.626,17-17,17  s-17-7.626-17-17S14.61,6,23.984,6z" />
-                    </svg>
-                </button>
+        <div class="flex justify-between">
+            <div class="relative mb-1 mt-2 sm:mb-0 sm:mr-2">
+                <!-- Search input -->
+                <div class="relative">
+                    <input
+                        class="border-2 border-gray-300 bg-white h-10 w-64 px-2 pr-10 mt-4 sm:!mt-0 rounded-lg text-[16px] focus:outline-none"
+                        type="text" name="search" placeholder="Search" id="searchInput">
+                    <button type="submit" class="absolute right-0 top-0 mt-7 mr-4 sm:mt-3">
+                        <svg class="text-gray-600 h-5 w-5 fill-current hover:text-gray-500 "
+                            xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1"
+                            id="Capa_1" x="0px" y="0px" viewBox="0 0 56.966 56.966"
+                            style="enable-background:new 0 0 56.966 56.966;" xml:space="preserve" width="512px"
+                            height="512px">
+                            <path
+                                d="M55.146,51.887L41.588,37.786c3.486-4.144,5.396-9.358,5.396-14.786c0-12.682-10.318-23-23-23s-23,10.318-23,23  s10.318,23,23,23c4.761,0,9.298-1.436,13.177-4.162l13.661,14.208c0.571,0.593,1.339,0.92,2.162,0.92  c0.779,0,1.518-0.297,2.079-0.837C56.255,54.982,56.293,53.08,55.146,51.887z M23.984,6c9.374,0,17,7.626,17,17s-7.626,17-17,17  s-17-7.626-17-17S14.61,6,23.984,6z" />
+                        </svg>
+                    </button>
+                </div>
             </div>
         </div>
     </div>
-</div>
     <div class="relative overflow-x-auto mb-1 rounded-lg mt-4">
         <table class="display !w-full  ">
             <thead class="">
@@ -109,6 +109,9 @@ ob_start();
         </table>
     </div>
 </div>
+
+<!-- MODALS -->
+
 <!-- Upload Image Modal -->
 <div id="uploadImageModal" class="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 hidden">
     <div class="bg-white p-4 rounded-md shadow-md w-full sm:w-[80%] md:w-[60%] lg:w-[40%] xl:w-[30%]">
@@ -136,7 +139,6 @@ ob_start();
         </form>
     </div>
 </div>
-
 <!-- Add Product Modal -->
 <div id="addProductModal" class="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 hidden">
     <div class="bg-white p-4 rounded-md shadow-md w-full sm:w-[80%] md:w-[60%] lg:w-[40%] xl:w-[30%]">
@@ -150,8 +152,7 @@ ob_start();
             </button>
         </div>
         <div class="border-b border-black flex-grow border-2 mt-2 mb-3"></div>
-        <form id="addProductForm" method="POST" enctype="multipart/form-data"
-            class="mt-4">
+        <form id="addProductForm" method="POST" enctype="multipart/form-data" class="mt-4">
             <div class="mb-4 flex flex-col">
                 <label for="addproductName" class="text-sm font-medium text-gray-700 mb-1">Product Name</label>
                 <input type="text" id="addproductName" name="productName" placeholder="Enter Product Name"
@@ -196,6 +197,72 @@ ob_start();
         </form>
     </div>
 </div>
+
+<!-- Edit Product Modal -->
+<div id="editProductModal" class="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 hidden">
+    <div class="bg-white p-4 rounded-md shadow-md w-full sm:w-[80%] md:w-[60%] lg:w-[40%] xl:w-[30%]">
+        <h2 class="text-2xl font-bold">Edit Product</h2>
+        <div class="border-b border-black flex-grow border-2 mt-2 mb-3"></div>
+        <form id="editProductForm" method="POST" enctype="multipart/form-data" class="mt-4">
+            <div class="mb-4 flex flex-col">
+                <label for="updateproductName" class="text-sm font-medium text-gray-700 mb-1">Product Name</label>
+                <input type="text" id="updateproductName" name="productName" placeholder="Enter Product Name"
+                    class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent">
+            </div>
+            <div class="mb-4 flex flex-col">
+                <label for="updateproductImage" class="text-sm font-medium text-gray-700 mb-1">Product Image</label>
+                <div id="imagePreview" class="mt-2"></div>
+                <input type="file" id="updateproductImage" name="productImage" accept=".jpg, .jpeg, .png"
+                    class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent">
+            </div>
+            <div class="mb-4 flex flex-col">
+                <label for="updateproductDescription" class="text-sm font-medium text-gray-700 mb-1">Description</label>
+                <textarea id="updateproductDescription" name="productDescription" rows="4"
+                    placeholder="Enter Product Description"
+                    class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent"></textarea>
+            </div>
+            <div class="flex mx-4">
+                <div class="mb-4 flex flex-col mr-8">
+                    <label for="updateproductBrand" class="text-sm font-medium text-gray-700 mb-2">Brand</label>
+                    <select id="updateproductBrand" name="productBrand"
+                        class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent">
+                        <option value="" disabled selected></option>
+                    </select>
+                </div>
+                <div class="mb-4 flex flex-col">
+                    <label for="updateproductCategory" class="text-sm font-medium text-gray-700 mb-2">Category</label>
+                    <select id="updateproductCategory" name="productCategory"
+                        class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent">
+                        <option value="" disabled selected></option>
+                    </select>
+                </div>
+            </div>
+            <div class="flex justify-end">
+                <button type="submit" id="updateProductbtn"
+                    class="btn btn-primary rounded-md text-center h-10 mt-3 sm:mt-4 !px-4 py-0 text-lg flex items-center mr-2">Save
+                    Changes</button>
+                <button type="button" id="closeModal"
+                    class="btn btn-secondary rounded-md text-center h-10 mt-3 sm:mt-4 !px-4 py-0 text-lg flex items-center">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div id="confirmationModal" class="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 hidden">
+    <div class="bg-white p-4 rounded-md shadow-md w-full sm:w-[80%] md:w-[60%] lg:w-[40%] xl:w-[30%]">
+        <h2 class="text-2xl font-bold">Confirmation</h2>
+        <div class="border-b border-black flex-grow border-2 mt-2 mb-3"></div>
+        <p class="text-lg font-bold" id="confirmationMessage"></p>
+        <div class="flex justify-end">
+            <button id="confirmDelete"
+                class="btn btn-primary rounded-md text-center h-10 mt-3 sm:mt-4 !px-4 py-0 text-lg flex items-center mr-2">Confirm</button>
+            <button id="cancelDelete"
+                class="btn btn-secondary rounded-md text-center h-10 mt-3 sm:mt-4 !px-4 py-0 text-lg flex items-center">Cancel</button>
+        </div>
+    </div>
+</div>
+
 <!-- Success -->
 <div id="successPopup" class="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 hidden">
     <div class="bg-white p-4 rounded-md shadow-md w-full h-56 sm:w-[80%] md:w-[60%] lg:w-[40%] xl:w-[30%]">
@@ -212,47 +279,6 @@ ob_start();
         <p class="text-xl font-bold text-green-600">Bulk Product Upload successful!</p>
     </div>
 </div>
-<!-- Edit Product Modal -->
-<div id="editProductModal" class="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 hidden">
-    <div class="bg-white p-4 rounded-md shadow-md w-full sm:w-[80%] md:w-[60%] lg:w-[40%] xl:w-[30%]">
-        <h2 class="text-2xl font-bold">Edit Product</h2>
-        <div class="border-b border-black flex-grow border-2 mt-2 mb-3"></div>
-        <form id="editProductForm" method="POST" enctype="multipart/form-data" class="mt-4">
-            <div class="mb-4 flex flex-col">
-                <label for="updateproductName" class="text-sm font-medium text-gray-700 mb-1">Product Name</label>
-                <input type="text" id="updateproductName" name="productName" placeholder="Enter Product Name" class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent">
-            </div>
-            <div class="mb-4 flex flex-col">
-                <label for="updateproductImage" class="text-sm font-medium text-gray-700 mb-1">Product Image</label>
-                <div id="imagePreview" class="mt-2"></div>
-                <input type="file" id="updateproductImage" name="productImage" accept=".jpg, .jpeg, .png" class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent">
-            </div>
-            <div class="mb-4 flex flex-col">
-                <label for="updateproductDescription" class="text-sm font-medium text-gray-700 mb-1">Description</label>
-                <textarea id="updateproductDescription" name="productDescription" rows="4" placeholder="Enter Product Description" class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent"></textarea>
-            </div>
-            <div class="flex mx-4">
-                <div class="mb-4 flex flex-col mr-8">
-                    <label for="updateproductBrand" class="text-sm font-medium text-gray-700 mb-2">Brand</label>
-                    <select id="updateproductBrand" name="productBrand" class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent">
-                        <option value="" disabled selected></option>
-                    </select>
-                </div>
-                <div class="mb-4 flex flex-col">
-                    <label for="updateproductCategory" class="text-sm font-medium text-gray-700 mb-2">Category</label>
-                    <select id="updateproductCategory" name="productCategory" class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent">
-                        <option value="" disabled selected></option>
-                    </select>
-                </div>
-            </div>
-            <div class="flex justify-end">
-                <button type="submit" id="updateProductbtn" class="btn btn-primary rounded-md text-center h-10 mt-3 sm:mt-4 !px-4 py-0 text-lg flex items-center mr-2">Save Changes</button>
-                <button type="button" id="closeModal" class="btn btn-secondary rounded-md text-center h-10 mt-3 sm:mt-4 !px-4 py-0 text-lg flex items-center">Cancel</button>
-            </div>
-        </form>
-    </div>
-</div>
-
 
 <?php $content = ob_get_clean();
 ob_start();
@@ -306,7 +332,6 @@ ob_start();
         // Fetch products on page load
         fetchProducts();
     });
-
     function validateForm() {
         let isValid = true;
         // Loop through each input field
