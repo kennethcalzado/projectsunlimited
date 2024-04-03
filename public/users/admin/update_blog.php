@@ -40,17 +40,43 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $thumbnail_name = $row_select_thumbnail['thumbnail'];
     }
 
+    // Initialize $existingImages array
+    $existingImages = array();
+
     // Check if images files are uploaded or if there are existing images
     if (!empty($_FILES['updateImages']['name'][0]) || !empty($_POST['removedImages'])) {
-        // Initialize the $images array to store the filenames
-        $images = array();
+        // If images are being removed, process the removal
+        if (!empty($_POST['removedImages'])) {
+            $removedImageIndexes = json_decode($_POST['removedImages']);
+
+            // Explode the images column result to get separate image filenames
+            $sql_select_images = "SELECT images FROM blogs WHERE id = ?";
+            $stmt_select_images = $conn->prepare($sql_select_images);
+            $stmt_select_images->bind_param("i", $blogId);
+            $stmt_select_images->execute();
+            $result_select_images = $stmt_select_images->get_result();
+            $row_select_images = $result_select_images->fetch_assoc();
+
+            $existingImages = explode(',', $row_select_images['images']);
+
+            // Loop through each removed image index
+            foreach ($removedImageIndexes as $index) {
+                // Check if the index is valid and remove the corresponding filename from the array
+                if (isset($existingImages[$index])) {
+                    unset($existingImages[$index]);
+                }
+            }
+
+            // Remove empty elements and re-index the array
+            $existingImages = array_values($existingImages);
+        }
 
         // If new images are uploaded, process them
         if (!empty($_FILES['updateImages']['name'][0])) {
             foreach ($_FILES['updateImages']['name'] as $key => $image_name) {
                 if ($_FILES['updateImages']['error'][$key] === UPLOAD_ERR_OK) {
                     $image_tmp_name = $_FILES['updateImages']['tmp_name'][$key];
-                    $images[] = $image_name;
+                    $existingImages[] = $image_name;
 
                     // Move uploaded image files to desired location
                     $target_file_image = $image_target_dir . basename($image_name);
@@ -58,36 +84,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 }
             }
         }
-
-        // Handle removal of images
-        if (!empty($_POST['removedImages'])) {
-            $removedImageIndexes = json_decode($_POST['removedImages']);
-
-            // Explode the images column result to get separate image filenames
-            $existingImages = explode(',', $row_select_images['images']);
-
-            // Create a new array to store images that are not removed
-            $remainingImages = array();
-
-            // Loop through each image index
-            foreach ($existingImages as $index => $image) {
-                // Check if the index is not in the list of removed indexes
-                if (!in_array($index, $removedImageIndexes)) {
-                    // Add the image to the remaining images array
-                    $remainingImages[] = $image;
-                }
-            }
-
-            // Implode the remaining images to update the 'images' column in the database
-            $images_str = implode(',', $remainingImages);
-
-            // Update the 'images' column in the database
-            $sql_update_images = "UPDATE blogs SET images = ? WHERE id = ?";
-            $stmt_update_images = $conn->prepare($sql_update_images);
-            $stmt_update_images->bind_param("si", $images_str, $blogId);
-            $stmt_update_images->execute();
-        }
+    } else {
+        // If no images are uploaded or removed, use existing images
+        $sql_select_images = "SELECT images FROM blogs WHERE id = ?";
+        $stmt_select_images = $conn->prepare($sql_select_images);
+        $stmt_select_images->bind_param("i", $blogId);
+        $stmt_select_images->execute();
+        $result_select_images = $stmt_select_images->get_result();
+        $row_select_images = $result_select_images->fetch_assoc();
+        $existingImages = explode(',', $row_select_images['images']);
     }
+
+    // Implode the merged images to update the 'images' column in the database
+    $images_str = implode(',', $existingImages);
 
     // Update data in the database
     $sql = "UPDATE blogs SET title = ?, description = ?, type = ?";
@@ -108,11 +117,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $param_values[] = $thumbnail_name;
     }
 
-    if (!empty($images)) {
-        $sql .= ", images = ?";
-        $param_types .= "s";
-        $param_values[] = implode(',', $images);
-    }
+    // Add images to the update query
+    $sql .= ", images = ?";
+    $param_types .= "s";
+    $param_values[] = $images_str;
 
     $sql .= " WHERE id = ?";
     $param_types .= "i";
