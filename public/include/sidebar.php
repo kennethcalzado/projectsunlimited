@@ -36,7 +36,7 @@ $image_path = $base_url . 'assets/image/projectslogo.png';
                     pr-5 py-[8.5px] m-4 mx-auto w-20 
                     text-[15px] font-bold text-white 
                     absolute  invisible
-                    left-1/2 translate-x-[40%] -translate-y-[61%] opacity-0">Home</span>
+                    left-1/2 translate-x-[40%] -translate-y-[59%] opacity-0">Home</span>
             </div>
             <!-- <span class="text-[15px] ml-4 text-center text-gray-200 font-bold">Home</span> -->
         </div>
@@ -46,26 +46,53 @@ $image_path = $base_url . 'assets/image/projectslogo.png';
     $userRole = $_SESSION['user_role'] ?? "guest"; // Default to 'guest' if the role is not set
     
     if ($userRole == 'admin') { ?>
-        <a href="/public/users/admin/users-table.php">
-            <div class="p-2 mt-3 flex items-center rounded-md px-6 duration-300 cursor-pointer hover:bg-yellow-600 text-white"
-                title="Users">
-                <div class="tooltip tooltip-right" data-tip="Users">
+
+        <a href="/public/users/admin/users-table.php" class="group">
+            <div class="nav-item mt-3 flex items-center rounded-l-md px-6 p-2
+            transition-opacity duration-300 cursor-pointer text-white group-hover:bg-yellow-600 group-hover:ease-in">
+                <!-- <div class="tooltip tooltip-right" data-tip="Home">
+                    <i class="bi bi-house-door-fill"></i>
+                </div> -->
+                <div class=" flex relative ">
                     <i class="bi bi-people-fill"></i>
+                    <span class="text-[15px] ml-4 text-gray-200 font-bold">Users</span>
+                    <span class="tootlips 
+                    group-hover:ease-in group-hover:opacity-100 group-hover:visible 
+                    transition-opacity duration-300 
+                    bg-yellow-600 rounded-r-md 
+                    pr-5 py-[8.7px] m-4 mx-auto w-20 
+                    text-[15px] font-bold text-white 
+                    absolute  invisible
+                    left-1/2 translate-x-[40%] -translate-y-[58.5%] opacity-0">Users</span>
                 </div>
-                <span class="text-[15px] ml-4 text-gray-200 font-bold">Users</span>
+                <!-- <span class="text-[15px] ml-4 text-center text-gray-200 font-bold">Home</span> -->
             </div>
         </a>
     <?php } ?>
-    <a href="/public/users/admin/admin-products.php" title="Products">
-        <div class="p-2.5 mt-3 flex items-center rounded-md px-6 duration-300 cursor-pointer hover:bg-yellow-600 text-white"
-            title="Products">
-            <div class="tooltip tooltip-right" data-tip="Products">
+
+    <a href="/public/users/admin/admin-products.php" class="group">
+        <div class="nav-item mt-3 flex items-center rounded-l-md px-6 p-2
+            transition-opacity duration-300 cursor-pointer text-white group-hover:bg-yellow-600 group-hover:ease-in">
+            <!-- <div class="tooltip tooltip-right" data-tip="Home">
+                    <i class="bi bi-house-door-fill"></i>
+                </div> -->
+            <div class=" flex relative ">
                 <i class="bi bi-box2-fill"></i>
+                <span class="text-[15px] ml-4 text-gray-200 font-bold">Products</span>
+                <span class="tootlips 
+                    group-hover:ease-in group-hover:opacity-100 group-hover:visible 
+                    transition-opacity duration-300 
+                    bg-yellow-600 rounded-r-md 
+                    pr-5 py-[8.7px] m-4 mx-auto w-20 
+                    text-[15px] font-bold text-white 
+                    absolute  invisible
+                    left-1/2 translate-x-[40%] -translate-y-[61.3%] opacity-0">Products</span>
             </div>
-            <span class="text-[15px] ml-4 text-gray-200 font-bold">Products</span>
+            <!-- <span class="text-[15px] ml-4 text-center text-gray-200 font-bold">Home</span> -->
         </div>
     </a>
-    <div class="p-2.5 mt-3 flex items-center rounded-md px-6 duration-300 cursor-pointer hover:bg-yellow-600 text-white"
+
+    <!-- <div class="p-2.5 mt-3 flex items-center rounded-md px-6 duration-300 cursor-pointer hover:bg-yellow-600 text-white"
         onclick="dropdown()" title="Brands">
         <div class="tooltip tooltip-right" data-tip="Brands">
             <i class="bi bi-chat-left-text-fill"></i>
@@ -76,26 +103,42 @@ $image_path = $base_url . 'assets/image/projectslogo.png';
                 <i class="bi bi-chevron-down"></i>
             </span>
         </div>
-    </div>
-    <div class="text-left text-sm mt-2 w-4/5 mx-auto text-gray-200 font-bold" id="submenu">
+    </div> -->
 
-    </div>
-    <a href="/public/users/admin/cmsblogs.php" title="News & Blogs">
-        <div class="p-2.5 mt-3 flex items-center rounded-md px-6 duration-300 cursor-pointer hover:bg-yellow-600 text-white"
-            title="News & Blogs">
-            <div class="tooltip tooltip-right" data-tip="News & Blogs">
-                <i class="bi bi-bookmark-fill"></i>
+    <div>
+        <a href="/public/users/brands-display.php" class="group">
+            <div class="nav-item mt-3 flex items-center rounded-l-md px-6 p-2
+            transition-opacity duration-300 cursor-pointer text-white group-hover:bg-yellow-600 group-hover:ease-in">
+                <div class="flex relative ">
+                    <i class="bi bi-chat-left-text-fill"></i>
+                    <span class="text-[15px] ml-4 text-gray-200 font-bold">Brands</span>
+                    <span class="tootlips 
+                    group-hover:ease-in group-hover:opacity-100 group-hover:visible 
+                    transition-opacity duration-300 
+                    bg-yellow-600 rounded-r-md 
+                    pr-5 py-[9px] m-4 mx-auto w-20 
+                    text-[15px] font-bold text-white 
+                    absolute  invisible
+                    left-1/2 translate-x-[40%] -translate-y-[60.5%] opacity-0">Brands</span>
+                </div>
             </div>
-            <span class="text-[15px] ml-4 text-gray-200 font-bold">News & Blogs</span>
-        </div>
-    </a>
+        </a>
+
+        <span class="absolute hidden
+            -translate-y-[32px] translate-x-[95px] 
+            text-sm rotate-180 rounded-full  
+            hover:bg-yellow-600 hover:text-black hover:text-[17px] 
+            px-2 py-1 text-center" id="arrow" onclick="dropdown()">
+            <i class="bi bi-chevron-down"></i>
+        </span>
+    </div>
+
+    <div class="text-left text-sm mt-2 w-4/5 mx-auto text-gray-200 font-bold transition-all" id="submenu"></div>
 
     <a href="/public/users/admin/cmsblogs.php" class="group">
         <div class="nav-item mt-3 flex items-center rounded-l-md px-6 p-2
             transition-opacity duration-300 cursor-pointer text-white group-hover:bg-yellow-600 group-hover:ease-in">
-            <!-- <div class="tooltip tooltip-right" data-tip="Home">
-                    <i class="bi bi-house-door-fill"></i>
-                </div> -->
+
             <div class=" flex relative ">
                 <i class="bi bi-bookmark-fill"></i>
                 <span class="text-[15px] ml-4 text-gray-200 font-bold">News & Blogs</span>
@@ -106,20 +149,29 @@ $image_path = $base_url . 'assets/image/projectslogo.png';
                     pr-5 py-[8.5px] m-4 mx-auto w-32 
                     text-[15px] font-bold text-white 
                     absolute  invisible
-                    left-1/2 translate-x-[20%] -translate-y-[61%] opacity-0">News & Blogs</span>
+                    left-1/2 translate-x-[20%] -translate-y-[59%] opacity-0">News & Blogs</span>
             </div>
-            <!-- <span class="text-[15px] ml-4 text-center text-gray-200 font-bold">Home</span> -->
         </div>
     </a>
 
     <div class="my-4 bg-gray-600 h-[1px]"></div>
-    <a href="/backend/logout.php">
-        <div class="p-2.5 mt-3 flex items-center rounded-md px-6 duration-300 cursor-pointer hover:bg-yellow-600 text-white"
-            title="Logout">
-            <div class="tooltip tooltip-right" data-tip="Logout">
+
+    <a href="/backend/logout.php" class="group">
+        <div class="nav-item mt-3 flex items-center rounded-l-md px-6 p-2
+            transition-opacity duration-300 cursor-pointer text-white group-hover:bg-yellow-600 group-hover:ease-in">
+
+            <div class=" flex relative ">
                 <i class="bi bi-box-arrow-in-right"></i>
+                <span class="text-[15px] ml-4 text-gray-200 font-bold">Logout</span>
+                <span class="tootlips 
+                    group-hover:ease-in group-hover:opacity-100 group-hover:visible 
+                    transition-opacity duration-300 
+                    bg-yellow-600 rounded-r-md 
+                    pr-5 py-[9px] m-4 mx-auto w-32 
+                    text-[15px] font-bold text-white 
+                    absolute  invisible
+                    left-1/2 translate-x-[20%] -translate-y-[60.54%] opacity-0">Logout</span>
             </div>
-            <span class="text-[15px] ml-4 text-gray-200 font-bold">Logout</span>
         </div>
     </a>
 </div>

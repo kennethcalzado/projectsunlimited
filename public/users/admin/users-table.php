@@ -8,13 +8,27 @@ ob_start();
     <div class="flex flex-col sm:flex-row justify-between items-center">
         <h1 class="text-4xl font-bold mb-2 ml-2 mt-8 text-black">User Accounts List</h1>
         <div class=" flex flex-row justify-between items-cent">
-            <button id="openCreateUserModal"
+            <button onclick="addUserDropdown()" id="addUserDropdownBtn"
                 class="yellow-btn btn-primary rounded-md text-center h-10 mt-3 mx-1 sm:mt-4 !px-4 py-0 text-lg items-center flex">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24"
                     stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                         d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                </svg> Add User Accounts</button>
+                </svg> Add User
+            </button>
+            <div class="absolute hidden
+                text-left text-sm text-center
+                w-[150px] z-10
+                transition-all bg-[#F6E17A]  rounded-md
+                translate-y-[50px] translate-x-[4px] space-y-1" id="addUserDropdown">
+
+                <button class="hidden cursor-pointer hover:bg-[#F9E89B] p-4 rounded-md w-full" id="openCreateUserModal">
+                    Add Single User
+                </button>
+                <button class="hidden cursor-pointer hover:bg-[#F9E89B] p-4 rounded-md w-full" id="openBulkUserModal">
+                    Add Bulk User
+                </button>
+            </div>
         </div>
     </div>
 
@@ -132,7 +146,7 @@ ob_start();
     </div>
 </div>
 
-<div id="userModal" class="fixed inset-0 z-50 flex items-center justify-center hidden">
+<div id="userModal" class="modal fixed inset-0 z-50 flex items-center justify-center hidden">
     <div class="bg-black opacity-25 w-full h-full absolute -z-10"></div>
     <div class="bg-white rounded-lg shadow-2xl p-6 w-full max-w-md">
         <div class="flex justify-between items-center">
@@ -184,6 +198,55 @@ ob_start();
                     border-transparent rounded-md font-semibold text-xs text-gray-700 uppercase 
                     tracking-widest bg-gray-200 hover:bg-gray-300 active:bg-gray-400 focus:outline-none 
                     focus:border-gray-400 focus:ring focus:ring-gray-300 disabled:opacity-25 transition">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div id="uploadUserModal"
+    class="modal fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 z-20 w-full hidden">
+    <div class="bg-black opacity-25 w-full h-full absolute -z-10"></div>
+    <div class="bg-white p-4 rounded-md w-full max-w-md">
+        <div class="flex justify-between items-center">
+            <h2 class="text-2xl font-bold">Upload .xlsx or .csv file</h2>
+            <button id="closeUploadModal"
+                class="close rounded-full text-gray-600 px-2 text-center text-lg hover:text-gray-800 focus:outline-none hover:bg-gray-300"
+                aria-label="Close modal">&times;</button>
+        </div>
+        <div class="border-b border-black flex-grow border-2 mt-2 mb-3"></div>
+        <!-- Add instruction -->
+        <p class="text-black justify-center mb-4 text-lg"><b class="mr-2">Instruction:</b>To upload multiple or bulk
+            users information into the table, select an excel or a CSV file.
+        </p>
+        <form id="uploadImageForm" enctype="multipart/form-data" class="mt-2">
+            <div class="mb-4 flex flex-col">
+                <label for="images" class="text-sm font-medium text-gray-700 mb-1">Select File</label>
+                <div class="flex items-center justify-center w-full">
+                    <label for="dropzone-file"
+                        class="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
+                        <div class="flex flex-col items-center justify-center pt-5 pb-6">
+                            <svg class="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
+                                xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                    stroke-width="2"
+                                    d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2" />
+                            </svg>
+                            <p class="mb-2 text-sm text-gray-500 dark:text-gray-400"><span class="font-semibold">Click
+                                    to upload</span> or drag and drop</p>
+                            <p class="text-xs text-gray-500 dark:text-gray-400">CSV, or XLSX (MAX. 800x400px)</p>
+                            <!-- Placeholder for the file name -->
+                            <p id="file-name" class="text-xs text-gray-500 dark:text-gray-400 mt-4"></p>
+                        </div>
+                        <input id="dropzone-file" type="file" class="hidden" />
+                    </label>
+                </div>
+            </div>
+            <div class="flex justify-end">
+                <button type="submit" id="uploadImagesBtn"
+                    class="btn btn-primary rounded-md text-center h-10 mt-3 sm:mt-4 !px-4 py-0 text-lg flex items-center mr-2">Upload
+                    File</button>
+                <button type="button" id="cancelUploadModal"
+                    class="btn btn-secondary rounded-md text-center h-10 mt-3 sm:mt-4 !px-4 py-0 text-lg flex items-center">Cancel</button>
             </div>
         </form>
     </div>
@@ -450,7 +513,21 @@ ob_start();
             $( '#userModalTitle' ).text( 'Create User' );
             $( '#userForm' )[0].reset(); // Reset form fields
             $( '#resetPasswordContainer' ).hide();
+
+            $( "#addUserDropdown" ).addClass( "hidden" );
+            $( "#openCreateUserModal" ).addClass( "hidden" );
+            $( "#openBulkUserModal" ).addClass( "hidden" );
+
             $( '#userModal' ).removeClass( 'hidden' );
+        } );
+
+        $( document ).on( 'click', '#openBulkUserModal', function ()
+        {
+            $( '#uploadUserModal' ).removeClass( 'hidden' );
+
+            $( "#addUserDropdown" ).addClass( "hidden" );
+            $( "#openCreateUserModal" ).addClass( "hidden" );
+            $( "#openBulkUserModal" ).addClass( "hidden" );
         } );
 
         // Function to populate modal with user data
@@ -478,6 +555,31 @@ ob_start();
             }
             $( '#userModal' ).removeClass( 'hidden' );
         }
+
+        /////////////////// CLOSE / CANCEL EVENTS ////////////////////////////
+        // Function to handle modal closing
+        $( document ).on( 'click', '#closeUserModal, #cancelUserBtn', function ()
+        {
+            // Reset error markers and messages
+            $( '.border-red-500' ).removeClass( 'border-red-500' );
+            $( '.text-red-800' ).removeClass( 'text-red-800' );
+            $( '.error-message' ).empty();
+
+            // Hide the modal
+            $( '#userModal' ).addClass( 'hidden' );
+        } );
+
+
+        $( document ).on( 'click', '#cancelUploadModal, #closeUploadModal', function ()
+        {
+            // Reset error markers and messages
+            $( '.border-red-500' ).removeClass( 'border-red-500' );
+            $( '.text-red-800' ).removeClass( 'text-red-800' );
+            $( '.error-message' ).empty();
+
+            // Hide the modal
+            $( '#uploadUserModal' ).closest( '.modal' ).addClass( 'hidden' );
+        } );
 
         ////////////////// VALIDATION OF FORMS /////////////////////
 
@@ -757,20 +859,6 @@ ob_start();
             filterUserData( roleFilter, statusFilter, searchTerm, page, limit );
         } );
 
-
-        /////////////////// CLOSE / CANCEL EVENTS ////////////////////////////
-        // Function to handle modal closing
-        $( document ).on( 'click', '#closeUserModal, #cancelUserBtn', function ()
-        {
-            // Reset error markers and messages
-            $( '.border-red-500' ).removeClass( 'border-red-500' );
-            $( '.text-red-800' ).removeClass( 'text-red-800' );
-            $( '.error-message' ).empty();
-
-            // Hide the modal
-            $( '#userModal' ).addClass( 'hidden' );
-        } );
-
         /////////////////// POP UP FUNCTION ////////////////////////////
         function showPopup ( type, header, message, actionType )
         {
@@ -944,6 +1032,34 @@ ob_start();
             return date.toLocaleTimeString( undefined, options );
         }
 
+        $( document ).on( 'click', '#addUserDropdownBtn', function ()
+        {
+            $( "#addUserDropdown" ).toggleClass( "hidden" );
+            $( "#openCreateUserModal" ).toggleClass( "hidden" );
+            $( "#openBulkUserModal" ).toggleClass( "hidden" );
+        } );
+
+        $('#dropzone-file').change(function () {
+            var fileInput = $(this)[0];
+            var fileSize = fileInput.files[0].size; // Size in bytes
+            var fileName = fileInput.files[0].name;
+            var fileExtension = fileName.split('.').pop().toLowerCase();
+            var maxSizeInBytes = 1024 * 1024 * 5; // 5 MB
+            var maxSizeInMb = 5;
+
+            // Check file size
+            if (fileSize > maxSizeInBytes) {
+                showPopup('error', 'Error', 'File size exceeds ' + maxSizeInMb + 'MB limit.', null);
+                // Clear the file input
+                $(this).val('');
+            } else if (fileExtension !== 'csv' && fileExtension !== 'xlsx') {
+                showPopup('error', 'Error', 'Please select a CSV or XLSX file.', null);
+                // Clear the file input
+                $(this).val('');
+            } else {
+                $('#file-name').text(fileName);
+            }
+        });
 
         filterUserData( '', '', '', 1, 5 );
     } );
