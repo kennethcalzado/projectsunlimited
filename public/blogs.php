@@ -119,13 +119,38 @@ $result = mysqli_query($conn, $sql);
 
         <div style="width: 100%; text-align: center;">
             <h1 style="padding-top: 25px; font-size: 38px; font-weight: 800; margin: 0;">NEWS & PROJECTS</h1>
+
+            <div class="relative mb-2 mt-2 sm:mb-0 sm:mr-8">
+                <label for="categoryFilter" class="mr-2">Filter by Category</label>
+                <select id="categoryFilter" class="border rounded-md px-2 py-1">
+                    <option value="">All Categories</option>
+                    <option value="News">News & Updates</option>
+                    <option value="Projects">Projects</option>
+                </select>
+            </div>
         </div>
+
+        <script>
+            $(document).ready(function() {
+                $('#categoryFilter').change(function() {
+                    var selectedCategory = $(this).val();
+
+                    $('.card-group').hide(); // Hide all card-groups
+
+                    if (selectedCategory === '') {
+                        $('.card-group').show(); // Show all card-groups if no category selected
+                    } else {
+                        $('.card-group[data-category="' + selectedCategory + '"]').show(); // Show card-groups with selected category
+                    }
+                });
+            });
+        </script>
 
         <section style="padding-top: 20px; padding-bottom: 90px;">
             <div class="container mx-auto">
                 <?php
                 $counter = 0; // Initialize counter variable
-                $itemsPerRow = 5; // Number of items per row
+                $itemsPerRow = 4; // Number of items per row
                 $totalItems = mysqli_num_rows($result); // Total number of items
 
                 if ($totalItems > 0) {
@@ -137,7 +162,7 @@ $result = mysqli_query($conn, $sql);
                     while ($row = mysqli_fetch_assoc($result)) {
                         // Output card HTML dynamically with data from the database
                         echo '
-                <div class="card-group z-10">
+                <div class="card-group z-10" data-category="' . $row['type'] . '">
                     <a href="' . $row['page'] . '" class="card-link">
                         <div class="date">' . $row['date'] . '</div>
                         <div class="placeholder">

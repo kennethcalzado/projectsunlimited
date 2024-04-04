@@ -289,7 +289,7 @@ ob_start();
                     }(i));
                     pagination.append(pageBtn);
                 }
-                pagination.addClass('flex justify-end pr-[70px]');
+                pagination.addClass('flex justify-end');
                 pagination.show(); // Show pagination if there are multiple pages
             }
 
