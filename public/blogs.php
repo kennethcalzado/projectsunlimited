@@ -122,40 +122,47 @@ $result = mysqli_query($conn, $sql);
         </div>
 
         <section style="padding-top: 20px; padding-bottom: 90px;">
-            <div class="container mx-auto flex flex-wrap justify-center">
+            <div class="container mx-auto">
                 <?php
                 $counter = 0; // Initialize counter variable
-                $itemsPerRow = 4; // Number of items per row
+                $itemsPerRow = 5; // Number of items per row
+                $totalItems = mysqli_num_rows($result); // Total number of items
 
-                if (mysqli_num_rows($result) > 0) {
+                if ($totalItems > 0) {
+                    // Generate the first background div
+                    echo '<div class="w-full flex justify-center"><div class="absolute h-[160px] m-[98px] w-3/5 bg-[#F6E381]" style="z-index: -1;"></div></div>';
+
+                    echo '<div class="flex flex-wrap justify-center items-center">'; // Start flex container and center items
                     // Loop through each row
                     while ($row = mysqli_fetch_assoc($result)) {
                         // Output card HTML dynamically with data from the database
                         echo '
-                    <div class="card-group z-10">
-                        <a href="' . $row['page'] . '" class="card-link">
-                            <div class="date">' . $row['date'] . '</div>
-                            <div class="placeholder">
-                                <img src="../assets/blogs_img/' . $row['thumbnail'] . '" alt="Thumbnail" class="thumbnail">
-                            </div>
-                            <div class="title">' . $row['title'] . '</div>
-                        </a>
-                    </div>';
+                <div class="card-group z-10">
+                    <a href="' . $row['page'] . '" class="card-link">
+                        <div class="date">' . $row['date'] . '</div>
+                        <div class="placeholder">
+                            <img src="../assets/blogs_img/' . $row['thumbnail'] . '" alt="Thumbnail" class="thumbnail">
+                        </div>
+                        <div class="title">' . $row['title'] . '</div>
+                    </a>
+                </div>';
 
                         // Increment the counter
                         $counter++;
 
-                        // Check if the counter is a multiple of itemsPerRow or it's the last item
-                        if ($counter % $itemsPerRow == 0 || $counter == mysqli_num_rows($result)) {
-                            // Include the div after every complete row
-                            echo '<div class="absolute flex justify-center items-center h-[160px] m-[98px] w-3/5 bg-[#F6E381]"></div>';
+                        // Check if the current item is the last one or if the next item will start a new row
+                        if ($counter % $itemsPerRow == 0 || $counter == $totalItems) {
+                            // Check if it's not the last item and there are enough items to complete another row
+                            if ($counter != $totalItems && $totalItems - $counter >= $itemsPerRow) {
+                                echo '<div class="w-full flex justify-center"><div class="absolute h-[160px] m-[98px] w-3/5 bg-[#F6E381]" style="z-index: -1;"></div></div><div class="flex flex-wrap justify-center items-center">';
+                            }
                         }
                     }
+                    echo '</div>'; // Close flex container
                 } else {
                     echo "No blogs found.";
                 }
                 ?>
-                <div class="clearfix"></div>
             </div>
         </section>
 </body>
