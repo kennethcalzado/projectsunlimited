@@ -192,6 +192,8 @@ $result = mysqli_query($conn, $sql);
         </section>
 </body>
 
+
+
 <?php
 $content = ob_get_clean();
 include("../public/master.php");
