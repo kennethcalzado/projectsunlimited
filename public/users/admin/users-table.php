@@ -8,7 +8,7 @@ ob_start();
     <div class="flex flex-col sm:flex-row justify-between items-center">
         <h1 class="text-4xl font-bold mb-2 ml-2 mt-8 text-black">User Accounts List</h1>
         <div class=" flex flex-row justify-between items-cent">
-            <button onclick="addUserDropdown()" id="addUserDropdownBtn"
+            <button id="addUserDropdownBtn"
                 class="yellow-btn btn-primary rounded-md text-center h-10 mt-3 mx-1 sm:mt-4 !px-4 py-0 text-lg items-center flex">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24"
                     stroke="currentColor">
@@ -16,11 +16,12 @@ ob_start();
                         d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                 </svg> Add User
             </button>
-            <div class="absolute hidden
+            <div class="absolute 
                 text-left text-sm text-center
                 w-[150px] z-10
-                transition-all bg-[#F6E17A]  rounded-md
-                translate-y-[50px] translate-x-[4px] space-y-1" id="addUserDropdown">
+                transition-all bg-[#F6E17A] rounded-md shadow-md
+                opacity-0 
+                translate-y-[60px] -translate-x-[11px] space-y-1" id="addUserDropdown">
 
                 <button class="hidden cursor-pointer hover:bg-[#F9E89B] p-4 rounded-md w-full" id="openCreateUserModal">
                     Add Single User
@@ -203,8 +204,8 @@ ob_start();
     </div>
 </div>
 
-<div id="uploadUserModal"
-    class="modal fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 z-20 w-full hidden">
+<div id="uploadUserModal" class="modal fixed inset-0 flex items-center justify-center 
+    bg-gray-800 bg-opacity-50 z-20 w-full hidden">
     <div class="bg-black opacity-25 w-full h-full absolute -z-10"></div>
     <div class="bg-white p-4 rounded-md w-full max-w-md">
         <div class="flex justify-between items-center">
@@ -222,15 +223,18 @@ ob_start();
             <div class="mb-4 flex flex-col">
                 <label for="images" class="text-sm font-medium text-gray-700 mb-1">Select File</label>
                 <div class="flex items-center justify-center w-full">
-                    <label for="dropzone-file"
-                        class="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
+                    <label for="dropzone-file" class="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-900 border-dashed 
+                        rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 
+                        dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
                         <div class="flex flex-col items-center justify-center pt-5 pb-6">
-                            <svg class="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
-                                xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
-                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                    stroke-width="2"
-                                    d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2" />
-                            </svg>
+                            <div id="uploadModalIconHolder">
+                                <svg class="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
+                                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                        stroke-width="2"
+                                        d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2" />
+                                </svg>
+                            </div>
                             <p class="mb-2 text-sm text-gray-500 dark:text-gray-400"><span class="font-semibold">Click
                                     to upload</span> or drag and drop</p>
                             <p class="text-xs text-gray-500 dark:text-gray-400">CSV, or XLSX (MAX. 800x400px)</p>
@@ -1015,7 +1019,7 @@ ob_start();
                 } );
             }
         }
-
+        //////////////////// FORMAT DATE AND TIME IN TABLE /////////////////////////
         // Function to format date
         function formatDate ( dateString )
         {
@@ -1032,34 +1036,107 @@ ob_start();
             return date.toLocaleTimeString( undefined, options );
         }
 
+        //////////////////// USER CREATION DROPDOWN /////////////////////////
         $( document ).on( 'click', '#addUserDropdownBtn', function ()
         {
-            $( "#addUserDropdown" ).toggleClass( "hidden" );
+            $( "#addUserDropdown" ).toggleClass( " transition-opacity opacity-100 ease-in-out duration-100" );
             $( "#openCreateUserModal" ).toggleClass( "hidden" );
             $( "#openBulkUserModal" ).toggleClass( "hidden" );
         } );
 
-        $('#dropzone-file').change(function () {
-            var fileInput = $(this)[0];
-            var fileSize = fileInput.files[0].size; // Size in bytes
-            var fileName = fileInput.files[0].name;
-            var fileExtension = fileName.split('.').pop().toLowerCase();
-            var maxSizeInBytes = 1024 * 1024 * 5; // 5 MB
-            var maxSizeInMb = 5;
+        //////////////////// DRAG AND DROP FUNCTIONALITY IN USER BULK CREATION /////////////////////////
+        $( '#dropzone-file' ).on( 'change', function ( e )
+        {
+            e.preventDefault();
+            e.stopPropagation();
 
-            // Check file size
-            if (fileSize > maxSizeInBytes) {
-                showPopup('error', 'Error', 'File size exceeds ' + maxSizeInMb + 'MB limit.', null);
-                // Clear the file input
-                $(this).val('');
-            } else if (fileExtension !== 'csv' && fileExtension !== 'xlsx') {
-                showPopup('error', 'Error', 'Please select a CSV or XLSX file.', null);
-                // Clear the file input
-                $(this).val('');
-            } else {
-                $('#file-name').text(fileName);
+            var files = e.target.files || e.originalEvent.dataTransfer.files;
+            handleFiles( files );
+        } );
+
+        $( '#dropzone-file' ).on( 'drop', function ( e )
+        {
+            // Prevent default handling
+            e.preventDefault();
+            e.stopPropagation();
+
+            // Verify data transfer
+            if ( e.originalEvent.dataTransfer && e.originalEvent.dataTransfer.files )
+            {
+                var files = e.originalEvent.dataTransfer.files;
+                handleFiles( files );
+            } else
+            {
+                console.error( "Data transfer not found in drop event" );
             }
-        });
+            console.log( 'drop' );
+
+            $( this ).removeClass( 'dragover' );
+        } );
+
+        $( '#dropzone-file' ).on( 'dragover', function ( e )
+        {
+            e.preventDefault();
+            e.stopPropagation();
+            console.log( 'dragover' );
+            $( this ).addClass( 'dragover' );
+        } );
+
+        $( '#dropzone-file' ).on( 'dragleave', function ( e )
+        {
+            e.preventDefault();
+            e.stopPropagation();
+            console.log( 'dragleave' );
+
+            $( this ).removeClass( 'dragover' );
+        } );
+
+        function handleFiles ( files )
+        {
+            if ( files.length > 0 )
+            {
+                for ( var i = 0; i < files.length; i++ )
+                {
+                    var fileInput = files[i];
+                    var fileSize = fileInput.size; // Size in bytes
+                    var fileName = fileInput.name;
+                    var fileExtension = fileName.split( '.' ).pop().toLowerCase();
+                    var maxSizeInBytes = 1024 * 1024 * 5; // 5 MB
+                    var maxSizeInMb = 5;
+
+                    // Check file size
+                    if ( fileSize > maxSizeInBytes )
+                    {
+                        showPopup( 'error', 'Error', 'File size exceeds ' + maxSizeInMb + 'MB limit.', null );
+                    } else if ( fileExtension !== 'csv' && fileExtension !== 'xlsx' )
+                    {
+                        showPopup( 'error', 'Error', 'Please select a CSV or XLSX file.', null );
+                    } else
+                    {
+                        $( '#file-name' ).text( 'File Name: ' + fileName ).addClass( 'underline underline-offset-4 font-bold' );
+                        $( '#uploadModalIconHolder' ).empty();
+
+                        if ( fileExtension == 'csv' )
+                        {
+                            $( '#uploadModalIconHolder' ).append( $( '<i>' ).addClass( 'text-3xl mb-3 fa-solid fa-file-csv text-green-500' ) );
+                        } else if ( fileExtension == 'xlsx' )
+                        {
+                            $( '#uploadModalIconHolder' ).append( $( '<i>' ).addClass( 'text-3xl mb-3 fa-solid fa-file-excel text-green-500' ) );
+                        }
+                    }
+                }
+
+                // Clear input field for visual clarity
+                $( '#dropzone-file' ).val( null );
+            }
+        }
+
+
+        // Upload form submission
+        $( '#uploadImageForm' ).submit( function ( e )
+        {
+            e.preventDefault();
+        } );
 
         filterUserData( '', '', '', 1, 5 );
     } );

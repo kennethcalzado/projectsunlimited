@@ -6,15 +6,44 @@ include '../../backend/conn.php';
 
 // Check if the connection is established successfully
 if ($conn) {
-    // Fetching data from the database
+    // Construct the basic SQL query
     $sql = "SELECT p.ProductName, b.brand_name, p.Description, p.image_urls, pc.CategoryName, DATE_FORMAT(p.created_at, '%b %d, %Y') AS created_at
     FROM product p 
     LEFT JOIN brands b ON p.brand_id = b.brand_id 
     LEFT JOIN productcategory pc ON p.CategoryID = pc.CategoryID
-    WHERE p.image_urls IS NOT NULL AND p.image_urls != ''
-    ORDER BY p.created_at DESC;";
+    WHERE p.image_urls IS NOT NULL AND p.image_urls != ' '";
 
+    // Check if any filter parameters are provided
+    if (isset($_GET['categoryId']) && $_GET['categoryId'] !== '') {
+        // Add category filter to the SQL query
+        $categoryId = mysqli_real_escape_string($conn, $_GET['categoryId']);
+        $sql .= " AND p.CategoryID = '$categoryId '";
+    }
+
+    if (isset($_GET['brandId']) && $_GET['brandId'] !== '') {
+        // Add brand filter to the SQL query
+        $brandId = mysqli_real_escape_string($conn, $_GET['brandId']);
+        $sql .= " AND p.brand_id = '$brandId'";
+    }
+
+    // Check if a sorting option is provided
+    if (isset($_GET['sortValue'])) {
+        $sortValue = $_GET['sortValue'];
+        // Add sorting based on creation date
+        if ($sortValue == 'newest') {
+            $sql .= " ORDER BY p.created_at DESC";
+        } elseif ($sortValue == 'oldest') {
+            $sql .= " ORDER BY p.created_at ASC";
+        }
+    } else {
+        // Default sorting by newest to oldest
+        $sql .= " ORDER BY p.created_at DESC";
+    }
+
+    // Execute the SQL query
     $result = mysqli_query($conn, $sql);
+
+    // echo $sql;
 
     // Check if the query was executed successfully
     if ($result) {
