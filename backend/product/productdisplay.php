@@ -7,7 +7,7 @@ include '../../backend/conn.php';
 // Check if the connection is established successfully
 if ($conn) {
     // Construct the basic SQL query
-    $sql = "SELECT p.ProductName, b.brand_name, p.Description, p.image_urls, pc.CategoryName, DATE_FORMAT(p.created_at, '%b %d, %Y') AS created_at
+    $sql = "SELECT p.ProductName, b.brand_name,  p.availability, p.image_urls, pc.CategoryName, DATE_FORMAT(p.created_at, '%b %d, %Y') AS created_at
     FROM product p 
     LEFT JOIN brands b ON p.brand_id = b.brand_id 
     LEFT JOIN productcategory pc ON p.CategoryID = pc.CategoryID
@@ -37,7 +37,7 @@ if ($conn) {
         // Add search filter to the SQL query
         $sql .= " AND (p.ProductName LIKE '%$searchTerm%' 
                OR b.brand_name LIKE '%$searchTerm%' 
-               OR p.Description LIKE '%$searchTerm%' 
+               OR p.availability LIKE '%$searchTerm%' 
                OR pc.CategoryName LIKE '%$searchTerm%'
                OR p.created_at LIKE '%$searchTerm%')";
     }
@@ -77,7 +77,7 @@ if ($conn) {
                 // Replace null or empty values with a dash (-)
                 $row['ProductName'] = $row['ProductName'] ?: '-';
                 $row['brand_name'] = $row['brand_name'] ?: '-';
-                $row['Description'] = $row['Description'] ?: '-';
+                $row['availability'] = $row['availability'] ?: '-';
                 $row['CategoryName'] = $row['CategoryName'] ?: '-';
 
                 // Add the row to the products array with the image URLs
