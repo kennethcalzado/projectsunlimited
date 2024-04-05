@@ -5,7 +5,7 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 
 // Include database connection
-include("../../../backend/conn.php");
+include("../../backend/conn.php");
 
 // Check if blog ID is provided
 if (isset($_POST['blogId'])) {

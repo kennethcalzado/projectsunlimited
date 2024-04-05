@@ -5,7 +5,6 @@ include("../backend/conn.php");
 
 $sql = 'SELECT * FROM blogs ORDER BY date DESC';
 $result = mysqli_query($conn, $sql);
-
 ?>
 
 <head>
@@ -101,6 +100,85 @@ $result = mysqli_query($conn, $sql);
             }
         }
     </style>
+
+    <!-- Your existing head content -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#categoryFilter, #sortFilter').change(function() {
+                var selectedCategory = $('#categoryFilter').val();
+                var sortOption = $('#sortFilter').val();
+
+                // Check if "All Categories" is selected and adjust the category parameter accordingly
+                if (selectedCategory === "All Categories") {
+                    selectedCategory = null; // or any other indicator
+                }
+
+                fetchData(selectedCategory, sortOption);
+            });
+        });
+
+
+        function fetchData(category, sortOption) {
+            $.ajax({
+                url: '../../../backend/blogs/fetch_data.php',
+                method: 'POST',
+                data: {
+                    category: category,
+                    sortOption: sortOption,
+                },
+                dataType: 'json',
+                success: function(response) {
+                    updateDisplay(response.data); // Update display with fetched data
+                }
+            });
+        }
+
+        // Function to update the display with fetched data
+        function updateDisplay(data) {
+            var html = '';
+            var counter = 0; // Initialize counter variable
+            var itemsPerRow = 4; // Number of items per row
+            var totalItems = data.length; // Total number of items 
+
+            if (totalItems > 0) {
+                // Generate the first background div
+                html += '<div class="w-full flex justify-center"><div class="absolute h-[160px] m-[98px] w-3/5 bg-[#F6E381]" style="z-index: -1;"></div></div>';
+                html += '<div class="flex flex-wrap justify-center items-center">'; // Start flex container and center items
+
+                // Loop through each row
+                $.each(data, function(index, item) {
+                    // Output card HTML dynamically with data from the response
+                    html += '<div class="card-group z-10" data-category="' + item.type + '">';
+                    html += '<a href="' + item.page + '" class="card-link">';
+                    html += '<div class="date">' + item.date + '</div>';
+                    html += '<div class="placeholder">';
+                    html += '<img src="../assets/blogs_img/' + item.thumbnail + '" alt="Thumbnail" class="thumbnail">';
+                    html += '</div>';
+                    html += '<div class="title">' + item.title + '</div>';
+                    html += '</a>';
+                    html += '</div>';
+
+                    // Increment the counter
+                    counter++;
+
+                    // Check if the current item is the last one or if the next item will start a new row
+                    if (counter % itemsPerRow == 0 || counter == totalItems) {
+                        // Check if it's not the last item and there are enough items to complete another row
+                        if (counter != totalItems && totalItems - counter >= itemsPerRow) {
+                            html += '<div class="w-full flex justify-center"><div class="absolute h-[160px] m-[98px] w-3/5 bg-[#F6E381]" style="z-index: -1;"></div></div><div class="flex flex-wrap justify-center items-center">';
+                        }
+                    }
+                });
+
+                html += '</div>'; // Close flex container
+            } else {
+                html += '<div>No blogs found.</div>';
+            }
+
+            $('.card-groups-container').html(html); // Update HTML content
+        }
+    </script>
 </head>
 
 <body>
@@ -120,48 +198,46 @@ $result = mysqli_query($conn, $sql);
         <div style="width: 100%; text-align: center;">
             <h1 style="padding-top: 25px; font-size: 38px; font-weight: 800; margin: 0;">NEWS & PROJECTS</h1>
 
-            <div class="relative mb-2 mt-2 sm:mb-0 sm:mr-8">
-                <label for="categoryFilter" class="mr-2">Filter by Category</label>
-                <select id="categoryFilter" class="border rounded-md px-2 py-1">
-                    <option value="">All Categories</option>
-                    <option value="News">News & Updates</option>
-                    <option value="Projects">Projects</option>
-                </select>
+            <div class="flex flex-col sm:flex-row items-center justify-center">
+                <div class="relative mb-2 mt-2 sm:mb-0 sm:mr-8">
+                    <div class="relative mb-2 mt-2 sm:mb-0 sm:mr-8">
+                        <label for="categoryFilter" class="mr-2">Filter by Category:</label>
+                        <select id="categoryFilter" class="border rounded-md px-2 py-1">
+                            <option value="">All Categories</option>
+                            <option value="News">News & Updates</option>
+                            <option value="Projects">Projects</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="relative mb-2 mt-2 sm:mb-0 sm:mr-8">
+                    <label for="sortFilter" class="mr-2">Sort by:</label>
+                    <select id="sortFilter" class="border rounded-md px-2 py-1">
+                        <optgroup label="Sort By:">
+                            <option value="new">Newest to Oldest</option>
+                            <option value="old">Oldest to Newest</option>
+                        </optgroup>
+                    </select>
+                </div>
             </div>
-        </div>
 
-        <script>
-            $(document).ready(function() {
-                $('#categoryFilter').change(function() {
-                    var selectedCategory = $(this).val();
+            <section style="padding-top: 20px; padding-bottom: 90px;">
+                <div class="container mx-auto">
+                    <div class="card-groups-container">
+                        <?php
+                        $counter = 0; // Initialize counter variable
+                        $itemsPerRow = 4; // Number of items per row
+                        $totalItems = mysqli_num_rows($result); // Total number of items 
 
-                    $('.card-group').hide(); // Hide all card-groups
+                        if ($totalItems > 0) {
+                            // Generate the first background div
+                            echo '<div class="w-full flex justify-center"><div class="absolute h-[160px] m-[98px] w-3/5 bg-[#F6E381]" style="z-index: -1;"></div></div>';
 
-                    if (selectedCategory === '') {
-                        $('.card-group').show(); // Show all card-groups if no category selected
-                    } else {
-                        $('.card-group[data-category="' + selectedCategory + '"]').show(); // Show card-groups with selected category
-                    }
-                });
-            });
-        </script>
-
-        <section style="padding-top: 20px; padding-bottom: 90px;">
-            <div class="container mx-auto">
-                <?php
-                $counter = 0; // Initialize counter variable
-                $itemsPerRow = 4; // Number of items per row
-                $totalItems = mysqli_num_rows($result); // Total number of items
-
-                if ($totalItems > 0) {
-                    // Generate the first background div
-                    echo '<div class="w-full flex justify-center"><div class="absolute h-[160px] m-[98px] w-3/5 bg-[#F6E381]" style="z-index: -1;"></div></div>';
-
-                    echo '<div class="flex flex-wrap justify-center items-center">'; // Start flex container and center items
-                    // Loop through each row
-                    while ($row = mysqli_fetch_assoc($result)) {
-                        // Output card HTML dynamically with data from the database
-                        echo '
+                            echo '<div class="flex flex-wrap justify-center items-center">'; // Start flex container and center items
+                            // Loop through each row
+                            while ($row = mysqli_fetch_assoc($result)) {
+                                // Output card HTML dynamically with data from the database
+                                echo '
                 <div class="card-group z-10" data-category="' . $row['type'] . '">
                     <a href="' . $row['page'] . '" class="card-link">
                         <div class="date">' . $row['date'] . '</div>
@@ -171,25 +247,25 @@ $result = mysqli_query($conn, $sql);
                         <div class="title">' . $row['title'] . '</div>
                     </a>
                 </div>';
+                                // Increment the counter
+                                $counter++;
 
-                        // Increment the counter
-                        $counter++;
-
-                        // Check if the current item is the last one or if the next item will start a new row
-                        if ($counter % $itemsPerRow == 0 || $counter == $totalItems) {
-                            // Check if it's not the last item and there are enough items to complete another row
-                            if ($counter != $totalItems && $totalItems - $counter >= $itemsPerRow) {
-                                echo '<div class="w-full flex justify-center"><div class="absolute h-[160px] m-[98px] w-3/5 bg-[#F6E381]" style="z-index: -1;"></div></div><div class="flex flex-wrap justify-center items-center">';
+                                // Check if the current item is the last one or if the next item will start a new row
+                                if ($counter % $itemsPerRow == 0 || $counter == $totalItems) {
+                                    // Check if it's not the last item and there are enough items to complete another row
+                                    if ($counter != $totalItems && $totalItems - $counter >= $itemsPerRow) {
+                                        echo '<div class="w-full flex justify-center"><div class="absolute h-[160px] m-[98px] w-3/5 bg-[#F6E381]" style="z-index: -1;"></div></div><div class="flex flex-wrap justify-center items-center">';
+                                    }
+                                }
                             }
+                            echo '</div>'; // Close flex container
+                        } else {
+                            echo "No blogs found.";
                         }
-                    }
-                    echo '</div>'; // Close flex container
-                } else {
-                    echo "No blogs found.";
-                }
-                ?>
-            </div>
-        </section>
+                        ?>
+                    </div>
+                </div>
+            </section>
 </body>
 
 

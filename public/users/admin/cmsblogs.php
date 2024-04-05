@@ -86,7 +86,7 @@ ob_start();
             <!-- Modal Content -->
             <div class="bg-white p-6 rounded-lg">
                 <h2 class="text-xl font-bold mb-4">Add New Blog</h2>
-                <form action="add_blog.php" method="POST" enctype="multipart/form-data">
+                <form action="../../../backend/blogs/add_blog.php" method="POST" enctype="multipart/form-data">
                     <div class="mb-4">
                         <label for="title" class="block font-semibold mb-2">Title</label>
                         <input type="text" name="title" id="title" class="border rounded px-4 py-2 w-full" required>
@@ -145,7 +145,7 @@ ob_start();
             <div class="bg-white p-6 rounded-lg">
                 <h2 class="text-xl font-bold mb-4">Update Blog</h2>
                 <!-- Form for updating the blog post -->
-                <form id="updateForm" action="update_blog.php" method="POST" enctype="multipart/form-data">
+                <form id="updateForm" action="../../../backend/blogs/update_blog.php" method="POST" enctype="multipart/form-data">
                     <input type="hidden" name="blogIdToUpdate" id="blogIdToUpdate">
                     <input type="hidden" name="removedImages" id="removedImages" value="">
                     <div class="mb-4">
@@ -326,7 +326,7 @@ ob_start();
                     }
                 }
             };
-            xhr.open('POST', 'delete_blog.php', true);
+            xhr.open('POST', '../../../backend/blogs/delete_blog.php', true);
             xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
             xhr.send('blogId=' + blogId);
         }
