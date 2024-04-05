@@ -347,3 +347,15 @@ ob_start();
 $content = ob_get_clean();
 include("../public/master.php");
 ?>
+
+<!-- 
+Bg div element sa blogs.php ------------
+Yung mga filter chuchu sa cms (pagination nalang/ oks na) -----
+Add news editor -----------
+Update images delete/xbutton ---------
+confirmation sa modal
+content ng blogs
+filter blogs display (date and categories)
+pagination blogs
+profile admin
+-->
