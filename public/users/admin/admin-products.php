@@ -12,13 +12,19 @@ ob_start();
     <div class="flex flex-col sm:flex-row justify-between items-center">
         <h1 class="text-4xl font-bold mb-2 ml-2 mt-8 text-black">Products</h1>
         <div class="flex justify-end">
-            <button id="uploadImage" class="yellow-btn btn-primary rounded-md text-center h-10 mt-3 sm:mt-4 !px-4 py-0 text-lg flex items-center mr-4">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+            <button id="uploadImage"
+                class="yellow-btn btn-primary rounded-md text-center h-10 mt-3 sm:mt-4 !px-4 py-0 text-lg flex items-center mr-4">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                 </svg> Upload Image </button>
-            <button id="addProduct" class="yellow-btn btn-primary rounded-md text-center h-10 mt-3 sm:mt-4 !px-4 py-0 text-lg flex items-center">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+            <button id="addProduct"
+                class="yellow-btn btn-primary rounded-md text-center h-10 mt-3 sm:mt-4 !px-4 py-0 text-lg flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                 </svg> Add Product </button>
         </div>
 
@@ -53,10 +59,17 @@ ob_start();
             <div class="relative mb-1 mt-2 sm:mb-0 sm:mr-2">
                 <!-- Search input -->
                 <div class="relative">
-                    <input class="border-2 border-gray-300 bg-white h-10 w-64 px-2 pr-10 mt-4 sm:!mt-0 rounded-lg text-[16px] focus:outline-none" type="text" name="search" placeholder="Search" id="searchInput">
+                    <input
+                        class="border-2 border-gray-300 bg-white h-10 w-64 px-2 pr-10 mt-4 sm:!mt-0 rounded-lg text-[16px] focus:outline-none"
+                        type="text" name="search" placeholder="Search" id="searchInput">
                     <button type="submit" class="absolute right-0 top-0 mt-7 mr-4 sm:mt-3">
-                        <svg class="text-gray-600 h-5 w-5 fill-current hover:text-gray-500 " xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1" x="0px" y="0px" viewBox="0 0 56.966 56.966" style="enable-background:new 0 0 56.966 56.966;" xml:space="preserve" width="512px" height="512px">
-                            <path d="M55.146,51.887L41.588,37.786c3.486-4.144,5.396-9.358,5.396-14.786c0-12.682-10.318-23-23-23s-23,10.318-23,23  s10.318,23,23,23c4.761,0,9.298-1.436,13.177-4.162l13.661,14.208c0.571,0.593,1.339,0.92,2.162,0.92  c0.779,0,1.518-0.297,2.079-0.837C56.255,54.982,56.293,53.08,55.146,51.887z M23.984,6c9.374,0,17,7.626,17,17s-7.626,17-17,17  s-17-7.626-17-17S14.61,6,23.984,6z" />
+                        <svg class="text-gray-600 h-5 w-5 fill-current hover:text-gray-500 "
+                            xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1"
+                            id="Capa_1" x="0px" y="0px" viewBox="0 0 56.966 56.966"
+                            style="enable-background:new 0 0 56.966 56.966;" xml:space="preserve" width="512px"
+                            height="512px">
+                            <path
+                                d="M55.146,51.887L41.588,37.786c3.486-4.144,5.396-9.358,5.396-14.786c0-12.682-10.318-23-23-23s-23,10.318-23,23  s10.318,23,23,23c4.761,0,9.298-1.436,13.177-4.162l13.661,14.208c0.571,0.593,1.339,0.92,2.162,0.92  c0.779,0,1.518-0.297,2.079-0.837C56.255,54.982,56.293,53.08,55.146,51.887z M23.984,6c9.374,0,17,7.626,17,17s-7.626,17-17,17  s-17-7.626-17-17S14.61,6,23.984,6z" />
                         </svg>
                     </button>
                 </div>
@@ -113,12 +126,15 @@ ob_start();
         <form id="uploadImageForm" enctype="multipart/form-data" class="mt-2">
             <div class="mb-4 flex flex-col">
                 <label for="images" class="text-sm font-medium text-gray-700 mb-1">Select Images</label>
-                <input type="file" id="images" name="images[]" multiple accept=".jpg, .jpeg, .png" class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent">
+                <input type="file" id="images" name="images[]" multiple accept=".jpg, .jpeg, .png"
+                    class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent">
             </div>
             <div class="flex justify-end">
-                <button type="submit" id="uploadImagesBtn" class="btn btn-primary rounded-md text-center h-10 mt-3 sm:mt-4 !px-4 py-0 text-lg flex items-center mr-2">Upload
+                <button type="submit" id="uploadImagesBtn"
+                    class="btn btn-primary rounded-md text-center h-10 mt-3 sm:mt-4 !px-4 py-0 text-lg flex items-center mr-2">Upload
                     Images</button>
-                <button type="button" id="closeUploadModal" class="btn btn-secondary rounded-md text-center h-10 mt-3 sm:mt-4 !px-4 py-0 text-lg flex items-center">Cancel</button>
+                <button type="button" id="closeUploadModal"
+                    class="btn btn-secondary rounded-md text-center h-10 mt-3 sm:mt-4 !px-4 py-0 text-lg flex items-center">Cancel</button>
             </div>
         </form>
     </div>
@@ -139,35 +155,44 @@ ob_start();
         <form id="addProductForm" method="POST" enctype="multipart/form-data" class="mt-4">
             <div class="mb-4 flex flex-col">
                 <label for="addproductName" class="text-sm font-medium text-gray-700 mb-1">Product Name</label>
-                <input type="text" id="addproductName" name="productName" placeholder="Enter Product Name" class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent">
+                <input type="text" id="addproductName" name="productName" placeholder="Enter Product Name"
+                    class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent">
             </div>
             <div class="mb-4 flex flex-col">
                 <label for="addproductImage" class="text-sm font-medium text-gray-700 mb-1">Insert Product Image</label>
-                <input type="file" id="addproductImage" name="productImage" accept=".jpg, .jpeg, .png" class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent" onchange="previewImage(event)">
+                <input type="file" id="addproductImage" name="productImage" accept=".jpg, .jpeg, .png"
+                    class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
+                    onchange="previewImage(event)">
             </div>
             <div id="imagePreview"></div>
             <div class="mb-4 flex flex-col">
                 <label for="addproductDescription" class="text-sm font-medium text-gray-700 mb-1">Description</label>
-                <textarea id="addproductDescription" name="productDescription" rows="4" placeholder="Enter Product Description" class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent"></textarea>
+                <textarea id="addproductDescription" name="productDescription" rows="4"
+                    placeholder="Enter Product Description"
+                    class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent"></textarea>
             </div>
             <div class="flex mx-4">
                 <div class="mb-4 flex flex-col mr-8">
                     <label for="addproductBrand" class="text-sm font-medium text-gray-700 mb-2">Brand</label>
-                    <select id="addproductBrand" name="productBrand" class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent">
+                    <select id="addproductBrand" name="productBrand"
+                        class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent">
                         <option value="" disabled selected></option>
                     </select>
                 </div>
                 <div class="mb-4 flex flex-col ">
                     <label for="addproductCategory" class="text-sm font-medium text-gray-700 mb-2">Category</label>
-                    <select id="addproductCategory" name="productCategory" class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent">
+                    <select id="addproductCategory" name="productCategory"
+                        class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent">
                         <option value="" disabled selected></option>
                     </select>
                 </div>
             </div>
             <div class="flex justify-end">
-                <button type="submit" id="addProductbtn" class="btn btn-primary rounded-md text-center h-10 mt-3 sm:mt-4 !px-4 py-0 text-lg flex items-center mr-2">Add
+                <button type="submit" id="addProductbtn"
+                    class="btn btn-primary rounded-md text-center h-10 mt-3 sm:mt-4 !px-4 py-0 text-lg flex items-center mr-2">Add
                     Product</button>
-                <button type="button" id="closeModal" class="btn btn-secondary rounded-md text-center h-10 mt-3 sm:mt-4 !px-4 py-0 text-lg flex items-center">Cancel</button>
+                <button type="button" id="closeModal"
+                    class="btn btn-secondary rounded-md text-center h-10 mt-3 sm:mt-4 !px-4 py-0 text-lg flex items-center">Cancel</button>
             </div>
         </form>
     </div>
@@ -181,35 +206,43 @@ ob_start();
         <form id="editProductForm" method="POST" enctype="multipart/form-data" class="mt-4">
             <div class="mb-4 flex flex-col">
                 <label for="updateproductName" class="text-sm font-medium text-gray-700 mb-1">Product Name</label>
-                <input type="text" id="updateproductName" name="productName" placeholder="Enter Product Name" class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent">
+                <input type="text" id="updateproductName" name="productName" placeholder="Enter Product Name"
+                    class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent">
             </div>
             <div class="mb-4 flex flex-col">
                 <label for="updateproductImage" class="text-sm font-medium text-gray-700 mb-1">Product Image</label>
                 <div id="imagePreview" class="mt-2"></div>
-                <input type="file" id="updateproductImage" name="productImage" accept=".jpg, .jpeg, .png" class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent">
+                <input type="file" id="updateproductImage" name="productImage" accept=".jpg, .jpeg, .png"
+                    class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent">
             </div>
             <div class="mb-4 flex flex-col">
                 <label for="updateproductDescription" class="text-sm font-medium text-gray-700 mb-1">Description</label>
-                <textarea id="updateproductDescription" name="productDescription" rows="4" placeholder="Enter Product Description" class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent"></textarea>
+                <textarea id="updateproductDescription" name="productDescription" rows="4"
+                    placeholder="Enter Product Description"
+                    class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent"></textarea>
             </div>
             <div class="flex mx-4">
                 <div class="mb-4 flex flex-col mr-8">
                     <label for="updateproductBrand" class="text-sm font-medium text-gray-700 mb-2">Brand</label>
-                    <select id="updateproductBrand" name="productBrand" class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent">
+                    <select id="updateproductBrand" name="productBrand"
+                        class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent">
                         <option value="" disabled selected></option>
                     </select>
                 </div>
                 <div class="mb-4 flex flex-col">
                     <label for="updateproductCategory" class="text-sm font-medium text-gray-700 mb-2">Category</label>
-                    <select id="updateproductCategory" name="productCategory" class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent">
+                    <select id="updateproductCategory" name="productCategory"
+                        class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent">
                         <option value="" disabled selected></option>
                     </select>
                 </div>
             </div>
             <div class="flex justify-end">
-                <button type="submit" id="updateProductbtn" class="btn btn-primary rounded-md text-center h-10 mt-3 sm:mt-4 !px-4 py-0 text-lg flex items-center mr-2">Save
+                <button type="submit" id="updateProductbtn"
+                    class="btn btn-primary rounded-md text-center h-10 mt-3 sm:mt-4 !px-4 py-0 text-lg flex items-center mr-2">Save
                     Changes</button>
-                <button type="button" id="closeModal" class="btn btn-secondary rounded-md text-center h-10 mt-3 sm:mt-4 !px-4 py-0 text-lg flex items-center">Cancel</button>
+                <button type="button" id="closeModal"
+                    class="btn btn-secondary rounded-md text-center h-10 mt-3 sm:mt-4 !px-4 py-0 text-lg flex items-center">Cancel</button>
             </div>
         </form>
     </div>
@@ -222,8 +255,10 @@ ob_start();
         <div class="border-b border-black flex-grow border-2 mt-2 mb-3"></div>
         <p class="text-lg font-bold" id="confirmationMessage"></p>
         <div class="flex justify-end">
-            <button id="confirmDelete" class="btn btn-primary rounded-md text-center h-10 mt-3 sm:mt-4 !px-4 py-0 text-lg flex items-center mr-2">Confirm</button>
-            <button id="cancelDelete" class="btn btn-secondary rounded-md text-center h-10 mt-3 sm:mt-4 !px-4 py-0 text-lg flex items-center">Cancel</button>
+            <button id="confirmDelete"
+                class="btn btn-primary rounded-md text-center h-10 mt-3 sm:mt-4 !px-4 py-0 text-lg flex items-center mr-2">Confirm</button>
+            <button id="cancelDelete"
+                class="btn btn-secondary rounded-md text-center h-10 mt-3 sm:mt-4 !px-4 py-0 text-lg flex items-center">Cancel</button>
         </div>
     </div>
 </div>
@@ -251,17 +286,17 @@ ob_start();
 
 <!-- JAVASCRIPT -->
 <script>
-    $(document).ready(function() {
+    $(document).ready(function () {
         // Fetch products and populate the table
         function fetchProducts() {
             $.ajax({
                 url: "../../../backend/product/productdisplay.php",
                 type: "GET",
                 dataType: "json",
-                success: function(data) {
+                success: function (data) {
                     populateProductTable(data);
                 },
-                error: function(xhr, status, error) {
+                error: function (xhr, status, error) {
                     handleFetchError();
                 }
             });
@@ -311,10 +346,10 @@ ob_start();
                     searchQuery: searchQuery
                 },
                 dataType: "json",
-                success: function(data) {
+                success: function (data) {
                     populateProductTable(data);
                 },
-                error: function(xhr, status, error) {
+                error: function (xhr, status, error) {
                     handleFetchError();
                 }
             });
@@ -326,78 +361,103 @@ ob_start();
             productListing.empty(); // Clear existing table rows
 
             if (data.length > 0) {
-                data.forEach(function(product) {
-                    // Create table row for each product
-                    const tr = $("<tr>").addClass("hover:bg-zinc-100 border-b bg-white-200");
+                // Fetch availability options for all products
+                fetchAvailabilityOptions(function (availabilityOptions) {
+                    data.forEach(function (product) {
+                        // Create table row for each product
+                        const tr = $("<tr>").addClass("hover:bg-zinc-100 border-b bg-white-200");
 
-                    // Create select element for availability
-                    const availabilitySelect = $("<select>").addClass("availability-dropdown");
+                        // Create select element for availability
+                        const availabilitySelect = $("<select>").addClass("availability-dropdown");
 
-                    // Set a placeholder option while availability options are being fetched
-                    availabilitySelect.append($("<option>").attr("value", "").text("Fetching availability..."));
-
-                    // Fetch availability options for current product
-                    fetchAvailabilityOptions(product.ProductID, function(availabilityOptions) {
-                        // Clear placeholder option
-                        availabilitySelect.empty();
+                        // Set a placeholder option while availability options are being fetched
+                        availabilitySelect.append($("<option>").attr("value", "").text("Availability"));
 
                         // Add options based on fetched availability options
-                        availabilityOptions.forEach(function(option) {
+                        availabilityOptions.forEach(function (option) {
                             const optionElement = $("<option>").attr("value", option).text(option);
                             availabilitySelect.append(optionElement);
                         });
 
                         // Set selected option based on product's availability
                         availabilitySelect.val(product.availability);
+
+                        // Append other product details to table row
+                        tr.html(`
+                        <td>${product.ProductName}</td>
+                        <td><img class="centered-image" src="../../../assets/products/${product.image_urls[0]}" alt="Product Image" style="max-width: 100px; max-height: 100px;"></td>
+                        <td>${product.brand_name}</td>
+                        <td></td> <!-- This will be replaced by the availability dropdown -->
+                        <td>${product.CategoryName}</td>
+                        <td>${product.created_at}</td>
+                        <td>
+                            <div class="flex justify-center">
+                                <button class="btn btn-view rounded-md text-center h-8 mt-3 sm:mt-4 !px-4 py-0 text-sm flex items-center mr-2"><i class="fas fa-eye mr-2 fa-sm"></i><span class="hover:underline">View</span></button>
+                                <button class="btn btn-primary rounded-md text-center h-8 mt-3 sm:mt-4 !px-4 py-0 text-sm flex items-center mr-2 editProduct" data-id="${product.id}"><i class="fas fa-edit mr-2 fa-sm"></i>Edit</button>
+                                <button class="btn btn-danger rounded-md text-center h-8 mt-3 sm:mt-4 !px-4 py-0 text-sm flex items-center mr-2 deleteProduct" data-id="${product.id}"><i class="fas fa-trash-alt mr-2 fa-sm"></i>Delete</button>
+                            </div>
+                    </td>
+                `);
+
+                        // Append availability dropdown to table cell
+                        tr.find("td:eq(3)").append(availabilitySelect);
+
+                        // Append table row to productListing
+                        productListing.append(tr);
                     });
-
-                    // Append other product details to table row
-                    tr.html(`
-                <td>${product.ProductName}</td>
-                <td><img class="centered-image" src="../../../assets/products/${product.image_urls[0]}" alt="Product Image" style="max-width: 100px; max-height: 100px;"></td>
-                <td>${product.brand_name}</td>
-                <td></td> <!-- This will be replaced by the availability dropdown -->
-                <td>${product.CategoryName}</td>
-                <td>${product.created_at}</td>
-                <td>
-                    <div class="flex justify-center">
-                        <button class="btn btn-view rounded-md text-center h-8 mt-3 sm:mt-4 !px-4 py-0 text-sm flex items-center mr-2"><i class="fas fa-eye mr-2 fa-sm"></i><span class="hover:underline">View</span></button>
-                        <button class="btn btn-primary rounded-md text-center h-8 mt-3 sm:mt-4 !px-4 py-0 text-sm flex items-center mr-2 hover:underline editProduct" data-id="${product.id}"><i class="fas fa-edit mr-2 fa-sm"></i>Edit</button>
-                        <button class="btn btn-danger rounded-md text-center h-8 mt-3 sm:mt-4 !px-4 py-0 text-sm flex items-center mr-2 hover:underline deleteProduct" data-id="${product.id}"><i class="fas fa-trash-alt mr-2 fa-sm"></i>Delete</button>
-                    </div>
-                </td>
-            `);
-                    // Append availability dropdown to table cell
-                    tr.find("td:eq(3)").append(availabilitySelect);
-
-                    // Append table row to productListing
-                    productListing.append(tr);
                 });
             } else {
                 productListing.html("<tr><td colspan='7' class='text-center font-bold text-red-800'>No products available</td></tr>");
             }
         }
 
-        function fetchAvailabilityOptions() {
+        function fetchAvailabilityOptions(callback) {
             $.ajax({
                 url: "../../../backend/product/getavail.php",
                 type: "GET",
                 dataType: "json",
-                success: function(response) {
-                    // Populate the dropdown with availability options
+                success: function (response) {
                     const availabilityOptions = response;
                     const dropdown = $('.availability-dropdown');
                     dropdown.empty();
-                    $.each(availabilityOptions, function(index, option) {
-                        dropdown.append($('<option></option>').attr('value', option).text(option));
+                    // Add options based on fetched availability options
+                    availabilityOptions.forEach(function (option) {
+                        const optionElement = $("<option>").attr("value", option).text(option);
+                        dropdown.append(optionElement);
                     });
+
+                    // Call the callback function with the availability options
+                    if (callback) {
+                        callback(availabilityOptions);
+                    }
                 },
-                error: function(xhr, status, error) {
+                error: function (xhr, status, error) {
                     console.error("Error fetching availability options:", error);
                 }
             });
         }
-1q
+        // $('.availability-dropdown').change(function () {
+        //     const productId = $(this).closest('tr').data('product-id');
+        //     const availability = $(this).val();
+
+        //     // Send an AJAX request to update the availability in the database
+        //     $.ajax({
+        //         url: '/backend/product/updateavail.php',
+        //         type: 'POST',
+        //         data: {
+        //             ProductID: productId,
+        //             availability: availability
+        //         },
+        //         success: function (response) {
+        //             // Handle successful update
+        //             console.log('Availability updated:', response);
+        //         },
+        //         error: function (xhr, status, error) {
+        //             // Handle error
+        //             console.error('Error updating availability:', error);
+        //         }
+        //     });
+        // });
         // Function to handle fetch error
         function handleFetchError() {
             console.error("Error fetching data:", error);
@@ -406,39 +466,10 @@ ob_start();
         }
     });
 
-    // Function to handle availability change
-    $(document).on('change', '.availability-dropdown', function() {
-        // Get the selected availability option and the corresponding product ID
-        const availability = $(this).val();
-        const productId = $(this).closest('tr').attr('data-id');
-
-        // Make an AJAX request to update the availability status in the database
-        $.ajax({
-            url: "../../../backend/product/updateavail.php",
-            type: "POST",
-            data: {
-                productId: productId,
-                availability: availability
-            },
-            dataType: "json",
-            success: function(response) {
-                if (response.success) {
-                    console.log("Availability updated successfully:", response);
-                } else {
-                    console.error("Error updating availability:", response.error);
-                }
-            },
-            error: function(xhr, status, error) {
-                console.error("Error updating availability:", error);
-            }
-        });
-    });
-
-
     function validateForm() {
         let isValid = true;
         // Loop through each input field
-        $('#addProductForm input[type="text"], #addProductForm textarea, #addProductForm select').each(function() {
+        $('#addProductForm input[type="text"], #addProductForm textarea, #addProductForm select').each(function () {
             // If the field is empty, add red border and show error message
             if (!$(this).val()) {
                 $(this).addClass('border-red-600');
@@ -463,17 +494,17 @@ ob_start();
     }
 
     // Open modal when Add Product button is clicked
-    $("#addProduct").click(function() {
+    $("#addProduct").click(function () {
         $("#addProductModal").removeClass("hidden");
     });
 
     // Close modal when Close button or "x" button is clicked
-    $("#closeModal, #closeAddModal").click(function() {
+    $("#closeModal, #closeAddModal").click(function () {
         $("#addProductModal").addClass("hidden");
     });
 
     // Close modal when clicking outside the modal
-    $("#addProductModal").click(function(event) {
+    $("#addProductModal").click(function (event) {
         if (event.target === this) {
             $(this).addClass("hidden");
         }
@@ -485,7 +516,7 @@ ob_start();
         const file = event.target.files[0];
         const reader = new FileReader();
 
-        reader.onloadend = function() {
+        reader.onloadend = function () {
             const img = $('<img>').attr('src', reader.result).addClass('previewproductimage');
             preview.empty().append(img);
         };
@@ -499,17 +530,17 @@ ob_start();
 
     //BULK UPLOAD SCRIPT
     // Open upload image modal
-    $("#uploadImage").click(function() {
+    $("#uploadImage").click(function () {
         $("#uploadImageModal").removeClass("hidden");
     });
 
     // Close upload image modal
-    $("#closeUploadModal").click(function() {
+    $("#closeUploadModal").click(function () {
         $("#uploadImageModal").addClass("hidden");
     });
 
     // Handle form submission to upload images
-    $("#uploadImageForm").submit(function(event) {
+    $("#uploadImageForm").submit(function (event) {
         event.preventDefault();
         var formData = new FormData(this);
         $.ajax({
@@ -518,18 +549,18 @@ ob_start();
             data: formData,
             contentType: false,
             processData: false,
-            success: function(response) {
+            success: function (response) {
                 console.log("Images uploaded successfully:", response);
                 // Close modal after successful upload
                 $("#uploadImageModal").addClass("hidden");
                 // Show success modal
                 $("#successBulkPopup").removeClass("hidden");
                 // Optionally, you can perform any additional actions here, such as refreshing the page or updating UI.
-                setTimeout(function() {
+                setTimeout(function () {
                     window.location.reload(); // Refresh the page after 2 seconds
                 }, 2000); // 2 seconds
             },
-            error: function(xhr, status, error) {
+            error: function (xhr, status, error) {
                 console.error("Error uploading images:", error);
                 // Handle error if any
             }
@@ -542,22 +573,22 @@ ob_start();
         url: '../../../backend/product/getproductcategory.php',
         type: 'GET',
         dataType: 'json',
-        success: function(categories) {
+        success: function (categories) {
             const categoryForm = $('#addproductCategory');
             categoryForm.empty();
             categoryForm.append($('<option>').prop('disabled', true).prop('selected', true).text('Select a Category'));
-            $.each(categories, function(index, category) {
+            $.each(categories, function (index, category) {
                 categoryForm.append($('<option>').val(category.CategoryID).text(category.CategoryName));
             });
             const categoryFilter = $('#categoryFilter');
             categoryFilter.empty();
             categoryFilter.append($('<option>').val('categoryreset').text('All Category')); // Add 'All Category' option
-            $.each(categories, function(index, category) {
+            $.each(categories, function (index, category) {
                 categoryFilter.append($('<option>').val(category.CategoryID).text(category.CategoryName));
             });
         },
 
-        error: function(xhr, status, error) {
+        error: function (xhr, status, error) {
             console.error('Error:', error);
         }
     });
@@ -566,27 +597,27 @@ ob_start();
         url: '../../../backend/product/getbrand.php',
         type: 'GET',
         dataType: 'json',
-        success: function(brands) {
+        success: function (brands) {
             const brandForm = $('#addproductBrand');
             brandForm.empty();
             brandForm.append($('<option>').prop('disabled', true).prop('selected', true).text('Select a Brand'));
-            $.each(brands, function(index, brand) {
+            $.each(brands, function (index, brand) {
                 brandForm.append($('<option>').val(brand.brand_id).text(brand.brand_name));
             });
             const brandFilter = $('#brandFilter');
             brandFilter.empty();
             brandFilter.append($('<option>').val('brandsreset').text('All Brand')); // Add 'All Brand' option
-            $.each(brands, function(index, brand) {
+            $.each(brands, function (index, brand) {
                 brandFilter.append($('<option>').val(brand.brand_id).text(brand.brand_name));
             });
         },
-        error: function(xhr, status, error) {
+        error: function (xhr, status, error) {
             console.error('Error fetching brands:', error);
         }
     });
 
     // Handle form submission to add a new product
-    $('#addProductForm').on('submit', function(event) {
+    $('#addProductForm').on('submit', function (event) {
         event.preventDefault();
         // Validate form fields
         if (validateForm()) {
@@ -598,7 +629,7 @@ ob_start();
                 contentType: false,
                 processData: false,
                 // After successfully adding a product, show the success modal and hide the add product modal
-                success: function(data) {
+                success: function (data) {
                     var responseData = JSON.parse(data);
                     if (responseData.success) {
                         console.log("Product added successfully:", responseData);
@@ -607,7 +638,7 @@ ob_start();
                         // Hide add product modal
                         $("#addProductModal").addClass("hidden");
                         // Hide success modal and refresh the page after 3 seconds
-                        setTimeout(function() {
+                        setTimeout(function () {
                             $("#successModal").addClass("hidden");
                             location.reload(); // Refresh the page
                         }, 2000); // 2 seconds
@@ -622,5 +653,5 @@ ob_start();
 
 <?php
 $script = ob_get_clean();
-include("../../../public/master.php");
+include ("../../../public/master.php");
 ?>
