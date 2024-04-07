@@ -12,14 +12,17 @@ ob_start();
             vertical-align: center;
             padding: 4px, 16px;
         }
+
         .btn-pagination {
             padding: 4px 16px;
             margin: 0 2px;
             border-radius: 5px;
         }
+
         .btn-pagination:hover {
             text-decoration: underline;
         }
+
         .active {
             background-color: #F6E17A;
             color: black;
@@ -31,7 +34,8 @@ ob_start();
             font-weight: 700;
             text-decoration: underline;
         }
-        .item-count{
+
+        .item-count {
             margin-right: auto;
         }
     </style>
@@ -278,14 +282,15 @@ ob_start();
 </div>
 
 <!-- Delete Confirmation Modal -->
-<div id="confirmationModal" class="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 hidden">
+<div id="deleteModal" class="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 hidden">
     <div class="bg-white p-4 rounded-md shadow-md w-full sm:w-[80%] md:w-[60%] lg:w-[40%] xl:w-[30%]">
-        <h2 class="text-2xl font-bold">Confirmation</h2>
+        <h2 class="text-2xl font-bold" id="confirmationTitle"></h2>
         <div class="border-b border-black flex-grow border-2 mt-2 mb-3"></div>
         <p class="text-lg font-bold" id="confirmationMessage"></p>
         <div class="flex justify-end">
             <button id="confirmDelete"
-                class="btn btn-primary rounded-md text-center h-10 mt-3 sm:mt-4 !px-4 py-0 text-lg flex items-center mr-2">Confirm</button>
+                class="btn btn-primary rounded-md text-center h-10 mt-3 sm:mt-4 !px-4 py-0 text-lg flex items-center mr-2">Confirm
+                Delete</button>
             <button id="cancelDelete"
                 class="btn btn-secondary rounded-md text-center h-10 mt-3 sm:mt-4 !px-4 py-0 text-lg flex items-center">Cancel</button>
         </div>
@@ -486,9 +491,9 @@ ob_start();
                         <td>${product.created_at}</td>
                         <td>
                             <div class="flex justify-center">
-                                <button type="button" class="btn btn-view rounded-md text-center sm:mt-4 !px-4 text-sm flex items-center mr-2"><i class="fas fa-eye mr-2 fa-sm"></i><span class="hover:underline">View</span></button>
-                                <button type="button" class="btn btn-primary rounded-md text-center sm:mt-4 !px-4 text-sm flex items-center mr-2 editProduct" data-id="${product.id}"><i class="fas fa-edit mr-2 fa-sm"></i>Edit</button>
-                                <button type="button" class="btn btn-danger rounded-md text-center sm:mt-4 !px-4 text-sm flex items-center mr-2 deleteProduct" data-id="${product.id}"><i class="fas fa-trash-alt mr-2 fa-sm"></i>Delete</button>
+                                <button type="button" class="btn btn-view rounded-md text-center sm:mt-4 !px-4 text-sm flex items-center mr-2 viewProduct data-productid="${product.ProductID}"><i class="fas fa-eye mr-2 fa-sm"></i><span class="hover:underline">View</span></button>
+                                <button type="button" class="btn btn-primary rounded-md text-center sm:mt-4 !px-4 text-sm flex items-center mr-2 editProduct" data-productid="${product.ProductID}"><i class="fas fa-edit mr-2 fa-sm"></i>Edit</button>
+                                <button type="button" class="btn btn-danger rounded-md text-center sm:mt-4 !px-4 text-sm flex items-center mr-2 deleteProduct" data-productid="${product.ProductID}"><i class="fas fa-trash-alt mr-2 fa-sm"></i>Delete</button>
                             </div>
                     </td>
                 `);
@@ -530,7 +535,6 @@ ob_start();
                 }
             });
         }
-        
         // Function to handle fetch error
         function handleFetchError() {
             console.error("Error fetching data:", error);
@@ -722,6 +726,7 @@ ob_start();
             });
         }
     });
+    
 </script>
 
 <?php

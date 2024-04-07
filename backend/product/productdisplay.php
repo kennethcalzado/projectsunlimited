@@ -7,39 +7,39 @@ include '../../backend/conn.php';
 // Check if the connection is established successfully
 if ($conn) {
     // Construct the basic SQL query
-    $sql = "SELECT p.ProductName, b.brand_name,  p.availability, p.image_urls, pc.CategoryName, DATE_FORMAT(p.created_at, '%b %d, %Y') AS created_at
-    FROM product p 
-    LEFT JOIN brands b ON p.brand_id = b.brand_id 
-    LEFT JOIN productcategory pc ON p.CategoryID = pc.CategoryID
-    WHERE p.image_urls IS NOT NULL AND p.image_urls!= ''";
+    $sql = "SELECT p.ProductID, p.ProductName, b.brand_name, p.availability, p.image_urls, pc.CategoryName, DATE_FORMAT(p.created_at, '%b %d, %Y') AS created_at
+            FROM product p 
+            LEFT JOIN brands b ON p.brand_id = b.brand_id 
+            LEFT JOIN productcategory pc ON p.CategoryID = pc.CategoryID
+            WHERE p.image_urls IS NOT NULL AND p.image_urls != ''";
 
     // Check if any filter parameters are provided
-    if (isset($_GET['categoryId']) && $_GET['categoryId']!== '') {
+    if (isset($_GET['categoryId']) && $_GET['categoryId'] !== '') {
         // Add category filter to the SQL query
         $categoryId = mysqli_real_escape_string($conn, $_GET['categoryId']);
-        if ($categoryId!== 'categoryreset') {
-            $sql.= " AND p.CategoryID = '$categoryId'";
+        if ($categoryId !== 'categoryreset') {
+            $sql .= " AND p.CategoryID = '$categoryId'";
         }
     }
 
-    if (isset($_GET['brandId']) && $_GET['brandId']!== '') {
+    if (isset($_GET['brandId']) && $_GET['brandId'] !== '') {
         // Add brand filter to the SQL query
         $brandId = mysqli_real_escape_string($conn, $_GET['brandId']);
-        if ($brandId!== 'brandsreset') {
-            $sql.= " AND p.brand_id = '$brandId'";
+        if ($brandId !== 'brandsreset') {
+            $sql .= " AND p.brand_id = '$brandId'";
         }
     }
 
     // Check if search term is provided
-    if (isset($_GET['searchQuery']) &&!empty($_GET['searchQuery'])) {
+    if (isset($_GET['searchQuery']) && !empty($_GET['searchQuery'])) {
         // Sanitize and escape the search term to prevent SQL injection
         $searchTerm = mysqli_real_escape_string($conn, $_GET['searchQuery']);
         // Add search filter to the SQL query
-        $sql.= " AND (p.ProductName LIKE '%$searchTerm%' 
-               OR b.brand_name LIKE '%$searchTerm%' 
-               OR p.availability LIKE '%$searchTerm%' 
-               OR pc.CategoryName LIKE '%$searchTerm%'
-               OR p.created_at LIKE '%$searchTerm%')";
+        $sql .= " AND (p.ProductName LIKE '%$searchTerm%' 
+                   OR b.brand_name LIKE '%$searchTerm%' 
+                   OR p.availability LIKE '%$searchTerm%' 
+                   OR pc.CategoryName LIKE '%$searchTerm%'
+                   OR p.created_at LIKE '%$searchTerm%')";
     }
 
     // Check if a sorting option is provided
@@ -47,24 +47,28 @@ if ($conn) {
         $sortValue = $_GET['sortValue'];
         // Add sorting based on creation date
         if ($sortValue == 'newest') {
-            $sql.= " ORDER BY p.created_at DESC";
+            $sql .= " ORDER BY p.created_at DESC";
         } elseif ($sortValue == 'oldest') {
-            $sql.= " ORDER BY p.created_at ASC";
+            $sql .= " ORDER BY p.created_at ASC";
         }
     } else {
         // Default sorting by newest to oldest
-        $sql.= " ORDER BY p.created_at DESC";
+        $sql .= " ORDER BY p.created_at DESC";
     }
 
+    // Execute the SQL query to get total count of items
+    $resultCount = mysqli_query($conn, "SELECT COUNT(*) AS totalRows FROM ($sql) AS subquery");
+    $totalRows = mysqli_fetch_assoc($resultCount)['totalRows'];
+
     // Initialize $limit and $page variables
-    $limit = isset($_GET['limit'])? (int) $_GET['limit'] : 5;
-    $page = isset($_GET['page'])? (int) $_GET['page'] : 1;
+    $limit = isset($_GET['limit']) ? (int) $_GET['limit'] : 5;
+    $page = isset($_GET['page']) ? (int) $_GET['page'] : 1;
 
     // Calculate offset for pagination
     $offset = ($page - 1) * $limit;
 
     // Add LIMIT and OFFSET to SQL query for pagination
-    $sqlPagination = $sql. " LIMIT $limit OFFSET $offset";
+    $sqlPagination = $sql . " LIMIT $limit OFFSET $offset";
 
     // Execute the SQL query for pagination
     $result = mysqli_query($conn, $sqlPagination);
@@ -85,10 +89,10 @@ if ($conn) {
                 $imageUrls = array_filter($imageUrls);
 
                 // Replace null or empty values with a dash (-)
-                $row['ProductName'] = $row['ProductName']?: '-';
-                $row['brand_name'] = $row['brand_name']?: '-';
-                $row['availability'] = $row['availability']?: '-';
-                $row['CategoryName'] = $row['CategoryName']?: '-';
+                $row['ProductName'] = $row['ProductName'] ?: '-';
+                $row['brand_name'] = $row['brand_name'] ?: '-';
+                $row['availability'] = $row['availability'] ?: '-';
+                $row['CategoryName'] = $row['CategoryName'] ?: '-';
 
                 // Add the row to the products array with the image URLs
                 $row['image_urls'] = $imageUrls;
@@ -96,16 +100,14 @@ if ($conn) {
             }
 
             // Calculate the total number of pages
-            $sqlCount = "SELECT COUNT(*) AS totalRows FROM ($sql) AS subquery";
-            $resultCount = mysqli_query($conn, $sqlCount);
-            $totalRows = mysqli_fetch_assoc($resultCount)['totalRows'];
             $totalPages = ceil($totalRows / $limit);
 
-            // Output the products array as JSON with the totalPages property
-            echo json_encode(array('products' => $products, 'totalPages' => $totalPages));
+            // Output the products array as JSON with the totalPages and totalRows properties
+            echo json_encode(array('products' => $products, 'totalPages' => $totalPages, 'totalRows' => $totalRows));
         } else {
             // Output an empty array as JSON
-            echo json_encode(array('products' => [], 'totalPages' => 0));
+            echo json_encode(array('products' => [], 'totalPages' => 0, 'totalRows' => 0));
+
         }
     } else {
         // Output the SQL error as JSON
