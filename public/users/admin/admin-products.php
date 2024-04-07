@@ -6,6 +6,35 @@ ob_start();
 
 <head>
     <link rel="stylesheet" href="../../../assets/input.css">
+    <style>
+        .btn {
+            font-size: 14px;
+            vertical-align: center;
+            padding: 4px, 16px;
+        }
+        .btn-pagination {
+            padding: 4px 16px;
+            margin: 0 2px;
+            border-radius: 5px;
+        }
+        .btn-pagination:hover {
+            text-decoration: underline;
+        }
+        .active {
+            background-color: #F6E17A;
+            color: black;
+            border: none;
+            padding: 4px 16px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 14px;
+            font-weight: 700;
+            text-decoration: underline;
+        }
+        .item-count{
+            margin-right: auto;
+        }
+    </style>
 </head>
 
 <div class="transition-all duration-300 page-content sm:ml-36 mr-4 sm:mr-20 mb-10">
@@ -49,7 +78,6 @@ ob_start();
             <div class="relative mb-2 mt-4 sm:mb-0 sm:mr-8">
                 <label for="sortFilter" class="mr-2">Sort</label>
                 <select id="sortFilter" class="border rounded-md px-2 py-1">
-                    <option value="" disabled selected>Sort By</option>
                     <option value="newest">Newest to Oldest</option>
                     <option value="oldest">Oldest to Newest</option>
                 </select>
@@ -107,6 +135,7 @@ ob_start();
                 <!-- Content will be loaded dynamically using JavaScript -->
             </tbody>
         </table>
+        <div id="pagination" class="flex justify-end mt-4"></div>
     </div>
 </div>
 
@@ -288,40 +317,102 @@ ob_start();
 <script>
     $(document).ready(function () {
         // Fetch products and populate the table
-        function fetchProducts() {
+        function fetchProducts(page, limit) {
             $.ajax({
                 url: "../../../backend/product/productdisplay.php",
                 type: "GET",
                 dataType: "json",
+                data: {
+                    page: page,
+                    limit: limit,
+                    categoryId: $("#categoryFilter").val() || "",
+                    brandId: $("#brandFilter").val() || "",
+                    sortValue: $("#sortFilter").val() || "",
+                    searchQuery: $("#searchInput").val() || ""
+                },
                 success: function (data) {
-                    populateProductTable(data);
+                    console.log("Total rows: " + data.products.length);
+                    populateProductTable(data.products);
+                    generatePagination(data.totalPages, page);
                 },
                 error: function (xhr, status, error) {
                     handleFetchError();
                 }
             });
+
+        }
+
+        function generatePagination(totalPages, currentPage, categoryId, brandId, sortValue, searchQuery) {
+            const paginationBar = $('#pagination');
+
+            // Clear existing pagination bar
+            paginationBar.empty();
+
+            // Get the total number of products and the number of products per page
+            const totalProducts = totalPages * 5;
+            const productsPerPage = 5;
+
+            // Calculate the starting and ending index of the current page
+            const startIndex = (currentPage - 1) * productsPerPage + 1;
+            const endIndex = Math.min(startIndex + productsPerPage - 1, totalProducts);
+
+            // Display the item count
+            const itemCountElement = $('<div class="text-[16px] text-gray-500 item-count">').text(`Showing ${startIndex} - ${endIndex} of ${totalProducts} items`);
+            paginationBar.append(itemCountElement);
+
+            // Add numbered pages
+            for (let i = 1; i <= totalPages; i++) {
+                if (i === currentPage) {
+                    paginationBar.append(`<button class="btn btn-primary btn-pagination mr-2">${i}</button>`);
+                } else {
+                    paginationBar.append(`<button class="btn btn-secondary btn-pagination mr-2">${i}</button>`);
+                }
+            }
+
+            // Add click event to pagination buttons
+            paginationBar.find('.btn-pagination').click(function () {
+                const pageNumber = $(this).text();
+                console.log("Clicked page number: " + pageNumber); // Debug statement
+                fetchFilteredProducts(pageNumber, 5, categoryId, brandId, sortValue, searchQuery); // Include filter values in request data
+            });
+
+            // Add active class to current page button
+            paginationBar.find(`.btn-pagination:contains(${currentPage})`).addClass('active');
+
+            // Style the pagination bar using CSS Flexbox
+            paginationBar.addClass('flex justify-end');
         }
 
         // Fetch products on page load
-        fetchProducts();
+        fetchProducts(1, 5);
+
         // Handle category filter change
-        $('#categoryFilter').change(fetchFilteredProducts);
+        $('#categoryFilter').change(function () {
+            fetchFilteredProducts(1, 5, true);
+        });
 
         // Handle brand filter change
-        $('#brandFilter').change(fetchFilteredProducts);
+        $('#brandFilter').change(function () {
+            fetchFilteredProducts(1, 5, true);
+        });
 
         // Handle sort filter change
-        $('#sortFilter').change(fetchFilteredProducts);
+        $('#sortFilter').change(function () {
+            sortValue = $(this).val();
+            fetchFilteredProducts(1, 5, true);
+        });
 
         // Handle search input change
-        $('#searchInput').on('input', fetchFilteredProducts);
+        $('#searchInput').on('input', function () {
+            fetchFilteredProducts(1, 5, true);
+        });
 
-        function fetchFilteredProducts() {
+        function fetchFilteredProducts(page, limit, categoryId, brandId, sortValue, searchQuery) {
             // Get selected values
-            var categoryId = $('#categoryFilter').val();
-            var brandId = $('#brandFilter').val();
-            var sortValue = $('#sortFilter').val();
-            var searchQuery = $('#searchInput').val();
+            categoryId = $('#categoryFilter').val();
+            brandId = $('#brandFilter').val();
+            sortValue = $('#sortFilter').val();
+            searchQuery = $('#searchInput').val();
 
             // Check if 'All Category' is selected
             if (categoryId === 'categoriesreset') {
@@ -339,15 +430,18 @@ ob_start();
             $.ajax({
                 url: "../../../backend/product/productdisplay.php",
                 type: "GET",
+                dataType: "json",
                 data: {
+                    page: page,
+                    limit: limit,
                     categoryId: categoryId,
                     brandId: brandId,
                     sortValue: sortValue,
                     searchQuery: searchQuery
                 },
-                dataType: "json",
                 success: function (data) {
-                    populateProductTable(data);
+                    populateProductTable(data.products);
+                    generatePagination(data.totalPages, page, categoryId, brandId, sortValue, searchQuery);
                 },
                 error: function (xhr, status, error) {
                     handleFetchError();
@@ -392,9 +486,9 @@ ob_start();
                         <td>${product.created_at}</td>
                         <td>
                             <div class="flex justify-center">
-                                <button class="btn btn-view rounded-md text-center h-8 mt-3 sm:mt-4 !px-4 py-0 text-sm flex items-center mr-2"><i class="fas fa-eye mr-2 fa-sm"></i><span class="hover:underline">View</span></button>
-                                <button class="btn btn-primary rounded-md text-center h-8 mt-3 sm:mt-4 !px-4 py-0 text-sm flex items-center mr-2 editProduct" data-id="${product.id}"><i class="fas fa-edit mr-2 fa-sm"></i>Edit</button>
-                                <button class="btn btn-danger rounded-md text-center h-8 mt-3 sm:mt-4 !px-4 py-0 text-sm flex items-center mr-2 deleteProduct" data-id="${product.id}"><i class="fas fa-trash-alt mr-2 fa-sm"></i>Delete</button>
+                                <button type="button" class="btn btn-view rounded-md text-center sm:mt-4 !px-4 text-sm flex items-center mr-2"><i class="fas fa-eye mr-2 fa-sm"></i><span class="hover:underline">View</span></button>
+                                <button type="button" class="btn btn-primary rounded-md text-center sm:mt-4 !px-4 text-sm flex items-center mr-2 editProduct" data-id="${product.id}"><i class="fas fa-edit mr-2 fa-sm"></i>Edit</button>
+                                <button type="button" class="btn btn-danger rounded-md text-center sm:mt-4 !px-4 text-sm flex items-center mr-2 deleteProduct" data-id="${product.id}"><i class="fas fa-trash-alt mr-2 fa-sm"></i>Delete</button>
                             </div>
                     </td>
                 `);
@@ -436,28 +530,7 @@ ob_start();
                 }
             });
         }
-        // $('.availability-dropdown').change(function () {
-        //     const productId = $(this).closest('tr').data('product-id');
-        //     const availability = $(this).val();
-
-        //     // Send an AJAX request to update the availability in the database
-        //     $.ajax({
-        //         url: '/backend/product/updateavail.php',
-        //         type: 'POST',
-        //         data: {
-        //             ProductID: productId,
-        //             availability: availability
-        //         },
-        //         success: function (response) {
-        //             // Handle successful update
-        //             console.log('Availability updated:', response);
-        //         },
-        //         error: function (xhr, status, error) {
-        //             // Handle error
-        //             console.error('Error updating availability:', error);
-        //         }
-        //     });
-        // });
+        
         // Function to handle fetch error
         function handleFetchError() {
             console.error("Error fetching data:", error);
