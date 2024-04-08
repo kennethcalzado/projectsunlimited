@@ -353,9 +353,9 @@ Bg div element sa blogs.php ------------
 Yung mga filter chuchu sa cms (pagination nalang/ oks na) -----
 Add news editor -----------
 Update images delete/xbutton ---------
+filter blogs display (date and categories) -------------
 confirmation sa modal
 content ng blogs
-filter blogs display (date and categories)
-pagination blogs
+pagination blogs (konting polish pa pero gumagana)
 profile admin
 -->
