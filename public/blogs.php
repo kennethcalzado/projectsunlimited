@@ -121,7 +121,7 @@ $result = mysqli_query($conn, $sql);
 
         function fetchData(category, sortOption) {
             $.ajax({
-                url: '../../../backend/blogs/fetch_data.php',
+                url: '../../../backend/blogs/fetch_blog.php',
                 method: 'POST',
                 data: {
                     category: category,
@@ -146,7 +146,7 @@ $result = mysqli_query($conn, $sql);
                 html += '<div class="w-full flex justify-center"><div class="absolute h-[160px] m-[98px] w-3/5 bg-[#F6E381]" style="z-index: -1;"></div></div>';
                 html += '<div class="flex flex-wrap justify-center items-center">'; // Start flex container and center items
 
-                // Loop through each row
+                // Loop through each item
                 $.each(data, function(index, item) {
                     // Output card HTML dynamically with data from the response
                     html += '<div class="card-group z-10" data-category="' + item.type + '">';
@@ -166,7 +166,7 @@ $result = mysqli_query($conn, $sql);
                     if (counter % itemsPerRow == 0 || counter == totalItems) {
                         // Check if it's not the last item and there are enough items to complete another row
                         if (counter != totalItems && totalItems - counter >= itemsPerRow) {
-                            html += '<div class="w-full flex justify-center"><div class="absolute h-[160px] m-[98px] w-3/5 bg-[#F6E381]" style="z-index: -1;"></div></div><div class="flex flex-wrap justify-center items-center">';
+                            html += '</div><div class="w-full flex justify-center"><div class="absolute h-[160px] m-[98px] w-3/5 bg-[#F6E381]" style="z-index: -1;"></div></div><div class="flex flex-wrap justify-center items-center">';
                         }
                     }
                 });
