@@ -1,9 +1,14 @@
 <?php
+// fetch_blog.php
+
 include("../../backend/conn.php");
 
 if (isset($_POST['category'])) {
     $category = $_POST['category'];
     $sortOption = $_POST['sortOption'];
+    $page = isset($_POST['page']) ? intval($_POST['page']) : 1;
+    $perPage = isset($_POST['perPage']) ? intval($_POST['perPage']) : 8;
+    $offset = ($page - 1) * $perPage;
 
     // Initialize response array
     $response = array();
@@ -24,6 +29,9 @@ if (isset($_POST['category'])) {
         $sql .= " ORDER BY date ASC";
     }
 
+    // Append pagination
+    $sql .= " LIMIT $perPage OFFSET $offset";
+
     // Execute the SQL query to fetch data
     $result = mysqli_query($conn, $sql);
 
@@ -40,6 +48,12 @@ if (isset($_POST['category'])) {
 
         // Add data to response
         $response['data'] = $data;
+
+        // Get total count for pagination
+        $totalCount = mysqli_query($conn, "SELECT COUNT(*) FROM blogs");
+        $row = mysqli_fetch_row($totalCount);
+        $total = $row[0];
+        $response['total'] = $total;
     }
 
     // Return the response as JSON
