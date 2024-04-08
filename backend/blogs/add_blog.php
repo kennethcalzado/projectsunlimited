@@ -17,10 +17,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $page = "{$type}_{$blog_id}";
 
     // Define the target directory for thumbnails
-    $target_dir = "../../../assets/blogs_img/";
+    $target_dir = "../../assets/blogs_img/";
 
     // Define the target directory for images
-    $image_target_dir = "../../../assets/blogs_img/";
+    $image_target_dir = "../../assets/blogs_img/";
 
     // Check if thumbnail file is uploaded
     if (isset($_FILES['thumbnail'])) {
@@ -65,7 +65,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($stmt->execute()) {
         // Create new PHP file based on blog type and ID
         $blog_id = $conn->insert_id; // Get the ID of the inserted blog
-        $filename = "../../../public/blogs/{$type}_{$blog_id}.php"; // Create filename
+        $filename = "../../public/blogs/{$type}_{$blog_id}.php"; // Create filename
         $file_content = "<?php // Content for your new blog file goes here ?>"; // Example content
 
         // Write content to the new PHP file
