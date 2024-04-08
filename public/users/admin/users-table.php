@@ -478,6 +478,8 @@ ob_start();
                 } );
             }
 
+            console.log(pagination);
+
             // Update item count display
             const currentPage = parseInt( pagination.currentPage );
             const totalRows = parseInt( pagination.totalRows );

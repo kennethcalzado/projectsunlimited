@@ -338,7 +338,10 @@ ob_start();
                 success: function (data) {
                     console.log("Total rows: " + data.products.length);
                     populateProductTable(data.products);
-                    generatePagination(data.totalPages, page);
+                    console.log('data.totalRows');
+
+                    console.log(data.totalRows);
+                    generatePagination(data.totalPages, data.totalRows , page);
                 },
                 error: function (xhr, status, error) {
                     handleFetchError();
@@ -347,7 +350,7 @@ ob_start();
 
         }
 
-        function generatePagination(totalPages, currentPage, categoryId, brandId, sortValue, searchQuery) {
+        function generatePagination(totalPages, totalRows, currentPage, categoryId, brandId, sortValue, searchQuery) {
             const paginationBar = $('#pagination');
 
             // Clear existing pagination bar
@@ -358,11 +361,11 @@ ob_start();
             const productsPerPage = 5;
 
             // Calculate the starting and ending index of the current page
-            const startIndex = (currentPage - 1) * productsPerPage + 1;
-            const endIndex = Math.min(startIndex + productsPerPage - 1, totalProducts);
+            const startIndex = ((currentPage - 1) * productsPerPage) + 1;
+            const endIndex = Math.min(startIndex + productsPerPage - 1, totalRows);
 
             // Display the item count
-            const itemCountElement = $('<div class="text-[16px] text-gray-500 item-count">').text(`Showing ${startIndex} - ${endIndex} of ${totalProducts} items`);
+            const itemCountElement = $('<div class="text-[16px] text-gray-500 item-count">').text(`Showing ${startIndex} - ${endIndex} of ${totalRows} items`);
             paginationBar.append(itemCountElement);
 
             // Add numbered pages
@@ -446,7 +449,8 @@ ob_start();
                 },
                 success: function (data) {
                     populateProductTable(data.products);
-                    generatePagination(data.totalPages, page, categoryId, brandId, sortValue, searchQuery);
+                    generatePagination(data.totalPages, data.totalRows , page, categoryId, brandId, sortValue, searchQuery);
+
                 },
                 error: function (xhr, status, error) {
                     handleFetchError();
