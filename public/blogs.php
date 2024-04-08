@@ -105,6 +105,10 @@ $result = mysqli_query($conn, $sql);
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
         $(document).ready(function() {
+            // Initialize pagination when the page loads
+            fetchData('', 'new');
+
+            // Change event handlers for filters
             $('#categoryFilter, #sortFilter').change(function() {
                 var selectedCategory = $('#categoryFilter').val();
                 var sortOption = $('#sortFilter').val();
@@ -118,23 +122,7 @@ $result = mysqli_query($conn, $sql);
             });
         });
 
-
-        function fetchData(category, sortOption) {
-            $.ajax({
-                url: '../../../backend/blogs/fetch_data.php',
-                method: 'POST',
-                data: {
-                    category: category,
-                    sortOption: sortOption,
-                },
-                dataType: 'json',
-                success: function(response) {
-                    updateDisplay(response.data); // Update display with fetched data
-                }
-            });
-        }
-
-        // Function to update the display with fetched data
+        // Function to update display with fetched data
         function updateDisplay(data) {
             var html = '';
             var counter = 0; // Initialize counter variable
@@ -146,7 +134,7 @@ $result = mysqli_query($conn, $sql);
                 html += '<div class="w-full flex justify-center"><div class="absolute h-[160px] m-[98px] w-3/5 bg-[#F6E381]" style="z-index: -1;"></div></div>';
                 html += '<div class="flex flex-wrap justify-center items-center">'; // Start flex container and center items
 
-                // Loop through each row
+                // Loop through each item
                 $.each(data, function(index, item) {
                     // Output card HTML dynamically with data from the response
                     html += '<div class="card-group z-10" data-category="' + item.type + '">';
@@ -166,7 +154,7 @@ $result = mysqli_query($conn, $sql);
                     if (counter % itemsPerRow == 0 || counter == totalItems) {
                         // Check if it's not the last item and there are enough items to complete another row
                         if (counter != totalItems && totalItems - counter >= itemsPerRow) {
-                            html += '<div class="w-full flex justify-center"><div class="absolute h-[160px] m-[98px] w-3/5 bg-[#F6E381]" style="z-index: -1;"></div></div><div class="flex flex-wrap justify-center items-center">';
+                            html += '</div><div class="w-full flex justify-center"><div class="absolute h-[160px] m-[98px] w-3/5 bg-[#F6E381]" style="z-index: -1;"></div></div><div class="flex flex-wrap justify-center items-center">';
                         }
                     }
                 });
@@ -177,6 +165,63 @@ $result = mysqli_query($conn, $sql);
             }
 
             $('.card-groups-container').html(html); // Update HTML content
+        }
+
+        // Function to initialize pagination controls
+        function initializePagination(totalCount, perPage) {
+            var totalPages = Math.ceil(totalCount / perPage); // Calculate total pages
+            var pagination = $('#pagination');
+            pagination.empty(); // Clear previous pagination buttons
+
+            // Hide pagination if there is only one page of results or if no results are found
+            if (totalPages <= 1) {
+                pagination.hide();
+                return;
+            }
+
+            var currentPage = parseInt($('.pagination-btn.bg-yellow-200').text()); // Get the current page number
+
+            // Create Page buttons
+            for (var i = 1; i <= totalPages; i++) {
+                var pageBtn = $('<button>').text(i).addClass('pagination-btn mx-1 py-1 px-3 rounded-lg');
+
+                if (i === currentPage) {
+                    pageBtn.addClass('bg-yellow-200 text-black font-bold transition');
+                } else {
+                    pageBtn.addClass('bg-gray-200 text-gray-700 hover:bg-gray-300 hover:underline transition');
+                }
+
+                // Attach click event handler
+                pageBtn.click(function(page) {
+                    return function() {
+                        fetchData($('#categoryFilter').val(), $('#sortFilter').val(), page, perPage);
+                    };
+                }(i));
+
+                pagination.append(pageBtn);
+            }
+            pagination.addClass('flex justify-end');
+            pagination.show(); // Show pagination if there are multiple pages
+        }
+
+
+        // Function to fetch data from the server
+        function fetchData(category, sortOption, page = 1, perPage = 8) {
+            $.ajax({
+                url: '../../../backend/blogs/fetch_blog.php',
+                method: 'POST',
+                data: {
+                    category: category,
+                    sortOption: sortOption,
+                    page: page,
+                    perPage: perPage
+                },
+                dataType: 'json',
+                success: function(response) {
+                    updateDisplay(response.data); // Update display with fetched data
+                    initializePagination(response.total, perPage); // Initialize pagination controls
+                }
+            });
         }
     </script>
 </head>
@@ -266,6 +311,7 @@ $result = mysqli_query($conn, $sql);
                     </div>
                 </div>
             </section>
+            <div id="pagination" class="mt-4"></div>
 </body>
 
 
