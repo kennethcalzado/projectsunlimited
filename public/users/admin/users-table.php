@@ -219,21 +219,16 @@ ob_start();
         <p class="text-black justify-center mb-4 text-lg"><b class="mr-2">Instruction:</b>To upload multiple or bulk
             users information into the table, select an excel or a CSV file.
         </p>
-        <form id="uploadImageForm" enctype="multipart/form-data" class="mt-2">
+        <form id="uploadUserForm" enctype="multipart/form-data" class="mt-2">
             <div class="mb-4 flex flex-col">
                 <label for="images" class="text-sm font-medium text-gray-700 mb-1">Select File</label>
-                <div class="flex items-center justify-center w-full">
+                <div id="dropzone-holder" class="flex items-center justify-center w-full">
                     <label for="dropzone-file" class="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-900 border-dashed 
                         rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 
                         dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
                         <div class="flex flex-col items-center justify-center pt-5 pb-6">
                             <div id="uploadModalIconHolder">
-                                <svg class="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
-                                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
-                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
-                                        stroke-width="2"
-                                        d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2" />
-                                </svg>
+                                <i class="fa-solid fa-file-arrow-up text-3xl mb-3 text-zinc-300"></i>
                             </div>
                             <p class="mb-2 text-sm text-gray-500 dark:text-gray-400"><span class="font-semibold">Click
                                     to upload</span> or drag and drop</p>
@@ -241,12 +236,12 @@ ob_start();
                             <!-- Placeholder for the file name -->
                             <p id="file-name" class="text-xs text-gray-500 dark:text-gray-400 mt-4"></p>
                         </div>
-                        <input id="dropzone-file" type="file" class="hidden" />
+                        <input id="dropzone-file" type="file" class="hidden" name="upload_user" accept=".xlsx, .csv" />
                     </label>
                 </div>
             </div>
             <div class="flex justify-end">
-                <button type="submit" id="uploadImagesBtn"
+                <button type="submit" id="uploadSubmitBtn"
                     class="btn btn-primary rounded-md text-center h-10 mt-3 sm:mt-4 !px-4 py-0 text-lg flex items-center mr-2">Upload
                     File</button>
                 <button type="button" id="cancelUploadModal"
@@ -518,20 +513,20 @@ ob_start();
             $( '#userForm' )[0].reset(); // Reset form fields
             $( '#resetPasswordContainer' ).hide();
 
-            $( "#addUserDropdown" ).addClass( "hidden" );
-            $( "#openCreateUserModal" ).addClass( "hidden" );
-            $( "#openBulkUserModal" ).addClass( "hidden" );
+            $( "#addUserDropdown" ).toggleClass( "transition-opacity opacity-100 ease-in-out duration-100" );
+            $( "#openCreateUserModal" ).toggleClass( "hidden" );
+            $( "#openBulkUserModal" ).toggleClass( "hidden" );
 
             $( '#userModal' ).removeClass( 'hidden' );
         } );
 
         $( document ).on( 'click', '#openBulkUserModal', function ()
         {
-            $( '#uploadUserModal' ).removeClass( 'hidden' );
+            $( '#uploadUserModal' ).toggleClass( 'hidden' );
 
-            $( "#addUserDropdown" ).addClass( "hidden" );
-            $( "#openCreateUserModal" ).addClass( "hidden" );
-            $( "#openBulkUserModal" ).addClass( "hidden" );
+            $( "#addUserDropdown" ).toggleClass( "transition-opacity opacity-100 ease-in-out duration-100" );
+            $( "#openCreateUserModal" ).toggleClass( "hidden" );
+            $( "#openBulkUserModal" ).toggleClass( "hidden" );
         } );
 
         // Function to populate modal with user data
@@ -573,16 +568,10 @@ ob_start();
             $( '#userModal' ).addClass( 'hidden' );
         } );
 
-
         $( document ).on( 'click', '#cancelUploadModal, #closeUploadModal', function ()
         {
-            // Reset error markers and messages
-            $( '.border-red-500' ).removeClass( 'border-red-500' );
-            $( '.text-red-800' ).removeClass( 'text-red-800' );
-            $( '.error-message' ).empty();
-
             // Hide the modal
-            $( '#uploadUserModal' ).closest( '.modal' ).addClass( 'hidden' );
+            $( '#uploadUserModal' ).closest( '.modal' ).toggleClass( 'hidden' );
         } );
 
         ////////////////// VALIDATION OF FORMS /////////////////////
@@ -683,7 +672,7 @@ ob_start();
         } );
 
         // Event listener for confirmation button click
-        $( document ).on( 'click', '#confirmBtn', function ()
+        $( document ).on( 'click', '#updateconfirmBtn, #createconfirmBtn', function ()
         {
             // Hide confirmation pop-up
             $( '.confirmation-popup' ).addClass( 'hidden' );
@@ -768,22 +757,22 @@ ob_start();
             const delBtnText = "Delete"; // Assuming delBtnText is defined somewhere
             const popupMessage = userStatus === 'active' ? 'Are you sure you want to deactivate this user?' : 'Are you sure you want to activate this user?';
             const header = userStatus === 'active' ? 'Confirm Deactivation' : 'Confirm Activation';
+            const popUpType = userStatus === 'active' ? 'deactivate' : 'activate';
 
             // Call showPopup function with confirmation parameters
-            showPopup( 'delete', header, popupMessage, userStatus === 'active' ? 'deactivate' : 'activate' );
+            showPopup( 'delete', header, popupMessage, popUpType );
 
             // Store user ID for later use
-            $( '#confirmDeleteBtn' ).data( 'userId', userId );
-            $( '#confirmDeleteBtn' ).data( 'userStatus', userStatus );
-
+            $( '#' + popUpType + 'confirmDeleteBtn' ).data( 'userId', userId );
+            $( '#' + popUpType + 'confirmDeleteBtn' ).data( 'userStatus', userStatus );
         } );
 
         // Click event listener for confirmDeleteBtn
-        $( document ).on( 'click', '#confirmDeleteBtn', function ()
+        $( document ).on( 'click', '#deactivateconfirmDeleteBtn, #activateconfirmDeleteBtn', function () 
         {
             // Get user information
-            const userId = $( '#confirmDeleteBtn' ).data( 'userId' );
-            const userStatus = $( '#confirmDeleteBtn' ).data( 'userStatus' );
+            const userId = $( this ).data( 'userId' );
+            const userStatus = $( this ).data( 'userStatus' );
 
             // Check if userId exists
             if ( userId )
@@ -976,6 +965,15 @@ ob_start();
                 {
                     message = 'User deactivated successfully.';
                 }
+            } else if ( actionType === 'createBulk' )
+            {
+                if ( type === 'confirmation' )
+                {
+                    message = 'Are you sure you want to upload this file and create/update multiple users?';
+                } else if ( type === 'success' )
+                {
+                    message = 'Users created successfully.';
+                }
             }
 
             // Create the pop-up HTML using jQuery
@@ -992,7 +990,7 @@ ob_start();
                         )
                     ),
                     $( '<div>' ).addClass( 'text-center md:text-right mt-4 md:flex md:justify-end' ).append(
-                        $( '<button>' ).attr( 'id', buttonClass ).addClass( `block w-full md:inline-block md:w-auto px-4 py-3 md:py-2 rounded-lg font-semibold text-sm md:ml-2 md:order-2 ${ buttonBgColor } ${ buttonTextColor } ${ hoverBgColor } ${ activeBgColor } ${ focusStyles } ${ transition }` ).text( buttonText ),
+                        $( '<button>' ).attr( 'id', actionType + buttonClass ).addClass( `block w-full md:inline-block md:w-auto px-4 py-3 md:py-2 rounded-lg font-semibold text-sm md:ml-2 md:order-2 ${ buttonBgColor } ${ buttonTextColor } ${ hoverBgColor } ${ activeBgColor } ${ focusStyles } ${ transition }` ).text( buttonText ),
                         type === 'confirmation' || type === 'delete' ? $( '<button>' ).addClass( 'cancel block w-full md:inline-block md:w-auto px-4 py-3 md:py-2 rounded-lg font-semibold text-sm mt-4 md:mt-0 md:order-1 bg-gray-200 hover:bg-gray-300 active:bg-gray-400 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-300 disabled:opacity-25 transition' ).text( 'Cancel' ) : null
                     )
                 )
@@ -1005,7 +1003,7 @@ ob_start();
             $( `.${ type }-popup` ).removeClass( 'hidden' );
 
             // Add event listener to close button using event delegation
-            $( '#popup-handler' ).on( 'click', `#${ buttonClass }`, function ()
+            $( '#popup-handler' ).on( 'click', `#${ actionType + buttonClass }`, function ()
             {
                 $( `.${ type }-popup` ).hide();
             } );
@@ -1045,6 +1043,7 @@ ob_start();
         } );
 
         //////////////////// DRAG AND DROP FUNCTIONALITY IN USER BULK CREATION /////////////////////////
+
         $( '#dropzone-file' ).on( 'change', function ( e )
         {
             e.preventDefault();
@@ -1054,9 +1053,9 @@ ob_start();
             handleFiles( files );
         } );
 
-        $( '#dropzone-file' ).on( 'drop', function ( e )
+        $( '#dropzone-holder' ).on( 'drop', function ( e )
         {
-            // Prevent default handling
+            // // Prevent default handling
             e.preventDefault();
             e.stopPropagation();
 
@@ -1069,24 +1068,22 @@ ob_start();
             {
                 console.error( "Data transfer not found in drop event" );
             }
-            console.log( 'drop' );
 
             $( this ).removeClass( 'dragover' );
         } );
 
-        $( '#dropzone-file' ).on( 'dragover', function ( e )
+        $( '#dropzone-holder' ).on( 'dragover', function ( e )
         {
             e.preventDefault();
             e.stopPropagation();
-            console.log( 'dragover' );
+
             $( this ).addClass( 'dragover' );
         } );
 
-        $( '#dropzone-file' ).on( 'dragleave', function ( e )
+        $( '#dropzone-holder' ).on( 'dragleave', function ( e )
         {
             e.preventDefault();
             e.stopPropagation();
-            console.log( 'dragleave' );
 
             $( this ).removeClass( 'dragover' );
         } );
@@ -1095,47 +1092,167 @@ ob_start();
         {
             if ( files.length > 0 )
             {
-                for ( var i = 0; i < files.length; i++ )
+                var fileInput = files[0];
+                var fileSize = fileInput.size; // Size in bytes
+                var fileName = fileInput.name;
+                var fileExtension = fileName.split( '.' ).pop().toLowerCase();
+                var maxSizeInMb = 5;
+                var maxSizeInBytes = 1024 * 1024 * maxSizeInMb; // 5 MB
+                var errors = [];
+
+                // Check file size
+                if ( fileSize > maxSizeInBytes )
                 {
-                    var fileInput = files[i];
-                    var fileSize = fileInput.size; // Size in bytes
-                    var fileName = fileInput.name;
-                    var fileExtension = fileName.split( '.' ).pop().toLowerCase();
-                    var maxSizeInBytes = 1024 * 1024 * 5; // 5 MB
-                    var maxSizeInMb = 5;
-
-                    // Check file size
-                    if ( fileSize > maxSizeInBytes )
-                    {
-                        showPopup( 'error', 'Error', 'File size exceeds ' + maxSizeInMb + 'MB limit.', null );
-                    } else if ( fileExtension !== 'csv' && fileExtension !== 'xlsx' )
-                    {
-                        showPopup( 'error', 'Error', 'Please select a CSV or XLSX file.', null );
-                    } else
-                    {
-                        $( '#file-name' ).text( 'File Name: ' + fileName ).addClass( 'underline underline-offset-4 font-bold' );
-                        $( '#uploadModalIconHolder' ).empty();
-
-                        if ( fileExtension == 'csv' )
-                        {
-                            $( '#uploadModalIconHolder' ).append( $( '<i>' ).addClass( 'text-3xl mb-3 fa-solid fa-file-csv text-green-500' ) );
-                        } else if ( fileExtension == 'xlsx' )
-                        {
-                            $( '#uploadModalIconHolder' ).append( $( '<i>' ).addClass( 'text-3xl mb-3 fa-solid fa-file-excel text-green-500' ) );
-                        }
-                    }
+                    errors.push( 'File size exceeds ' + maxSizeInMb + 'MB limit.' );
                 }
 
-                // Clear input field for visual clarity
-                $( '#dropzone-file' ).val( null );
+                if ( fileExtension !== 'csv' && fileExtension !== 'xlsx' )
+                {
+                    errors.push( 'Please select a valid Excel file (.xlsx) or CSV file.' );
+                }
+
+                if ( errors.length === 0 )
+                {
+                    $( '#file-name' ).text( 'File Name: ' + fileName ).addClass( 'underline underline-offset-4 font-bold' );
+                    $( '#uploadModalIconHolder' ).empty();
+
+                    if ( fileExtension == 'csv' )
+                    {
+                        $( '#uploadModalIconHolder' ).append( $( '<i>' ).addClass( 'text-3xl mb-3 fa-solid fa-file-csv text-green-500' ) );
+                    } else if ( fileExtension == 'xlsx' )
+                    {
+                        $( '#uploadModalIconHolder' ).append( $( '<i>' ).addClass( 'text-3xl mb-3 fa-solid fa-file-excel text-green-500' ) );
+                    }
+                } else
+                {
+                    if ( errors.length > 0 )
+                    {
+                        // Join the errors array elements into a single string with line breaks
+                        message = errors.join( '\n' );
+                        showPopup( 'error', 'Error', message, null );
+                    } else
+                    {
+                        showPopup( 'error', 'Error', errors, null );
+                    }
+                }
             }
         }
 
-
         // Upload form submission
-        $( '#uploadImageForm' ).submit( function ( e )
+        $( '#uploadUserForm' ).submit( function ( e )
         {
             e.preventDefault();
+
+            if ( validateForm() )
+            {
+                // Show confirmation popup
+                showPopup( 'confirmation', 'Confirm Bulk Create', null, 'createBulk' );
+            }
+        } );
+
+        function validateForm ()
+        {
+            var fileInput = $( '#dropzone-file' )[0].files[0];
+            var errors = [];
+
+            // Check if a file is selected
+            if ( !fileInput )
+            {
+                errors.push( 'Please select a file.' );
+            } else
+            {
+                // Check file type
+                var fileType = fileInput.type;
+
+                if ( fileType !== 'application/vnd.ms-excel' && fileType !== 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' && fileType !== 'text/csv' )
+                {
+                    errors.push( 'Please select a valid Excel file (.xlsx) or CSV file.' );
+                }
+
+                // Check file size (optional, you can add or remove this validation)
+                var maxSizeInBytes = 1024 * 1024 * 5; // 5 MB
+                if ( fileInput.size > maxSizeInBytes )
+                {
+                    errors.push( 'File size exceeds 5MB limit.' );
+                }
+            }
+
+            // Display validation errors if any
+            if ( errors.length > 0 )
+            {
+                // Join the errors array elements into a single string with line breaks
+                message = errors.join( '\n' );
+                showPopup( 'error', 'Error', message, null );
+            } else
+            {
+                showPopup( 'error', 'Error', errors, null );
+            }
+
+            // Return true if no errors, false otherwise
+            return errors.length === 0;
+        }
+
+        $( document ).on( 'click', '#createBulkconfirmBtn', function ()
+        {
+            // Hide confirmation pop-up
+            $( '.confirmation-popup' ).addClass( 'hidden' );
+
+            var formData = new FormData( $( '#uploadUserForm' )[0] );
+
+            // Submit the form using AJAX
+            $.ajax( {
+                url: '/backend/users/users-upload.php',
+                type: 'POST',
+                data: formData,
+                dataType: 'json',
+                processData: false,
+                contentType: false,
+                success: function ( response )
+                {
+                    if ( response.success )
+                    {
+                        // Hide create user form
+                        // $( '#uploadUserModal' ).addClass( 'hidden' );
+
+                        showPopup( 'success', 'Success', null, 'createBulk' );
+
+                        // Automatically close the success pop-up after 3 seconds
+                        setTimeout( function ()
+                        {
+                            $( '.success-popup' ).addClass( 'hidden' );
+                        }, 3000 );
+
+                        // Refresh user data 
+                        filterUserData( '', '', '', 1, 5 );
+                    } else
+                    {
+                        // Display error messages received from the backend
+                        if ( response.message )
+                        {
+                            Object.keys( response.message ).forEach( function ( fieldName )
+                            {
+                                $( '#' + fieldName + 'Error' ).addClass( 'text-sm text-red-500 mt-1 error-message' )
+                                    .text( response.message[fieldName] );
+                                $( '#' + fieldName ).addClass( 'border-red-500' );
+
+                                // Display error message using a pop-up
+                                showPopup( 'error', 'Error', response.message[fieldName] );
+                            } );
+                        }
+                    }
+                },
+                error: function ( xhr, status, error )
+                {
+                    console.error( 'Error:', error );
+                    // Display error message using a pop-up
+                    showPopup( 'error', 'Error', 'An error occurred. Please try again later.' );
+                }
+            } );
+
+            $( '#file-name' ).text( '' );
+            $( '#dropzone-file' ).val( null );
+            $( '#uploadModalIconHolder' ).empty();
+            $( '#uploadModalIconHolder' ).append( $( '<i>' ).addClass( 'text-3xl mb-3 fa-solid fa-file-arrow-up text-zinc-300' ) );
         } );
 
         filterUserData( '', '', '', 1, 5 );
