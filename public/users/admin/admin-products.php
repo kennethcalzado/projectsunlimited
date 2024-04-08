@@ -474,7 +474,7 @@ ob_start();
                         const availabilitySelect = $("<select>").addClass("availability-dropdown");
 
                         // Set a placeholder option while availability options are being fetched
-                        availabilitySelect.append($("<option>").attr("value", "").text("Availability"));
+                        availabilitySelect.append($("<option>").attr("value", "").text("-"));
 
                         // Add options based on fetched availability options
                         availabilityOptions.forEach(function (option) {
