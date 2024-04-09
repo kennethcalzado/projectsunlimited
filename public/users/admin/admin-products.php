@@ -946,6 +946,8 @@ ob_start();
         variationDiv.remove();
     }
 
+    // EDIT MODAL
+
     // VIEW MODAL
     // Add event listener to the "View" button
     $(document).on("click", ".viewProduct", function () {
@@ -993,13 +995,27 @@ ob_start();
         // Populate variations if available
         if (productDetails.variations && productDetails.variations.length > 0) {
             const variationSection = $("#viewVariations");
+            let variationRow = $("<div>").addClass("flex");
 
-            productDetails.variations.forEach(variation => {
-                const variationField = $("<div>").addClass("mb-4 flex flex-col");
-                variationField.append($("<label>").addClass("text-sm font-medium text-gray-700 mb-1").text("Variation: " + variation.VariationName));
-                variationField.append($("<img>").addClass("border rounded-md").attr("src", variation.image_url).attr("alt", "Variation Image").css("max-width", "100px").css("max-height", "100px"));
-                variationSection.append(variationField);
+            productDetails.variations.forEach((variation, index) => {
+                const variationField = $("<div>").addClass("mb-4 flex flex-col mr-6");
+                variationField.append($("<label>").addClass("text-sm font-medium text-gray-700 mb-1 justify-center").text(variation['VariationName']));
+                variationField.append($("<img>").addClass("border rounded-md").attr("src", variation['image_url']).attr("alt", "Variation Image").css("max-width", "100px").css("max-height", "100px"));
+
+                // Add variation to the current row
+                variationRow.append(variationField);
+
+                // Create a new row after every 4 variations
+                if ((index + 1) % 4 === 0) {
+                    variationSection.append(variationRow);
+                    variationRow = $("<div>").addClass("flex");
+                }
             });
+
+            // Add any remaining variations to the last row
+            if (productDetails.variations.length % 4 !== 0) {
+                variationSection.append(variationRow);
+            }
         } else {
             // If no variations available, display a message
             const noVariationMessage = $("<p>").addClass("text-sm font-medium text-gray-700").text("No Variation Added");
@@ -1007,11 +1023,10 @@ ob_start();
         }
     }
     // Add event listener to close the view modal when cancel button or close button is clicked
-    $(document).on("click", "#closeViewModal, #closeViewModalButton, .cancelButton", function () {
+    $(document).on("click", "#closeViewModalButton, #closeViewModal, .cancelButton", function () {
         // Hide the view modal
         $("#viewProductModal").addClass("hidden");
     });
-
 </script>
 <?php
 $script = ob_get_clean();
