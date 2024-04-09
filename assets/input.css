@@ -317,3 +317,7 @@ th {
     display: block;
     margin: 0 auto; /* This will center the image horizontally */
 }
+
+#addProductModal .bg-white {
+    max-height: 100%; 
+}

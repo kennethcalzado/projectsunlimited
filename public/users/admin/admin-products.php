@@ -174,7 +174,8 @@ ob_start();
 </div>
 <!-- Add Product Modal -->
 <div id="addProductModal" class="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 hidden">
-    <div class="bg-white p-4 rounded-md shadow-md w-full sm:w-[80%] md:w-[60%] lg:w-[40%] xl:w-[30%]">
+    <div
+        class="bg-white p-4 rounded-md shadow-md w-full sm:w-[80%] md:w-[60%] lg:w-[40%] xl:w-[30%] max-h-[80%] overflow-y-auto">
         <div class="flex justify-between items-center mb-4">
             <h2 class="text-2xl font-bold">Add Product</h2>
             <button id="closeAddModal" class="text-gray-600 hover:text-gray-900 focus:outline-none">
@@ -220,6 +221,21 @@ ob_start();
                     </select>
                 </div>
             </div>
+            <!-- Variation Section -->
+            <div id="variationsSection" class="mb-4">
+                <h3 class="text-lg font-medium text-gray-700 mb-2">Variations</h3>
+                <div id="variationInputs"></div>
+                <button type="button" onclick="addVariation()"
+                    class="flex items-center text-blue-500 hover:text-blue-700 focus:outline-none">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                    </svg>
+                    Add Variation
+                </button>
+            </div>
+            <!-- End of Variation Section -->
             <div class="flex justify-end">
                 <button type="submit" id="addProductbtn"
                     class="btn btn-primary rounded-md text-center h-10 mt-3 sm:mt-4 !px-4 py-0 text-lg flex items-center mr-2">Add
@@ -859,7 +875,37 @@ ob_start();
             });
         }
     });
+    function addVariation() {
+        const variationInputs = document.getElementById('variationInputs');
+        const variationIndex = variationInputs.children.length + 1;
 
+        const variationDiv = document.createElement('div');
+        variationDiv.classList.add('mb-4', 'flex', 'flex-col');
+        variationDiv.innerHTML = `
+        <div class="flex justify-between items-center">
+            <h4 class="text-sm font-medium text-gray-700 mb-2">Variation ${variationIndex}</h4>
+            <button type="button" class="text-red-500 hover:text-red-700 focus:outline-none" onclick="removeVariation(this)">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+        </div>
+        <label for="variationName${variationIndex}" class="text-sm font-medium text-gray-700 mb-1">Variation ${variationIndex} Name</label>
+        <input type="text" id="variationName${variationIndex}" name="variationName${variationIndex}" placeholder="Enter Variation Name"
+            class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent">
+        <label for="variationImage${variationIndex}" class="text-sm font-medium text-gray-700 mb-1">Insert Variation ${variationIndex} Image</label>
+        <input type="file" id="variationImage${variationIndex}" name="variationImage${variationIndex}" accept=".jpg, .jpeg, .png"
+            class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
+            onchange="previewVariationImage(event, ${variationIndex})">
+        <div id="variationImagePreview${variationIndex}"></div>
+    `;
+        variationInputs.appendChild(variationDiv);
+    }
+
+    function removeVariation(element) {
+        const variationDiv = element.parentElement.parentElement;
+        variationDiv.remove();
+    }
 
 </script>
 
