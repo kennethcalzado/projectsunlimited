@@ -249,48 +249,74 @@ ob_start();
 
 <!-- Edit Product Modal -->
 <div id="editProductModal" class="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 hidden">
-    <div class="bg-white p-4 rounded-md shadow-md w-full sm:w-[80%] md:w-[60%] lg:w-[40%] xl:w-[30%]">
-        <h2 class="text-2xl font-bold">Edit Product</h2>
+    <div
+        class="bg-white p-4 rounded-md shadow-md w-full sm:w-[80%] md:w-[60%] lg:w-[40%] xl:w-[30%] max-h-[80%] overflow-y-auto">
+        <div class="flex justify-between items-center mb-4">
+            <h2 class="text-2xl font-bold">Edit Product</h2>
+            <button id="closeEditModal" class="text-gray-600 hover:text-gray-900 focus:outline-none">
+                <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
+                    </path>
+                </svg>
+            </button>
+        </div>
         <div class="border-b border-black flex-grow border-2 mt-2 mb-3"></div>
         <form id="editProductForm" method="POST" enctype="multipart/form-data" class="mt-4">
             <div class="mb-4 flex flex-col">
-                <label for="updateproductName" class="text-sm font-medium text-gray-700 mb-1">Product Name</label>
-                <input type="text" id="updateproductName" name="productName" placeholder="Enter Product Name"
+                <label for="editProductName" class="text-sm font-medium text-gray-700 mb-1">Product Name</label>
+                <input type="text" id="editProductName" name="productName" placeholder="Enter Product Name"
                     class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent">
             </div>
             <div class="mb-4 flex flex-col">
-                <label for="updateproductImage" class="text-sm font-medium text-gray-700 mb-1">Product Image</label>
-                <div id="imagePreview" class="mt-2"></div>
-                <input type="file" id="updateproductImage" name="productImage" accept=".jpg, .jpeg, .png"
-                    class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent">
+                <label for="editProductImage" class="text-sm font-medium text-gray-700 mb-1">Replace Product
+                    Image</label>
+                <input type="file" id="editProductImage" name="productImage" accept=".jpg, .jpeg, .png"
+                    class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
+                    onchange="previewImage(event)">
+                <div id="editImagePreview"></div>
             </div>
             <div class="mb-4 flex flex-col">
-                <label for="updateproductDescription" class="text-sm font-medium text-gray-700 mb-1">Description</label>
-                <textarea id="updateproductDescription" name="productDescription" rows="4"
+                <label for="editProductDescription" class="text-sm font-medium text-gray-700 mb-1">Description</label>
+                <textarea id="editProductDescription" name="productDescription" rows="4"
                     placeholder="Enter Product Description"
                     class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent"></textarea>
             </div>
             <div class="flex mx-4">
                 <div class="mb-4 flex flex-col mr-8">
-                    <label for="updateproductBrand" class="text-sm font-medium text-gray-700 mb-2">Brand</label>
-                    <select id="updateproductBrand" name="productBrand"
+                    <label for="editProductBrand" class="text-sm font-medium text-gray-700 mb-2">Brand</label>
+                    <select id="editProductBrand" name="productBrand"
                         class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent">
                         <option value="" disabled selected></option>
                     </select>
                 </div>
-                <div class="mb-4 flex flex-col">
-                    <label for="updateproductCategory" class="text-sm font-medium text-gray-700 mb-2">Category</label>
-                    <select id="updateproductCategory" name="productCategory"
+                <div class="mb-4 flex flex-col ">
+                    <label for="editProductCategory" class="text-sm font-medium text-gray-700 mb-2">Category</label>
+                    <select id="editProductCategory" name="productCategory"
                         class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent">
                         <option value="" disabled selected></option>
                     </select>
                 </div>
             </div>
+            <!-- Variation Section -->
+            <div id="editVariationsSection" class="mb-4">
+                <h3 class="text-lg font-medium text-gray-700 mb-2">Variations</h3>
+                <div id="editVariationInputs"></div>
+                <button type="button" onclick="addEditVariation()"
+                    class="flex items-center text-blue-500 hover:text-blue-700 focus:outline-none">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                    </svg>
+                    Add Variation
+                </button>
+            </div>
+            <!-- End of Variation Section -->
             <div class="flex justify-end">
-                <button type="submit" id="updateProductbtn"
+                <button type="submit" id="editProductbtn"
                     class="btn btn-primary rounded-md text-center h-10 mt-3 sm:mt-4 !px-4 py-0 text-lg flex items-center mr-2">Save
                     Changes</button>
-                <button type="button" id="closeModal"
+                <button type="button" id="closeEditModal"
                     class="btn btn-secondary rounded-md text-center h-10 mt-3 sm:mt-4 !px-4 py-0 text-lg flex items-center">Cancel</button>
             </div>
         </form>
@@ -298,42 +324,56 @@ ob_start();
 </div>
 
 <!-- View Product Modal -->
-<div id="viewProductModal" class="hidden fixed inset-0 z-50 overflow-y-auto">
-    <div class="flex items-center justify-center min-h-screen px-4">
-        <div class="bg-white rounded-lg shadow-xl w-full max-w-md p-6">
-            <!-- Product Details -->
-            <h2 class="text-xl font-semibold mb-4">Product Details</h2>
+<div id="viewProductModal" class="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 hidden">
+    <div
+        class="bg-white p-4 rounded-md shadow-md w-full sm:w-[80%] md:w-[60%] lg:w-[40%] xl:w-[30%] max-h-[80%] overflow-y-auto">
+        <div class="flex justify-between items-center mb-4">
+            <h2 class="text-2xl font-bold">Product Details</h2>
+            <button id="closeViewModalButton" class="text-gray-600 hover:text-gray-900 focus:outline-none">
+                <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
+                    </path>
+                </svg>
+            </button>
+        </div>
+        <div class="border-b border-black flex-grow border-2 mt-2 mb-3"></div>
+        <div class="mt-4">
             <div class="mb-4 flex flex-col">
-                <label for="viewProductName" class="text-sm font-medium text-gray-700 mb-1">Product Name</label>
-                <span id="viewProductName" class="text-gray-800 font-medium"></span>
-            </div>
-            <div class="mb-4">
-                <label for="viewProductImage" class="text-sm font-medium text-gray-700 mb-1">Product Image</label>
-                <img id="viewProductImage" class="w-full" src="" alt="Product Image">
+                <label class="text-sm font-medium text-gray-700 mb-1">Product Name</label>
+                <p id="viewProductName" class="border rounded-md px-3 py-2 text-sm"></p>
             </div>
             <div class="mb-4 flex flex-col">
-                <label for="viewProductDescription" class="text-sm font-medium text-gray-700 mb-1">Description</label>
-                <span id="viewProductDescription" class="text-gray-800"></span>
+                <label class="text-sm font-medium text-gray-700 mb-1">Product Image</label>
+                <img id="viewProductImage" class="border rounded-md" src="#" alt="Product Image"
+                    style="max-width: 100px; max-height: 100px;">
             </div>
             <div class="mb-4 flex flex-col">
-                <label for="viewProductVariations" class="text-sm font-medium text-gray-700 mb-1">Variations</label>
-                <span id="viewProductVariations" class="text-gray-800"></span>
+                <label class="text-sm font-medium text-gray-700 mb-1">Description</label>
+                <p id="viewProductDescription" class="border rounded-md px-3 py-2 text-sm"></p>
             </div>
-            <div class="flex mb-4">
-                <div class="flex-1 mr-2">
-                    <label for="viewProductBrand" class="text-sm font-medium text-gray-700 mb-1">Brand</label>
-                    <span id="viewProductBrand" class="text-gray-800"></span>
+            <div class="flex mb-4 justify-center">
+                <div class="flex flex-col mr-4" style="flex: 1;">
+                    <label class="text-sm font-medium text-gray-700 mb-1">Brand</label>
+                    <p id="viewProductBrand" class="border rounded-md px-3 py-2 text-sm"></p>
                 </div>
-                <div class="flex-1 ml-2">
-                    <label for="viewProductCategory" class="text-sm font-medium text-gray-700 mb-1">Category</label>
-                    <span id="viewProductCategory" class="text-gray-800"></span>
+                <div class="flex flex-col" style="flex: 1;">
+                    <label class="text-sm font-medium text-gray-700 mb-1">Category</label>
+                    <p id="viewProductCategory" class="border rounded-md px-3 py-2 text-sm"></p>
                 </div>
             </div>
-            <!-- Buttons -->
-            <div class="flex justify-end">
-                <button id="editProductBtn" class="btn btn-primary mr-2">Edit Product</button>
-                <button id="cancelBtn" class="btn btn-secondary">Cancel</button>
+            <!-- Variation Section -->
+            <div class="mb-4 flex flex-col">
+                <label class="text-sm font-medium text-gray-700 mb-1">Variations</label>
+                <div id="viewVariations">
+                    <!-- Variation fields will be dynamically added here -->
+                </div>
             </div>
+
+            <!-- End of Variation Section -->
+        </div>
+        <div class="flex justify-end">
+            <button id="closeViewModal"
+                class="btn btn-secondary rounded-md text-center h-10 mt-3 sm:mt-4 !px-4 py-0 text-lg flex items-center">Close</button>
         </div>
     </div>
 </div>
@@ -545,7 +585,7 @@ ob_start();
                     <td>${product.created_at}</td>
                     <td>
                         <div class="flex justify-center">
-                            <button type="button" class="btn btn-view rounded-md text-center sm:mt-4!px-4 text-sm flex items-center mr-2 viewProduct data-productid="${product.ProductID}"><i class="fas fa-eye mr-2 fa-sm"></i><span class="hover:underline">View</span></button>
+                        <button type="button" class="btn btn-view rounded-md text-center sm:mt-4!px-4 text-sm flex items-center mr-2 viewProduct" data-productid="${product.ProductID}"><i class="fas fa-eye mr-2 fa-sm"></i><span class="hover:underline">View</span></button>
                             <button type="button" class="btn btn-primary rounded-md text-center sm:mt-4!px-4 text-sm flex items-center mr-2 editProduct" data-productid="${product.ProductID}"><i class="fas fa-edit mr-2 fa-sm"></i>Edit</button>
                             <button type="button" class="btn btn-danger rounded-md text-center sm:mt-4!px-4 text-sm flex items-center mr-2 deleteProduct" data-productid="${product.ProductID}"><i class="fas fa-trash-alt mr-2 fa-sm"></i>Delete</button>
                         </div>
@@ -901,14 +941,78 @@ ob_start();
     `;
         variationInputs.appendChild(variationDiv);
     }
-
     function removeVariation(element) {
         const variationDiv = element.parentElement.parentElement;
         variationDiv.remove();
     }
 
-</script>
+    // VIEW MODAL
+    // Add event listener to the "View" button
+    $(document).on("click", ".viewProduct", function () {
+        const productId = $(this).data("productid"); // Get the product ID from the button data attribute
 
+        // Fetch product details for the specified product ID
+        fetchProductDetails(productId, function (productDetails) {
+            // Populate the view modal with the retrieved product details
+            populateViewModal(productDetails);
+
+            // Show the view modal
+            $("#viewProductModal").removeClass("hidden");
+        });
+    });
+
+    // Function to fetch product details based on product ID
+    function fetchProductDetails(productId, callback) {
+        // Make an AJAX request to fetch product details
+        $.ajax({
+            url: "../../../backend/product/viewproduct.php", // Replace with the actual endpoint for fetching product details
+            method: "GET",
+            data: { productId: productId },
+            success: function (response) {
+                // Parse the JSON response
+                const productDetails = JSON.parse(response);
+                // Execute the callback function with the retrieved product details
+                callback(productDetails);
+            },
+            error: function (xhr, status, error) {
+                console.error("Error fetching product details:", error);
+            }
+        });
+    }
+
+    function populateViewModal(productDetails) {
+        $("#viewProductName").text(productDetails.ProductName);
+        $("#viewProductImage").attr("src", productDetails.imageUrl);
+        $("#viewProductDescription").text(productDetails.Description);
+        $("#viewProductBrand").text(productDetails.brand_name);
+        $("#viewProductCategory").text(productDetails.CategoryName);
+
+        // Clear existing variation fields
+        $("#viewVariations").empty();
+
+        // Populate variations if available
+        if (productDetails.variations && productDetails.variations.length > 0) {
+            const variationSection = $("#viewVariations");
+
+            productDetails.variations.forEach(variation => {
+                const variationField = $("<div>").addClass("mb-4 flex flex-col");
+                variationField.append($("<label>").addClass("text-sm font-medium text-gray-700 mb-1").text("Variation: " + variation.VariationName));
+                variationField.append($("<img>").addClass("border rounded-md").attr("src", variation.image_url).attr("alt", "Variation Image").css("max-width", "100px").css("max-height", "100px"));
+                variationSection.append(variationField);
+            });
+        } else {
+            // If no variations available, display a message
+            const noVariationMessage = $("<p>").addClass("text-sm font-medium text-gray-700").text("No Variation Added");
+            $("#viewVariations").append(noVariationMessage);
+        }
+    }
+    // Add event listener to close the view modal when cancel button or close button is clicked
+    $(document).on("click", "#closeViewModal, #closeViewModalButton, .cancelButton", function () {
+        // Hide the view modal
+        $("#viewProductModal").addClass("hidden");
+    });
+
+</script>
 <?php
 $script = ob_get_clean();
 include ("../../../public/master.php");
