@@ -281,10 +281,51 @@ ob_start();
     </div>
 </div>
 
+<!-- View Product Modal -->
+<div id="viewProductModal" class="hidden fixed inset-0 z-50 overflow-y-auto">
+    <div class="flex items-center justify-center min-h-screen px-4">
+        <div class="bg-white rounded-lg shadow-xl w-full max-w-md p-6">
+            <!-- Product Details -->
+            <h2 class="text-xl font-semibold mb-4">Product Details</h2>
+            <div class="mb-4 flex flex-col">
+                <label for="viewProductName" class="text-sm font-medium text-gray-700 mb-1">Product Name</label>
+                <span id="viewProductName" class="text-gray-800 font-medium"></span>
+            </div>
+            <div class="mb-4">
+                <label for="viewProductImage" class="text-sm font-medium text-gray-700 mb-1">Product Image</label>
+                <img id="viewProductImage" class="w-full" src="" alt="Product Image">
+            </div>
+            <div class="mb-4 flex flex-col">
+                <label for="viewProductDescription" class="text-sm font-medium text-gray-700 mb-1">Description</label>
+                <span id="viewProductDescription" class="text-gray-800"></span>
+            </div>
+            <div class="mb-4 flex flex-col">
+                <label for="viewProductVariations" class="text-sm font-medium text-gray-700 mb-1">Variations</label>
+                <span id="viewProductVariations" class="text-gray-800"></span>
+            </div>
+            <div class="flex mb-4">
+                <div class="flex-1 mr-2">
+                    <label for="viewProductBrand" class="text-sm font-medium text-gray-700 mb-1">Brand</label>
+                    <span id="viewProductBrand" class="text-gray-800"></span>
+                </div>
+                <div class="flex-1 ml-2">
+                    <label for="viewProductCategory" class="text-sm font-medium text-gray-700 mb-1">Category</label>
+                    <span id="viewProductCategory" class="text-gray-800"></span>
+                </div>
+            </div>
+            <!-- Buttons -->
+            <div class="flex justify-end">
+                <button id="editProductBtn" class="btn btn-primary mr-2">Edit Product</button>
+                <button id="cancelBtn" class="btn btn-secondary">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- Delete Confirmation Modal -->
 <div id="deleteModal" class="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 hidden">
     <div class="bg-white p-4 rounded-md shadow-md w-full sm:w-[80%] md:w-[60%] lg:w-[40%] xl:w-[30%]">
-        <h2 class="text-2xl font-bold" id="confirmationTitle"></h2>
+        <h2 class="text-2xl font-bold" id="confirmationTitle"> DELETE</h2>
         <div class="border-b border-black flex-grow border-2 mt-2 mb-3"></div>
         <p class="text-lg font-bold" id="confirmationMessage"></p>
         <div class="flex justify-end">
@@ -300,17 +341,9 @@ ob_start();
 <!-- Success -->
 <div id="successPopup" class="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 hidden">
     <div class="bg-white p-4 rounded-md shadow-md w-full h-56 sm:w-[70%] md:w-[60%] lg:w-[40%] xl:w-[30%]">
-        <h2 class="text-2xl font-extrabold">Success</h2>
+        <h2 class="text-2xl font-extrabold" id="SuccessTitle">Success</h2>
         <div class="border-b border-black flex-grow border-2 mt-2 mb-3"></div>
-        <p class="text-xl font-bold text-green-600">Product added successfully!</p>
-    </div>
-</div>
-<!-- Success Bulk Upload -->
-<div id="successBulkPopup" class="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 hidden">
-    <div class="bg-white p-4 rounded-md shadow-md w-full h-56 sm:w-[70%] md:w-[60%] lg:w-[40%] xl:w-[30%]">
-        <h2 class="text-2xl font-extrabold">Success</h2>
-        <div class="border-b border-black flex-grow border-2 mt-2 mb-3"></div>
-        <p class="text-xl font-bold text-green-600">Bulk Product Upload successful!</p>
+        <p class="text-xl font-bold text-green-600" id="successMessage"></p>
     </div>
 </div>
 
@@ -518,16 +551,80 @@ ob_start();
                     // Call function to update availability in the backend
                     updateProductAvailability(productId, newAvailability);
                 });
+
+                $(".deleteProduct").on("click", function () {
+                    const productId = $(this).data("productid");
+                    const tr = $(this).closest("tr");
+                    // Show the delete confirmation modal
+                    $("#deleteModal").removeClass("hidden");
+                    $("#confirmationMessage").text("Are you sure you want to delete this?");
+                    // Set event listener for confirm delete button in the modal
+                    $("#confirmDelete").on("click", function () {
+                        // Call function to update product status to "inactive" in the backend
+                        updateProductStatus(productId, function () {
+                            // Hide the delete confirmation modal
+                            $("#deleteModal").addClass("hidden");
+
+                            // Hide the corresponding row in the frontend table
+                            tr.hide();
+                        });
+
+                        // Remove the event listener to prevent multiple executions
+                        $("#confirmDelete").off("click");
+                    });
+
+                    // Set event listener for cancel delete button in the modal
+                    $("#cancelDelete").on("click", function () {
+                        // Hide the delete confirmation modal
+                        $("#deleteModal").addClass("hidden");
+
+                        // Remove the event listener to prevent multiple executions
+                        $("#cancelDelete").off("click");
+                    });
+                });
             } else {
                 productListing.html("<tr><td colspan='7' class='text-center font-bold text-red-800'>No products available</td></tr>");
             }
+        }
+        // Function to update product status to "inactive" in the backend
+        function updateProductStatus(productId, callback) {
+            // Send a request to the backend to update product status
+            // Example AJAX request:
+            $.ajax({
+                url: "../../../backend/product/deleteproduct.php",
+                type: "POST",
+                data: { productId: productId, status: "inactive" },
+                success: function (response) {
+                    // Callback function after successful update
+                    if (callback && typeof callback === "function") {
+                        callback();
+                    }
+                    // Show success popup
+                    $("#successMessage").text("Product deleted successfully!");
+                    $("#successPopup").removeClass("hidden");
+
+                    // Hide the success popup after 3 seconds
+                    setTimeout(function () {
+                        $("#successPopup").addClass("hidden");
+                        // Refresh the table after hiding the success popup
+                        refreshTable();
+                    }, 500);
+                },
+                error: function (xhr, status, error) {
+                    // Handle error
+                    console.error("Error updating product status:", error);
+                }
+            });
         }
         // Function to update product availability in the backend
         function updateProductAvailability(productId, availability) {
             $.ajax({
                 url: "../../../backend/product/updateavail.php",
                 type: "POST",
-                data: { ProductID: productId, availability: availability },
+                data: {
+                    ProductID: productId,
+                    availability: availability
+                },
                 dataType: "json",
                 success: function (response) {
                     // Handle success
@@ -539,14 +636,19 @@ ob_start();
                 }
             });
         }
+        // Function to fetch availability options
         function fetchAvailabilityOptions(productId, callback) {
             $.ajax({
                 url: "../../../backend/product/getavail.php",
                 type: "GET",
-                data: { ProductID: productId }, // Pass the product ID in the GET request
+                data: {
+                    ProductID: productId
+                },
                 dataType: "json",
                 success: function (response) {
                     const availabilityOptions = response;
+
+                    // If callback function is provided, invoke it with availability options
                     if (callback) {
                         callback(availabilityOptions);
                     }
@@ -556,6 +658,8 @@ ob_start();
                 }
             });
         }
+
+
 
         // Function to handle fetch error
         function handleFetchError() {
@@ -651,13 +755,16 @@ ob_start();
             success: function (response) {
                 console.log("Images uploaded successfully:", response);
                 // Close modal after successful upload
-                $("#uploadImageModal").addClass("hidden");
-                // Show success modal
+                $("#successPopup").removeClass("hidden");
+                $("#successMessage").text("Images Successfully Added!");
                 $("#successBulkPopup").removeClass("hidden");
                 // Optionally, you can perform any additional actions here, such as refreshing the page or updating UI.
                 setTimeout(function () {
-                    window.location.reload(); // Refresh the page after 2 seconds
-                }, 2000); // 2 seconds
+                    $("#successBulkPopup").addClass("hidden"); // Hide success modal after 0.5 seconds
+                    setTimeout(function () {
+                        location.reload(); // Refresh the page after 1 second
+                    }, 500); // 1 second
+                }, 500); // 0.5 seconds
             },
             error: function (xhr, status, error) {
                 console.error("Error uploading images:", error);
@@ -665,6 +772,7 @@ ob_start();
             }
         });
     });
+
 
 
     // Fetch and populate dropdowns for brand and category
@@ -732,15 +840,18 @@ ob_start();
                     var responseData = JSON.parse(data);
                     if (responseData.success) {
                         console.log("Product added successfully:", responseData);
-                        // Show success modal
                         $("#successPopup").removeClass("hidden");
+                        $("#successMessage").text("Product Successfully Added!");
                         // Hide add product modal
                         $("#addProductModal").addClass("hidden");
                         // Hide success modal and refresh the page after 3 seconds
                         setTimeout(function () {
                             $("#successModal").addClass("hidden");
-                            location.reload(); // Refresh the page
-                        }, 2000); // 2 seconds
+                            // Refresh table after 1 second
+                            setTimeout(function () {
+                                location.reload(); // Refresh the page
+                            }, 500); //
+                        }, 500); //
                     } else {
                         console.error("Error adding product:", responseData.error);
                     }
@@ -748,6 +859,7 @@ ob_start();
             });
         }
     });
+
 
 </script>
 

@@ -1,5 +1,7 @@
 <?php
-// Include your database connection file
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 include '../../backend/conn.php';
 
 // Check if the connection is established successfully
