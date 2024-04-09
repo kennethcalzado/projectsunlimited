@@ -341,7 +341,7 @@ ob_start();
                     console.log('data.totalRows');
 
                     console.log(data.totalRows);
-                    generatePagination(data.totalPages, data.totalRows , page);
+                    generatePagination(data.totalPages, data.totalRows, page);
                 },
                 error: function (xhr, status, error) {
                     handleFetchError();
@@ -449,7 +449,7 @@ ob_start();
                 },
                 success: function (data) {
                     populateProductTable(data.products);
-                    generatePagination(data.totalPages, data.totalRows , page, categoryId, brandId, sortValue, searchQuery);
+                    generatePagination(data.totalPages, data.totalRows, page, categoryId, brandId, sortValue, searchQuery);
 
                 },
                 error: function (xhr, status, error) {
@@ -458,24 +458,24 @@ ob_start();
             });
         }
 
-        // Function to populate product table
         function populateProductTable(data) {
             const productListing = $("#productlisting");
             productListing.empty(); // Clear existing table rows
 
             if (data.length > 0) {
-                // Fetch availability options for all products
-                fetchAvailabilityOptions(function (availabilityOptions) {
-                    data.forEach(function (product) {
-                        // Create table row for each product
-                        const tr = $("<tr>").addClass("hover:bg-zinc-100 border-b bg-white-200");
+                // Iterate through the data array
+                data.forEach(function (product) {
+                    // Create table row for each product
+                    const tr = $("<tr>").addClass("hover:bg-zinc-100 border-b bg-white-200");
 
-                        // Create select element for availability
-                        const availabilitySelect = $("<select>").addClass("availability-dropdown");
+                    // Create select element for availability
+                    const availabilitySelect = $("<select>").addClass("availability-dropdown");
 
-                        // Set a placeholder option while availability options are being fetched
-                        availabilitySelect.append($("<option>").attr("value", "").text("-"));
+                    // Set a placeholder option while availability options are being fetched
+                    availabilitySelect.append($("<option>").attr("value", "").text("-"));
 
+                    // Fetch availability options for the current product
+                    fetchAvailabilityOptions(product.ProductID, function (availabilityOptions) {
                         // Add options based on fetched availability options
                         availabilityOptions.forEach(function (option) {
                             const optionElement = $("<option>").attr("value", option).text(option);
@@ -484,52 +484,69 @@ ob_start();
 
                         // Set selected option based on product's availability
                         availabilitySelect.val(product.availability);
+                    });
 
-                        // Append other product details to table row
-                        tr.html(`
-                        <td>${product.ProductName}</td>
-                        <td><img class="centered-image" src="../../../assets/products/${product.image_urls[0]}" alt="Product Image" style="max-width: 100px; max-height: 100px;"></td>
-                        <td>${product.brand_name}</td>
-                        <td></td> <!-- This will be replaced by the availability dropdown -->
-                        <td>${product.CategoryName}</td>
-                        <td>${product.created_at}</td>
-                        <td>
-                            <div class="flex justify-center">
-                                <button type="button" class="btn btn-view rounded-md text-center sm:mt-4 !px-4 text-sm flex items-center mr-2 viewProduct data-productid="${product.ProductID}"><i class="fas fa-eye mr-2 fa-sm"></i><span class="hover:underline">View</span></button>
-                                <button type="button" class="btn btn-primary rounded-md text-center sm:mt-4 !px-4 text-sm flex items-center mr-2 editProduct" data-productid="${product.ProductID}"><i class="fas fa-edit mr-2 fa-sm"></i>Edit</button>
-                                <button type="button" class="btn btn-danger rounded-md text-center sm:mt-4 !px-4 text-sm flex items-center mr-2 deleteProduct" data-productid="${product.ProductID}"><i class="fas fa-trash-alt mr-2 fa-sm"></i>Delete</button>
-                            </div>
+                    // Append other product details to table row
+                    tr.html(`
+                    <td>${product.ProductName}</td>
+                    <td><img class="centered-image" src="../../../assets/products/${product.image_urls[0]}" alt="Product Image" style="max-width: 100px; max-height: 100px;"></td>
+                    <td>${product.brand_name}</td>
+                    <td></td> <!-- This will be replaced by the availability dropdown -->
+                    <td>${product.CategoryName}</td>
+                    <td>${product.created_at}</td>
+                    <td>
+                        <div class="flex justify-center">
+                            <button type="button" class="btn btn-view rounded-md text-center sm:mt-4!px-4 text-sm flex items-center mr-2 viewProduct data-productid="${product.ProductID}"><i class="fas fa-eye mr-2 fa-sm"></i><span class="hover:underline">View</span></button>
+                            <button type="button" class="btn btn-primary rounded-md text-center sm:mt-4!px-4 text-sm flex items-center mr-2 editProduct" data-productid="${product.ProductID}"><i class="fas fa-edit mr-2 fa-sm"></i>Edit</button>
+                            <button type="button" class="btn btn-danger rounded-md text-center sm:mt-4!px-4 text-sm flex items-center mr-2 deleteProduct" data-productid="${product.ProductID}"><i class="fas fa-trash-alt mr-2 fa-sm"></i>Delete</button>
+                        </div>
                     </td>
                 `);
 
-                        // Append availability dropdown to table cell
-                        tr.find("td:eq(3)").append(availabilitySelect);
+                    // Append availability dropdown to table cell
+                    tr.find("td:eq(3)").append(availabilitySelect);
 
-                        // Append table row to productListing
-                        productListing.append(tr);
-                    });
+                    // Append table row to productListing
+                    productListing.append(tr);
+                });
+
+                // Add event listener for availability dropdown change
+                $(".availability-dropdown").on("change", function () {
+                    const productId = $(this).closest("tr").find(".editProduct").data("productid");
+                    const newAvailability = $(this).val();
+
+                    // Call function to update availability in the backend
+                    updateProductAvailability(productId, newAvailability);
                 });
             } else {
                 productListing.html("<tr><td colspan='7' class='text-center font-bold text-red-800'>No products available</td></tr>");
             }
         }
-
-        function fetchAvailabilityOptions(callback) {
+        // Function to update product availability in the backend
+        function updateProductAvailability(productId, availability) {
+            $.ajax({
+                url: "../../../backend/product/updateavail.php",
+                type: "POST",
+                data: { ProductID: productId, availability: availability },
+                dataType: "json",
+                success: function (response) {
+                    // Handle success
+                    console.log("Availability updated successfully:", response);
+                },
+                error: function (xhr, status, error) {
+                    // Handle error
+                    console.error("Error updating availability:", error);
+                }
+            });
+        }
+        function fetchAvailabilityOptions(productId, callback) {
             $.ajax({
                 url: "../../../backend/product/getavail.php",
                 type: "GET",
+                data: { ProductID: productId }, // Pass the product ID in the GET request
                 dataType: "json",
                 success: function (response) {
                     const availabilityOptions = response;
-                    const dropdown = $('.availability-dropdown');
-                    dropdown.empty();
-                    // Add options based on fetched availability options
-                    availabilityOptions.forEach(function (option) {
-                        const optionElement = $("<option>").attr("value", option).text(option);
-                        dropdown.append(optionElement);
-                    });
-
-                    // Call the callback function with the availability options
                     if (callback) {
                         callback(availabilityOptions);
                     }
@@ -539,6 +556,7 @@ ob_start();
                 }
             });
         }
+
         // Function to handle fetch error
         function handleFetchError() {
             console.error("Error fetching data:", error);
@@ -730,7 +748,7 @@ ob_start();
             });
         }
     });
-    
+
 </script>
 
 <?php
