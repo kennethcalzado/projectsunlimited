@@ -172,6 +172,7 @@ ob_start();
         </form>
     </div>
 </div>
+
 <!-- Add Product Modal -->
 <div id="addProductModal" class="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 hidden">
     <div
@@ -253,7 +254,7 @@ ob_start();
         class="bg-white p-4 rounded-md shadow-md w-full sm:w-[80%] md:w-[60%] lg:w-[40%] xl:w-[30%] max-h-[80%] overflow-y-auto">
         <div class="flex justify-between items-center mb-4">
             <h2 class="text-2xl font-bold">Edit Product</h2>
-            <button id="closeEditModal" class="text-gray-600 hover:text-gray-900 focus:outline-none">
+            <button id="closeEditModalButton" class="text-gray-600 hover:text-gray-900 focus:outline-none">
                 <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
                     </path>
@@ -261,63 +262,62 @@ ob_start();
             </button>
         </div>
         <div class="border-b border-black flex-grow border-2 mt-2 mb-3"></div>
-        <form id="editProductForm" method="POST" enctype="multipart/form-data" class="mt-4">
+        <form id="editProductForm" enctype="multipart/form-data" class="mt-4">
+            <!-- Product Name -->
             <div class="mb-4 flex flex-col">
-                <label for="editProductName" class="text-sm font-medium text-gray-700 mb-1">Product Name</label>
-                <input type="text" id="editProductName" name="productName" placeholder="Enter Product Name"
-                    class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent">
+                <label class="text-sm font-medium text-gray-700 mb-1">Product Name</label>
+                <input id="editProductName" type="text" class="border rounded-md px-3 py-2 text-sm">
             </div>
+            <!-- Product Image -->
             <div class="mb-4 flex flex-col">
-                <label for="editProductImage" class="text-sm font-medium text-gray-700 mb-1">Replace Product
-                    Image</label>
-                <input type="file" id="editProductImage" name="productImage" accept=".jpg, .jpeg, .png"
-                    class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
-                    onchange="previewImage(event)">
-                <div id="editImagePreview"></div>
+                <label class="text-sm font-medium text-gray-700 mb-1">Product Image</label>
+                <input type="file" id="editProductImage" name="editedProductImage" accept=".jpg, .jpeg, .png">
+                <img id="previewProductImage" class="border rounded-md mt-2" src="#" alt="Product Image"
+                    style="max-width: 100px; max-height: 100px; display: none;">
             </div>
+            <!-- Description -->
             <div class="mb-4 flex flex-col">
-                <label for="editProductDescription" class="text-sm font-medium text-gray-700 mb-1">Description</label>
-                <textarea id="editProductDescription" name="productDescription" rows="4"
-                    placeholder="Enter Product Description"
-                    class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent"></textarea>
+                <label class="text-sm font-medium text-gray-700 mb-1">Description</label>
+                <textarea id="editProductDescription" class="border rounded-md px-3 py-2 text-sm"></textarea>
             </div>
-            <div class="flex mx-4">
-                <div class="mb-4 flex flex-col mr-8">
-                    <label for="editProductBrand" class="text-sm font-medium text-gray-700 mb-2">Brand</label>
-                    <select id="editProductBrand" name="productBrand"
-                        class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent">
-                        <option value="" disabled selected></option>
+            <!-- Brand and Category -->
+            <div class="flex mb-4 justify-center">
+                <div class="flex flex-col mr-4" style="flex: 1;">
+                    <label class="text-sm font-medium text-gray-700 mb-1">Brand</label>
+                    <select id="editProductBrand" class="border rounded-md px-3 py-2 text-sm">
+                        <!-- Options will be dynamically added here -->
                     </select>
                 </div>
-                <div class="mb-4 flex flex-col ">
-                    <label for="editProductCategory" class="text-sm font-medium text-gray-700 mb-2">Category</label>
-                    <select id="editProductCategory" name="productCategory"
-                        class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent">
-                        <option value="" disabled selected></option>
+                <div class="flex flex-col" style="flex: 1;">
+                    <label class="text-sm font-medium text-gray-700 mb-1">Category</label>
+                    <select id="editProductCategory" class="border rounded-md px-3 py-2 text-sm">
+                        <!-- Options will be dynamically added here -->
                     </select>
                 </div>
             </div>
             <!-- Variation Section -->
-            <div id="editVariationsSection" class="mb-4">
-                <h3 class="text-lg font-medium text-gray-700 mb-2">Variations</h3>
-                <div id="editVariationInputs"></div>
-                <button type="button" onclick="addEditVariation()"
-                    class="flex items-center text-blue-500 hover:text-blue-700 focus:outline-none">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24"
-                        stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                    </svg>
-                    Add Variation
-                </button>
+            <div class="mb-4 flex flex-col" id="editVariations">
+                <!-- Variation fields will be dynamically added here -->
             </div>
+            <div id="editVariationInputs"></div>
+            <button type="button" onclick="addEditVariation()"
+                class="flex items-center text-blue-500 hover:text-blue-700 focus:outline-none">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                </svg>
+                Add Variation
+            </button>
             <!-- End of Variation Section -->
+
+            <!-- Save Changes and Close Buttons -->
             <div class="flex justify-end">
-                <button type="submit" id="editProductbtn"
-                    class="btn btn-primary rounded-md text-center h-10 mt-3 sm:mt-4 !px-4 py-0 text-lg flex items-center mr-2">Save
+                <button id="saveChangesButton"
+                    class="btn btn-primary rounded-md text-center h-10 mt-3 sm:mt-4 !px-4 py-0 text-lg flex items-center">Save
                     Changes</button>
-                <button type="button" id="closeEditModal"
-                    class="btn btn-secondary rounded-md text-center h-10 mt-3 sm:mt-4 !px-4 py-0 text-lg flex items-center">Cancel</button>
+                <button id="closeEditModalButton"
+                    class="btn btn-secondary rounded-md text-center h-10 mt-3 sm:mt-4 !px-4 py-0 text-lg flex items-center ml-2">Close</button>
             </div>
         </form>
     </div>
@@ -377,6 +377,8 @@ ob_start();
         </div>
     </div>
 </div>
+
+
 
 <!-- Delete Confirmation Modal -->
 <div id="deleteModal" class="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 hidden">
@@ -849,8 +851,13 @@ ob_start();
             $.each(categories, function (index, category) {
                 categoryFilter.append($('<option>').val(category.CategoryID).text(category.CategoryName));
             });
+            const categoryDropdown = $('#editProductCategory');
+            categoryDropdown.empty();
+            categoryDropdown.append($('<option>').prop('disabled', true).prop('selected', true).text('Select a Category'));
+            $.each(categories, function (index, category) {
+                categoryDropdown.append($('<option>').val(category.CategoryID).text(category.CategoryName));
+            });
         },
-
         error: function (xhr, status, error) {
             console.error('Error:', error);
         }
@@ -872,6 +879,12 @@ ob_start();
             brandFilter.append($('<option>').val('brandsreset').text('All Brand')); // Add 'All Brand' option
             $.each(brands, function (index, brand) {
                 brandFilter.append($('<option>').val(brand.brand_id).text(brand.brand_name));
+            });
+            const brandDropdown = $("#editProductBrand");
+            brandDropdown.empty();
+            brandDropdown.append($('<option>').prop('disabled', true).prop('selected', true).text('Select a Brand'));
+            $.each(brands, function (index, brand) {
+                brandDropdown.append($('<option>').val(brand.brand_id).text(brand.brand_name));
             });
         },
         error: function (xhr, status, error) {
@@ -941,12 +954,283 @@ ob_start();
     `;
         variationInputs.appendChild(variationDiv);
     }
+
     function removeVariation(element) {
         const variationDiv = element.parentElement.parentElement;
         variationDiv.remove();
     }
 
+    function previewVariationImage(event, variationIndex) {
+        const input = event.target;
+        const file = input.files[0];
+        const variationImagePreview = document.getElementById(`variationImagePreview${variationIndex}`);
+
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function () {
+                const img = document.createElement('img');
+                img.src = reader.result;
+                img.className = 'border rounded-md mt-2';
+                img.style.maxWidth = '100px';
+                img.style.maxHeight = '100px';
+                variationImagePreview.innerHTML = '';
+                variationImagePreview.appendChild(img);
+            };
+            reader.readAsDataURL(file);
+        } else {
+            variationImagePreview.innerHTML = '';
+        }
+    }
+
     // EDIT MODAL
+    // Declare productId variable in a broader scope
+    let productId;
+    // Add event listener to the "Edit" button
+    $(document).on("click", ".editProduct", function () {
+        // Set the value of productId in the broader scope
+        productId = $(this).data("productid");
+        // Fetch product details for the specified product ID
+        fetchProductDetails(productId, function (productDetails) {
+            // Populate the edit modal with the retrieved product details
+            populateEditModal(productDetails);
+            // Show the edit modal
+            $("#editProductModal").removeClass("hidden");
+        });
+    });
+
+    // Inside the populateEditModal function
+    function populateEditModal(productDetails) {
+        $("#editProductName").val(productDetails.ProductName);
+        $("#editProductDescription").val(productDetails.Description);
+
+        // Display product image
+        // Construct full URL for product image
+        const productImageURL = "../../../assets/products/" + productDetails.image_urls; // Assuming image_urls contains the file name
+        $("#previewProductImage").attr("src", productImageURL).show();
+
+        // Show file name in insert image input field
+        $("#editProductImageInput").val(productImageURL);
+
+        // Add event listener to change event of product image input field
+        $("#editProductImage").change(function () {
+            const file = this.files[0]; // Get the selected file
+            if (file) {
+                const reader = new FileReader(); // Create a new FileReader object
+                reader.onload = function (e) {
+                    // Set the source of the preview image to the data URL
+                    $("#previewProductImage").attr("src", e.target.result).show();
+                };
+                reader.readAsDataURL(file); // Read the selected file as a data URL
+            } else {
+                // If no file is selected, hide the preview image
+                $("#previewProductImage").hide();
+            }
+        });
+
+        // Populate brand dropdown
+        fetchAndPopulateBrandDropdown(productDetails.brand_id);
+
+        // Populate category dropdown
+        fetchAndPopulateCategoryDropdown(productDetails.CategoryID);
+
+        // Populate variations if available
+        if (productDetails.variations && productDetails.variations.length > 0) {
+            const editVariationsSection = $("#editVariations");
+            editVariationsSection.empty(); // Clear existing variation fields
+
+            productDetails.variations.forEach((variation, index) => {
+                // Create variation fields for each variation
+                const variationField = $("<div>").addClass("mb-4 flex flex-col");
+                variationField.append($("<label>").addClass("text-sm font-medium text-gray-700 mb-1").text("Variation Name"));
+                const variationNameInput = $("<input>").addClass("border rounded-md px-3 py-2 text-sm").attr("type", "text").val(variation.VariationName);
+                variationField.append(variationNameInput);
+
+                // Fetch and display variation image
+                const variationImage = $("<img>").addClass("border rounded-md mt-2 mb-2").attr("src", "../../../assets/variations/" + variation.image_url).attr("alt", "Variation Image").css({ "max-width": "100px", "max-height": "100px" });
+                variationField.append(variationImage);
+
+                // Add event listener to change event of variation image input field
+                const variationImageInput = $("<input>").addClass("border rounded-md").attr("type", "file").attr("accept", "image/*");
+                variationImageInput.change(function () {
+                    const file = this.files[0]; // Get the selected file
+                    if (file) {
+                        const reader = new FileReader(); // Create a new FileReader object
+                        reader.onload = function (e) {
+                            // Set the source of the preview image to the data URL
+                            variationImage.attr("src", e.target.result).show();
+                        };
+                        reader.readAsDataURL(file); // Read the selected file as a data URL
+                    } else {
+                        // If no file is selected, hide the preview image
+                        variationImage.hide();
+                    }
+                });
+                variationField.append(variationImageInput);
+
+                // Append variation fields to the edit modal
+                editVariationsSection.append(variationField);
+            });
+        }
+    }
+    function previewEditVariationImage(event, variationIndex) {
+        const input = event.target;
+        const file = input.files[0];
+        const variationImagePreview = document.getElementById(`editVariationImagePreview${variationIndex}`);
+
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function () {
+                const img = document.createElement('img');
+                img.src = reader.result;
+                img.className = 'border rounded-md mt-2';
+                img.style.maxWidth = '100px';
+                img.style.maxHeight = '100px';
+                variationImagePreview.innerHTML = '';
+                variationImagePreview.appendChild(img);
+            };
+            reader.readAsDataURL(file);
+        } else {
+            variationImagePreview.innerHTML = '';
+        }
+    }
+    // Function to fetch and populate brand dropdown
+    function fetchAndPopulateBrandDropdown(selectedBrandId) {
+        $.ajax({
+            url: '../../../backend/product/getbrand.php',
+            type: 'GET',
+            dataType: 'json',
+            success: function (brands) {
+                const brandDropdown = $("#editProductBrand");
+                brandDropdown.empty();
+                brandDropdown.append($('<option>').prop('disabled', true).prop('selected', true).text('Select a Brand'));
+                $.each(brands, function (index, brand) {
+                    brandDropdown.append($('<option>').val(brand.brand_id).text(brand.brand_name));
+                });
+                // Set the selected brand if available
+                if (selectedBrandId) {
+                    brandDropdown.val(selectedBrandId);
+                }
+            },
+            error: function (xhr, status, error) {
+                console.error('Error fetching brands:', error);
+            }
+        });
+    }
+
+    // Function to fetch and populate category dropdown
+    function fetchAndPopulateCategoryDropdown(selectedCategoryId) {
+        $.ajax({
+            url: '../../../backend/product/getproductcategory.php',
+            type: 'GET',
+            dataType: 'json',
+            success: function (categories) {
+                const categoryDropdown = $('#editProductCategory');
+                categoryDropdown.empty();
+                categoryDropdown.append($('<option>').prop('disabled', true).prop('selected', true).text('Select a Category'));
+                $.each(categories, function (index, category) {
+                    categoryDropdown.append($('<option>').val(category.CategoryID).text(category.CategoryName));
+                });
+                // Set the selected category if available
+                if (selectedCategoryId) {
+                    categoryDropdown.val(selectedCategoryId);
+                }
+            },
+            error: function (xhr, status, error) {
+                console.error('Error fetching categories:', error);
+            }
+        });
+    }
+
+    // Add event listener to save changes button in the edit modal
+    $("#saveChangesButton").click(function () {
+        // Gather edited product details
+        const editedProductName = $("#editProductName").val();
+        const editedProductDescription = $("#editProductDescription").val();
+        const editedProductBrand = $("#editProductBrand").val();
+        const editedProductCategory = $("#editProductCategory").val();
+
+        // Gather edited variation details
+        const editedVariations = [];
+        $('[id^=editVariationName]').each(function (index) {
+            const variationName = $(this).val();
+            const variationImage = $(`#editVariationImage${index + 1}`)[0].files[0];
+            editedVariations.push({ VariationName: variationName, VariationImage: variationImage });
+        });
+
+        // Send edited details to the server to update the database
+        const formData = new FormData();
+        formData.append('productId', productId);
+        formData.append('editedProductName', editedProductName);
+        formData.append('editedProductDescription', editedProductDescription);
+        formData.append('editedProductBrand', editedProductBrand);
+        formData.append('editedProductCategory', editedProductCategory);
+        // Append edited variations data
+        editedVariations.forEach((variation, index) => {
+            formData.append(`editedVariations[${index}][VariationName]`, variation.VariationName);
+            formData.append(`editedVariations[${index}][VariationImage]`, variation.VariationImage);
+        });
+
+        // Send the form data using AJAX
+        $.ajax({
+            url: "../../../backend/product/editproduct.php",
+            method: "POST",
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function (response) {
+                // Handle success response
+                console.log("Product details updated successfully.");
+                // Close the edit modal
+                $("#editProductModal").addClass("hidden");
+                // Optionally, you can reload the product table or update the specific row in the table
+            },
+            error: function (xhr, status, error) {
+                console.error("Error updating product details:", error);
+                // Handle error
+            }
+        });
+    });
+
+    // Function to add a new variation
+    function addEditVariation() {
+        const editVariationInputs = document.getElementById('editVariations');
+        const editVariationIndex = editVariationInputs.children.length + 1;
+
+        const editVariationDiv = document.createElement('div');
+        editVariationDiv.classList.add('mb-4', 'flex', 'flex-col');
+        editVariationDiv.innerHTML = `
+        <div class="flex justify-between items-center">
+            <h4 class="text-sm font-medium text-gray-700 mb-2">Variation ${editVariationIndex}</h4>
+            <button type="button" class="text-red-500 hover:text-red-700 focus:outline-none" onclick="removeEditVariation(this)">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+        </div>
+        <label for="editVariationName${editVariationIndex}" class="text-sm font-medium text-gray-700 mb-2">Variation ${editVariationIndex} Name</label>
+        <input type="text" id="editVariationName${editVariationIndex}" name="editVariationName${editVariationIndex}" placeholder="Enter Variation Name"
+            class="border rounded-md px-3 py-2 mb-4 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent">
+        <label for="editVariationImage${editVariationIndex}" class="text-sm font-medium text-gray-700 mb-1">Insert Variation ${editVariationIndex} Image</label>
+        <input type="file" id="editVariationImage${editVariationIndex}" name="editVariationImage${editVariationIndex}" accept=".jpg, .jpeg, .png"
+            class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
+            onchange="previewEditVariationImage(event, ${editVariationIndex})">
+        <div id="editVariationImagePreview${editVariationIndex}"></div>
+    `;
+        editVariationInputs.appendChild(editVariationDiv);
+    }
+
+    // Function to remove a variation
+    function removeEditVariation(element) {
+        const editVariationDiv = element.parentElement.parentElement;
+        editVariationDiv.remove();
+    }
+
+
+    // Add event listener to close the view modal when cancel button or close button is clicked
+    $(document).on("click", "#closeEditModalButton, .cancelButton", function () {
+        // Hide the view modal
+        $("#editProductModal").addClass("hidden");
+    });
 
     // VIEW MODAL
     // Add event listener to the "View" button
@@ -998,7 +1282,7 @@ ob_start();
             let variationRow = $("<div>").addClass("flex");
 
             productDetails.variations.forEach((variation, index) => {
-                const variationField = $("<div>").addClass("mb-4 flex flex-col mr-6");
+                const variationField = $("<div>").addClass("mb-4 mt-2 flex flex-col px-2 mr-6");
                 variationField.append($("<label>").addClass("text-sm font-medium text-gray-700 mb-1 justify-center").text(variation['VariationName']));
                 variationField.append($("<img>").addClass("border rounded-md").attr("src", variation['image_url']).attr("alt", "Variation Image").css("max-width", "100px").css("max-height", "100px"));
 
