@@ -275,6 +275,7 @@ ob_start();
                 <img id="previewProductImage" class="border rounded-md mt-2" src="#" alt="Product Image"
                     style="max-width: 100px; max-height: 100px; display: none;">
             </div>
+
             <!-- Description -->
             <div class="mb-4 flex flex-col">
                 <label class="text-sm font-medium text-gray-700 mb-1">Description</label>
@@ -1026,7 +1027,6 @@ ob_start();
                 $("#previewProductImage").hide();
             }
         });
-
         // Populate brand dropdown
         fetchAndPopulateBrandDropdown(productDetails.brand_id);
 
@@ -1149,13 +1149,8 @@ ob_start();
         const editedProductBrand = $("#editProductBrand").val();
         const editedProductCategory = $("#editProductCategory").val();
 
-        // Gather edited variation details
-        const editedVariations = [];
-        $('[id^=editVariationName]').each(function (index) {
-            const variationName = $(this).val();
-            const variationImage = $(`#editVariationImage${index + 1}`)[0].files[0];
-            editedVariations.push({ VariationName: variationName, VariationImage: variationImage });
-        });
+        // Gather edited product image
+        const editedProductImage = $("#editProductImage")[0].files[0];
 
         // Send edited details to the server to update the database
         const formData = new FormData();
@@ -1164,11 +1159,7 @@ ob_start();
         formData.append('editedProductDescription', editedProductDescription);
         formData.append('editedProductBrand', editedProductBrand);
         formData.append('editedProductCategory', editedProductCategory);
-        // Append edited variations data
-        editedVariations.forEach((variation, index) => {
-            formData.append(`editedVariations[${index}][VariationName]`, variation.VariationName);
-            formData.append(`editedVariations[${index}][VariationImage]`, variation.VariationImage);
-        });
+        formData.append('editedProductImage', editedProductImage); // Append edited product image
 
         // Send the form data using AJAX
         $.ajax({
@@ -1190,42 +1181,6 @@ ob_start();
             }
         });
     });
-
-    // Function to add a new variation
-    function addEditVariation() {
-        const editVariationInputs = document.getElementById('editVariations');
-        const editVariationIndex = editVariationInputs.children.length + 1;
-
-        const editVariationDiv = document.createElement('div');
-        editVariationDiv.classList.add('mb-4', 'flex', 'flex-col');
-        editVariationDiv.innerHTML = `
-        <div class="flex justify-between items-center">
-            <h4 class="text-sm font-medium text-gray-700 mb-2">Variation ${editVariationIndex}</h4>
-            <button type="button" class="text-red-500 hover:text-red-700 focus:outline-none" onclick="removeEditVariation(this)">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                </svg>
-            </button>
-        </div>
-        <label for="editVariationName${editVariationIndex}" class="text-sm font-medium text-gray-700 mb-2">Variation ${editVariationIndex} Name</label>
-        <input type="text" id="editVariationName${editVariationIndex}" name="editVariationName${editVariationIndex}" placeholder="Enter Variation Name"
-            class="border rounded-md px-3 py-2 mb-4 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent">
-        <label for="editVariationImage${editVariationIndex}" class="text-sm font-medium text-gray-700 mb-1">Insert Variation ${editVariationIndex} Image</label>
-        <input type="file" id="editVariationImage${editVariationIndex}" name="editVariationImage${editVariationIndex}" accept=".jpg, .jpeg, .png"
-            class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
-            onchange="previewEditVariationImage(event, ${editVariationIndex})">
-        <div id="editVariationImagePreview${editVariationIndex}"></div>
-    `;
-        editVariationInputs.appendChild(editVariationDiv);
-    }
-
-    // Function to remove a variation
-    function removeEditVariation(element) {
-        const editVariationDiv = element.parentElement.parentElement;
-        editVariationDiv.remove();
-    }
-
-
     // Add event listener to close the view modal when cancel button or close button is clicked
     $(document).on("click", "#closeEditModalButton, .cancelButton", function () {
         // Hide the view modal
