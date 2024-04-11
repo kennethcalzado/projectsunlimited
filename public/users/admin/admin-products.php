@@ -677,8 +677,6 @@ ob_start();
             });
         }
 
-
-
         // Function to handle fetch error
         function handleFetchError() {
             console.error("Error fetching data:", error);
