@@ -1,27 +1,23 @@
 <?php
 include '../../backend/conn.php'; // Include the database connection script
 
-// Query to retrieve all roles
-$sql = "SELECT * FROM brands";
-$result = $conn->query($sql);
+try {
+    // Fetch pages from the database
+    $stmt = $conn->prepare("SELECT pages.page_id, pages.title, pages.description, pages.page_url, brands.logo_url, brands.brand_name AS brand_name FROM pages INNER JOIN brands ON pages.brand_id = brands.brand_id");
+    $stmt->execute();
+    $result = $stmt->get_result();
 
-if ($result === false) {
-    // Error handling if the query fails
-    $error = ["error" => $conn->error];
-    http_response_code(500); // Set HTTP response code to indicate internal server error
-    echo json_encode($error);
-    exit();
-}
-
-$brands = array();
-if ($result->num_rows > 0) {
-    // Fetch roles data
+    // Fetch the rows from the result set as an associative array
+    $pages = [];
     while ($row = $result->fetch_assoc()) {
-        $brands[] = $row;
+        $pages[] = $row;
     }
-}
 
-// Return JSON response with roles data
-header('Content-Type: application/json');
-echo json_encode($brands);
+    // Return the pages data in JSON format
+    header('Content-Type: application/json');
+    echo json_encode($pages);
+} catch (Exception $e) {
+    // Handle database connection errors
+    echo json_encode(array('error' => 'Database error: ' . $e->getMessage()));
+}
 ?>
