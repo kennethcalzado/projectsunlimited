@@ -18,7 +18,7 @@ ob_start();
                         <div class="w-full lg:w-6/12 h-[440px]">
                             <div class="p-5">
                                 <div class="text-center">
-                                    <h1 class="text-2xl text-gray-900 mb-4">Welcome Back!</h1>
+                                    <h1 class="text-2xl text-gray-900 mb-4 font-semibold">Welcome Back!</h1>
                                 </div>
                                 <form class="user" id="loginForm">
                                     <div class="mb-2">

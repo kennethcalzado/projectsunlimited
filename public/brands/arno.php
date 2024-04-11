@@ -55,7 +55,7 @@ ob_start();
         <div id="table-concepts-pic cotainer">
             <div class="relative flex justify-center items-center">
                 <div class="absolute m-20 h-32 w-full bg-black"></div> <!-- Adjusted height and added width -->
-                <div class="flex justify-between relative z-10">
+                <div class="flex justify-between relative z-10 mb-20">
                     <div class="w-1/4 p-4 rounded-lg">
                         <!-- Image 1 -->
                         <img src="../assets\image\wallpaper.png" alt="Image 1">
@@ -76,11 +76,46 @@ ob_start();
             </div>
         </div>
 
+        <div>
+            <table>
+                <tr>
+                    <th>Concepts</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td>
+                        <p class="font-karla font-extrabold text-3xl leading-relaxed text-center text-black">
+                            TABLE CONCEPTS
+                        </p>
+                        <button type="button"
+                            class="w-80 h-16 inset-0 bg-yellow-300 rounded-full  left-0 top-0 font-normal text-xl leading-relaxed text-center text-black hover:bg-yellow-200 hover:font-semibold hover:shadow-md">
+                            View Catalog
+                        </button>
+                    </td>
+                    <td>
+                        <p class="font-karla font-medium leading-relaxed text-justify text-black">
+                            ARNO is a Projects Unlimited’s homegrown brand for office and commercial furniture. A
+                            trusted brand
+                            by designers and end users alike, ARNO furniture provides long-lasting comfort in your
+                            working
+                            space.
+                            We ensure that our products are durable, sleek, and elegant. With several designs and
+                            features to
+                            choose from
+                        </p>
+                    </td>
+                </tr>
+                <tr>
+                    
+                </tr>
+            </table>
+        </div>
         <div class="flex items-center justify-center my-10">
             <div id="table-concept-button" class="ml-10">
                 <p class="font-karla font-extrabold text-3xl leading-relaxed text-center text-black">
                     TABLE CONCEPTS
                 </p>
+
                 <button type="button"
                     class="w-80 h-16 inset-0 bg-yellow-300 rounded-full  left-0 top-0 font-normal text-xl leading-relaxed text-center text-black hover:bg-yellow-200 hover:font-semibold hover:shadow-md">
                     View Catalog
@@ -262,5 +297,5 @@ ob_start();
 
 <?php
 $content = ob_get_clean();
-include("../public/master.php");
+include ("../../public/master.php");
 ?>
