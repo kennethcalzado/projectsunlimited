@@ -7,7 +7,7 @@ if (isset($_POST['category'])) {
     $category = $_POST['category'];
     $sortOption = $_POST['sortOption'];
     $page = isset($_POST['page']) ? intval($_POST['page']) : 1;
-    $perPage = isset($_POST['perPage']) ? intval($_POST['perPage']) : 8;
+    $perPage = isset($_POST['perPage']) ? intval($_POST['perPage']) : 10; // Default to 10 items per page
     $offset = ($page - 1) * $perPage;
 
     // Initialize response array
@@ -50,9 +50,16 @@ if (isset($_POST['category'])) {
         $response['data'] = $data;
 
         // Get total count for pagination
-        $totalCount = mysqli_query($conn, "SELECT COUNT(*) FROM blogs");
-        $row = mysqli_fetch_row($totalCount);
-        $total = $row[0];
+        $totalCountSql = "SELECT COUNT(*) FROM blogs";
+
+        // Add conditions for category and sorting
+        if ($category !== "") {
+            $totalCountSql .= " WHERE type = '$category'";
+        }
+
+        $totalCountResult = mysqli_query($conn, $totalCountSql);
+        $totalCountRow = mysqli_fetch_row($totalCountResult);
+        $total = $totalCountRow[0];
         $response['total'] = $total;
     }
 

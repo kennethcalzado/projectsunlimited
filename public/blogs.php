@@ -119,20 +119,29 @@ $result = mysqli_query($conn, $sql);
                 fetchData(selectedCategory, sortOption);
             });
 
-            // Function to update display with fetched data
-            function updateDisplay(data) {
+            // Update updateDisplay function to display items for the current page
+            function updateDisplay(data, currentPage, perPage) {
                 var html = '';
                 var counter = 0; // Initialize counter variable
                 var itemsPerRow = 5; // Number of items per row
-                var totalItems = data.length; // Total number of items 
+                // var startIndex = (currentPage - 1) * perPage; // Calculate start index for current page
+
+                // var endIndex = Math.min(startIndex + perPage, data.length); // Calculate end index for current page
+                var totalItems = data.length; // Total number of items for current page
+                const startIndex = ((currentPage - 1) * perPage) + 1;
+                const endIndex = Math.min(startIndex + perPage - 1, data.length + perPage);
+
+                // console.log(data);
 
                 if (totalItems > 0) {
                     // Generate the first background div
                     html += '<div class="w-full flex justify-center"><div class="absolute h-[160px] m-[98px] w-3/5 bg-[#F6E381]" style="z-index: -1;"></div></div>';
                     html += '<div class="flex flex-wrap justify-center items-center">'; // Start flex container and center items
 
-                    // Loop through each item
-                    $.each(data, function(index, item) {
+                    // Loop through each item for the current page
+                    for (var i = 0; i < data.length; i++) {
+
+                        var item = data[i];
                         // Output card HTML dynamically with data from the response
                         html += '<div class="card-group z-10" data-category="' + item.type + '">';
                         html += '<a href="' + item.page + '" class="card-link">';
@@ -148,28 +157,29 @@ $result = mysqli_query($conn, $sql);
                         counter++;
 
                         // Check if the current item is the last one or if the next item will start a new row
-                        if (counter % itemsPerRow == 0 || counter == totalItems) {
+                        if (counter % itemsPerRow == 0 || i == endIndex - 1) {
                             // Check if it's not the last item and there are enough items to complete another row
-                            if (counter != totalItems && totalItems - counter >= itemsPerRow) {
+                            if (i != endIndex - 1 && totalItems - counter >= itemsPerRow) {
                                 html += '</div><div class="w-full flex justify-center"><div class="absolute h-[160px] m-[98px] w-3/5 bg-[#F6E381]" style="z-index: -1;"></div></div><div class="flex flex-wrap justify-center items-center">';
                             }
                         }
-                    });
+                    }
 
                     html += '</div>'; // Close flex container
                 } else {
                     html += '<div>No blogs found.</div>';
                 }
 
-                $('.card-groups-container').html(html); // Update HTML content
+                $('#card-groups-container').html(html); // Update HTML content
             }
 
+            // Update initializePagination function to use the total count for dynamic pagination
             function initializePagination(totalDisplayed, currentPage, perPage) {
                 var totalPages = Math.ceil(totalDisplayed / perPage); // Calculate total pages based on displayed items
                 var pagination = $('#pagination');
                 pagination.empty(); // Clear previous pagination buttons
 
-                // Hide pagination if there is only one page or no results
+                // Hide pagination if there are no results or only one page
                 if (totalPages <= 1) {
                     pagination.hide();
                     return;
@@ -187,6 +197,11 @@ $result = mysqli_query($conn, $sql);
 
                     // Attach click event handler
                     pageBtn.click(function(page) {
+
+                        // console.log($('#categoryFilter').val());
+                        // console.log($('#sortFilter').val());
+                        // console.log(page);
+                        // console.log(perPage);
                         return function() {
                             fetchData($('#categoryFilter').val(), $('#sortFilter').val(), page, perPage);
                         };
@@ -198,7 +213,7 @@ $result = mysqli_query($conn, $sql);
                 pagination.show(); // Show pagination
             }
 
-            // Function to fetch data from the server
+            // Update fetchData function to pass perPage parameter
             function fetchData(category, sortOption, page = 1, perPage = 10) {
                 $.ajax({
                     url: '../../../backend/blogs/fetch_blog.php',
@@ -211,7 +226,9 @@ $result = mysqli_query($conn, $sql);
                     },
                     dataType: 'json',
                     success: function(response) {
-                        updateDisplay(response.data); // Update display with fetched data
+                        console.log(response.data);
+                        updateDisplay(response.data, page, perPage); // Update display with fetched data and current page number
+
                         initializePagination(response.total, page, perPage); // Pass the current page number and perPage to initializePagination
                     }
                 });
@@ -225,18 +242,18 @@ $result = mysqli_query($conn, $sql);
 
 <body>
     <section>
-        <section>
-            <div class="content">
-                <div class="relative">
-                    <img src="../assets/image/blogbanner.png" class="w-full h-96 object-cover">
-                    <div class="absolute inset-0 bg-black opacity-50"></div>
-                    <div class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50">
-                        <p class="text-white font-bold text-4xl text-center">STAY UPDATED WITH <br> <span class="text-[#F6E381]">PROJECTS UNLIMITED</span></p>
-                    </div>
+        <div class="content">
+            <div class="relative">
+                <img src="../assets/image/blogbanner.png" class="w-full h-96 object-cover">
+                <div class="absolute inset-0 bg-black opacity-50"></div>
+                <div class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50">
+                    <p class="text-white font-bold text-4xl text-center">STAY UPDATED WITH <br> <span class="text-[#F6E381]">PROJECTS UNLIMITED</span></p>
                 </div>
             </div>
-        </section>
+        </div>
+    </section>
 
+    <section>
         <div style="width: 100%; text-align: center;">
             <h1 style="padding-top: 25px; font-size: 38px; font-weight: 800; margin: 0;">NEWS & PROJECTS</h1>
 
@@ -263,9 +280,9 @@ $result = mysqli_query($conn, $sql);
                 </div>
             </div>
 
-            <section style="padding-top: 20px; padding-bottom: 90px;">
+            <section style="padding-top: 20px;">
                 <div class="container mx-auto">
-                    <div class="card-groups-container">
+                    <div id="card-groups-container" class="card-groups-container">
                         <?php
                         $counter = 0; // Initialize counter variable
                         $itemsPerRow = 5; // Number of items per row
@@ -300,15 +317,16 @@ $result = mysqli_query($conn, $sql);
                                     }
                                 }
                             }
-                            echo '</div>'; // Close flex container
                         } else {
                             echo "No blogs found.";
                         }
                         ?>
-                    </div>
-                </div>
-                <div id="pagination" class="mt-4"></div>
             </section>
+            <div id="pagination" class="mt-4" style="padding: 0px 100px 90px 0px;"></div>
+
+        </div>
+    </section>
+
 
 </body>
 

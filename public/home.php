@@ -354,8 +354,9 @@ Yung mga filter chuchu sa cms (pagination nalang/ oks na) -----
 Add news editor -----------
 Update images delete/xbutton ---------
 filter blogs display (date and categories) -------------
+pagination blogs (konting polish pa pero gumagana thank you kyle) -------
 confirmation sa modal
+total items chuchu sa table ng cmsblogs
 content ng blogs
-pagination blogs (konting polish pa pero gumagana)
 profile admin
 -->
