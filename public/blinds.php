@@ -122,7 +122,7 @@ ob_start();
                 productsContainer.innerHTML = ''; // Clear previous content
                 productsData.forEach(product => {
                     const productCard = `
-                    <div class="bg-white shadow-lg rounded-lg overflow-hidden">
+                    <div class="bg-white shadow-lg rounded-[4px] overflow-hidden">
                         <img src="${product.image_urls}" alt="${product.ProductName}" class="w-full h-64 object-cover object-center">
                         <div class="p-4">
                             <h2 class="text-gray-800 font-extrabold text-xl mb-2">${product.ProductName}</h2>
