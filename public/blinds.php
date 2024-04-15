@@ -152,7 +152,7 @@ ob_start();
                     <div class="bg-white shadow-lg rounded-[4px] overflow-hidden">
                         <img src="${product.image_urls}" alt="${product.ProductName}" class="w-full h-64 object-cover object-center">
                         <div class="p-4">
-                            <h2 class="text-gray-800 font-extrabold text-xl mb-2">${product.ProductName}</h2>
+                            <h2 class="text-gray-800 font-extrabold text-xl mb-2 uppercase">${product.ProductName}</h2>
                             <p class="text-gray-600 text-base">${product.Description}</p>
                             <button class="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" onclick="openProductModal(${product.ProductID})">View Product</button>
                         </div>

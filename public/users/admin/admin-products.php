@@ -727,7 +727,7 @@ ob_start();
     function validateForm() {
         let isValid = true;
         // Loop through each input field
-        $('#addProductForm input[type="text"], #addProductForm textarea, #addProductForm select').each(function () {
+        $('#addProductForm input[type="text"], #addProductForm textarea').each(function () {
             // If the field is empty, add red border and show error message
             if (!$(this).val()) {
                 $(this).addClass('border-red-600');
