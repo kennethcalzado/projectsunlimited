@@ -397,7 +397,7 @@ ob_start();
                 },
                 success: function ( data )
                 {
-                    console.log( data );
+                    // console.log( data );
                     renderUserData( data.users, data.pagination );
                 },
                 error: function ( xhr, status, error )

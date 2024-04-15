@@ -52,18 +52,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 if ($result->num_rows > 0) {
                     $roleData = $result->fetch_assoc();
                     $_SESSION['user_role'] = $roleData['role_name'];
-                } else {
-                    // Handle the case where the role is not found
-                    $_SESSION['user_role'] = 'guest';
-                }
+                } 
+
                 // echo $_SESSION['user_role'];
                 // exit;
+
                 // Redirect based on user's role
                 if ($_SESSION['user_role'] === 'admin' || $_SESSION['user_role'] === 'marketing') {
                     echo json_encode(['success' => true, 'role' => $_SESSION['user_role']]);
-                } else {
-                    echo json_encode(['success' => true, 'role' => '']);
-                }
+                } 
+
                 exit;
             } else {
                 // Password is incorrect

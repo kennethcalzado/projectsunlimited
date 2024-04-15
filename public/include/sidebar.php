@@ -4,6 +4,7 @@ $base_url = 'http://' . $_SERVER['HTTP_HOST'] . '/'; // Example: http://localhos
 
 // Concatenate the base URL with the image path
 $image_path = $base_url . 'assets/image/projectslogo.png';
+
 ?>
 
 <div id="sidebar-container" class="sidebar minimized fixed top-0 bottom-0 lg:left-0 p-2 w-[80px] 
@@ -41,12 +42,12 @@ $image_path = $base_url . 'assets/image/projectslogo.png';
             <!-- <span class="text-[15px] ml-4 text-center text-gray-200 font-bold">Home</span> -->
         </div>
     </a>
+
     <?php
     // Determine the user's role
     $userRole = $_SESSION['user_role'] ?? "guest"; // Default to 'guest' if the role is not set
-    
-    if ($userRole == 'admin') { ?>
 
+    if ($userRole == 'admin') { ?>
         <a href="/public/users/admin/users-table.php" class="group">
             <div class="nav-item mt-3 flex items-center rounded-l-md px-6 p-2
             transition-opacity duration-300 cursor-pointer text-white group-hover:bg-yellow-600 group-hover:ease-in">
@@ -110,16 +111,17 @@ $image_path = $base_url . 'assets/image/projectslogo.png';
             <div class="nav-item mt-3 flex items-center rounded-l-md px-6 p-2
             transition-opacity duration-300 cursor-pointer text-white group-hover:bg-yellow-600 group-hover:ease-in">
                 <div class="flex relative ">
-                    <i class="bi bi-chat-left-text-fill"></i>
+                <!-- <i class="bi bi-chat-left-text-fill"></i>  -->
+                    <i class="fa-solid fa-handshake py-1"></i>
                     <span class="text-[15px] ml-4 text-gray-200 font-bold">Brands</span>
                     <span class="tootlips 
                     group-hover:ease-in group-hover:opacity-100 group-hover:visible 
                     transition-opacity duration-300 
                     bg-yellow-600 rounded-r-md 
-                    pr-5 py-[9px] m-4 mx-auto w-20 
+                    pr-5 py-[8.96px] m-4 mx-auto w-20 
                     text-[15px] font-bold text-white 
                     absolute  invisible
-                    left-1/2 translate-x-[40%] -translate-y-[60.5%] opacity-0">Brands</span>
+                    left-1/2 translate-x-[35%] -translate-y-[59.5%] opacity-0">Brands</span>
                 </div>
             </div>
         </a>
