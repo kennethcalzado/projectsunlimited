@@ -190,7 +190,7 @@ ob_start();
 
     <!-- FILTER SCRIPTS -->
     <script>
-        //FILTER SCRIPTS
+        // FILTER SCRIPTS
         $(document).ready(function() {
             // Event listener for category and sort filters
             $('#categoryFilter, #sortFilter').change(function() {
@@ -220,6 +220,7 @@ ob_start();
 
             // Function to fetch data based on category, sort option, and search query
             function fetchData(category, sortOption, query = '', page = 1) {
+                var limit = 5; // Number of records per page
                 $.ajax({
                     url: '../../../backend/blogs/fetch_data.php',
                     method: 'POST',
@@ -227,12 +228,13 @@ ob_start();
                         category: category,
                         sortOption: sortOption,
                         query: query, // Include search query in the AJAX request
-                        page: page // Include page parameter for pagination
+                        page: page, // Include page parameter for pagination
+                        limit: limit // Include limit parameter for pagination
                     },
                     dataType: 'json',
                     success: function(response) {
                         updateTable(response.data); // Update table with fetched data
-                        updatePagination(response.total, page); // Update pagination controls
+                        updatePagination(response.total, page, limit); // Update pagination controls
                     }
                 });
             }
@@ -263,15 +265,17 @@ ob_start();
             }
 
             // Function to update pagination controls
-            function updatePagination(totalCount, currentPage) {
-                var totalPages = Math.ceil(totalCount / 5); // Calculate total pages
+            function updatePagination(totalCount, currentPage, limit) {
+                var totalPages = Math.ceil(totalCount / limit); // Calculate total pages
                 var pagination = $('#pagination');
                 pagination.empty(); // Clear previous pagination buttons
 
-                // Hide pagination if there is only one page of results or if no results are found
-                if (totalPages <= 1) {
-                    pagination.hide();
-                    return;
+                var startItem = currentPage === 1 ? 1 : (currentPage - 1) * limit + 1;
+                var endItem = Math.min(currentPage * limit, totalCount);
+
+                // Adjust endItem if it exceeds totalCount
+                if (endItem > totalCount) {
+                    endItem = totalCount;
                 }
 
                 // Create Page buttons
@@ -291,8 +295,9 @@ ob_start();
                 }
                 pagination.addClass('flex justify-end');
                 pagination.show(); // Show pagination if there are multiple pages
-            }
 
+                $('#itemCount').text(`Showing ${startItem}-${endItem} of ${totalCount} items`);
+            }
 
             // Fetch initial data
             fetchData('', 'new');
@@ -497,7 +502,10 @@ ob_start();
                 </tbody>
 
             </table>
-            <div id="pagination" class="mt-4"></div>
+            <div class="flex flex-col sm:flex-row px-2 sm:self-center sm:items-center justify-between bottom-0">
+                <div id="itemCount" class="text-center text-gray-500"></div>
+                <div id="pagination" class="justify-center mt-4"></div>
+            </div>
         </div>
 
 
