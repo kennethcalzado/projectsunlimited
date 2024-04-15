@@ -12,10 +12,6 @@ ob_start();
 
     <link rel="stylesheet" href="../../../assets/input.css">
 
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
     <style>
         body,
         p {
@@ -85,7 +81,10 @@ ob_start();
         <div class="max-w-3xl w-full h-[90vh] overflow-auto">
             <!-- Modal Content -->
             <div class="bg-white p-6 rounded-lg">
-                <h2 class="text-xl font-bold mb-4">Add New Blog</h2>
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-xl font-bold">Add New Blog</h2>
+                    <span class="cursor-pointer text-gray-500 hover:text-gray-700" onclick="closeModal()">X</span>
+                </div>
                 <form action="../../../backend/blogs/add_blog.php" method="POST" enctype="multipart/form-data">
                     <div class="mb-4">
                         <label for="title" class="block font-semibold mb-2">Title</label>
@@ -116,7 +115,8 @@ ob_start();
                         </select>
                     </div>
                     <div class="text-right">
-                        <button type="submit" class="btn btn-primary">Add Blog</button>
+                        <button type="button" class="btn btn-primary" onclick="confirmAdd()">Add Blog</button>
+                        <button type="submit" id="hiddenAddButton" class="btn btn-primary" hidden>Add Blog</button>
                         <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancel</button>
                     </div>
                 </form>
@@ -128,7 +128,10 @@ ob_start();
     <div id="deleteModal" class="fixed inset-0 z-50 overflow-auto bg-black bg-opacity-50 flex justify-center items-center hidden">
         <div class="max-w-3xl w-full h-[90vh] overflow-auto">
             <div class="bg-white p-6 rounded-lg">
-                <h2 class="text-xl font-bold mb-4">Delete Blog</h2>
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-xl font-bold mb-4">Delete Blog</h2>
+                    <span class="cursor-pointer text-gray-500 hover:text-gray-700" onclick="closeDeleteModal()">X</span>
+                </div>
                 <p style="font-size:large" class="mb-4">Are you sure you want to delete this blog?</p>
                 <div class="text-right">
                     <input type="hidden" id="blogIdToDelete">
@@ -143,7 +146,10 @@ ob_start();
     <div id="updateModal" class="fixed inset-0 z-50 overflow-auto bg-black bg-opacity-50 flex justify-center items-center hidden">
         <div class="max-w-3xl w-full h-[90vh] overflow-auto">
             <div class="bg-white p-6 rounded-lg">
-                <h2 class="text-xl font-bold mb-4">Update Blog</h2>
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-xl font-bold mb-4">Update Blog</h2>
+                    <span class="cursor-pointer text-gray-500 hover:text-gray-700" onclick="closeUpdateModal()">X</span>
+                </div>
                 <!-- Form for updating the blog post -->
                 <form id="updateForm" action="../../../backend/blogs/update_blog.php" method="POST" enctype="multipart/form-data">
                     <input type="hidden" name="blogIdToUpdate" id="blogIdToUpdate">
@@ -180,7 +186,8 @@ ob_start();
                         </select>
                     </div>
                     <div class="text-right">
-                        <button type="submit" class="btn btn-primary">Update Blog</button>
+                        <button type="button" class="btn btn-primary" onclick="confirmUpdate()">Update Blog</button>
+                        <button type="submit" id="hiddenSubmitButton" class="btn btn-primary" hidden></button>
                         <button type="button" onclick="closeUpdateModal()" class="btn btn-secondary">Cancel</button>
                     </div>
                 </form>
@@ -307,16 +314,25 @@ ob_start();
 
     <!-- MODAL SCRIPTS -->
     <script>
-        // MODAL SCRIPTS
-        // DELETE MODAL
+        // MODAL SCRIPTS //
+        // DELETE MODAL //
 
         function openDeleteModal(blogId) {
-            document.getElementById('deleteModal').classList.remove('hidden');
+            var deleteModal = document.getElementById('deleteModal');
+            deleteModal.classList.remove('hidden');
+            deleteModal.classList.remove('fade-out'); // Remove fade-out class if applied
+            deleteModal.classList.add('fade-in');
             document.getElementById('blogIdToDelete').value = blogId;
         }
 
         function closeDeleteModal() {
-            document.getElementById('deleteModal').classList.add('hidden');
+            var deleteModal = document.getElementById('deleteModal');
+            deleteModal.classList.remove('fade-in');
+            deleteModal.classList.add('fade-out');
+            setTimeout(function() {
+                deleteModal.classList.add('hidden');
+                deleteModal.classList.remove('fade-out'); // Remove fade-out class after animation
+            }, 300); // Adjust the timeout to match the animation duration
         }
 
         function deleteBlog() {
@@ -325,9 +341,23 @@ ob_start();
             xhr.onreadystatechange = function() {
                 if (xhr.readyState == XMLHttpRequest.DONE) {
                     if (xhr.status == 200) {
-                        window.location.reload();
+                        // Blog deletion successful, show success alert
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Success',
+                            text: 'Blog deleted successfully!',
+                            showConfirmButton: false,
+                            timer: 1000
+                        }).then(function() {
+                            window.location.reload();
+                        });
                     } else {
-                        alert('Failed to delete blog. Please try again.');
+                        // Blog deletion failed, show error alert
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: 'Failed to delete blog. Please try again.'
+                        });
                     }
                 }
             };
@@ -336,11 +366,13 @@ ob_start();
             xhr.send('blogId=' + blogId);
         }
 
-        // Update modal functions
-        // Open the update modal with blog details
+        // Update modal functions //
+        // Open the update modal with blog details //
         function openUpdateModal(blogId, title, description, type, date, images) {
             var modal = document.getElementById('updateModal');
             modal.classList.remove('hidden');
+            modal.classList.remove('fade-out'); // Remove fade-out class if applied
+            modal.classList.add('fade-in');
 
             // Set input values
             document.getElementById('blogIdToUpdate').value = blogId;
@@ -396,26 +428,109 @@ ob_start();
             }
         }
 
-
-
-        // Close the update modal
+        // Close the update modal with fade-out animation
         function closeUpdateModal() {
             var modal = document.getElementById('updateModal');
-            modal.classList.add('hidden');
+            modal.classList.remove('fade-in'); // Remove fade-in class if applied
+            modal.classList.add('fade-out');
 
             // Log the value of removedImages before form submission
             var removedImagesInput = document.getElementById('removedImages');
             console.log('Removed images:', removedImagesInput.value);
+
+            setTimeout(function() {
+                modal.classList.add('hidden');
+                modal.classList.remove('fade-out'); // Remove fade-out class after animation
+            }, 300); // Adjust the timeout to match the animation duration
+        }
+
+        function confirmUpdate() {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: 'You are about to update the blog.',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#F9E89B', // Set confirm button color
+                cancelButtonColor: '#e6e6e6', // Set cancel button color
+                confirmButtonText: '<span style="color: black">Yes, update it!</span>',
+                cancelButtonText: '<span style="color: black">No, cancel!</span>',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Show success alert
+                    showSuccessAlert('Blog updated successfully!');
+                    // Add a small delay before clicking the hidden submit button
+                    setTimeout(function() {
+                        document.getElementById('hiddenSubmitButton').click();
+                    }, 700); // Adjust the delay time as needed
+                } else if (result.dismiss === Swal.DismissReason.cancel) {
+                    // Do nothing if cancelled
+                }
+            });
+        }
+
+        function confirmAdd() {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: 'You are about to add a new blog.',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#F9E89B', // Set confirm button color
+                cancelButtonColor: '#e6e6e6', // Set cancel button color
+                confirmButtonText: '<span style="color: black">Yes, add it!</span>',
+                cancelButtonText: '<span style="color: black">No, cancel!</span>',
+                reverseButtons: true
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Show success alert
+                    showSuccessAlert('Blog added successfully!');
+                    // Add a small delay before clicking the hidden submit button
+                    setTimeout(function() {
+                        document.getElementById('hiddenAddButton').click();
+                    }, 700); // Adjust the delay time as needed
+                } else if (result.dismiss === Swal.DismissReason.cancel) {
+                    // Do nothing if cancelled
+                }
+            });
+        }
+
+        // Success and error SweetAlerts
+        function showSuccessAlert(message) {
+            Swal.fire({
+                icon: 'success',
+                title: 'Success',
+                text: message,
+                showConfirmButton: false,
+                timer: 1000
+            });
+        }
+
+        function showErrorAlert(message) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: message
+            });
         }
 
 
-        // ADD NEW MODAL
+        // ADD NEW MODAL //
         function openModal() {
-            document.getElementById('modal').classList.remove('hidden');
+            var modal = document.getElementById('modal');
+            modal.classList.remove('hidden');
+            modal.classList.remove('fade-out'); // Remove fade-out class if applied
+            modal.classList.add('fade-in');
         }
 
+        // Close the modal with fade-out animation
         function closeModal() {
-            document.getElementById('modal').classList.add('hidden');
+            var modal = document.getElementById('modal');
+            modal.classList.remove('fade-in'); // Remove fade-in class if applied
+            modal.classList.add('fade-out');
+            setTimeout(function() {
+                modal.classList.add('hidden');
+                modal.classList.remove('fade-out'); // Remove fade-out class after animation
+            }, 300); // Adjust the timeout to match the animation duration
         }
     </script>
 

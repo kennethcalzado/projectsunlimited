@@ -356,7 +356,7 @@ Update images delete/xbutton ---------
 filter blogs display (date and categories) -------------
 pagination blogs (konting polish pa pero gumagana thank you kyle) -------
 total items chuchu sa table ng cmsblogs ------------
-confirmation sa modal
+confirmation, animation, x button modal  ------------
 content ng blogs
 profile admin
 -->

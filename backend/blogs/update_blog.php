@@ -17,9 +17,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $date = $_POST['updateDate'];
 
     // Define target directory for thumbnails
-    $thumbnail_target_dir = "../../../assets/blogs_img/";
+    $thumbnail_target_dir = "../../assets/blogs_img/";
     // Define target directory for images
-    $image_target_dir = "../../../assets/blogs_img/";
+    $image_target_dir = "../../assets/blogs_img/";
 
     // Check if thumbnail file is uploaded
     if (isset($_FILES['updateThumbnail']) && $_FILES['updateThumbnail']['error'] === UPLOAD_ERR_OK) {
