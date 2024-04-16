@@ -78,7 +78,7 @@ ob_start();
     <meta charset=\"UTF-8\">
     <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">
     <title><?php echo \$pageTitle; ?></title>
-    <link rel=\"stylesheet\" href=\"../../assets/input.css\">
+    <link rel=\"stylesheet\" href=\"../../../assets/input.css\">
 </head>
 
 <body>
@@ -89,7 +89,7 @@ ob_start();
 
 <?php
 \$content = ob_get_clean();
-include(\"../../public/master.php\");
+include(\"../master.php\");
 ?>";
         // Example content
 
