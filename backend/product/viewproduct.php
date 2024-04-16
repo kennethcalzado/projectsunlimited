@@ -35,7 +35,7 @@ if (isset($_GET['productId'])) {
 
         // Prepare and execute the query to fetch all variations for the specified product
         $stmt2 = $conn->prepare("
-            SELECT VariationName, image_url
+            SELECT VariationID, VariationName, image_url
             FROM product_variation
             WHERE ProductID = ?
         ");
@@ -49,6 +49,7 @@ if (isset($_GET['productId'])) {
             while ($row = $result2->fetch_assoc()) {
                 // Add variation details to variations array
                 $variation = array(
+                    'VariationID' => $row['VariationID'],
                     'VariationName' => $row['VariationName'],
                     'image_url' => '../../../assets/variations/' . $row['image_url']
                 );
