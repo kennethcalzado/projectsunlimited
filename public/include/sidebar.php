@@ -7,6 +7,17 @@ $image_path = $base_url . 'assets/image/projectslogo.png';
 
 ?>
 
+<!-- Logout Confirmation Modal -->
+<div id="logoutModal" class="fixed inset-0 z-50 overflow-auto bg-black bg-opacity-50 flex justify-center items-center hidden">
+    <div class="max-w-md w-full bg-white p-6 rounded-lg">
+        <h2 class="text-xl font-bold mb-4">Are you sure you want to log out?</h2>
+        <div class="flex justify-end">
+            <button onclick="closeLogoutModal()" class="btn btn-secondary mr-2">Cancel</button>
+            <button onclick="logout()" class="btn btn-primary mr-2">Yes, Log Out</button>
+        </div>
+    </div>
+</div>
+
 <div id="sidebar-container" class="sidebar minimized fixed top-0 bottom-0 lg:left-0 p-2 w-[80px] 
      text-center bg-black text-white transition-all z-50">
 
@@ -111,7 +122,7 @@ $image_path = $base_url . 'assets/image/projectslogo.png';
             <div class="nav-item mt-3 flex items-center rounded-l-md px-6 p-2
             transition-opacity duration-300 cursor-pointer text-white group-hover:bg-yellow-600 group-hover:ease-in">
                 <div class="flex relative ">
-                <!-- <i class="bi bi-chat-left-text-fill"></i>  -->
+                    <!-- <i class="bi bi-chat-left-text-fill"></i>  -->
                     <i class="fa-solid fa-handshake py-1"></i>
                     <span class="text-[15px] ml-4 text-gray-200 font-bold">Brands</span>
                     <span class="tootlips 
@@ -180,10 +191,9 @@ $image_path = $base_url . 'assets/image/projectslogo.png';
         </div>
     </a>
 
-    <a href="/backend/logout.php" class="group">
+    <a class="group" onclick="openLogoutModal()">
         <div class="nav-item mt-3 flex items-center rounded-l-md px-6 p-2
             transition-opacity duration-300 cursor-pointer text-white group-hover:bg-yellow-600 group-hover:ease-in">
-
             <div class=" flex relative ">
                 <i class="bi bi-box-arrow-in-right"></i>
                 <span class="text-[15px] ml-4 text-gray-200 font-bold">Logout</span>
@@ -216,6 +226,30 @@ $image_path = $base_url . 'assets/image/projectslogo.png';
         /* Remove margin between icons when sidebar is slimmed */
     }
 </style>
+
+<script>
+    function openLogoutModal() {
+        var logoutModal = document.getElementById('logoutModal');
+        logoutModal.classList.remove('hidden');
+        logoutModal.classList.remove('fade-out'); // Remove fade-out class if applied
+        logoutModal.classList.add('fade-in');
+    }
+
+    function closeLogoutModal() {
+        var logoutModal = document.getElementById('logoutModal');
+        logoutModal.classList.remove('fade-in');
+        logoutModal.classList.add('fade-out');
+        setTimeout(function() {
+            logoutModal.classList.add('hidden');
+            logoutModal.classList.remove('fade-out'); // Remove fade-out class after animation
+        }, 300);
+    }
+
+    function logout() {
+        // Perform logout action here
+        window.location.href = '/backend/logout.php';
+    }
+</script>
 
 <script>
     function dropdown() {

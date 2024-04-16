@@ -357,6 +357,10 @@ filter blogs display (date and categories) -------------
 pagination blogs (konting polish pa pero gumagana thank you kyle) -------
 total items chuchu sa table ng cmsblogs ------------
 confirmation, animation, x button modal  ------------
+logout modal ----------
+page animations 
+mobile scaling
+change home elements size
 content ng blogs
 profile admin
 -->
