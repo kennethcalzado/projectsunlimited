@@ -66,7 +66,32 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Create new PHP file based on blog type and ID
         $blog_id = $conn->insert_id; // Get the ID of the inserted blog
         $filename = "../../public/blogs/{$type}_{$blog_id}.php"; // Create filename
-        $file_content = "<?php // Content for your new blog file goes here ?>"; // Example content
+        $file_content = "<?php 
+\$pageTitle = 'Projects Unlimited';
+ob_start();
+?>
+
+<!DOCTYPE html>
+<html lang=\"en\">
+
+<head>
+    <meta charset=\"UTF-8\">
+    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">
+    <title><?php echo \$pageTitle; ?></title>
+    <link rel=\"stylesheet\" href=\"../../assets/input.css\">
+</head>
+
+<body>
+    <!-- Your HTML content goes here -->
+</body>
+
+</html>
+
+<?php
+\$content = ob_get_clean();
+include(\"../../public/master.php\");
+?>";
+        // Example content
 
         // Write content to the new PHP file
         $result = file_put_contents($filename, $file_content);

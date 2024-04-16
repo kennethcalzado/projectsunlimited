@@ -8,7 +8,7 @@
         <?php echo $pageTitle . " - Projects Unlimited" ?>
     </title>
     <!-- Link to your Tailwind CSS file -->
-    <link href="../assets/input.css" rel="stylesheet">
+    <link href="/assets/input.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.0/font/bootstrap-icons.css" />
 
 </head>
@@ -22,7 +22,7 @@
     <div class="flex flex-col md:flex-row mx-16">
         <!-- Left Column -->
         <div class="md:w-1/4 p-2 my-2 mt-8 items-center justify-center">
-            <img src="../assets/image/projectslogo.png" alt="Projects Unlimited Logo" class="w-56 h-66 ml-7">
+            <img src="/assets/image/projectslogo.png" alt="Projects Unlimited Logo" class="w-56 h-66 ml-7">
             <p class="text-sm mt-2">620 Tytana St., Binondo, Manila, Philippines, 1006</p>
             <div class="container mx-auto text-center">
                 <div class="flex items-center ml-6 mt-2">
@@ -67,7 +67,7 @@
             <div class="mb-4 my-2 mx-2 ml-12">
                 <p class="text-xl font-bold text-left">Office Hours</p>
                 <p class="text-sm mt-1 font-semibold text-left  hover:text-[#F6E381]">Mondays - Fridays <u>8am - 5pm</u></p>
-               <!-- <p class="text-sm mt-1 font-semibold text-left  hover:text-[#F6E381]">Saturdays <u>8am - 5pm</u></p>-->
+                <!-- <p class="text-sm mt-1 font-semibold text-left  hover:text-[#F6E381]">Saturdays <u>8am - 5pm</u></p>-->
                 <p class="text-sm font-bold text-left">Sundays and Holidays <u>CLOSED</u></p>
             </div>
         </div>
@@ -76,4 +76,5 @@
         <p class="text-center text-sm font-bold justify-center"><i>Copyright &copy; 2024 Projects Unlimited Powered by Projects Unlimited</i></p>
     </div>
 </footer>
+
 </html>

@@ -4,7 +4,6 @@ $pageTitle = "CMS - Blogs";
 ob_start();
 ?>
 
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,21 +12,6 @@ ob_start();
     <link rel="stylesheet" href="../../../assets/input.css">
 
     <style>
-        body,
-        p {
-            font-family: 'Karla', sans-serif;
-            letter-spacing: -0.4px;
-        }
-
-        body {
-            background-color: #000;
-        }
-
-        h1 {
-            text-align: center;
-            margin-top: 20px;
-        }
-
         table {
             width: 100%;
             margin: auto;
@@ -513,7 +497,6 @@ ob_start();
             });
         }
 
-
         // ADD NEW MODAL //
         function openModal() {
             var modal = document.getElementById('modal');
@@ -622,10 +605,6 @@ ob_start();
                 <div id="pagination" class="justify-center mt-4"></div>
             </div>
         </div>
-
-
-
-
 </body>
 
 <?php
