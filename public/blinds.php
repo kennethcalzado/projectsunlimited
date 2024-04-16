@@ -8,7 +8,7 @@ ob_start();
         <div class="absolute inset-0 bg-black opacity-50"></div>
         <div class="absolute inset-0 flex items-center justify-end text-center">
             <p class="text-white font-extrabold text-3xl mr-8">BLINDS<br>
-                <span class="text-white font-semibold text-xl mr-2 mt-2">100 items<br></span>
+                <span class="text-white font-semibold text-xl mr-2 mt-2">100 items<br></span> 
                 <span class="text-white font-semibold text-xl mr-10 mt-2 hover:text-[#F6E381]">Combi Blinds<br></span>
                 <span class="text-white font-semibold text-xl mr-9 mt-2 hover:text-[#F6E381]">Roller Blinds<br></span>
                 <span class="text-white font-semibold text-xl mr-16 mt-2 hover:text-[#F6E381]">Blackout
@@ -25,10 +25,8 @@ ob_start();
                 <div class="container mx-auto flex items-center justify-between">
                     <div class="hidden md:flex flex-grow">
                         <ul class="flex justify-between w-full mx-20">
-                            <li><a href="../public/flooring.php"
-                                    class="text-black font-bold hover:text-gray-700">FLOORINGS</a></li>
-                            <li><a href="../public/wallcover.php"
-                                    class="text-black font-bold hover:text-gray-700">WALLCOVERING</a></li>
+                            <li><a href="../public/flooring.php" class="text-black font-bold hover:text-gray-700">FLOORINGS</a></li>
+                            <li><a href="../public/wallcover.php" class="text-black font-bold hover:text-gray-700">WALLCOVERING</a></li>
                             <li><a href="../public/office.php" class="text-black font-bold hover:text-gray-700">OFFICE
                                     ACCESSORIES</a></li>
                             <li><a href="../public/modular.php" class="text-black font-bold hover:text-gray-700">MODULAR
@@ -39,47 +37,40 @@ ob_start();
             </nav>
         </div>
     </header>
-    <div class="flex flex-col md:flex-row items-center justify-center">
-        <p class="text-3xl font-extrabold my-2 md:pl-14 md:pr-2">CATEGORY: BLINDS</p>
-        <div class="flex flex-col md:flex-row items-center">
-            <div class="relative mb-2 md:mb-0 md:mr-2">
-                <select
-                    class="w-full md:w-auto bg-white border border-gray-300 text-gray-700 py-2 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
-                    <optgroup label="Blinds">
-                        <option>All Blinds</option>
-                        <option>Combi Blinds</option>
-                        <option>Roller Blinds</option>
-                        <option>Blackout Blinds</option>
-                        <option>Vertical Blinds</option>
-                        <option>Horizontal Blinds</option>
-                    </optgroup>
-                </select>
-            </div>
-            <div class="relative mb-2 md:mb-0 md:mr-2">
-                <select
-                    class="w-full md:w-auto bg-white border border-gray-300 text-gray-700 py-2 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
-                    <option>Sort By</option>
-                    <option>Newest Product</option>
-                    <option>Oldest Product</option>
-                    <option>Most Popular Product</option>
-                </select>
-            </div>
-            <div class="flex justify-between">
-                <div class="relative mb-1 sm:mb-0 sm:mr-2">
-                    <!-- Search input -->
-                    <div class="relative text-gray-600">
-                        <input
-                            class="border-2 border-gray-300 bg-white h-9 w-64 px-2 rounded-md text-sm focus:outline-none"
-                            type="text" name="search" placeholder="Search" id="searchInput">
-                        <button type="submit" class="absolute right-0 top-0 mt-3 mr-4">
-                            <svg class="text-gray-600 h-4 w-4 fill-current" xmlns="http://www.w3.org/2000/svg"
-                                xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1" x="0px" y="0px"
-                                viewBox="0 0 56.966 56.966" style="enable-background:new 0 0 56.966 56.966;"
-                                xml:space="preserve" width="512px" height="512px">
-                                <path
-                                    d="M55.146,51.887L41.588,37.786c3.486-4.144,5.396-9.358,5.396-14.786c0-12.682-10.318-23-23-23s-23,10.318-23,23  s10.318,23,23,23c4.761,0,9.298-1.436,13.177-4.162l13.661,14.208c0.571,0.593,1.339,0.92,2.162,0.92  c0.779,0,1.518-0.297,2.079-0.837C56.255,54.982,56.293,53.08,55.146,51.887z M23.984,6c9.374,0,17,7.626,17,17s-7.626,17-17,17  s-17-7.626-17-17S14.61,6,23.984,6z" />
-                            </svg>
-                        </button>
+        <div class="flex flex-col sm:flex-row items-center justify-center">
+            <div class="flex flex-col sm:flex-row justify-between mb-4 sm:mb-0">
+                <div class="relative mb-2 mt-4 sm:mb-0 sm:mr-8">
+                    <label for="brandFilter" class="mr-2">Brands</label>
+                    <select id="brandFilter" class="border rounded-md px-2 py-1">
+                        <option value="brandsreset">All Brand</option>
+                        <!-- Add your brand options here -->
+                    </select>
+                </div>
+                <div class="relative mb-2 mt-4 sm:mb-0 sm:mr-8">
+                    <label for="categoryFilter" class="mr-2">Blinds</label>
+                    <select id="categoryFilter" class="border rounded-md px-2 py-1">
+                        <option value="categoryreset">Category</option>
+                        <!-- Add your category options here -->
+                    </select>
+                </div>
+                <div class="relative mb-2 mt-4 sm:mb-0 sm:mr-8">
+                    <label for="sortFilter" class="mr-2">Sort</label>
+                    <select id="sortFilter" class="border rounded-md px-2 py-1">
+                        <option value="newest">Newest to Oldest</option>
+                        <option value="oldest">Oldest to Newest</option>
+                    </select>
+                </div>
+                <div class="flex justify-between">
+                    <div class="relative mb-1 mt-3.5 sm:mb-0 sm:mr-2">
+                        <!-- Search input -->
+                        <div class="relative">
+                            <input class="border-2 border-gray-300 bg-white h-9 w-64 px-2 pr-10 mt-10 sm:!mt-0 rounded-lg text-[16px] focus:outline-none" type="text" name="search" placeholder="Search" id="blindssearchInput">
+                            <button type="submit" class="absolute right-0 top-0 mt-7 mr-4 sm:mt-3">
+                                <svg class="text-gray-600 h-5 w-5 fill-current hover:text-gray-500 " xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1" x="0px" y="0px" viewBox="0 0 56.966 56.966" style="enable-background:new 0 0 56.966 56.966;" xml:space="preserve" width="512px" height="512px">
+                                    <path d="M55.146,51.887L41.588,37.786c3.486-4.144,5.396-9.358,5.396-14.786c0-12.682-10.318-23-23-23s-23,10.318-23,23  s10.318,23,23,23c4.761,0,9.298-1.436,13.177-4.162l13.661,14.208c0.571,0.593,1.339,0.92,2.162,0.92  c0.779,0,1.518-0.297,2.079-0.837C56.255,54.982,56.293,53.08,55.146,51.887z M23.984,6c9.374,0,17,7.626,17,17s-7.626,17-17,17  s-17-7.626-17-17S14.61,6,23.984,6z" />
+                                </svg>
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -94,7 +85,7 @@ ob_start();
 
     <div id="productModal" class="hidden fixed inset-0 overflow-y-auto">
         <div class="flex items-center justify-center min-h-screen p-4">
-        <div class="modal-content bg-white shadow-lg rounded-sm overflow-hidden w-full md:w-3/4 lg:w-2/3 xl:w-1/2 relative max-h-screen overflow-y-auto">
+            <div class="modal-content bg-white shadow-lg rounded-sm overflow-hidden w-full md:w-3/4 lg:w-2/3 xl:w-1/2 relative max-h-screen overflow-y-auto">
                 <!-- X button positioned at the upper-right corner -->
                 <button class="absolute top-2 right-2 text-gray-600 hover:text-gray-800" onclick="closeProductModal()">
                     <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -107,8 +98,7 @@ ob_start();
                         <div class="p-4">
                             <h2 id="modalProductName" class="text-gray-800 font-extrabold text-2xl mb-2 uppercase">Product Name
                             </h2>
-                            <img id="modalProductImg" src="#" alt="Product Image"
-                                class="w-full h-64 object-cover object-center mb-4">
+                            <img id="modalProductImg" src="#" alt="Product Image" class="w-full h-64 object-cover object-center mb-4">
                             <!-- Label for variation images -->
                             <p class="text-gray-800 text-sm font-bold mb-2">Variations</p>
                             <!-- Display variation images here if available -->
@@ -125,6 +115,7 @@ ob_start();
                             <p id="modalProductCategory" class="text-sm font-base text-gray-800 mb-4"></p>
                             <p class="text-sm font-bold">Availability: </p>
                             <p id="modalProductAvailability" class="text-sm font-base text-gray-800 mb-4"></p>
+                            <button id="inquirebtn" class="btn btn-secondary rounded-full text-center h-8 mt-3 sm:mt-4 !px-4 py-0 text-sm flex items-center">Inquire Now <i class="fa-solid fa-caret-right ml-2"></i></button>
                         </div>
                     </div>
                 </div>
@@ -140,9 +131,9 @@ ob_start();
         formData.append('categories', JSON.stringify(categories));
 
         fetch('../../../backend/productdisplay/fetchproducts.php', {
-            method: 'POST',
-            body: formData
-        })
+                method: 'POST',
+                body: formData
+            })
             .then(response => response.json())
             .then(productsData => {
                 const productsContainer = document.querySelector('.grid');
@@ -202,6 +193,7 @@ ob_start();
                 console.error('Error fetching product details:', error);
             });
     }
+
     function changeModalImage(imageUrl) {
         document.getElementById('modalProductImg').src = imageUrl;
     }
@@ -216,5 +208,5 @@ ob_start();
 
 <?php
 $content = ob_get_clean();
-include ("../public/master.php");
+include("../public/master.php");
 ?>
