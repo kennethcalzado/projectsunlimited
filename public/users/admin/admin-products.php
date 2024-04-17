@@ -1134,9 +1134,10 @@ ob_start();
                 console.log( variation );
 
                 // Create variation fields for each variation
-                const variationField = $( "<div>" ).addClass( "editVariationContainer mb-4 flex flex-col" );
+                const variationField = $( "<div>" ).addClass( "editVariationContainer mb-4 flex flex-col" ).data( "variation-id", variation.VariationID );
                 variationField.append( $( "<label>" ).addClass( "text-sm font-medium text-gray-700 mb-1" ).text( "Variation Name" ) );
-                const variationNameInput = $( "<input>" ).addClass( "border rounded-md px-3 py-2 text-sm editVariationName_" + variation.VariationID ).attr( "type", "text" ).val( variation.VariationName );
+                const variationNameInput = $( "<input>" ).addClass( "border rounded-md px-3 py-2 text-sm editVariationName" )
+                    .attr( "type", "text" ).val( variation.VariationName );
                 variationField.append( variationNameInput );
 
                 // Fetch and display variation image
@@ -1147,7 +1148,7 @@ ob_start();
                 variationField.append( variationImage );
 
                 // Add event listener to change event of variation image input field
-                const variationImageInput = $( "<input>" ).addClass( "border rounded-md editVariationImage_" + variation.VariationID ).attr( "type", "file" ).attr( "accept", "image/*" ).on( 'change', ( event ) =>
+                const variationImageInput = $( "<input>" ).addClass( "border rounded-md editVariationImage" ).attr( "type", "file" ).attr( "accept", "image/*" ).on( 'change', ( event ) =>
                 {
                     previewEditVariationImage( event, index );
                 } );
@@ -1286,15 +1287,33 @@ ob_start();
         formData.append( 'editedProductCategory', editedProductCategory );
         formData.append( 'editedProductImage', editedProductImage );
 
-        // Iterate over each variation
-        $( "#editVariations" ).find( ".flex.flex-col" ).each( function ( index )
+        // // Iterate over each variation
+        // $( "#editVariations" ).find( ".flex.flex-col" ).each( function ( index )
+        // {
+        //     const variationID = $( this ).closest( ".editVariationContainer" ).data( "variation-id" );
+        //     const variationName = $( this ).find( ".editVariationName" ).val();
+        //     const variationImage = $( this ).find( ".editVariationImage" )[0].files[0];
+
+        //     // Append variation details to FormData object
+        //     formData.append( `variationName_${ variationID }`, variationName );
+        //     formData.append( `variationImage_${ variationID }`, variationImage );
+        // } );
+
+        $( ".editVariationContainer" ).each( function ()
         {
+            const variationID = $( this ).data( "variation-id" );
             const variationName = $( this ).find( ".editVariationName" ).val();
             const variationImage = $( this ).find( ".editVariationImage" )[0].files[0];
 
-            // Append variation details to FormData object
-            formData.append( `variationName_${ index }`, variationName );
-            formData.append( `variationImage_${ index }`, variationImage );
+            // Append variation details to FormData object if variation name is not empty
+            if ( variationName.trim() !== '' )
+            {
+                formData.append( `variations[${ variationID }][variationName]`, variationName );
+                if ( variationImage )
+                {
+                    formData.append( `variations[${ variationID }][variationImage]`, variationImage );
+                }
+            }
         } );
 
         // fetchProducts( 3, 5 );
