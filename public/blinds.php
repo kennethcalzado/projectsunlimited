@@ -20,7 +20,7 @@ ob_start();
         width: 100%;
         height: 100%;
         background-color: rgba(0, 0, 0, 0.5);
-        z-index: 999!important;
+        z-index: 999i;
     }
     body.modal-open {
         overflow: hidden;
@@ -31,17 +31,8 @@ ob_start();
     <div class="relative">
         <img src="../assets/image/blindsproduct.jpg" class="w-full h-96 object-cover object-top">
         <div class="absolute inset-0 bg-black opacity-50"></div>
-        <div class="absolute inset-0 flex items-center justify-end text-center">
-            <p class="text-white font-extrabold text-3xl mr-8">BLINDS<br>
-                <span class="text-white font-semibold text-xl mr-2 mt-2">100 items<br></span>
-                <span class="text-white font-semibold text-xl mr-10 mt-2 hover:text-[#F6E381]">Combi Blinds<br></span>
-                <span class="text-white font-semibold text-xl mr-9 mt-2 hover:text-[#F6E381]">Roller Blinds<br></span>
-                <span class="text-white font-semibold text-xl mr-16 mt-2 hover:text-[#F6E381]">Blackout
-                    Blinds<br></span>
-                <span class="text-white font-semibold text-xl mr-14 mt-2 hover:text-[#F6E381]">Vertical
-                    Blinds<br></span>
-                <span class="text-white font-semibold text-xl mr-20 mt-2 hover:text-[#F6E381]">Horizontal Blinds</span>
-            </p>
+        <div class="absolute inset-0 flex items-center justify-center text-center">
+            <p class="text-white font-extrabold text-4xl">BLINDS<br></p>
         </div>
     </div>
     <header class="bg-[#F6E381]">
@@ -130,12 +121,8 @@ ob_start();
                 <div class="flex flex-col md:flex-row">
                     <div class="md:w-1/2">
                         <div class="p-4">
-                            <h2 id="modalProductName" class="text-gray-800 font-extrabold text-2xl mb-2 uppercase">
-                                Product
-                                Name
-                            </h2>
-                            <img id="modalProductImg" src="#" alt="Product Image"
-                                class="w-full h-64 object-cover object-center mb-4">
+                            <h2 id="modalProductName" class="text-gray-800 font-extrabold text-2xl mb-2 uppercase"></h2>
+                            <img id="modalProductImg" src="#" alt="Product Image" class="w-full h-64 object-cover object-center mb-4">
                             <!-- Label for variation images -->
                             <p class="text-gray-800 text-sm font-bold mb-2">Variations</p>
                             <!-- Display variation images here if available -->
@@ -183,7 +170,7 @@ ob_start();
                         <img src="${product.image_urls}" alt="${product.ProductName}" class="w-full h-64 object-cover object-center">
                         <div class="p-4">
                             <h2 class="text-gray-800 font-extrabold text-xl mb-2 uppercase">${product.ProductName}</h2>
-                            <p class="text-gray-600 text-base">${product.Description}</p>
+                            <p class="text-gray-600 text-base">${product.availability}</p>
                             <button class="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" onclick="openProductModal(${product.ProductID})">View Product</button>
                         </div>
                     </div>
@@ -207,7 +194,7 @@ ob_start();
         variationImagesContainer.innerHTML = '';
 
         // Fetch product details for the specified productId from the server
-        fetch(`../../../backend/productdisplay/fetchblindsprod.php?productId=${productId}`)
+        fetch(`../../../backend/productdisplay/fetchprodmodal.php?productId=${productId}`)
             .then(response => response.json())
             .then(product => {
                 // Populate modal content with product details

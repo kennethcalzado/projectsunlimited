@@ -5,7 +5,7 @@ if (session_status() === PHP_SESSION_NONE) {
 include '../../backend/conn.php';
 
 // Define all possible availability options
-$allAvailabilityOptions = array('AVAILABLE', 'LOW', 'UNAVAILABLE');
+$allAvailabilityOptions = array('Available', 'Low Stocks', 'Unavailable');
 
 // Initialize an array to store availability options
 $availabilityOptions = array();

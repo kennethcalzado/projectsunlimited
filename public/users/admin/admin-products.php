@@ -392,7 +392,7 @@ ob_start();
 
 <!-- Success -->
 <div id="successPopup" class="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 hidden">
-    <div class="bg-white p-4 rounded-md shadow-md w-full h-56 sm:w-[70%] md:w-[60%] lg:w-[40%] xl:w-[30%]">
+    <div class="bg-white p-4 rounded-md shadow-md w-full h-40 sm:w-[70%] md:w-[60%] lg:w-[40%] xl:w-[30%]">
         <h2 class="text-2xl font-extrabold" id="SuccessTitle">Success</h2>
         <div class="border-b border-black flex-grow border-2 mt-2 mb-3"></div>
         <p class="text-xl font-bold text-green-600" id="successMessage"></p>
@@ -1134,9 +1134,10 @@ ob_start();
                 console.log( variation );
 
                 // Create variation fields for each variation
-                const variationField = $( "<div>" ).addClass( "editVariationContainer mb-4 flex flex-col" );
+                const variationField = $( "<div>" ).addClass( "editVariationContainer mb-4 flex flex-col" ).data( "variation-id", variation.VariationID );
                 variationField.append( $( "<label>" ).addClass( "text-sm font-medium text-gray-700 mb-1" ).text( "Variation Name" ) );
-                const variationNameInput = $( "<input>" ).addClass( "border rounded-md px-3 py-2 text-sm editVariationName_" + variation.VariationID ).attr( "type", "text" ).val( variation.VariationName );
+                const variationNameInput = $( "<input>" ).addClass( "border rounded-md px-3 py-2 text-sm editVariationName" )
+                    .attr( "type", "text" ).val( variation.VariationName );
                 variationField.append( variationNameInput );
 
                 // Fetch and display variation image
@@ -1147,7 +1148,7 @@ ob_start();
                 variationField.append( variationImage );
 
                 // Add event listener to change event of variation image input field
-                const variationImageInput = $( "<input>" ).addClass( "border rounded-md editVariationImage_" + variation.VariationID ).attr( "type", "file" ).attr( "accept", "image/*" ).on( 'change', ( event ) =>
+                const variationImageInput = $( "<input>" ).addClass( "border rounded-md editVariationImage" ).attr( "type", "file" ).attr( "accept", "image/*" ).on( 'change', ( event ) =>
                 {
                     previewEditVariationImage( event, index );
                 } );
@@ -1286,41 +1287,46 @@ ob_start();
         formData.append( 'editedProductCategory', editedProductCategory );
         formData.append( 'editedProductImage', editedProductImage );
 
-        // Iterate over each variation
-        $( "#editVariations" ).find( ".flex.flex-col" ).each( function ( index )
+        $( ".editVariationContainer" ).each( function ()
         {
+            const variationID = $( this ).data( "variation-id" );
             const variationName = $( this ).find( ".editVariationName" ).val();
             const variationImage = $( this ).find( ".editVariationImage" )[0].files[0];
 
-            // Append variation details to FormData object
-            formData.append( `variationName_${ index }`, variationName );
-            formData.append( `variationImage_${ index }`, variationImage );
-        } );
-
-        // fetchProducts( 3, 5 );
-        // Send the form data using AJAX
-        $.ajax( {
-            url: "../../../backend/product/editproduct.php",
-            method: "POST",
-            data: formData,
-            contentType: false,
-            processData: false,
-            success: function ( response )
+            // Append variation details to FormData object if variation name is not empty
+            if ( variationName.trim() !== '' )
             {
-                // Handle success response
-                console.log( "Product details updated successfully." );
-                // Close the edit modal
-                // $("#editProductModal").addClass("hidden");
-                console.log( response );
-
-            },
-            error: function ( xhr, status, error )
-            {
-                console.error( "Error updating product details:", error );
-                // Handle error
+                formData.append( `variations[${ variationID }][variationName]`, variationName );
+                if ( variationImage )
+                {
+                    formData.append( `variations[${ variationID }][variationImage]`, variationImage );
+                }
             }
         } );
+
+        // Send the form data using AJAX
+    $.ajax( {
+        url: "../../../backend/product/editproduct.php",
+        method: "POST",
+        data: formData,
+        contentType: false,
+        processData: false,
+        success: function ( response ) {
+            // Show success popup
+            $( "#successMessage" ).text( "Product details updated successfully." );
+            $( "#successPopup" ).removeClass( "hidden" );
+            // Close the success popup after a few seconds
+            setTimeout( function () {
+                $( "#successPopup" ).addClass( "hidden" );
+                location.reload();
+            }, 1000 ); 
+        },
+        error: function ( xhr, status, error ) {
+            console.error( "Error updating product details:", error );
+            // Handle error
+        }
     } );
+} );
 
     // Function to add a new variation
     function addEditVariation ()
