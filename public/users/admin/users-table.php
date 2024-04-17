@@ -469,9 +469,10 @@ ob_start();
                         $( '<span>' ).text( delBtnText ) // "Delete" button with dynamic text
                     );
 
-                    const td = $( '<td>' ).addClass( 'py-6 w-auto px-auto flex justify-center space-x-2' )
+                    const actiontd = $( '<td>' ).addClass( 'py-6 w-auto px-auto flex justify-center space-x-2' )
                         .append( editButton, deleteButton );
-                    userRow.append( td );
+                        
+                    userRow.append( actiontd );
 
 
                     userList.append( userRow );

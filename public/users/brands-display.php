@@ -88,28 +88,24 @@ ob_start();
         <table class="display !w-full  ">
             <thead class="">
                 <tr>
-                    <th scope="col" class="text-left px-6 py-3">
-                        <span id="NameOrder" class="">
-                            <i id="downArrow" class="bi bi-caret-down-fill cursor-pointer"></i>
-                            <i id="upArrow" class="bi bi-caret-up-fill cursor-pointer"></i>
-                            <span class="ml-1">Name</span>
-                        </span>
-                    </th>
+                    <!-- <th scope="col" class="text-center px-6 py-3">
+                        <span class="ml-1">Logo</span>
+                    </th> -->
                     <th scope="col" class="text-center px-6 py-3">
                         <span id="StatusOrder" class="">
                             <i id="downArrow" class="bi bi-caret-down-fill cursor-pointer"></i>
                             <i id="upArrow" class="bi bi-caret-up-fill cursor-pointer"></i>
-                            <span class="ml-1">Status</span>
+                            <span class="ml-1">Brand Name</span>
                         </span>
                     </th>
-                    <th scope="col" class="text-center py-3">
+                    <!-- <th scope="col" class="text-center py-3">
                         <span id="CreatedAtOrder" class="">
                             <i id="downArrow" class="bi bi-caret-down-fill cursor-pointer"></i>
                             <i id="upArrow" class="bi bi-caret-up-fill cursor-pointer"></i>
                             <span class="ml-1"> Created At
                             </span>
                         </span>
-                    </th>
+                    </th> -->
                     <th scope="col" class="text-center py-3">
                         <span id="UpdatedAtOrder" class="">
                             <i id="downArrow" class="bi bi-caret-down-fill cursor-pointer"></i>
@@ -155,34 +151,90 @@ ob_start();
                 console.error( 'Error:', error );
             }
         } );
-    } );
 
-    function renderBrandsData ( data, pagination )
-    {
-        const brandsList = $( '#brands-list' );
-        brandsList.empty(); // Clear existing user data
+        function renderBrandsData ( data, pagination )
+        {
+            const brandsList = $( '#brands-list' );
+            brandsList.empty(); // Clear existing user data
 
-        if ( !Array.isArray( data ) || data.length === 0 ) 
-        {
-            const noUserRow = $( '<tr>' ).addClass( 'bg-white-200 border-b' );
-            const messageCell = $( '<td>' ).addClass( 'px-6 py-4 text-center text-red-800 font-bold' ).attr( 'colspan', '7' ).text( 'No brands found' );
-            noUserRow.append( messageCell );
-            brandsList.append( noUserRow );
-        } else
-        {
-            data.forEach( function ( brand )
+            if ( !Array.isArray( data ) || data.length === 0 ) 
             {
-                const brandRow = $( '<tr>' ).addClass( 'bg-white-200 border-b text-center' );
-                const logoCell = $( '<td>' ).addClass( 'px-6 py-4' ).html( `<img src="${ brand.logo_url }" alt="${ brand.brand_name }" style="max-width: 100px; max-height: 100px;">` );
-                const brandNameCell = $( '<td>' ).addClass( 'px-6 py-4' ).text( brand.brand_name );
-                const descriptionCell = $( '<td>' ).addClass( 'px-6 py-4' ).text( brand.description );
-                
-                // Add more cells if needed for other brand properties
-                brandRow.append(logoCell, brandNameCell,  descriptionCell );
-                brandsList.append( brandRow );
-            } );
+                const noUserRow = $( '<tr>' ).addClass( 'bg-white-200 border-b' );
+                const messageCell = $( '<td>' ).addClass( 'px-6 py-4 text-center text-red-800 font-bold' ).attr( 'colspan', '7' ).text( 'No brands found' );
+                noUserRow.append( messageCell );
+                brandsList.append( noUserRow );
+            } else
+            {
+                data.forEach( function ( brand )
+                {
+                    const brandRow = $( '<tr>' ).addClass( 'bg-white-200 border-b text-center' );
+
+                    // const logoCell = $( '<td>' ).addClass( ' py-4 flex justify-center items-center' ).append(
+                    // );
+
+                    const brandNameCell = $( '<td>' ).addClass( 'text-center py-4' );
+
+                    const brandContentWrapper = $( '<div>' ).addClass( 'flex flex-col items-center justify-center' );
+                    const brandImageWrapper = $( '<div>' ).addClass( 'w-[50px] h-[50px] rounded-full overflow-hidden flex items-center justify-center' );
+                    const brandImage = $( '<img>' ).attr( 'src', brand.logo_url ).attr( 'alt', brand.brand_name ).addClass( 'block rounded-full max-w-[100px] max-h-[100px]' );
+
+                    const brandName = $( '<span>' ).addClass( 'block mt-2' ).text( brand.brand_name );
+                    const brandDescription = $( '<span>' ).addClass( 'text-xs text-gray-500 block' ).text( brand.description );
+
+                    brandImageWrapper.append( brandImage );
+                    brandContentWrapper.append( brandImageWrapper, brandName, brandDescription );
+                    brandNameCell.append( brandContentWrapper );
+
+                    const updateAtCell = $( '<td>' ).addClass( 'text-center py-4 ' ).append(
+                        $( '<div>' ).text( formatDate( brand.updated_at ) ).addClass( 'text-sm' ), // Date with smaller text
+                        $( '<div>' ).text( formatTime( brand.updated_at ) ).addClass( 'text-xs text-gray-500' ) // Time with even smaller and gray text                );
+                    );
+
+                    const viewButton = $( '<button>' ).addClass( 'viewBtn bg-[#a8c4dc] blue-btn btn-primary hover:underline text-[14px]' );
+                    viewButton.append(
+                        $( '<i>' ).addClass( 'fas fa-eye pr-[3px]' ),
+                        $( '<span>' ).text( 'View' )
+                    );
+
+                    const editButton = $( '<button>' ).addClass( 'editBtn yellow-btn btn-primary hover:underline text-[14px]' );
+                    editButton.append(
+                        $( '<i>' ).addClass( 'fas fa-edit pr-[3px]' ),
+                        $( '<span>' ).text( 'Update' )
+                    );
+
+                    const deleteButton = $( '<button>' ).addClass( 'delBtn btn-danger hover:underline text-[14px]' );
+                    deleteButton.append(
+                        $( '<i>' ).addClass( 'fas fa-trash pr-[3px]' ),
+                        $( '<span>' ).text( 'Hide' )
+                    );
+
+                    const actionCell = $( '<td>' ).addClass( 'py-6 w-auto px-auto flex justify-center space-x-2' )
+                        .append( viewButton, editButton, deleteButton );
+
+                    // Add more cells if needed for other brand properties
+                    brandRow.append( brandNameCell, updateAtCell, actionCell );
+                    brandsList.append( brandRow );
+                } );
+            }
         }
-    }
+
+        // Function to format date
+        function formatDate ( dateString )
+        {
+            const date = new Date( dateString );
+            const options = { year: 'numeric', month: 'short', day: 'numeric' };
+            return date.toLocaleDateString( undefined, options );
+        }
+
+        // Function to format time
+        function formatTime ( dateString )
+        {
+            const date = new Date( dateString );
+            const options = { hour: 'numeric', minute: 'numeric' };
+            return date.toLocaleTimeString( undefined, options );
+        }
+
+    } );
 
 </script>
 
