@@ -392,7 +392,7 @@ ob_start();
 
 <!-- Success -->
 <div id="successPopup" class="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 hidden">
-    <div class="bg-white p-4 rounded-md shadow-md w-full h-56 sm:w-[70%] md:w-[60%] lg:w-[40%] xl:w-[30%]">
+    <div class="bg-white p-4 rounded-md shadow-md w-full h-40 sm:w-[70%] md:w-[60%] lg:w-[40%] xl:w-[30%]">
         <h2 class="text-2xl font-extrabold" id="SuccessTitle">Success</h2>
         <div class="border-b border-black flex-grow border-2 mt-2 mb-3"></div>
         <p class="text-xl font-bold text-green-600" id="successMessage"></p>
@@ -1287,18 +1287,6 @@ ob_start();
         formData.append( 'editedProductCategory', editedProductCategory );
         formData.append( 'editedProductImage', editedProductImage );
 
-        // // Iterate over each variation
-        // $( "#editVariations" ).find( ".flex.flex-col" ).each( function ( index )
-        // {
-        //     const variationID = $( this ).closest( ".editVariationContainer" ).data( "variation-id" );
-        //     const variationName = $( this ).find( ".editVariationName" ).val();
-        //     const variationImage = $( this ).find( ".editVariationImage" )[0].files[0];
-
-        //     // Append variation details to FormData object
-        //     formData.append( `variationName_${ variationID }`, variationName );
-        //     formData.append( `variationImage_${ variationID }`, variationImage );
-        // } );
-
         $( ".editVariationContainer" ).each( function ()
         {
             const variationID = $( this ).data( "variation-id" );
@@ -1316,30 +1304,29 @@ ob_start();
             }
         } );
 
-        // fetchProducts( 3, 5 );
         // Send the form data using AJAX
-        $.ajax( {
-            url: "../../../backend/product/editproduct.php",
-            method: "POST",
-            data: formData,
-            contentType: false,
-            processData: false,
-            success: function ( response )
-            {
-                // Handle success response
-                console.log( "Product details updated successfully." );
-                // Close the edit modal
-                // $("#editProductModal").addClass("hidden");
-                console.log( response );
-
-            },
-            error: function ( xhr, status, error )
-            {
-                console.error( "Error updating product details:", error );
-                // Handle error
-            }
-        } );
+    $.ajax( {
+        url: "../../../backend/product/editproduct.php",
+        method: "POST",
+        data: formData,
+        contentType: false,
+        processData: false,
+        success: function ( response ) {
+            // Show success popup
+            $( "#successMessage" ).text( "Product details updated successfully." );
+            $( "#successPopup" ).removeClass( "hidden" );
+            // Close the success popup after a few seconds
+            setTimeout( function () {
+                $( "#successPopup" ).addClass( "hidden" );
+                location.reload();
+            }, 1000 ); 
+        },
+        error: function ( xhr, status, error ) {
+            console.error( "Error updating product details:", error );
+            // Handle error
+        }
     } );
+} );
 
     // Function to add a new variation
     function addEditVariation ()
