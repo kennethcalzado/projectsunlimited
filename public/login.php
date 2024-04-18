@@ -341,5 +341,5 @@ ob_start();
 
 <?php
 $script = ob_get_clean();
-include ("../public/master.php");
+include ("master.php");
 ?>

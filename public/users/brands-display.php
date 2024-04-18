@@ -33,8 +33,59 @@ ob_start();
 
     <div class="border-b border-black flex-grow border-4 mt-2 mb-3"></div> <!--Divider-->
 
-    <div class="relative overflow-x-auto mb-1 rounded-lg mt-4">
+    <div class="relative overflow-x-auto mb-1 rounded-lg mt-4 ">
         <table id="brandsTable" class="hover order-column row-border!w-full  ">
+            <div class="relative ml-1 mb-2 mt-2 sm:mb-0 sm:mr-8">
+                <button id="combinedDropdownButton" data-dropdown-toggle="combinedDropdown"
+                    class="yellow-btn btn-primary font-medium rounded-lg text-sm px-5 py-2 text-center inline-flex items-center"
+                    type="button">
+                    Filters
+                    <i class="fa-solid fa-angle-down pt-1 ml-2 text-md"></i>
+                </button>
+                <!-- Dropdown menu -->
+                <div id="combinedDropdown"
+                    class="z-10 hidden w-64 absolute bg-white rounded-lg shadow bg-[#F6E17A] mt-1" data-dropdown>
+                    <ul class="p-3 space-y-1 text-sm text-gray-900 dark:text-gray-200"
+                        aria-labelledby="combinedDropdownButton">
+                        <li class="border-b border-gray-900 pb-2 mb-2">
+                            <h3 class="text-gray-900 font-semibold">Type</h3>
+                            <div class="flex items-center p-2 rounded hover:bg-[#F9E89B] ">
+                                <input id="typeCheckboxCatalog" type="checkbox" value="Catalog"
+                                    class="w-4 h-4 text-blue-600 bg-black border-gray-900 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                                <label for="typeCheckboxCatalog"
+                                    class="w-full ms-2 text-sm font-medium text-gray-900 rounded dark:text-gray-900">Catalog</label>
+                            </div>
+                            <div class="flex items-center p-2 rounded hover:bg-[#F9E89B] ">
+                                <input id="typeCheckboxInquiry" type="checkbox" value="Inquiry"
+                                    class="w-4 h-4 text-blue-600 bg-black border-gray-900 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                                <label for="typeCheckboxInquiry"
+                                    class="w-full ms-2 text-sm font-medium text-gray-900 rounded dark:text-gray-900">Inquiry</label>
+                            </div>
+                        </li>
+                        <li>
+                            <h3 class="text-gray-900 font-semibold">Status</h3>
+                            <div class="flex items-center p-2 rounded hover:bg-[#F9E89B] ">
+                                <input id="statusCheckboxActive" type="checkbox" value="Active"
+                                    class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-900 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                                <label for="statusCheckboxActive"
+                                    class="w-full ms-2 text-sm font-medium text-gray-900 rounded dark:text-gray-900">Active</label>
+                            </div>
+                            <div class="flex items-center p-2 rounded hover:bg-[#F9E89B] ">
+                                <input id="statusCheckboxInactive" type="checkbox" value="Inactive"
+                                    class="w-4 h-4 text-blue-600 bg-gray-900 border-gray-900 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                                <label for="statusCheckboxInactive"
+                                    class="w-full ms-2 text-sm font-medium text-gray-900 rounded dark:text-gray-900">Inactive</label>
+                            </div>
+                        </li>
+                        <li class="text-center">
+                            <button id="resetFilters"
+                                class="text-sm text-gray-900 hover:text-gray-600 focus:outline-none">
+                                <i class="fas fa-sync-alt mr-1"></i> Reset Filters
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+            </div>
             <thead class="">
                 <tr>
                     <th scope="col" class="text-center px-10 py-4">
@@ -50,82 +101,7 @@ ob_start();
             <tbody id="brands-list">
                 <!-- User data will be dynamically added here -->
             </tbody>
-            <tfoot>
-                <td></td>
-                <td class="relative mb-2 mt-2 sm:mb-0 sm:mr-8">
-                    <button id="typeDropdownButton" data-dropdown-toggle="typeDropdown"
-                        class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                        type="button">
-                        Dropdown checkbox
-                        <svg class="w-2.5 h-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
-                            viewBox="0 0 10 6">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="m1 1 4 4 4-4" />
-                        </svg>
-                    </button>
-                    <!-- Dropdown menu -->
-                    <div id="typeDropdown" class="z-10 hidden w-48 bg-white rounded-lg shadow dark:bg-gray-700"
-                        data-dropdown>
-                        <ul class="p-3 space-y-1 text-sm text-gray-700 dark:text-gray-200"
-                            aria-labelledby="typeDropdownButton">
-                            <li>
-                                <div class="flex items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600">
-                                    <input id="typeCheckboxCatalog" type="checkbox" value="Catalog"
-                                        class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
-                                    <label for="typeCheckboxCatalog"
-                                        class="w-full ms-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300">Catalog</label>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="flex items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600">
-                                    <input id="typeCheckboxInquiry" type="checkbox" value="Inquiry"
-                                        class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
-                                    <label for="typeCheckboxInquiry"
-                                        class="w-full ms-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300">Inquiry</label>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                </td>
 
-                <td class="relative mb-2 mt-2 sm:mb-0 sm:mr-8">
-                    <button id="statusDropdownButton" data-dropdown-toggle="statusDropdown"
-                        class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                        type="button">
-                        Dropdown checkbox
-                        <svg class="w-2.5 h-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
-                            viewBox="0 0 10 6">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="m1 1 4 4 4-4" />
-                        </svg>
-                    </button>
-                    <!-- Dropdown menu -->
-                    <div id="statusDropdown" class="z-10 hidden w-48 bg-white rounded-lg shadow dark:bg-gray-700"
-                        data-dropdown>
-                        <ul class="p-3 space-y-1 text-sm text-gray-700 dark:text-gray-200"
-                            aria-labelledby="statusDropdownButton">
-                            <li>
-                                <div class="flex items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600">
-                                    <input id="statusCheckboxActive" type="checkbox" value="Active"
-                                        class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
-                                    <label for="statusCheckboxActive"
-                                        class="w-full ms-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300">Active</label>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="flex items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600">
-                                    <input id="statusCheckboxInactive" type="checkbox" value="Inactive"
-                                        class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
-                                    <label for="statusCheckboxInactive"
-                                        class="w-full ms-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300">Inactive</label>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                </td>
-                <td></td>
-                <td></td>
-            </tfoot>
         </table>
     </div>
     <div class="flex flex-col sm:flex-row px-2 sm:self-center sm:items-center justify-between bottom-0">
@@ -134,12 +110,70 @@ ob_start();
     </div>
 </div>
 
-<div id="form-holder">
+<div id="modal-container"
+    class="modal fixed inset-0 z-50 overflow-auto bg-black bg-opacity-50 flex items-center justify-center hidden">
+    <div class="bg-white rounded-lg shadow-2xl p-6 w-full max-w-2xl">
+        <div class="flex justify-between items-center">
+            <h2 id="brandModalTitle" class="text-xl font-semibold">Brand Details</h2>
+            <button id="closeBrandModal"
+                class="close rounded-full text-gray-600 px-2 hover:text-gray-800 focus:outline-none hover:bg-gray-300"
+                aria-label="Close modal">&times;</button>
+        </div>
+        <div class="border-b border-black flex-grow border-2 mt-2 mb-2"></div> <!--Divider-->
+        <div class="flex flex-wrap justify-between">
+            <!-- Image Section -->
+            <div
+                class="w-1/3 rounded-xl ring-1 ring-black ring-offset-gray-700 overflow-hidden flex items-center justify-center">
+                <div class="mx-auto mb-4"> <!-- Container for the image -->
+                    <img id="brandImage" src="" alt="" class="w-full h-auto object-contain rounded-full">
+                </div>
+            </div>
+            <!-- Data Section -->
+            <div class="w-2/3">
+                <div class="mx-4"> <!-- Container for the brand information -->
+                    <form id="brandForm">
+                        <div class="mb-4">
+                            <label for="brandName" class="block text-sm font-medium text-gray-700">Brand Name:</label>
+                            <input type="text" id="brandName" name="brandName" placeholder="Brand Name"
+                                class="pl-2 mt-1 w-full rounded-md border border-gray-700 shadow-sm" disabled>
+                        </div>
+                        <div class="mb-4">
+                            <label for="description"
+                                class="block text-sm font-medium text-gray-700">Description:</label>
+                            <textarea id="description" name="description" placeholder="Description"
+                                class="pl-2 mt-1 w-full rounded-md border border-gray-700 shadow-sm"
+                                disabled></textarea>
+                        </div>
+                        <div class="mb-4">
+                            <label for="type" class="block text-sm font-medium text-gray-700">Type:</label>
+                            <input type="text" id="type" name="type" placeholder="Type"
+                                class="pl-2 mt-1 w-full rounded-md border border-gray-700 shadow-sm" disabled>
+                        </div>
+                        <div class="mb-4">
+                            <label for="status" class="block text-sm font-medium text-gray-700">Status:</label>
+                            <input type="text" id="status" name="status" placeholder="Status"
+                                class="pl-2 mt-1 w-full rounded-md border border-gray-700 shadow-sm" disabled>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="mt-8 text-xs text-center text-gray-500 ml-6 !-mt-[0.1px]">
+                <div>Created At: <span id="createdAt"></span></div>
+                <div>Updated At: <span id="updatedAt"></span></div>
+            </div>
+        </div>
+
+        <div class="flex justify-end mt-4">
+            <button id="editBrandBtn" class="btn-primary mr-2">Edit</button>
+            <button id="hideBrandBtn" class="btn-danger mr-2">Hide</button>
+            <button id="closeBrandBtn" class="btn-secondary">Close</button>
+        </div>
+    </div>
+
 </div>
 
-<div id="popup-holder">
+<div id="popup-container">
 </div>
-
 <?php $content = ob_get_clean();
 ob_start();
 ?>
@@ -157,13 +191,13 @@ ob_start();
             columns: [
                 {
                     data: null,
-                    title: 'Brand Name',
+                    title: 'Brand',
                     className: '!text-center',
                     render: function ( data )
                     {
                         return `
                             <div class="flex flex-col items-center justify-center">
-                                <div class="w-[50px] h-[50px] rounded-full overflow-hidden flex items-center justify-center">
+                                <div class="w-[100px] h-[100px] rounded-full ring-1 ring-black overflow-hidden flex items-center justify-center">
                                     <img src="${ data.logo_url }" alt="${ data.brand_name }" class="block rounded-full max-w-[100px] max-h-[100px]">
                                 </div>
                                 <span class="block mt-2">${ data.brand_name }</span>
@@ -200,7 +234,7 @@ ob_start();
                                 <i class="fas fa-eye pr-[3px]"></i>View
                             </button>
                             <button class="editBtn yellow-btn btn-primary !m-0  hover:underline text-[14px]">
-                                <i class="fas fa-edit pr-[3px]"></i>Update
+                                <i class="fas fa-edit pr-[3px]"></i>Edit
                             </button>
                             <button class="delBtn btn-danger !m-0  hover:underline text-[14px]">
                                 <i class="fas fa-trash pr-[3px]"></i>Hide
@@ -209,13 +243,13 @@ ob_start();
                     }
                 }
             ],
-            order: [[3, 'asc']], // Default sorting by the fouth column (Updated At)
+            order: [[3, 'desc']], // Default sorting by the fouth column (Updated At)
             paging: true,
-            pageLength: 2, // Initial number of rows per page
+            pageLength: 4, // Initial number of rows per page
             searching: true,
             processing: true,
             serverSide: false, // Disable server-side processing
-            lengthMenu: [2, 10, 20], // Dropdown for changing the number of rows per page
+            lengthMenu: [4, 10, 20], // Dropdown for changing the number of rows per page
             stateSave: false,
             language: {
                 info: "Showing _START_ to _END_ of _TOTAL_ entries",
@@ -227,6 +261,23 @@ ob_start();
             }
         } );
 
+        // Function to format date
+        function formatDate ( dateString )
+        {
+            const date = new Date( dateString );
+            const options = { year: 'numeric', month: 'short', day: 'numeric' };
+            return date.toLocaleDateString( undefined, options );
+        }
+
+        // Function to format time
+        function formatTime ( dateString )
+        {
+            const date = new Date( dateString );
+            const options = { hour: 'numeric', minute: 'numeric' };
+            return date.toLocaleTimeString( undefined, options );
+        }
+
+        ////////////////// DROPDOWN /////////////////////
         $( '#typeCheckboxCatalog, #typeCheckboxInquiry' ).on( 'change', function ()
         {
             var selectedValues = [];
@@ -256,27 +307,24 @@ ob_start();
             table.column( 2 ).search( selectedValues.join( '|' ), true, false ).draw();
         } );
 
-        // Function to format date
-        function formatDate ( dateString )
+        $( '#resetFilters' ).on( 'click', function ()
         {
-            const date = new Date( dateString );
-            const options = { year: 'numeric', month: 'short', day: 'numeric' };
-            return date.toLocaleDateString( undefined, options );
-        }
-
-        // Function to format time
-        function formatTime ( dateString )
-        {
-            const date = new Date( dateString );
-            const options = { hour: 'numeric', minute: 'numeric' };
-            return date.toLocaleTimeString( undefined, options );
-        }
+            // Uncheck checkboxes within the dropdown
+            $( '#combinedDropdown input[type="checkbox"]' ).prop( 'checked', false );
+            table.columns().search( '' ).draw();
+        } );
 
         // Dropdown toggle
         $( '[data-dropdown-toggle]' ).on( 'click', function ()
         {
             var dropdownId = $( this ).data( 'dropdown-toggle' );
             $( '#' + dropdownId ).toggle();
+        } );
+
+        // Prevent dropdown from closing when clicking inside it
+        $( '#combinedDropdown' ).on( 'click', function ( event )
+        {
+            event.stopPropagation(); // Stop event propagation
         } );
 
         // Close the dropdown menu if the user clicks outside of it
@@ -295,6 +343,100 @@ ob_start();
                 } );
             }
         } );
+
+        ////////////////// MODALS /////////////////////
+        $( document ).on( 'click', '.viewBtn', function ()
+        {
+            var data = table.row( $( this ).closest( 'tr' ) ).data();
+            console.info( data );
+            // Set modal title
+            $( '#brandModalTitle' ).text( data.brand_name );
+
+            // Set image source
+            $( '#brandImage' ).attr( 'src', data.logo_url );
+
+            // Set input field values
+            $( '#brandName' ).val( data.brand_name );
+            $( '#description' ).val( data.description );
+            $( '#type' ).val( data.type );
+            $( '#status' ).val( data.status );
+
+            var date = formatDate( data.created_at );
+            var time = formatTime( data.created_at );
+            $( '#createdAt' ).text( date + ' ' + time );
+            date = formatDate( data.updated_at );
+            time = formatTime( data.updated_at );
+            $( '#updatedAt' ).text( date + ' ' + time );
+
+            // Show the modal
+            $( '#modal-container' ).toggleClass( 'hidden' );
+        } );
+
+        $( document ).on( 'click', '.editBtn', function ()
+        {
+            var data = table.row( $( this ).closest( 'tr' ) ).data();
+
+            // Set modal title
+            $( '#brandModalTitle' ).text( 'Edit Brand: ' + data.brand_name );
+
+            // Set image source
+            $( '#brandImage' ).attr( 'src', data.logo_url );
+
+            // Set input field values
+            $( '#brandName' ).val( data.brand_name );
+            $( '#description' ).val( data.description );
+            $( '#type' ).val( data.type );
+            $( '#status' ).val( data.status );
+
+            var date = formatDate( data.created_at );
+            var time = formatTime( data.created_at );
+            $( '#createdAt' ).text( date + ' ' + time );
+            date = formatDate( data.updated_at );
+            time = formatTime( data.updated_at );
+            $( '#updatedAt' ).text( date + ' ' + time );
+
+            // Show the modal
+            $( '#modal-container' ).toggleClass( 'hidden' );
+
+            // Enable input fields for editing
+            $( '#brandName, #description, #type, #status' ).prop( 'disabled', false );
+        } );
+
+        // Click event handler for closing the modal
+        $( '#closeBrandModal, #closeBrandBtn' ).on( 'click', function ()
+        {
+            closeModal();
+        } );
+
+        // Click event handler for editing the brand
+        $( '#editBrandBtn' ).on( 'click', function ()
+        {
+            // Enable input fields for editing
+            $( '#brandName, #description, #type, #status' ).prop( 'disabled', false );
+        } );
+
+        // Click event handler for hiding the brand
+        $( '#hideBrandBtn' ).on( 'click', function ()
+        {
+            // Implement hiding functionality here
+        } );
+
+        // Function to close the modal
+        function closeModal ()
+        {
+            // Reset image source
+            $( '#brandImage' ).attr( 'src', '' );
+
+            // Clear input field values
+            $( '#brandName, #description, #type, #status' ).val( '' );
+            $( '#createdAt, #updatedAt' ).text( '' );
+
+            // Disable input fields
+            $( '#brandName, #description, #type, #status' ).prop( 'disabled', true );
+
+            // Hide the modal
+            $( '#modal-container' ).toggleClass( 'hidden' );
+        }
 
     } );
 </script>
