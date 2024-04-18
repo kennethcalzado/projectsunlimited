@@ -44,10 +44,10 @@ $image_path = $base_url . 'assets/image/projectslogo.png';
                     group-hover:ease-in group-hover:opacity-100 group-hover:visible 
                     transition-opacity duration-300 
                     bg-yellow-600 rounded-r-md 
-                    pr-5 py-[8.5px] m-4 mx-auto w-20 
+                    pr-5 py-[8.91px] m-4 mx-auto w-20 
                     text-[15px] font-bold text-white 
                     absolute  invisible
-                    left-1/2 translate-x-[40%] -translate-y-[59%] opacity-0">Home</span>
+                    left-1/2 translate-x-[40%] -translate-y-[59.9%] opacity-0">Home</span>
             </div>
             <!-- <span class="text-[15px] ml-4 text-center text-gray-200 font-bold">Home</span> -->
         </div>
@@ -75,7 +75,7 @@ $image_path = $base_url . 'assets/image/projectslogo.png';
                     pr-5 py-[8.7px] m-4 mx-auto w-20 
                     text-[15px] font-bold text-white 
                     absolute  invisible
-                    left-1/2 translate-x-[40%] -translate-y-[58.5%] opacity-0">Users</span>
+                    left-1/2 translate-x-[40%] -translate-y-[60%] opacity-0">Users</span>
                 </div>
                 <!-- <span class="text-[15px] ml-4 text-center text-gray-200 font-bold">Home</span> -->
             </div>
@@ -89,33 +89,41 @@ $image_path = $base_url . 'assets/image/projectslogo.png';
                     <i class="bi bi-house-door-fill"></i>
                 </div> -->
             <div class=" flex relative ">
-                <i class="bi bi-box2-fill"></i>
+                <i class="fa-solid fa-box-open py-1"></i>
                 <span class="text-[15px] ml-4 text-gray-200 font-bold">Products</span>
                 <span class="tootlips 
                     group-hover:ease-in group-hover:opacity-100 group-hover:visible 
                     transition-opacity duration-300 
                     bg-yellow-600 rounded-r-md 
-                    pr-5 py-[8.7px] m-4 mx-auto w-20 
+                    pr-5 pl-2 py-[8.9px] m-4 mx-auto w-24
                     text-[15px] font-bold text-white 
                     absolute  invisible
-                    left-1/2 translate-x-[40%] -translate-y-[61.3%] opacity-0">Products</span>
+                    left-1/2 translate-x-[20%] -translate-y-[60%] opacity-0">Products</span>
             </div>
             <!-- <span class="text-[15px] ml-4 text-center text-gray-200 font-bold">Home</span> -->
         </div>
     </a>
-
-    <!-- <div class="p-2.5 mt-3 flex items-center rounded-md px-6 duration-300 cursor-pointer hover:bg-yellow-600 text-white"
-        onclick="dropdown()" title="Brands">
-        <div class="tooltip tooltip-right" data-tip="Brands">
-            <i class="bi bi-chat-left-text-fill"></i>
+    <a href="/public/users/admin/admin-category.php" class="group">
+        <div class="nav-item mt-3 flex items-center rounded-l-md px-6 p-2
+            transition-opacity duration-300 cursor-pointer text-white group-hover:bg-yellow-600 group-hover:ease-in">
+            <!-- <div class="tooltip tooltip-right" data-tip="Home">
+                    <i class="bi bi-house-door-fill"></i>
+                </div> -->
+            <div class=" flex relative ">
+                <i class="fa-solid fa-table-list py-1"></i>
+                <span class="text-[15px] ml-4 text-gray-200 font-bold">Category</span>
+                <span class="tootlips 
+                    group-hover:ease-in group-hover:opacity-100 group-hover:visible 
+                    transition-opacity duration-300 
+                    bg-yellow-600 rounded-r-md 
+                    pr-5 pl-2 py-[8.9px] m-4 mx-auto w-24
+                    text-[15px] font-bold text-white 
+                    absolute  invisible
+                    left-1/2 translate-x-[20%] -translate-y-[60%] opacity-0">Category</span>
+            </div>
+            <!-- <span class="text-[15px] ml-4 text-center text-gray-200 font-bold">Home</span> -->
         </div>
-        <div class="flex justify-between w-full items-center">
-            <span class="text-[15px] ml-4 text-gray-200 font-bold">Brands</span>
-            <span class="text-sm rotate-180 hidden" id="arrow">
-                <i class="bi bi-chevron-down"></i>
-            </span>
-        </div>
-    </div> -->
+    </a>
 
     <div>
         <a href="/public/users/brands-display.php" class="group">
@@ -129,7 +137,7 @@ $image_path = $base_url . 'assets/image/projectslogo.png';
                     group-hover:ease-in group-hover:opacity-100 group-hover:visible 
                     transition-opacity duration-300 
                     bg-yellow-600 rounded-r-md 
-                    pr-5 py-[8.96px] m-4 mx-auto w-20 
+                    pr-5 py-[8.9px] m-4 mx-auto w-20 
                     text-[15px] font-bold text-white 
                     absolute  invisible
                     left-1/2 translate-x-[35%] -translate-y-[59.5%] opacity-0">Brands</span>
@@ -153,16 +161,16 @@ $image_path = $base_url . 'assets/image/projectslogo.png';
             transition-opacity duration-300 cursor-pointer text-white group-hover:bg-yellow-600 group-hover:ease-in">
 
             <div class=" flex relative ">
-                <i class="bi bi-bookmark-fill"></i>
+                <i class="bi bi-bookmark-fill "></i>
                 <span class="text-[15px] ml-4 text-gray-200 font-bold">News & Blogs</span>
                 <span class="tootlips 
                     group-hover:ease-in group-hover:opacity-100 group-hover:visible 
                     transition-opacity duration-300 
                     bg-yellow-600 rounded-r-md 
-                    pr-5 py-[8.5px] m-4 mx-auto w-32 
+                    pr-5 py-[8.9px] m-4 mx-auto w-40
                     text-[15px] font-bold text-white 
                     absolute  invisible
-                    left-1/2 translate-x-[20%] -translate-y-[59%] opacity-0">News & Blogs</span>
+                    left-1/2 translate-x-[19%] -translate-y-[59.5%] opacity-0">News & Blogs</span>
             </div>
         </div>
     </a>
@@ -185,7 +193,7 @@ $image_path = $base_url . 'assets/image/projectslogo.png';
                     pr-5 py-[8.5px] m-4 mx-auto w-20 
                     text-[15px] font-bold text-white 
                     absolute  invisible
-                    left-1/2 translate-x-[40%] -translate-y-[59%] opacity-0">Profile</span>
+                    left-1/2 translate-x-[40%] -translate-y-[61%] opacity-0">Profile</span>
             </div>
             <!-- <span class="text-[15px] ml-4 text-center text-gray-200 font-bold">Home</span> -->
         </div>
@@ -201,7 +209,7 @@ $image_path = $base_url . 'assets/image/projectslogo.png';
                     group-hover:ease-in group-hover:opacity-100 group-hover:visible 
                     transition-opacity duration-300 
                     bg-yellow-600 rounded-r-md 
-                    pr-5 py-[9px] m-4 mx-auto w-32 
+                    pr-5 py-[8.5px] m-4 mx-auto w-32 
                     text-[15px] font-bold text-white 
                     absolute  invisible
                     left-1/2 translate-x-[20%] -translate-y-[60.54%] opacity-0">Logout</span>

@@ -10,7 +10,7 @@
                     <ul class="flex space-x-4">
                         <li><a href="/public/home.php" class="text-white font-bold hover:text-[#F6E381]">Home</a></li>
                         <li><a href="/public/about.php" class="text-white font-bold hover:text-[#F6E381]">About Us</a></li>
-                        <li><a href="/public/arno.php" class="text-white font-bold hover:text-[#F6E381]">Brands</a></li>
+                        <li><a href="/public/brands/arno.php" class="text-white font-bold hover:text-[#F6E381]">Brands</a></li>
                         <li><a href="/public/category.php" class="text-white font-bold hover:text-[#F6E381]">Products</a></li>
                         <li><a href="/public/blogs.php" class="text-white font-bold hover:text-[#F6E381]">Blogs</a></li>
                         <li><a href="/public/contact.php" class="text-white font-bold hover:text-[#F6E381]">Contact</a></li>
