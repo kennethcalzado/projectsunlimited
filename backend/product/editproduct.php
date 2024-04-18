@@ -66,7 +66,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             exit();
         }
     }
-    
+
     // Check if new variations are set
     if (isset($_POST['newVariations'])) {
         $newVariations = $_POST['newVariations'];
@@ -118,22 +118,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 echo json_encode($response);
                 exit(); // Terminate script execution
             }
-
-             // Check if the variation is marked for deletion
-             if (isset($_POST['deletedVariations']) && in_array($variationID, $_POST['deletedVariations'])) {
-                // Mark the variation as inactive in the database
-                $stmt = $conn->prepare("UPDATE product_variation SET status = 'inactive' WHERE VariationID = ?");
-                $stmt->bind_param("i", $variationID);
-                $resultDeletion = $stmt->execute();
-
-                if (!$resultDeletion) {
-                    // Return error response if marking variation as inactive fails
-                    $response = array('success' => false, 'message' => 'Error marking variation as inactive.');
-                    echo json_encode($response);
-                    exit(); // Terminate script execution
-                }
-            }
-
             // Check if a file was uploaded for this variation
             if (isset($_FILES['variations']['tmp_name'][$variationID]['variationImage'])) {
                 // Access the uploaded file for this variation
@@ -156,7 +140,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         echo json_encode($response);
                         exit(); // Terminate script execution
                     }
-
                     // File uploaded successfully
                     echo "Image uploaded for Variation ID: $variationID, Variation Name: $variationName<br>";
                 } else {

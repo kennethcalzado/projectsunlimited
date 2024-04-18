@@ -3,39 +3,44 @@ session_start();
 $pageTitle = "Category";
 ob_start();
 ?>
-<style>
-    .btn {
-        font-size: 14px;
-        vertical-align: center;
-        padding: 4px, 16px;
-    }
 
-    .btn-pagination {
-        padding: 4px 16px;
-        margin: 0 2px;
-        border-radius: 5px;
-    }
+<head>
+    <link rel="stylesheet" href="../../../assets/input.css">
+    <style>
+        .btn {
+            font-size: 14px;
+            vertical-align: center;
+            padding: 4px, 16px;
+        }
 
-    .btn-pagination:hover {
-        text-decoration: underline;
-    }
+        .btn-pagination {
+            padding: 4px 16px;
+            margin: 0 2px;
+            border-radius: 5px;
+        }
 
-    .active {
-        background-color: #F6E17A;
-        color: black;
-        border: none;
-        padding: 4px 16px;
-        cursor: pointer;
-        border-radius: 5px;
-        font-size: 14px;
-        font-weight: 700;
-        text-decoration: underline;
-    }
+        .btn-pagination:hover {
+            text-decoration: underline;
+        }
 
-    .item-count {
-        margin-right: auto;
-    }
-</style>
+        .active {
+            background-color: #F6E17A;
+            color: black;
+            border: none;
+            padding: 4px 16px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 14px;
+            font-weight: 700;
+            text-decoration: underline;
+        }
+
+        .item-count {
+            margin-right: auto;
+        }
+    </style>
+</head>
+
 <div class="transition-all duration-300 page-content sm:ml-36 mr-4 sm:mr-20 mb-10">
     <div class="flex flex-col sm:flex-row justify-between items-center">
         <h1 class="text-4xl font-bold mb-2 ml-2 mt-8 text-black">Category</h1>
@@ -120,6 +125,64 @@ ob_start();
         <div id="pagination" class="flex justify-end mt-4"></div>
     </div>
 </div>
+<!-- MODALS -->
+<!-- Add Category Modal -->
+<div id="addProdCategoryModal" class="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 hidden">
+    <div class="bg-white p-4 rounded-md shadow-md max-w-3xl w-full h-[90vh] overflow-auto">
+        <div class="flex justify-between items-center mb-4">
+            <h2 class="text-2xl font-bold">Add Category</h2>
+            <button id="closeAddModal" class="text-gray-600 hover:text-gray-900 focus:outline-none">
+                <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
+                    </path>
+                </svg>
+            </button>
+        </div>
+        <div class="border-b border-black flex-grow border-2 mt-2 mb-3"></div>
+        <form id="addCategoryForm" method="POST" enctype="multipart/form-data" class="mt-4">
+            <div class="mb-4 flex flex-col">
+                <label for="addcategoryName" class="text-sm font-medium text-gray-700 mb-1">Category Name</label>
+                <input type="text" id="addcategoryName" name="productName" placeholder="Enter Product Name"
+                    class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent">
+            </div>
+            <div class="flex mb-4 justify-center">
+                <div class="flex flex-col mr-4" style="flex: 1;">
+                    <label for="addcategoryType" class="text-sm font-medium text-gray-700 mb-2">Page Type:</label>
+                    <select id="addcategoryType" name="productBrand"
+                        class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent">
+                        <option value="" disabled selected></option>
+                    </select>
+                </div>
+                <div class="flex flex-col mr-4" style="flex: 1;">
+                    <label for="addcategoryCat" class="text-sm font-medium text-gray-700 mb-2">Type of Category</label>
+                    <select id="addcategoryCat" name="productCategory" onchange="toggleMainCategoryDropdown()"
+                        class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent">
+                        <option value="main">Main Category</option>
+                        <option value="sub">Sub Category</option>
+                    </select>
+                </div>
+            </div>
+            <!-- Main Category Dropdown -->
+            <div id="mainCategoryDropdown" class="flex mb-4 justify-center hidden">
+                <div class="flex flex-col mr-4" style="flex: 1;">
+                    <label for="mainCategory" class="text-sm font-medium text-gray-700 mb-2">Main Category</label>
+                    <select id="mainCategory" name="mainCategory"
+                        class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent">
+                        <option value="" disabled selected></option>
+                        <!-- Populate options dynamically -->
+                    </select>
+                </div>
+            </div>
+            <div class="flex justify-end">
+                <button type="submit" id="addCategorybtn"
+                    class="btn btn-primary rounded-md text-center h-10 mt-3 sm:mt-4 !px-4 py-0 text-lg flex items-center mr-2">Add
+                    Category</button>
+                <button type="button" id="closeModal"
+                    class="btn btn-secondary rounded-md text-center h-10 mt-3 sm:mt-4 !px-4 py-0 text-lg flex items-center">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>
 <script>
     $(document).ready(function () {
         var itemsPerPage = 5;
@@ -194,6 +257,23 @@ ob_start();
             }
         });
     });
+    $("#addCategory").click(function () {
+        $("#addProdCategoryModal").removeClass("hidden");
+    });
+    // Close modal when Close button or "x" button is clicked
+    $("#closeAddModal, #closeModal").click(function () {
+        $("#addProdCategoryModal").addClass("hidden");
+    });
+    function toggleMainCategoryDropdown() {
+        var categoryType = document.getElementById("addcategoryCat").value;
+        var mainCategoryDropdown = document.getElementById("mainCategoryDropdown");
+
+        if (categoryType === "sub") {
+            mainCategoryDropdown.classList.remove("hidden");
+        } else {
+            mainCategoryDropdown.classList.add("hidden");
+        }
+    }
 </script>
 <?php
 $script = ob_get_clean();

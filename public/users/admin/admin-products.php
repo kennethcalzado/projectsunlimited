@@ -1062,10 +1062,7 @@ ob_start();
 
                 // Create delete variation button
                 const deleteButton = $("<button>").addClass("mt-2 text-sm text-red-500 cursor-pointer").text("Delete Variation").click(() => {
-                    // Remove variation from frontend
                     variationField.remove();
-                    // Call function to delete variation from database
-                    deleteeditVariation(variation.variationId);
                 });
                 variationField.append(deleteButton);
 
@@ -1079,29 +1076,28 @@ ob_start();
         }
     }
 
-    function deleteeditVariation(variationId) {
-        // Implement deletion logic here (e.g., AJAX request to delete from database)
-    }
-
     function previewEditVariationImage(event, variationIndex) {
         const input = event.target;
         const file = input.files[0];
         const variationImagePreview = document.getElementById(`editVariationImagePreview${variationIndex}`);
 
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = function () {
-                const img = document.createElement('img');
-                img.src = reader.result;
-                img.className = 'border rounded-md mt-2';
-                img.style.maxWidth = '100px';
-                img.style.maxHeight = '100px';
+        // Check if variationImagePreview is not null before setting innerHTML
+        if (variationImagePreview) {
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function () {
+                    const img = document.createElement('img');
+                    img.src = reader.result;
+                    img.className = 'border rounded-md mt-2';
+                    img.style.maxWidth = '100px';
+                    img.style.maxHeight = '100px';
+                    variationImagePreview.innerHTML = '';
+                    variationImagePreview.appendChild(img);
+                };
+                reader.readAsDataURL(file);
+            } else {
                 variationImagePreview.innerHTML = '';
-                variationImagePreview.appendChild(img);
-            };
-            reader.readAsDataURL(file);
-        } else {
-            variationImagePreview.innerHTML = '';
+            }
         }
     }
 
