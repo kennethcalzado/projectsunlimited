@@ -659,12 +659,12 @@ ob_start();
                     $("#successMessage").text("Product deleted successfully!");
                     $("#successPopup").removeClass("hidden");
 
-                    // // Hide the success popup after 3 seconds
-                    // setTimeout(function () {
-                    //     $("#successPopup").addClass("hidden");
-                    //     // Refresh the table after hiding the success popup
-                    //     refreshTable();
-                    // }, 500);
+                    // Hide the success popup after 3 seconds
+                    setTimeout(function () {
+                        $("#successPopup").addClass("hidden");
+                        // Refresh the table after hiding the success popup
+                        refreshTable();
+                    }, 500);
                 },
                 error: function (xhr, status, error) {
                     // Handle error
