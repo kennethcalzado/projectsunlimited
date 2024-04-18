@@ -15,28 +15,25 @@ ob_start();
             </div>
         </div>
     </section>
-
-    <section style="padding-top: 20px; padding-bottom: 90px;">
-        <div style="width: 100%; text-align: center;">
-            <h1 style="font-size: 38px; font-weight: 800; margin: 0;">MEET THE TEAM</h1>
-        </div>
-
-        <div style="text-align: center; height: 100vh; padding-top: 20px; padding-bottom: 40px;">
-            <div style="position: relative; width: 100%; height: 85%;">
+    <div style="width: 100%; text-align: center; padding-bottom: 20px; padding-top: 20px;">
+        <h1 class="text-black" style=" font-size: 38px; font-weight: 800; margin: 0;">MEET THE TEAM</h1>
+    </div>
+    <section>
+        <div style="text-align: center; height: 100vh;">
+            <div style="position: relative; width: 100%; height: 90%;">
                 <img src="../assets/image/teamsample.png" style="display: block; width: 100%; height: 100%;">
                 <div style="position: absolute; bottom: 0; left: 0; width: 100%; height: 40%; background: linear-gradient(to top, rgba(246, 225, 122, 1) 1%, transparent);"></div>
             </div>
-            <div style="background-color: #F6E17A; width: 100%; height: auto; padding: 20px 190px; text-align: center;">
-                <p style="text-align: justify; color: black; padding: 20px 80px; margin: 0;">
+            <div style=" background-color: #F6E17A;width: 100%; height: auto; text-align: center; padding: 0px 190px;">
+                <p class="text-2xl font-semibold text-black" style=" text-align: justify; padding: 20px 40px; margin: 0;">
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla nec diam vitae ligula tincidunt aliquet. Phasellus ultricies, lorem et faucibus mollis, justo mauris hendrerit dolor, a tristique velit neque et purus. Proin non felis eget enim posuere vestibulum. Integer nec augue nec ante malesuada bibendum. Sed euismod turpis sed felis vehicula, eget maximus libero dignissim. Donec sit amet lectus id libero dignissim convallis. Duis non velit at lacus volutpat auctor.
                 </p>
             </div>
         </div>
-
     </section>
 
-    <section id="achievements" style="padding-top:120px; position: relative; text-align: center; display: flex; justify-content: center; align-items: center; padding-top: 80px;">
-        <h1 style="padding-top: 90px; text-align: center; font-size: 38px; font-weight: 800; position: absolute; top: 0; left: 50%; transform: translateX(-50%); margin: 0;">PROJECTS UNLIMITED THROUGH THE YEARS</h1>
+    <section style="padding-top: 20px; position: relative; text-align: center; display: flex; justify-content: center; align-items: center;">
+        <h1 style="padding-top: 100px; text-align: center; font-size: 38px; font-weight: 800; position: absolute; top: 0; left: 50%; transform: translateX(-50%); margin: 0;">PROJECTS UNLIMITED THROUGH THE YEARS</h1>
 
 
         <div class="flex justify-center mt-10" style="padding-left: 190px; position: absolute; z-index: 2; top: 120px; left: 0;">
@@ -94,7 +91,7 @@ ob_start();
 
 
 
-    <p style=" text-align: justify; color: black; padding: 0px 190px; margin: 0;">
+    <p class="text-2xl font-semibold text-black" style=" text-align: justify;  padding: 0px 190px; margin: 0;">
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla nec diam vitae ligula tincidunt aliquet. Phasellus ultricies, lorem et faucibus mollis, justo mauris hendrerit dolor, a tristique velit neque et purus. Proin non felis eget enim posuere vestibulum. Integer nec augue nec ante malesuada bibendum. Sed euismod turpis sed felis vehicula, eget maximus libero dignissim. Donec sit amet lectus id libero dignissim convallis. Duis non velit at lacus volutpat auctor.
     </p>
 

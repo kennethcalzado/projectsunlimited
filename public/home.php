@@ -36,10 +36,10 @@ ob_start();
                 </div>
             </div>
             <div class="carousel-arrow prev" onclick="prevSlide()" style="font-size: 99px;">
-                <i class="fas fa-chevron-left text-black"></i>
+                <i style="padding-left: 120px" class="fas fa-chevron-left text-black"></i>
             </div>
             <div class="carousel-arrow next" onclick="nextSlide()" style="font-size: 99px;">
-                <i class="fas fa-chevron-right text-black"></i>
+                <i style="padding-right: 120px" class="fas fa-chevron-right text-black"></i>
             </div>
 
 
@@ -79,7 +79,7 @@ ob_start();
 
 
     <section>
-        <p style="font-size: 31px; font-weight: 530; padding: 20px 300px 20px 300px;">Together, we provide the best quality interior products, and highest level of support at most reasonable price.</p>
+        <p class="text-2xl font-semibold text-black px-60 mt-8">Together, we provide the best quality interior products, and highest level of support at most reasonable price.</p>
     </section>
 
     <section class="section">
@@ -90,11 +90,11 @@ ob_start();
             </div>
         </div>
         <div class="column">
-            <p style="text-align: justify; font-size: 31px; font-weight: 530;">Projects Unlimited Philippines Inc., is a leading provider of interior products, and a preferred supplier for many architects, interior designers, contractors and homeowners.</p>
+            <p class="text-2xl font-semibold text-black px-16 mt-8">Projects Unlimited Philippines Inc., is a leading provider of interior products, and a preferred supplier for many architects, interior designers, contractors and homeowners.</p>
         </div>
     </section>
     <div>
-        <p style="text-align: center; font-size: 31px; font-weight: 530;">For more information, download our Omnibus Brochure:
+        <p class="text-2xl font-semibold text-black px-16 mt-8" style="text-align: center;">For more information, download our Omnibus Brochure:
             <button style="border-radius: 50px; font-weight: 400;" class="yellow-btn">Download <i class="fa-solid fa-download"></i></button>
         </p>
     </div>
@@ -140,7 +140,7 @@ ob_start();
             </div>
             <div style="text-align: justify; flex: 1; padding-right: 100px; padding-left: 50px; display: flex; align-items: center;"> <!-- Right column for content -->
                 <div style="margin-left: auto;">
-                    <p>
+                    <p class="text-2xl font-semibold text-black px-16 mt-8">
                         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed in turpis vel odio eleifend placerat. Quisque sodales urna sit amet risus vestibulum ultricies. Donec ac odio vel velit aliquam aliquam.
                         <br>
                     <div style="padding-top: 20px; text-align: center;">
@@ -203,7 +203,7 @@ ob_start();
 
             <div class="third-carousel-inner flex">
                 <div class="third-carousel-item w-full text-white text-center">
-                    <h1 style="text-align: justify;" class="text-4xl font-bold">"Projects Unlimited delivers unparalleled excellence! Their team's attention to detail and commitment to quality surpassed our expectations. Seamless execution, innovative solutions, and outstanding professionalism make them the top choice for any project. Highly recommended!"</h1>
+                    <h1 style="text-align: justify;" class="text-3xl font-bold">"Projects Unlimited delivers unparalleled excellence! Their team's attention to detail and commitment to quality surpassed our expectations. Seamless execution, innovative solutions, and outstanding professionalism make them the top choice for any project. Highly recommended!"</h1></br>
                     <h1 style="padding-top: 10px;" class="text-3xl font-bold">Customer Name</h1>
                     <h1 class="text-3xl font-bold">Company/Organization</h1>
                 </div>
@@ -358,9 +358,9 @@ pagination blogs (konting polish pa pero gumagana thank you kyle) -------
 total items chuchu sa table ng cmsblogs ------------
 confirmation, animation, x button modal  ------------
 logout modal ----------
+change home elements size --------
+content ng blogs ------
 page animations 
 mobile scaling
-change home elements size
-content ng blogs
-profile admin
+profile admin (sinimulan na)
 -->

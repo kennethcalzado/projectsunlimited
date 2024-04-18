@@ -12,12 +12,6 @@ ob_start();
     <link rel="stylesheet" href="../../../assets/input.css">
 
     <style>
-        table {
-            width: 100%;
-            margin: auto;
-            vertical-align: center;
-        }
-
         td.description {
             max-width: 200px;
             overflow: hidden;
@@ -28,8 +22,8 @@ ob_start();
         td img {
             display: block;
             margin: 0 auto;
-            max-width: 90px;
-            max-height: 90px;
+            max-width: 100px;
+            max-height: 100px;
         }
 
         .action-btns button {
@@ -242,7 +236,7 @@ ob_start();
                         html += '<td class="description">' + item.description + '</td>';
                         html += '<td>' + item.type + '</td>';
                         html += '<td class="action-btns">';
-                        html += '<button onclick="editPost(' + item.id + ')" class="btn btn-view"><i class="fas fa-eye"></i> View</button>';
+                        html += '<button onclick="viewPost(\'' + item.page + '\')" class="btn-view" target="_blank"><i class="fas fa-eye"></i> View</button>';
                         html += '<button onclick="openUpdateModal(' + item.id + ', \'' + item.title.replace(/'/g, "\\'") + '\', \'' + encodeURIComponent(item.description) + '\', \'' + item.type + '\', \'' + item.date + '\', \'' + item.images + '\')" class="yellow-btn btn-primary" data-title="' + item.title.replace(/'/g, "\\'") + '" data-description="' + encodeURIComponent(item.description) + '" data-type="' + item.type + '" data-date="' + item.date + '" data-images="' + item.images + '"><i class="fas fa-edit"></i> Update</button>';
                         html += '<button onclick="openDeleteModal(' + item.id + ')" class="btn btn-danger"><i class="fas fa-trash-alt"></i> Delete</button>';
                         // Add more action buttons if needed
@@ -299,6 +293,11 @@ ob_start();
     <!-- MODAL SCRIPTS -->
     <script>
         // MODAL SCRIPTS //
+
+        function viewPost(page) {
+            window.open(page, '_blank');
+        }
+
         // DELETE MODAL //
 
         function openDeleteModal(blogId) {
@@ -517,10 +516,10 @@ ob_start();
         }
     </script>
 
-    <div class="transition-all duration-300 page-content sm:ml-36 mr-4 sm:mr-20">
-        <div style="padding-top: 15px; padding-bottom: 15px;" class="container">
+    <div class="transition-all duration-300 page-content sm:ml-36 mr-4 sm:mr-20 mb-10">
+        <div style="padding-top: 15px; padding-bottom: 15px;">
             <!-- Content -->
-            <div class="flex justify-between items-center">
+            <div class="flex flex-col sm:flex-row justify-between items-center">
                 <h1 class="text-4xl font-bold">News & Projects</h1>
                 <button class="yellow-btn btn-primary rounded-md text-center h-10 mt-3 sm:mt-4 !px-4 py-0 text-lg flex items-center" onclick="openModal()"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
@@ -528,7 +527,7 @@ ob_start();
             </div>
             <div class="border-b border-black flex-grow border-4 mt-2 mb-2"></div>
             <div class="flex flex-col sm:flex-row items-center justify-center">
-                <div class="relative mb-2 mt-2 sm:mb-0 sm:mr-8">
+                <div class="relative mb-2 mt-4 sm:mb-0 sm:mr-8">
                     <label for="categoryFilter" class="mr-2">Filter by Category</label>
                     <select id="categoryFilter" class="border rounded-md px-2 py-1">
                         <option value="">All Categories</option>
@@ -586,7 +585,7 @@ ob_start();
                                 <td class="description"><?php echo $row['description']; ?></td>
                                 <td><?php echo $row['type']; ?></td>
                                 <td class="action-btns" valign="middle">
-                                    <button onclick="editPost('<?php echo $row['id']; ?>')" type="button" class="btn btn-view rounded-md text-center h-9 mt-3 sm:mt-4 !px-4 py-0 text-lg mr-2 hover:underline"><i class="fas fa-eye"></i> View</button>
+                                    <a href="<?php echo $row['page']; ?>" class="btn btn-view rounded-md text-center h-9 mt-3 sm:mt-4 !px-4 py-0 text-lg mr-2 hover:underline" target="_blank"><i class="fas fa-eye"></i> View</a>
                                     <button onclick="openUpdateModal('<?php echo $row['id']; ?>', '<?php echo $row['title']; ?>', '<?php echo $row['description']; ?>', '<?php echo $row['type']; ?>', '<?php echo $row['date']; ?>', '<?php echo $row['images']; ?>')" type="button" class="btn btn-primary rounded-md text-center h-9 mt-3 sm:mt-4 !px-4 py-0 text-lg mr-2 hover:underline" data-title="<?php echo $row['title']; ?>" data-description="<?php echo $row['description']; ?>" data-type="<?php echo $row['type']; ?>" data-date="<?php echo $row['date']; ?>" data-images="<?php echo $row['images']; ?>"><i class="fas fa-edit"></i> Update</button>
                                     <button onclick="openDeleteModal('<?php echo $row['id']; ?>')" type="button" class=" btn btn-danger rounded-md text-center h-9 mt-3 sm:mt-4 !px-4 py-0 text-lg hover:underline"><i class="fas fa-trash-alt"></i> Delete</button>
                                 </td>
