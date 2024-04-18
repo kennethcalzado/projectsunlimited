@@ -18,7 +18,7 @@ $image_path = $base_url . 'assets/image/projectslogo.png';
     </div>
 </div>
 
-<div id="sidebar-container" class="sidebar minimized fixed top-0 bottom-0 lg:left-0 p-2 w-[80px] 
+<section id="sidebar-container" class="sidebar minimized fixed top-0 bottom-0 lg:left-0 p-2 w-[80px] 
      text-center bg-black text-white transition-all z-50">
 
     <div class="text-gray-100 text-xl flex justify-between">
@@ -131,7 +131,7 @@ $image_path = $base_url . 'assets/image/projectslogo.png';
             transition-opacity duration-300 cursor-pointer text-white group-hover:bg-yellow-600 group-hover:ease-in">
                 <div class="flex relative ">
                     <!-- <i class="bi bi-chat-left-text-fill"></i>  -->
-                    <i class="fa-solid fa-handshake py-1"></i>
+                    <i class="fa-solid fa-tags py-1"></i>
                     <span class="text-[15px] ml-4 text-gray-200 font-bold">Brands</span>
                     <span class="tootlips 
                     group-hover:ease-in group-hover:opacity-100 group-hover:visible 
@@ -216,7 +216,7 @@ $image_path = $base_url . 'assets/image/projectslogo.png';
             </div>
         </div>
     </a>
-</div>
+</section>
 
 <style>
     .minimized {

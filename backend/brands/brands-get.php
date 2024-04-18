@@ -2,19 +2,23 @@
 include '../../backend/conn.php'; // Include the database connection script
 
 try {
-    // Fetch pages from the database
-    $stmt = $conn->prepare("SELECT * FROM brands");
-    $stmt->execute();
-    $result = $stmt->get_result();
+    // Your SQL query to fetch brands data
+    $sql = "SELECT * FROM brands";
 
-    // Fetch the rows from the result set as an associative array
+    // Execute the query
+    $result = $conn->query($sql);
+
+    // Prepare an array to hold the data
     $brands = array();
-    while ($row = $result->fetch_assoc()) {
-        $brands[] = $row;
+
+    // Fetch data and add to the array
+    if ($result->num_rows > 0) {
+        while ($row = $result->fetch_assoc()) {
+            $brands[] = $row;
+        }
     }
 
-    // Return the pages data in JSON format
-    header('Content-Type: application/json');
+    // Send the JSON response
     echo json_encode($brands);
 } catch (Exception $e) {
     // Handle database connection errors

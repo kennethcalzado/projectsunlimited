@@ -10,12 +10,9 @@ ob_start();
         <h1 class="text-4xl font-bold mb-2 ml-2 mt-8 text-black">Brands List</h1>
         <div class=" flex flex-row justify-between items-cent">
             <button id="addUserDropdownBtn"
-                class="yellow-btn btn-primary rounded-md text-center h-10 mt-3 mx-1 sm:mt-4 !px-4 py-0 text-lg items-center flex">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24"
-                    stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                </svg> Add Brands
+                class="yellow-btn btn-primary rounded-md text-center h-10 mt-3 mx-1 !px-4 py-0 text-lg items-center flex">
+                <i class="fa-light fa-plus text-3xl pb-1 pr-2"></i>
+                Add Brands
             </button>
             <div class="absolute 
                 text-left text-sm text-center
@@ -36,98 +33,111 @@ ob_start();
 
     <div class="border-b border-black flex-grow border-4 mt-2 mb-3"></div> <!--Divider-->
 
-    <div class="flex sm:flex-row items-center justify-center">
-        <div class="flex sm:flex-row mb-4 sm:mb-0">
-            <div class="relative mb-2 mt-2 sm:mb-0 sm:mr-8">
-                <label for="statusFilter" class="mr-2">Filter by Status:</label>
-                <select id="statusFilter" class="border rounded-md px-2 py-1">
-                    <option value="">All Statuses</option>
-                    <option value="active">Active</option>
-                    <option value="inactive">Inactive</option>
-                </select>
-            </div>
-            <!-- Pagination dropdown -->
-            <div class="relative mb-2 mt-2 sm:mb-0 sm:mr-8">
-                <label for="paginationSelect" class="mr-2">Pagination:</label>
-                <select id="paginationSelect" class="border rounded-md px-2 py-1">
-                    <option value="5">5 per page</option>
-                    <option value="10">10 per page</option>
-                    <option value="20">20 per page</option>
-                </select>
-            </div>
-        </div>
-        <div class="flex justify-between">
-            <div class="relative mb-1 mt-2 sm:mb-0 sm:mr-2">
-                <!-- Search input -->
-                <div class="relative">
-                    <input
-                        class="border-2 border-gray-300 bg-white h-11 w-64 px-2 pr-10 mt-1 sm:!mt-0 rounded-lg text-[16px] focus:outline-none"
-                        type="text" name="search" placeholder="Search" id="searchInput">
-                    <button type="submit" class="absolute right-0 top-0 mt-1 mr-4">
-                        <!-- <svg class="text-gray-600 h-5 w-5 fill-current hover:text-gray-500 "
-                            xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1"
-                            id="Capa_1" x="0px" y="0px" viewBox="0 0 56.966 56.966"
-                            style="enable-background:new 0 0 56.966 56.966;" xml:space="preserve" width="512px"
-                            height="512px">
-                            <path
-                                d="M55.146,51.887L41.588,37.786c3.486-4.144,5.396-9.358,5.396-14.786c0-12.682-10.318-23-23-23s-23,10.318-23,23  s10.318,23,23,23c4.761,0,9.298-1.436,13.177-4.162l13.661,14.208c0.571,0.593,1.339,0.92,2.162,0.92  c0.779,0,1.518-0.297,2.079-0.837C56.255,54.982,56.293,53.08,55.146,51.887z M23.984,6c9.374,0,17,7.626,17,17s-7.626,17-17,17  s-17-7.626-17-17S14.61,6,23.984,6z" />
-                        </svg> -->
-                        <i class="fa-solid fa-magnifying-glass"></i>
-                    </button>
-                </div>
-            </div>
-        </div>
-        <button id="resetFiltersBtn" class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold 
-            mt-6 py-2 px-3 rounded inline-flex items-center sm:mt-2">
-            Reset
-            <i class="bi bi-arrow-counterclockwise ml-2 mt-1" width="16" height="16"></i>
-        </button>
-    </div>
-
     <div class="relative overflow-x-auto mb-1 rounded-lg mt-4">
-        <table class="display !w-full  ">
+        <table id="brandsTable" class="hover order-column row-border!w-full  ">
             <thead class="">
                 <tr>
-                    <!-- <th scope="col" class="text-center px-6 py-3">
-                        <span class="ml-1">Logo</span>
-                    </th> -->
-                    <th scope="col" class="text-center px-6 py-3">
-                        <span id="StatusOrder" class="">
-                            <i id="downArrow" class="bi bi-caret-down-fill cursor-pointer"></i>
-                            <i id="upArrow" class="bi bi-caret-up-fill cursor-pointer"></i>
-                            <span class="ml-1">Brand Name</span>
-                        </span>
+                    <th scope="col" class="text-center px-10 py-4">
                     </th>
-                    <!-- <th scope="col" class="text-center py-3">
-                        <span id="CreatedAtOrder" class="">
-                            <i id="downArrow" class="bi bi-caret-down-fill cursor-pointer"></i>
-                            <i id="upArrow" class="bi bi-caret-up-fill cursor-pointer"></i>
-                            <span class="ml-1"> Created At
-                            </span>
-                        </span>
-                    </th> -->
-                    <th scope="col" class="text-center py-3">
-                        <span id="UpdatedAtOrder" class="">
-                            <i id="downArrow" class="bi bi-caret-down-fill cursor-pointer"></i>
-                            <i id="upArrow" class="bi bi-caret-up-fill cursor-pointer"></i>
-                            <span class="ml-1"> Updated At
-                            </span>
-                        </span>
+                    <th scope="col" class="!text-center py-4">
                     </th>
-                    <th scope="col" class="text-center py-3">
-                        Action
+                    <th scope="col" class="!text-center py-4">
+                    </th>
+                    <th scope="col" class="!text-center py-4">
                     </th>
                 </tr>
             </thead>
             <tbody id="brands-list">
                 <!-- User data will be dynamically added here -->
             </tbody>
+            <tfoot>
+                <td></td>
+                <td class="relative mb-2 mt-2 sm:mb-0 sm:mr-8">
+                    <button id="typeDropdownButton" data-dropdown-toggle="typeDropdown"
+                        class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                        type="button">
+                        Dropdown checkbox
+                        <svg class="w-2.5 h-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                            viewBox="0 0 10 6">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="m1 1 4 4 4-4" />
+                        </svg>
+                    </button>
+                    <!-- Dropdown menu -->
+                    <div id="typeDropdown" class="z-10 hidden w-48 bg-white rounded-lg shadow dark:bg-gray-700"
+                        data-dropdown>
+                        <ul class="p-3 space-y-1 text-sm text-gray-700 dark:text-gray-200"
+                            aria-labelledby="typeDropdownButton">
+                            <li>
+                                <div class="flex items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600">
+                                    <input id="typeCheckboxCatalog" type="checkbox" value="Catalog"
+                                        class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                                    <label for="typeCheckboxCatalog"
+                                        class="w-full ms-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300">Catalog</label>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="flex items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600">
+                                    <input id="typeCheckboxInquiry" type="checkbox" value="Inquiry"
+                                        class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                                    <label for="typeCheckboxInquiry"
+                                        class="w-full ms-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300">Inquiry</label>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </td>
+
+                <td class="relative mb-2 mt-2 sm:mb-0 sm:mr-8">
+                    <button id="statusDropdownButton" data-dropdown-toggle="statusDropdown"
+                        class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                        type="button">
+                        Dropdown checkbox
+                        <svg class="w-2.5 h-2.5 ms-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                            viewBox="0 0 10 6">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="m1 1 4 4 4-4" />
+                        </svg>
+                    </button>
+                    <!-- Dropdown menu -->
+                    <div id="statusDropdown" class="z-10 hidden w-48 bg-white rounded-lg shadow dark:bg-gray-700"
+                        data-dropdown>
+                        <ul class="p-3 space-y-1 text-sm text-gray-700 dark:text-gray-200"
+                            aria-labelledby="statusDropdownButton">
+                            <li>
+                                <div class="flex items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600">
+                                    <input id="statusCheckboxActive" type="checkbox" value="Active"
+                                        class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                                    <label for="statusCheckboxActive"
+                                        class="w-full ms-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300">Active</label>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="flex items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600">
+                                    <input id="statusCheckboxInactive" type="checkbox" value="Inactive"
+                                        class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                                    <label for="statusCheckboxInactive"
+                                        class="w-full ms-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300">Inactive</label>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </td>
+                <td></td>
+                <td></td>
+            </tfoot>
         </table>
     </div>
     <div class="flex flex-col sm:flex-row px-2 sm:self-center sm:items-center justify-between bottom-0">
         <div id="itemCount" class="text-center text-gray-500"></div>
         <div id="pagination" class="justify-center mt-4"></div>
     </div>
+</div>
+
+<div id="form-holder">
+</div>
+
+<div id="popup-holder">
 </div>
 
 <?php $content = ob_get_clean();
@@ -138,85 +148,113 @@ ob_start();
 <script>
     $( document ).ready( function ()
     {
-        $.ajax( {
-            url: '/../../backend/brands/brands-get.php',
-            type: 'GET',
-            dataType: 'json',
-            success: function ( data )
-            {
-                renderBrandsData( data, null )
+        var table = $( '#brandsTable' ).DataTable( {
+            ajax: {
+                url: '/../../backend/brands/brands-get.php',
+                type: 'GET',
+                dataSrc: ''
             },
-            error: function ( xhr, status, error )
-            {
-                console.error( 'Error:', error );
+            columns: [
+                {
+                    data: null,
+                    title: 'Brand Name',
+                    className: '!text-center',
+                    render: function ( data )
+                    {
+                        return `
+                            <div class="flex flex-col items-center justify-center">
+                                <div class="w-[50px] h-[50px] rounded-full overflow-hidden flex items-center justify-center">
+                                    <img src="${ data.logo_url }" alt="${ data.brand_name }" class="block rounded-full max-w-[100px] max-h-[100px]">
+                                </div>
+                                <span class="block mt-2">${ data.brand_name }</span>
+                                <span class="text-xs text-gray-500 block">${ data.description }</span>
+                            </div>
+                    `;
+                    }
+                },
+                { data: 'type', title: 'Type', className: 'text-center' },
+                { data: 'status', title: 'Status', className: 'text-center' },
+                {
+                    data: 'updated_at',
+                    title: 'Updated At',
+                    className: '!text-center',
+                    render: function ( data )
+                    {
+                        var date = formatDate( data ); // Assuming formatDate is a function that formats the date
+                        var time = formatTime( data ); // Assuming formatTime is a function that formats the time
+                        return '<div>' +
+                            '<div>' + date + '</div>' +
+                            '<div>' + time + '</div>' +
+                            '</div>';
+                    }
+                },
+                {
+                    data: null,
+                    title: 'Action',
+                    className: '!text-center !p-0 !m-0 !w-[27.5%]',
+                    orderable: false,
+                    render: function ( data )
+                    {
+                        return `
+                            <button class="viewBtn btn-view !m-0 hover:underline text-[14px]">
+                                <i class="fas fa-eye pr-[3px]"></i>View
+                            </button>
+                            <button class="editBtn yellow-btn btn-primary !m-0  hover:underline text-[14px]">
+                                <i class="fas fa-edit pr-[3px]"></i>Update
+                            </button>
+                            <button class="delBtn btn-danger !m-0  hover:underline text-[14px]">
+                                <i class="fas fa-trash pr-[3px]"></i>Hide
+                            </button>
+                    `;
+                    }
+                }
+            ],
+            order: [[3, 'asc']], // Default sorting by the fouth column (Updated At)
+            paging: true,
+            pageLength: 2, // Initial number of rows per page
+            searching: true,
+            processing: true,
+            serverSide: false, // Disable server-side processing
+            lengthMenu: [2, 10, 20], // Dropdown for changing the number of rows per page
+            stateSave: false,
+            language: {
+                info: "Showing _START_ to _END_ of _TOTAL_ entries",
+                infoEmpty: "Showing 0 to 0 of 0 entries",
+                infoFiltered: "(filtered from _MAX_ total entries)",
+                lengthMenu: "Show _MENU_ entries",
+                search: "Search:",
+                zeroRecords: "No matching records found"
             }
         } );
 
-        function renderBrandsData ( data, pagination )
+        $( '#typeCheckboxCatalog, #typeCheckboxInquiry' ).on( 'change', function ()
         {
-            const brandsList = $( '#brands-list' );
-            brandsList.empty(); // Clear existing user data
-
-            if ( !Array.isArray( data ) || data.length === 0 ) 
+            var selectedValues = [];
+            $( '#typeCheckboxCatalog:checked' ).each( function ()
             {
-                const noUserRow = $( '<tr>' ).addClass( 'bg-white-200 border-b' );
-                const messageCell = $( '<td>' ).addClass( 'px-6 py-4 text-center text-red-800 font-bold' ).attr( 'colspan', '7' ).text( 'No brands found' );
-                noUserRow.append( messageCell );
-                brandsList.append( noUserRow );
-            } else
+                selectedValues.push( $( this ).val() );
+            } );
+            $( '#typeCheckboxInquiry:checked' ).each( function ()
             {
-                data.forEach( function ( brand )
-                {
-                    const brandRow = $( '<tr>' ).addClass( 'bg-white-200 border-b text-center' );
+                selectedValues.push( $( this ).val() );
+            } );
+            table.column( 1 ).search( selectedValues.join( '|' ), true, false ).draw();
+        } );
 
-                    // const logoCell = $( '<td>' ).addClass( ' py-4 flex justify-center items-center' ).append(
-                    // );
-
-                    const brandNameCell = $( '<td>' ).addClass( 'text-center py-4' );
-
-                    const brandContentWrapper = $( '<div>' ).addClass( 'flex flex-col items-center justify-center' );
-                    const brandImageWrapper = $( '<div>' ).addClass( 'w-[50px] h-[50px] rounded-full overflow-hidden flex items-center justify-center' );
-                    const brandImage = $( '<img>' ).attr( 'src', brand.logo_url ).attr( 'alt', brand.brand_name ).addClass( 'block rounded-full max-w-[100px] max-h-[100px]' );
-
-                    const brandName = $( '<span>' ).addClass( 'block mt-2' ).text( brand.brand_name );
-                    const brandDescription = $( '<span>' ).addClass( 'text-xs text-gray-500 block' ).text( brand.description );
-
-                    brandImageWrapper.append( brandImage );
-                    brandContentWrapper.append( brandImageWrapper, brandName, brandDescription );
-                    brandNameCell.append( brandContentWrapper );
-
-                    const updateAtCell = $( '<td>' ).addClass( 'text-center py-4 ' ).append(
-                        $( '<div>' ).text( formatDate( brand.updated_at ) ).addClass( 'text-sm' ), // Date with smaller text
-                        $( '<div>' ).text( formatTime( brand.updated_at ) ).addClass( 'text-xs text-gray-500' ) // Time with even smaller and gray text                );
-                    );
-
-                    const viewButton = $( '<button>' ).addClass( 'viewBtn bg-[#a8c4dc] blue-btn btn-primary hover:underline text-[14px]' );
-                    viewButton.append(
-                        $( '<i>' ).addClass( 'fas fa-eye pr-[3px]' ),
-                        $( '<span>' ).text( 'View' )
-                    );
-
-                    const editButton = $( '<button>' ).addClass( 'editBtn yellow-btn btn-primary hover:underline text-[14px]' );
-                    editButton.append(
-                        $( '<i>' ).addClass( 'fas fa-edit pr-[3px]' ),
-                        $( '<span>' ).text( 'Update' )
-                    );
-
-                    const deleteButton = $( '<button>' ).addClass( 'delBtn btn-danger hover:underline text-[14px]' );
-                    deleteButton.append(
-                        $( '<i>' ).addClass( 'fas fa-trash pr-[3px]' ),
-                        $( '<span>' ).text( 'Hide' )
-                    );
-
-                    const actionCell = $( '<td>' ).addClass( 'py-6 w-auto px-auto flex justify-center space-x-2' )
-                        .append( viewButton, editButton, deleteButton );
-
-                    // Add more cells if needed for other brand properties
-                    brandRow.append( brandNameCell, updateAtCell, actionCell );
-                    brandsList.append( brandRow );
-                } );
-            }
-        }
+        // Checkbox filtering for Status column
+        $( '#statusCheckboxActive, #statusCheckboxInactive' ).on( 'change', function ()
+        {
+            var selectedValues = [];
+            $( '#statusCheckboxActive:checked' ).each( function ()
+            {
+                selectedValues.push( $( this ).val() );
+            } );
+            $( '#statusCheckboxInactive:checked' ).each( function ()
+            {
+                selectedValues.push( $( this ).val() );
+            } );
+            table.column( 2 ).search( selectedValues.join( '|' ), true, false ).draw();
+        } );
 
         // Function to format date
         function formatDate ( dateString )
@@ -234,8 +272,31 @@ ob_start();
             return date.toLocaleTimeString( undefined, options );
         }
 
-    } );
+        // Dropdown toggle
+        $( '[data-dropdown-toggle]' ).on( 'click', function ()
+        {
+            var dropdownId = $( this ).data( 'dropdown-toggle' );
+            $( '#' + dropdownId ).toggle();
+        } );
 
+        // Close the dropdown menu if the user clicks outside of it
+        $( window ).click( function ( event )
+        {
+            if ( !event.target.matches( '[data-dropdown-toggle]' ) )
+            {
+                var dropdowns = $( '[data-dropdown]' );
+                dropdowns.each( function ()
+                {
+                    var dropdown = $( this );
+                    if ( dropdown.is( ':visible' ) )
+                    {
+                        dropdown.hide();
+                    }
+                } );
+            }
+        } );
+
+    } );
 </script>
 
 <?php
