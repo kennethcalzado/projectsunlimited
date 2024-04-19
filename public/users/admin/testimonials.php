@@ -520,7 +520,7 @@ ob_start();
         <div style="padding-top: 15px;">
             <!-- Content -->
             <div class="flex flex-col sm:flex-row justify-between items-center">
-                <h1 class="text-4xl font-bold">News & Projects</h1>
+                <h1 class="text-4xl font-bold">Testimonials</h1>
                 <button class="yellow-btn btn-primary rounded-md text-center h-10 mt-3 sm:mt-4 !px-4 py-0 text-lg flex items-center" onclick="openModal()"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                     </svg>Add New</button>

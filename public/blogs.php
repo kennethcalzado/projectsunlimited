@@ -21,7 +21,7 @@ $result = mysqli_query($conn, $sql);
             background-color: #D9D9D9;
             vertical-align: top;
             box-sizing: border-box;
-            padding: 20px;
+            padding: 10px 20px 20px 20px;
             text-align: center;
             transition: background-color 0.3s ease;
         }
@@ -69,17 +69,18 @@ $result = mysqli_query($conn, $sql);
         }
 
         .date {
-            font-size: 19px;
+            font-size: 17px;
             color: black;
             margin-bottom: 5px;
         }
 
         .thumbnail {
-            max-width: auto;
-            max-height: auto;
+            width: 100%;
+            height: 100%;
             position: absolute;
             z-index: 2;
-            border: 10px solid black;
+            border: 8px solid black;
+            object-fit: cover;
         }
 
         .clearfix::after {
@@ -119,6 +120,20 @@ $result = mysqli_query($conn, $sql);
                 fetchData(selectedCategory, sortOption);
             });
 
+            function formatDate(dateString) {
+                // Convert dateString to JavaScript Date object
+                var date = new Date(dateString);
+
+                // Format the date using PHP-like format "F j, Y"
+                var formattedDate = date.toLocaleDateString('en-US', {
+                    month: 'long',
+                    day: 'numeric',
+                    year: 'numeric'
+                });
+
+                return formattedDate;
+            }
+
             // Update updateDisplay function to display items for the current page
             function updateDisplay(data, currentPage, perPage) {
                 var html = '';
@@ -145,7 +160,7 @@ $result = mysqli_query($conn, $sql);
                         // Output card HTML dynamically with data from the response
                         html += '<div class="card-group z-10" data-category="' + item.type + '">';
                         html += '<a href="' + item.page + '" class="card-link">';
-                        html += '<div class="date">' + item.date + '</div>';
+                        html += '<div class="date">' + formatDate(item.date) + '</div>';
                         html += '<div class="placeholder">';
                         html += '<img src="../assets/blogs_img/' + item.thumbnail + '" alt="Thumbnail" class="thumbnail">';
                         html += '</div>';
@@ -284,6 +299,14 @@ $result = mysqli_query($conn, $sql);
                 <div class="container mx-auto">
                     <div id="card-groups-container" class="card-groups-container">
                         <?php
+                        function formatDate($dateString)
+                        {
+                            // Convert date string to Unix timestamp
+                            $timestamp = strtotime($dateString);
+                            // Format the timestamp to "Month Date, Year" format
+                            return date("F j, Y", $timestamp);
+                        }
+
                         $counter = 0; // Initialize counter variable
                         $itemsPerRow = 5; // Number of items per row
                         $totalItems = mysqli_num_rows($result); // Total number of items 
@@ -295,11 +318,13 @@ $result = mysqli_query($conn, $sql);
                             echo '<div class="flex flex-wrap justify-center items-center">'; // Start flex container and center items
                             // Loop through each row
                             while ($row = mysqli_fetch_assoc($result)) {
+
+                                $formattedDate = formatDate($row['date']);
                                 // Output card HTML dynamically with data from the database
                                 echo '
                 <div class="card-group z-10" data-category="' . $row['type'] . '">
                     <a href="' . $row['page'] . '" class="card-link">
-                        <div class="date">' . $row['date'] . '</div>
+                        <div class="date">' . $formattedDate . '</div>
                         <div class="placeholder">
                             <img src="../assets/blogs_img/' . $row['thumbnail'] . '" alt="Thumbnail" class="thumbnail">
                         </div>

@@ -1,5 +1,5 @@
 <?php
-$pageTitle = 'Projects Unlimited';
+$pageTitle = 'News & Projects';
 ob_start();
 include("../../backend/conn.php");
 
@@ -44,7 +44,7 @@ $formatted_date = date("F j, Y", $date);
             background-color: #D9D9D9;
             vertical-align: top;
             box-sizing: border-box;
-            padding: 20px;
+            padding: 10px 20px 20px 20px;
             text-align: center;
             transition: background-color 0.3s ease;
         }
@@ -88,21 +88,22 @@ $formatted_date = date("F j, Y", $date);
         }
 
         .card-group:hover .title::after {
-            background-image: url('../../assets/image/arrowblack.png');
+            background-image: url('../../assets/image/arrowgold.png');
         }
 
         .date {
-            font-size: 19px;
+            font-size: 17px;
             color: black;
             margin-bottom: 5px;
         }
 
         .thumbnail {
-            max-width: auto;
-            max-height: auto;
+            width: 100%;
+            height: 100%;
             position: absolute;
             z-index: 2;
-            border: 10px solid black;
+            border: 8px solid black;
+            object-fit: cover;
         }
 
         .clearfix::after {
@@ -127,9 +128,9 @@ $formatted_date = date("F j, Y", $date);
 
 <body>
     <section style="text-align: center; padding-left: 190px; padding-right: 190px; padding-bottom: 25px;">
-        <div class="flex justify-between items-center mb-9">
+        <div class="flex justify-between items-center mb-3">
             <!-- "Back" link -->
-            <a href="../blogs.php" class="text-black font-semibold text-2xl flex items-center px-16 mt-8" style="transition: color 0.3s;" onmouseover="this.style.color='#F6E17A'" onmouseout="this.style.color='black'">
+            <a href="../blogs.php" class="text-black font-semibold text-2xl flex items-center mt-8" style="transition: color 0.3s;" onmouseover="this.style.color='#F6E17A'" onmouseout="this.style.color='black'">
                 <i class="fas fa-chevron-left mr-2"></i> Back
             </a>
             <!-- Spacer -->
@@ -140,21 +141,33 @@ $formatted_date = date("F j, Y", $date);
             <div></div>
             <h1 class="text-black font-semibold text-2xl text-center" style="padding-top: 25px;"><?php echo $formatted_date; ?></h1>
         </div>
+        <div class="border-b border-black flex-grow border-4 mt-2 mb-5"></div>
 
 
         <div class="container flex">
-            <div class="description-column">
-                <p class="text-2xl text-black px-16 mt-8" style="text-align: justify;">
-                    <?php echo nl2br($blog_data['description']); ?>
+            <div style="width: 60%;" class=" description-column flex items-center">
+                <p class="text-2xl text-black" style="text-align: justify; padding-right: 20px;">
+                    <?php
+                    // Function to convert URLs into clickable links
+                    function makeClickableLinks($text)
+                    {
+                        $text = preg_replace_callback('#(https?://\S+|www\.\S+)#i', function ($matches) {
+                            return '<a href="' . $matches[1] . '" target="_blank" style="text-decoration: none; color: inherit;" onmouseover="this.style.color=\'#F6E17A\';" onmouseout="this.style.color=\'inherit\';">' . $matches[1] . '</a>';
+                        }, $text);
+                        return $text;
+                    }
+
+                    echo nl2br(makeClickableLinks($blog_data['description']));
+                    ?>
                 </p>
             </div>
-            <div class="carousel-column" style="width: 100%; overflow: hidden;"> <!-- Added style for width and overflow -->
-                <div class="carousel relative" style="height: 400px;"> <!-- Added fixed height -->
+            <div class="carousel-column" style="width: 40%; overflow: hidden;"> <!-- Added style for width and overflow -->
+                <div class="carousel relative" style="height: 100%;"> <!-- Added fixed height -->
                     <div class="carousel-inner flex" style="height: 100%;"> <!-- Set height to 100% to fill the carousel container -->
                         <?php if (isset($images)) : ?>
                             <?php foreach ($images as $image) : ?>
-                                <div class="carousel-item w-full" style="height: 100%;"> <!-- Set height to 100% to fill the carousel container -->
-                                    <img src="<?php echo "../../../assets/blogs_img/$image"; ?>" alt="Slide Image" style="width: 100%; height: 100%;"> <!-- Set width to auto and height to 100% to maintain aspect ratio and fill the container -->
+                                <div class="carousel-item w-full" style="height: 100%; object-fit: cover;"> <!-- Set height to 100% to fill the carousel container -->
+                                    <img src="<?php echo "../../../assets/blogs_img/$image"; ?>" alt="Slide Image" style="width: 100%; height: 100%; object-fit: cover;"> <!-- Set width to auto and height to 100% to maintain aspect ratio and fill the container -->
                                 </div>
                             <?php endforeach; ?>
                         <?php else : ?>
@@ -177,6 +190,7 @@ $formatted_date = date("F j, Y", $date);
             let currentIndex = 0;
             const items = document.querySelectorAll(".carousel-item");
             const totalItems = items.length;
+            const intervalTime = 3000; // Interval time in milliseconds (3 seconds)
 
             function nextSlide() {
                 if (currentIndex < totalItems - 1) {
@@ -202,6 +216,14 @@ $formatted_date = date("F j, Y", $date);
                     ".carousel-inner"
                 ).style.transform = 'translateX(-' + (width * currentIndex) + 'px)';
             }
+
+            // Function to auto-swipe the carousel
+            function startCarouselAutoSwipe() {
+                setInterval(nextSlide, intervalTime);
+            }
+
+            // Start auto-swiping on page load
+            startCarouselAutoSwipe();
         </script>
     </section>
 
@@ -212,7 +234,7 @@ $formatted_date = date("F j, Y", $date);
             <div id="card-groups-container" class="card-groups-container">
                 <?php
                 // Execute a new query to fetch other blog entries
-                $otherBlogsQuery = "SELECT * FROM blogs WHERE id != ? LIMIT 5";
+                $otherBlogsQuery = "SELECT * FROM blogs WHERE id != ? ORDER BY date DESC LIMIT 5";
                 $otherStmt = $conn->prepare($otherBlogsQuery);
                 $otherStmt->bind_param("i", $blog_id);
                 $otherStmt->execute();
@@ -228,10 +250,11 @@ $formatted_date = date("F j, Y", $date);
 
                     echo '<div class="flex flex-wrap justify-center items-center">'; // Start flex container and center items
                     while ($row = $otherResult->fetch_assoc()) {
+                        $formattedDate = date("F j, Y", strtotime($row['date']));
                         echo '
                 <div class="card-group z-10" data-category="' . $row['type'] . '">
                     <a href="' . $row['page'] . '" class="card-link">
-                        <div class="date">' . $row['date'] . '</div>
+                        <div class="date">' . $formattedDate . '</div>
                         <div class="placeholder">
                             <img src="../../assets/blogs_img/' . $row['thumbnail'] . '" alt="Thumbnail" class="thumbnail">
                         </div>

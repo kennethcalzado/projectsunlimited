@@ -156,6 +156,25 @@ $image_path = $base_url . 'assets/image/projectslogo.png';
 
     <div class="text-left text-sm mt-2 w-4/5 mx-auto text-gray-200 font-bold transition-all" id="submenu"></div>
 
+    <a href="/public/users/admin/testimonials.php" class="group">
+        <div class="nav-item mt-3 flex items-center rounded-l-md px-6 p-2
+            transition-opacity duration-300 cursor-pointer text-white group-hover:bg-yellow-600 group-hover:ease-in">
+
+            <div class=" flex relative ">
+                <i class="bi bi-chat-left-text-fill"></i>
+                <span class="text-[15px] ml-4 text-gray-200 font-bold">Testimonials</span>
+                <span class="tootlips 
+                    group-hover:ease-in group-hover:opacity-100 group-hover:visible 
+                    transition-opacity duration-300 
+                    bg-yellow-600 rounded-r-md 
+                    pr-5 py-[8.9px] m-4 mx-auto w-40
+                    text-[15px] font-bold text-white 
+                    absolute  invisible
+                    left-1/2 translate-x-[19%] -translate-y-[59.5%] opacity-0">Testimonials</span>
+            </div>
+        </div>
+    </a>
+
     <a href="/public/users/admin/cmsblogs.php" class="group">
         <div class="nav-item mt-3 flex items-center rounded-l-md px-6 p-2
             transition-opacity duration-300 cursor-pointer text-white group-hover:bg-yellow-600 group-hover:ease-in">

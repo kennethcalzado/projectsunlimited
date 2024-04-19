@@ -18,8 +18,8 @@ ob_start();
     <div style="width: 100%; text-align: center; padding-bottom: 20px; padding-top: 20px;">
         <h1 class="text-black" style=" font-size: 38px; font-weight: 800; margin: 0;">MEET THE TEAM</h1>
     </div>
-    <section>
-        <div style="text-align: center; height: 100vh;">
+    <section style="padding-bottom: 40px;">
+        <div style=" text-align: center; height: 100vh;">
             <div style="position: relative; width: 100%; height: 90%;">
                 <img src="../assets/image/teamsample.png" style="display: block; width: 100%; height: 100%;">
                 <div style="position: absolute; bottom: 0; left: 0; width: 100%; height: 40%; background: linear-gradient(to top, rgba(246, 225, 122, 1) 1%, transparent);"></div>
@@ -32,7 +32,7 @@ ob_start();
         </div>
     </section>
 
-    <section style="padding-top: 20px; position: relative; text-align: center; display: flex; justify-content: center; align-items: center;">
+    <section style="padding-top: 40px; position: relative; text-align: center; display: flex; justify-content: center; align-items: center;">
         <h1 style="padding-top: 100px; text-align: center; font-size: 38px; font-weight: 800; position: absolute; top: 0; left: 50%; transform: translateX(-50%); margin: 0;">PROJECTS UNLIMITED THROUGH THE YEARS</h1>
 
 

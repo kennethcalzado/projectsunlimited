@@ -364,4 +364,5 @@ page animations
 mobile scaling
 profile admin (sinimulan na)
 connect db sa home display
+testimonials cms
 -->

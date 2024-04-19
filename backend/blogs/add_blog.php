@@ -105,7 +105,7 @@ if (\$result->num_rows > 0) {
             background-color: #D9D9D9;
             vertical-align: top;
             box-sizing: border-box;
-            padding: 20px;
+            padding: 10px 20px 20px 20px;
             text-align: center;
             transition: background-color 0.3s ease;
         }
@@ -153,17 +153,18 @@ if (\$result->num_rows > 0) {
         }
 
         .date {
-            font-size: 19px;
+            font-size: 17px;
             color: black;
             margin-bottom: 5px;
         }
 
         .thumbnail {
-            max-width: auto;
-            max-height: auto;
+            width: 100%;
+            height: 100%;
             position: absolute;
             z-index: 2;
-            border: 10px solid black;
+            border: 8px solid black;
+            object-fit: cover;
         }
 
         .clearfix::after {
