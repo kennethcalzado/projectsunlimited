@@ -44,13 +44,14 @@ ob_start();
         }
 
         // Function to update catalog listing based on brand details
-        function updateCatalogListing(catalogs) {
-            console.log("Updating catalog listing for brand:", catalogs[0].brand_name);
+        function updateCatalogListing(brand) {
+            console.log(brand);
+            console.log("Updating catalog listing for brand:", brand.brand_name);
             // Clear previous catalog listing
             $('#catalogList').empty();
 
             // Display catalogs for the selected brand
-            catalogs.forEach(function(catalog) {
+            brand.catalogs.forEach(function(catalog) {
                 var catalogButton = $('<button>').addClass('bg-blue-500 text-white px-4 py-2 rounded');
                 catalogButton.text(catalog.catalog_title);
                 catalogButton.on('click', function() {
@@ -118,7 +119,7 @@ ob_start();
 
                             // Update Brand Details Container and Catalog Listing
                             updateBrandDetails(brand);
-                            updateCatalogListing(brand.catalogs);
+                            updateCatalogListing(brand);
                         });
                     });
                 }

@@ -121,55 +121,68 @@ ob_start();
         </div>
         <div class="border-b border-black flex-grow border-2 mt-2 mb-2"></div> <!--Divider-->
         <div class="flex flex-wrap justify-between">
-            <!-- Image Section -->
-            <div
-                class="w-1/3 rounded-xl ring-1 ring-black ring-offset-gray-700 overflow-hidden flex items-center justify-center">
-                <div class="mx-auto mb-4"> <!-- Container for the image -->
-                    <img id="brandImage" src="" alt="" class="w-full h-auto object-contain rounded-full">
+            <form id="brandForm">
+
+                <!-- Image Section -->
+                <div id="imageDropzone"
+                    class="relative w-1/3 rounded-xl ring-1 ring-black ring-offset-gray-700 overflow-hidden flex items-center justify-center group">
+                    <div
+                        class="absolute inset-x-0 bottom-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                        <label for="uploadBrandLogo"
+                            class="bg-gray-800 text-sm text-white m-1 px-2 py-1 rounded-full cursor-pointer">Upload new
+                            brand
+                            logo</label>
+                        <input type="file" id="uploadBrandLogo" class="hidden">
+                    </div>
+                    <div class="mx-auto mb-4"> <!-- Container for the image -->
+                        <img id="brandImage" src="" alt="" class="w-full h-auto object-contain rounded-full">
+                    </div>
                 </div>
-            </div>
-            <!-- Data Section -->
-            <div class="w-2/3">
-                <div class="mx-4"> <!-- Container for the brand information -->
-                    <form id="brandForm">
-                        <div class="mb-4">
-                            <label for="brandName" class="block text-sm font-medium text-gray-700">Brand Name:</label>
-                            <input type="text" id="brandName" name="brandName" placeholder="Brand Name"
-                                class="pl-2 mt-1 w-full rounded-md border border-gray-700 shadow-sm" disabled>
-                        </div>
-                        <div class="mb-4">
-                            <label for="description"
-                                class="block text-sm font-medium text-gray-700">Description:</label>
-                            <textarea id="description" name="description" placeholder="Description"
-                                class="pl-2 mt-1 w-full rounded-md border border-gray-700 shadow-sm"
-                                disabled></textarea>
-                        </div>
-                        <div class="mb-4">
-                            <label for="type" class="block text-sm font-medium text-gray-700">Type:</label>
-                            <input type="text" id="type" name="type" placeholder="Type"
-                                class="pl-2 mt-1 w-full rounded-md border border-gray-700 shadow-sm" disabled>
-                        </div>
-                        <div class="mb-4">
-                            <label for="status" class="block text-sm font-medium text-gray-700">Status:</label>
-                            <input type="text" id="status" name="status" placeholder="Status"
-                                class="pl-2 mt-1 w-full rounded-md border border-gray-700 shadow-sm" disabled>
-                        </div>
-                    </form>
+
+                <!-- Data Section -->
+                <div class="w-2/3">
+                    <div class="mx-4"> <!-- Container for the brand information -->
+                        <form id="brandForm">
+                            <div class="mb-4">
+                                <label for="brandName" class="block text-sm font-medium text-gray-700">Brand
+                                    Name:</label>
+                                <input type="text" id="brandName" name="brandName" placeholder="Brand Name"
+                                    class="pl-2 mt-1 w-full rounded-md border border-gray-700 shadow-sm" disabled>
+                            </div>
+                            <div class="mb-4">
+                                <label for="description"
+                                    class="block text-sm font-medium text-gray-700">Description:</label>
+                                <textarea id="description" name="description" placeholder="Description"
+                                    class="pl-2 mt-1 w-full rounded-md border border-gray-700 shadow-sm"
+                                    disabled></textarea>
+                            </div>
+                            <div class="mb-4">
+                                <label for="type" class="block text-sm font-medium text-gray-700">Type:</label>
+                                <input type="text" id="type" name="type" placeholder="Type"
+                                    class="pl-2 mt-1 w-full rounded-md border border-gray-700 shadow-sm" disabled>
+                            </div>
+                            <div class="mb-4">
+                                <label for="status" class="block text-sm font-medium text-gray-700">Status:</label>
+                                <input type="text" id="status" name="status" placeholder="Status"
+                                    class="pl-2 mt-1 w-full rounded-md border border-gray-700 shadow-sm" disabled>
+                            </div>
+                        </form>
+                    </div>
                 </div>
-            </div>
-            <div class="mt-8 text-xs text-center text-gray-500 ml-6 !-mt-[0.1px]">
-                <div>Created At: <span id="createdAt"></span></div>
-                <div>Updated At: <span id="updatedAt"></span></div>
-            </div>
+                <div class="mt-8 text-xs text-center text-gray-500 ml-6 !-mt-[0.1px]">
+                    <div>Created At: <span id="createdAt"></span></div>
+                    <div>Updated At: <span id="updatedAt"></span></div>
+                </div>
+            </form>
         </div>
 
         <div class="flex justify-end mt-4">
             <button id="editBrandBtn" class="btn-primary mr-2">Edit</button>
+            <button id="submitBrandBtn" class="btn-primary mr-2 hidden">Submit</button>
             <button id="hideBrandBtn" class="btn-danger mr-2">Hide</button>
             <button id="closeBrandBtn" class="btn-secondary">Close</button>
         </div>
     </div>
-
 </div>
 
 <div id="popup-container">
@@ -368,9 +381,74 @@ ob_start();
             time = formatTime( data.updated_at );
             $( '#updatedAt' ).text( date + ' ' + time );
 
+            $( 'label[for="uploadBrandLogo"]' ).addClass( 'hidden' );
+
             // Show the modal
             $( '#modal-container' ).toggleClass( 'hidden' );
         } );
+
+        // Function to enable drag and drop for image upload
+        function enableDragAndDrop ()
+        {
+            var dropZone = $( '#imageDropzone' );
+
+            // Function to handle file selection
+            function handleFileSelect ( event )
+            {
+                event.stopPropagation();
+                event.preventDefault();
+
+                var files = event.originalEvent.dataTransfer.files; // FileList object.
+
+                // Process each dropped file
+                for ( var i = 0, file; file = files[i]; i++ )
+                {
+                    // Only process image files.
+                    if ( !file.type.match( 'image.*' ) )
+                    {
+                        continue;
+                    }
+
+                    var reader = new FileReader();
+
+                    // Closure to capture the file information.
+                    reader.onload = ( function ( theFile )
+                    {
+                        return function ( e )
+                        {
+                            // Render thumbnail.
+                            var span = $( '<span>' );
+                            span.html( ['<img class="thumb" src="', e.target.result,
+                                '" title="', escape( theFile.name ), '"/>'].join( '' ) );
+                            dropZone.empty().append( span );
+                            $( '#brandImage' ).attr( 'src', e.target.result ); // Update image preview
+                            $( '#imageFileName' ).text( theFile.name );
+                        };
+                    } )( file );
+
+                    // Read in the image file as a data URL.
+                    reader.readAsDataURL( file );
+                }
+            }
+
+            // Function to handle drag over
+            function handleDragOver ( event )
+            {
+                event.stopPropagation();
+                event.preventDefault();
+                event.originalEvent.dataTransfer.dropEffect = 'copy'; // Explicitly show this is a copy.
+            }
+
+            // Setup the dnd listeners.
+            dropZone.on( 'dragover', handleDragOver );
+            dropZone.on( 'drop', handleFileSelect );
+        }
+
+        // Function to disable drag and drop for image upload
+        function disableDragAndDrop ()
+        {
+            $( '#imageDropzone' ).off( 'dragover drop' );
+        }
 
         $( document ).on( 'click', '.editBtn', function ()
         {
@@ -395,17 +473,26 @@ ob_start();
             time = formatTime( data.updated_at );
             $( '#updatedAt' ).text( date + ' ' + time );
 
+            // Show the label when hovering over the upload button
+            $( '#imageDropzone' ).hover( function ()
+            {
+                $( 'label[for="uploadBrandLogo"]' ).show();
+            }, function ()
+            {
+                $( 'label[for="uploadBrandLogo"]' ).hide();
+            } );
+
+            $( '#editBrandBtn' ).hide();
+            $( '#submitBrandBtn' ).show();
+
             // Show the modal
             $( '#modal-container' ).toggleClass( 'hidden' );
 
             // Enable input fields for editing
             $( '#brandName, #description, #type, #status' ).prop( 'disabled', false );
-        } );
 
-        // Click event handler for closing the modal
-        $( '#closeBrandModal, #closeBrandBtn' ).on( 'click', function ()
-        {
-            closeModal();
+            // Enable drag and drop for the brand logo
+            enableDragAndDrop();
         } );
 
         // Click event handler for editing the brand
@@ -415,10 +502,10 @@ ob_start();
             $( '#brandName, #description, #type, #status' ).prop( 'disabled', false );
         } );
 
-        // Click event handler for hiding the brand
-        $( '#hideBrandBtn' ).on( 'click', function ()
+        // Click event handler for closing the modal
+        $( '#closeBrandModal, #closeBrandBtn' ).on( 'click', function ()
         {
-            // Implement hiding functionality here
+            closeModal();
         } );
 
         // Function to close the modal
@@ -436,8 +523,12 @@ ob_start();
 
             // Hide the modal
             $( '#modal-container' ).toggleClass( 'hidden' );
+
+            // Disable drag and drop for the brand logo
+            disableDragAndDrop();
         }
 
+        
     } );
 </script>
 
