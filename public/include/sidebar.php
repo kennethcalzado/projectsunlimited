@@ -162,7 +162,7 @@ $image_path = $base_url . 'assets/image/projectslogo.png';
 
             <div class=" flex relative ">
                 <i class="bi bi-bookmark-fill "></i>
-                <span class="text-[15px] ml-4 text-gray-200 font-bold">News & Blogs</span>
+                <span class="text-[15px] ml-4 text-gray-200 font-bold">News & Projects</span>
                 <span class="tootlips 
                     group-hover:ease-in group-hover:opacity-100 group-hover:visible 
                     transition-opacity duration-300 
@@ -170,7 +170,7 @@ $image_path = $base_url . 'assets/image/projectslogo.png';
                     pr-5 py-[8.9px] m-4 mx-auto w-40
                     text-[15px] font-bold text-white 
                     absolute  invisible
-                    left-1/2 translate-x-[19%] -translate-y-[59.5%] opacity-0">News & Blogs</span>
+                    left-1/2 translate-x-[19%] -translate-y-[59.5%] opacity-0">News & Projects</span>
             </div>
         </div>
     </a>

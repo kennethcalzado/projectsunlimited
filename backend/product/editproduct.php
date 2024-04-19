@@ -41,11 +41,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     echo json_encode($response);
                     exit();
                 }
-                // else {
-                //     // Return error response if updating product details fails
-                //     $response = array('success' => false, 'message' => 'Error updating product details.');
-                //     echo json_encode($response);
-                // }
             } else {
                 // Error moving uploaded file
                 $response = array('success' => false, 'message' => 'Error moving uploaded file.');
@@ -72,6 +67,41 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
     }
 
+    // Check if new variations are set
+    if (isset($_POST['newVariations'])) {
+        $newVariations = $_POST['newVariations'];
+        $newVariationImages = $_FILES['newVariationImages'];
+
+        // Loop through each new variation
+        foreach ($newVariations as $index => $newVariationName) {
+            // Handle variation image upload
+            $newVariationImage = $newVariationImages['tmp_name'][$index];
+            $newVariationImageName = $newVariationImages['name'][$index];
+
+            // Move the uploaded image to the desired location
+            $uploadDir = '../../assets/variations/';
+            $uploadPath = $uploadDir . $newVariationImageName;
+
+            if (move_uploaded_file($newVariationImage, $uploadPath)) {
+                // Insert new variation into the database
+                $stmt = $conn->prepare("INSERT INTO product_variation (ProductID, VariationName, image_url) VALUES (?, ?, ?)");
+                $stmt->bind_param("iss", $productId, $newVariationName, $newVariationImageName);
+                $resultVariation = $stmt->execute();
+
+                if (!$resultVariation) {
+                    // Return error response if inserting variation fails
+                    $response = array('success' => false, 'message' => 'Error inserting new variation.');
+                    echo json_encode($response);
+                    exit();
+                }
+            } else {
+                // Error moving uploaded image
+                $response = array('success' => false, 'message' => 'Error moving uploaded image for new variation.');
+                echo json_encode($response);
+                exit();
+            }
+        }
+    }
     if (isset($_POST['variations'])) {
         $variations = $_POST['variations'];
         foreach ($variations as $variationID => $variation) {
@@ -88,7 +118,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 echo json_encode($response);
                 exit(); // Terminate script execution
             }
-
             // Check if a file was uploaded for this variation
             if (isset($_FILES['variations']['tmp_name'][$variationID]['variationImage'])) {
                 // Access the uploaded file for this variation
@@ -96,7 +125,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $file_name = $_FILES['variations']['name'][$variationID]['variationImage'];
 
                 // You can handle the file as needed, for example, move it to a permanent location
-                // Move the uploaded file to the desired location
                 $uploadDir = '../../assets/variations/';
                 $uploadPath = $uploadDir . $file_name;
 
@@ -112,8 +140,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         echo json_encode($response);
                         exit(); // Terminate script execution
                     }
-
-
                     // File uploaded successfully
                     echo "Image uploaded for Variation ID: $variationID, Variation Name: $variationName<br>";
                 } else {
@@ -132,8 +158,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         exit(); // Terminate script execution
     }
 
-
-
     // Return success response if all updates were successful
     $response = array('success' => true, 'message' => 'Product and variation details updated successfully.');
     echo json_encode($response);
@@ -142,3 +166,4 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $response = array('success' => false, 'message' => 'Invalid request method.');
     echo json_encode($response);
 }
+?>
