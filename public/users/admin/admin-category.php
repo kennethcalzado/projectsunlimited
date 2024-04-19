@@ -45,12 +45,9 @@ ob_start();
     <div class="flex flex-col sm:flex-row justify-between items-center">
         <h1 class="text-4xl font-bold mb-2 ml-2 mt-8 text-black">Category</h1>
         <div class="flex justify-end">
-            <button id="addCategory"
-                class="yellow-btn btn-primary rounded-md text-center h-10 mt-4 sm:mt-4 !px-4 py-0 text-lg flex items-center">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24"
-                    stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+            <button id="addCategory" class="yellow-btn btn-primary rounded-md text-center h-10 mt-4 sm:mt-4 !px-4 py-0 text-lg flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                 </svg> Add Category </button>
         </div>
     </div>
@@ -82,17 +79,10 @@ ob_start();
                 <div class="relative mb-1 mt-2 sm:mb-0 sm:mr-2">
                     <!-- Search input -->
                     <div class="relative">
-                        <input
-                            class="border-2 border-gray-300 bg-white h-10 w-64 px-2 pr-10 mt-4 sm:!mt-0 rounded-lg text-[16px] focus:outline-none"
-                            type="text" name="search" placeholder="Search" id="searchInput">
+                        <input class="border-2 border-gray-300 bg-white h-10 w-64 px-2 pr-10 mt-4 sm:!mt-0 rounded-lg text-[16px] focus:outline-none" type="text" name="search" placeholder="Search" id="searchInput">
                         <button type="submit" class="absolute right-0 top-0 mt-7 mr-4 sm:mt-3">
-                            <svg class="text-gray-600 h-5 w-5 fill-current hover:text-gray-500 "
-                                xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-                                version="1.1" id="Capa_1" x="0px" y="0px" viewBox="0 0 56.966 56.966"
-                                style="enable-background:new 0 0 56.966 56.966;" xml:space="preserve" width="512px"
-                                height="512px">
-                                <path
-                                    d="M55.146,51.887L41.588,37.786c3.486-4.144,5.396-9.358,5.396-14.786c0-12.682-10.318-23-23-23s-23,10.318-23,23  s10.318,23,23,23c4.761,0,9.298-1.436,13.177-4.162l13.661,14.208c0.571,0.593,1.339,0.92,2.162,0.92  c0.779,0,1.518-0.297,2.079-0.837C56.255,54.982,56.293,53.08,55.146,51.887z M23.984,6c9.374,0,17,7.626,17,17s-7.626,17-17,17  s-17-7.626-17-17S14.61,6,23.984,6z" />
+                            <svg class="text-gray-600 h-5 w-5 fill-current hover:text-gray-500 " xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1" x="0px" y="0px" viewBox="0 0 56.966 56.966" style="enable-background:new 0 0 56.966 56.966;" xml:space="preserve" width="512px" height="512px">
+                                <path d="M55.146,51.887L41.588,37.786c3.486-4.144,5.396-9.358,5.396-14.786c0-12.682-10.318-23-23-23s-23,10.318-23,23  s10.318,23,23,23c4.761,0,9.298-1.436,13.177-4.162l13.661,14.208c0.571,0.593,1.339,0.92,2.162,0.92  c0.779,0,1.518-0.297,2.079-0.837C56.255,54.982,56.293,53.08,55.146,51.887z M23.984,6c9.374,0,17,7.626,17,17s-7.626,17-17,17  s-17-7.626-17-17S14.61,6,23.984,6z" />
                             </svg>
                         </button>
                     </div>
@@ -142,21 +132,18 @@ ob_start();
         <form id="addCategoryForm" method="POST" enctype="multipart/form-data" class="mt-4">
             <div class="mb-4 flex flex-col">
                 <label for="addcategoryName" class="text-sm font-medium text-gray-700 mb-1">Category Name</label>
-                <input type="text" id="addcategoryName" name="productName" placeholder="Enter Product Name"
-                    class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent">
+                <input type="text" id="addcategoryName" name="productName" placeholder="Enter Product Name" class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent">
             </div>
             <div class="flex mb-4 justify-center">
                 <div class="flex flex-col mr-4" style="flex: 1;">
                     <label for="addcategoryType" class="text-sm font-medium text-gray-700 mb-2">Page Type:</label>
-                    <select id="addcategoryType" name="productBrand"
-                        class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent">
+                    <select id="addcategoryType" name="productBrand" class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent">
                         <option value="" disabled selected></option>
                     </select>
                 </div>
                 <div class="flex flex-col mr-4" style="flex: 1;">
                     <label for="addcategoryCat" class="text-sm font-medium text-gray-700 mb-2">Type of Category</label>
-                    <select id="addcategoryCat" name="productCategory" onchange="toggleMainCategoryDropdown()"
-                        class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent">
+                    <select id="addcategoryCat" name="productCategory" onchange="toggleMainCategoryDropdown()" class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent">
                         <option value="main">Main Category</option>
                         <option value="sub">Sub Category</option>
                     </select>
@@ -166,25 +153,22 @@ ob_start();
             <div id="mainCategoryDropdown" class="flex mb-4 justify-center hidden">
                 <div class="flex flex-col mr-4" style="flex: 1;">
                     <label for="mainCategory" class="text-sm font-medium text-gray-700 mb-2">Main Category</label>
-                    <select id="mainCategory" name="mainCategory"
-                        class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent">
+                    <select id="mainCategory" name="mainCategory" class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent">
                         <option value="" disabled selected></option>
                         <!-- Populate options dynamically -->
                     </select>
                 </div>
             </div>
             <div class="flex justify-end">
-                <button type="submit" id="addCategorybtn"
-                    class="btn btn-primary rounded-md text-center h-10 mt-3 sm:mt-4 !px-4 py-0 text-lg flex items-center mr-2">Add
+                <button type="submit" id="addCategorybtn" class="btn btn-primary rounded-md text-center h-10 mt-3 sm:mt-4 !px-4 py-0 text-lg flex items-center mr-2">Add
                     Category</button>
-                <button type="button" id="closeModal"
-                    class="btn btn-secondary rounded-md text-center h-10 mt-3 sm:mt-4 !px-4 py-0 text-lg flex items-center">Cancel</button>
+                <button type="button" id="closeModal" class="btn btn-secondary rounded-md text-center h-10 mt-3 sm:mt-4 !px-4 py-0 text-lg flex items-center">Cancel</button>
             </div>
         </form>
     </div>
 </div>
 <script>
-    $(document).ready(function () {
+    $(document).ready(function() {
         var itemsPerPage = 5;
         var currentPage = 1;
 
@@ -195,7 +179,7 @@ ob_start();
 
             $('#categorylisting').empty();
 
-            $.each(slicedCategories, function (index, category) {
+            $.each(slicedCategories, function(index, category) {
                 var row = $('<tr>');
                 row.append('<td class="px-4 py-2 border-b">' + category.CategoryName + '</td>');
                 row.append('<td class="px-4 py-2 border-b">' + category.type + '</td>');
@@ -228,7 +212,7 @@ ob_start();
                 }
             }
 
-            paginationBar.find('.btn-pagination').click(function () {
+            paginationBar.find('.btn-pagination').click(function() {
                 const pageNumber = $(this).text();
                 displayCategories(categories, parseInt(pageNumber));
                 return false;
@@ -242,14 +226,14 @@ ob_start();
             url: '../../../backend/category/fetchcategory.php',
             type: 'GET',
             dataType: 'json',
-            success: function (response) {
+            success: function(response) {
                 if (response.length > 0) {
                     displayCategories(response, currentPage);
                 } else {
                     $('#categorylisting').html('<tr><td colspan="4">No categories found</td></tr>');
                 }
             },
-            error: function (xhr, status, error) {
+            error: function(xhr, status, error) {
                 console.error("Status:", status);
                 console.error("Error:", error);
                 console.error("Response:", xhr.responseText);
@@ -257,13 +241,14 @@ ob_start();
             }
         });
     });
-    $("#addCategory").click(function () {
+    $("#addCategory").click(function() {
         $("#addProdCategoryModal").removeClass("hidden");
     });
     // Close modal when Close button or "x" button is clicked
-    $("#closeAddModal, #closeModal").click(function () {
+    $("#closeAddModal, #closeModal").click(function() {
         $("#addProdCategoryModal").addClass("hidden");
     });
+
     function toggleMainCategoryDropdown() {
         var categoryType = document.getElementById("addcategoryCat").value;
         var mainCategoryDropdown = document.getElementById("mainCategoryDropdown");
@@ -274,8 +259,28 @@ ob_start();
             mainCategoryDropdown.classList.add("hidden");
         }
     }
+
+    $.ajax({
+        url: '../../../backend/category/fetchcategorytype.php',
+        type: 'GET',
+        dataType: 'json',
+        success: function(data) {
+            // Clear existing options
+            $('#addcategoryType').empty();
+            // Add a default option
+            $('#addcategoryType').append($('<option>').val('').text('Select Page Type'));
+            // Populate options from the fetched data
+            $.each(data, function(index, category) {
+                $('#addcategoryType').append($('<option>').val(category.type).text(category.type));
+            });
+        },
+        error: function(xhr, status, error) {
+            // Handle errors
+            console.error(xhr.responseText);
+        }
+    });
 </script>
 <?php
 $script = ob_get_clean();
-include ("../../../public/master.php");
+include("../../../public/master.php");
 ?>

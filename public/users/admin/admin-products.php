@@ -45,19 +45,13 @@ ob_start();
     <div class="flex flex-col sm:flex-row justify-between items-center">
         <h1 class="text-4xl font-bold mb-2 ml-2 mt-8 text-black">Products</h1>
         <div class="flex justify-end">
-            <button id="uploadImage"
-                class="yellow-btn btn-primary rounded-md text-center h-10 mt-3 sm:mt-4 !px-4 py-0 text-lg flex items-center mr-4">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24"
-                    stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+            <button id="uploadImage" class="yellow-btn btn-primary rounded-md text-center h-10 mt-3 sm:mt-4 !px-4 py-0 text-lg flex items-center mr-4">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                 </svg> Upload Image </button>
-            <button id="addProduct"
-                class="yellow-btn btn-primary rounded-md text-center h-10 mt-3 sm:mt-4 !px-4 py-0 text-lg flex items-center">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24"
-                    stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+            <button id="addProduct" class="yellow-btn btn-primary rounded-md text-center h-10 mt-3 sm:mt-4 !px-4 py-0 text-lg flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                 </svg> Add Product </button>
         </div>
     </div>
@@ -89,17 +83,10 @@ ob_start();
                 <div class="relative mb-1 mt-2 sm:mb-0 sm:mr-2">
                     <!-- Search input -->
                     <div class="relative">
-                        <input
-                            class="border-2 border-gray-300 bg-white h-10 w-64 px-2 pr-10 mt-4 sm:!mt-0 rounded-lg text-[16px] focus:outline-none"
-                            type="text" name="search" placeholder="Search" id="searchInput">
+                        <input class="border-2 border-gray-300 bg-white h-10 w-64 px-2 pr-10 mt-4 sm:!mt-0 rounded-lg text-[16px] focus:outline-none" type="text" name="search" placeholder="Search" id="searchInput">
                         <button type="submit" class="absolute right-0 top-0 mt-7 mr-4 sm:mt-3">
-                            <svg class="text-gray-600 h-5 w-5 fill-current hover:text-gray-500 "
-                                xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-                                version="1.1" id="Capa_1" x="0px" y="0px" viewBox="0 0 56.966 56.966"
-                                style="enable-background:new 0 0 56.966 56.966;" xml:space="preserve" width="512px"
-                                height="512px">
-                                <path
-                                    d="M55.146,51.887L41.588,37.786c3.486-4.144,5.396-9.358,5.396-14.786c0-12.682-10.318-23-23-23s-23,10.318-23,23  s10.318,23,23,23c4.761,0,9.298-1.436,13.177-4.162l13.661,14.208c0.571,0.593,1.339,0.92,2.162,0.92  c0.779,0,1.518-0.297,2.079-0.837C56.255,54.982,56.293,53.08,55.146,51.887z M23.984,6c9.374,0,17,7.626,17,17s-7.626,17-17,17  s-17-7.626-17-17S14.61,6,23.984,6z" />
+                            <svg class="text-gray-600 h-5 w-5 fill-current hover:text-gray-500 " xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1" x="0px" y="0px" viewBox="0 0 56.966 56.966" style="enable-background:new 0 0 56.966 56.966;" xml:space="preserve" width="512px" height="512px">
+                                <path d="M55.146,51.887L41.588,37.786c3.486-4.144,5.396-9.358,5.396-14.786c0-12.682-10.318-23-23-23s-23,10.318-23,23  s10.318,23,23,23c4.761,0,9.298-1.436,13.177-4.162l13.661,14.208c0.571,0.593,1.339,0.92,2.162,0.92  c0.779,0,1.518-0.297,2.079-0.837C56.255,54.982,56.293,53.08,55.146,51.887z M23.984,6c9.374,0,17,7.626,17,17s-7.626,17-17,17  s-17-7.626-17-17S14.61,6,23.984,6z" />
                             </svg>
                         </button>
                     </div>
@@ -157,15 +144,12 @@ ob_start();
         <form id="uploadImageForm" enctype="multipart/form-data" class="mt-2">
             <div class="mb-4 flex flex-col">
                 <label for="images" class="text-sm font-medium text-gray-700 mb-1">Select Images</label>
-                <input type="file" id="images" name="images[]" multiple accept=".jpg, .jpeg, .png"
-                    class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent">
+                <input type="file" id="images" name="images[]" multiple accept=".jpg, .jpeg, .png" class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent">
             </div>
             <div class="flex justify-end">
-                <button type="submit" id="uploadImagesBtn"
-                    class="btn btn-primary rounded-md text-center h-10 mt-3 sm:mt-4 !px-4 py-0 text-lg flex items-center mr-2">Upload
+                <button type="submit" id="uploadImagesBtn" class="btn btn-primary rounded-md text-center h-10 mt-3 sm:mt-4 !px-4 py-0 text-lg flex items-center mr-2">Upload
                     Images</button>
-                <button type="button" id="closeUploadModal"
-                    class="btn btn-secondary rounded-md text-center h-10 mt-3 sm:mt-4 !px-4 py-0 text-lg flex items-center">Cancel</button>
+                <button type="button" id="closeUploadModal" class="btn btn-secondary rounded-md text-center h-10 mt-3 sm:mt-4 !px-4 py-0 text-lg flex items-center">Cancel</button>
             </div>
         </form>
     </div>
@@ -187,34 +171,27 @@ ob_start();
         <form id="addProductForm" method="POST" enctype="multipart/form-data" class="mt-4">
             <div class="mb-4 flex flex-col">
                 <label for="addproductName" class="text-sm font-medium text-gray-700 mb-1">Product Name</label>
-                <input type="text" id="addproductName" name="productName" placeholder="Enter Product Name"
-                    class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent">
+                <input type="text" id="addproductName" name="productName" placeholder="Enter Product Name" class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent">
             </div>
             <div class="mb-4 flex flex-col">
                 <label for="addproductImage" class="text-sm font-medium text-gray-700 mb-1">Insert Product Image</label>
-                <input type="file" id="addproductImage" name="productImage" accept=".jpg, .jpeg, .png"
-                    class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
-                    onchange="previewImage(event)">
+                <input type="file" id="addproductImage" name="productImage" accept=".jpg, .jpeg, .png" class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent" onchange="previewImage(event)">
             </div>
             <div id="imagePreview"></div>
             <div class="mb-4 flex flex-col">
                 <label for="addproductDescription" class="text-sm font-medium text-gray-700 mb-1">Description</label>
-                <textarea id="addproductDescription" name="productDescription" rows="4"
-                    placeholder="Enter Product Description"
-                    class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent"></textarea>
+                <textarea id="addproductDescription" name="productDescription" rows="4" placeholder="Enter Product Description" class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent"></textarea>
             </div>
             <div class="flex mb-4 justify-center">
                 <div class="flex flex-col mr-4" style="flex: 1;">
                     <label for="addproductBrand" class="text-sm font-medium text-gray-700 mb-2">Brand</label>
-                    <select id="addproductBrand" name="productBrand"
-                        class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent">
+                    <select id="addproductBrand" name="productBrand" class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent">
                         <option value="" disabled selected></option>
                     </select>
                 </div>
                 <div class="flex flex-col mr-4" style="flex: 1;">
                     <label for="addproductCategory" class="text-sm font-medium text-gray-700 mb-2">Category</label>
-                    <select id="addproductCategory" name="productCategory"
-                        class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent">
+                    <select id="addproductCategory" name="productCategory" class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent">
                         <option value="" disabled selected></option>
                     </select>
                 </div>
@@ -223,23 +200,18 @@ ob_start();
             <div id="variationsSection" class="mb-4">
                 <h3 class="text-sm font-medium text-gray-700 mb-2">Add Variations</h3>
                 <div id="variationInputs"></div>
-                <button type="button" onclick="addVariation()"
-                    class="flex items-center text-blue-500 hover:text-blue-700 focus:outline-none">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24"
-                        stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                <button type="button" onclick="addVariation()" class="flex items-center text-blue-500 hover:text-blue-700 focus:outline-none">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                     </svg>
                     Add Variation
                 </button>
             </div>
             <!-- End of Variation Section -->
             <div class="flex justify-end">
-                <button type="submit" id="addProductbtn"
-                    class="btn btn-primary rounded-md text-center h-10 mt-3 sm:mt-4 !px-4 py-0 text-lg flex items-center mr-2">Add
+                <button type="submit" id="addProductbtn" class="btn btn-primary rounded-md text-center h-10 mt-3 sm:mt-4 !px-4 py-0 text-lg flex items-center mr-2">Add
                     Product</button>
-                <button type="button" id="closeModal"
-                    class="btn btn-secondary rounded-md text-center h-10 mt-3 sm:mt-4 !px-4 py-0 text-lg flex items-center">Cancel</button>
+                <button type="button" id="closeModal" class="btn btn-secondary rounded-md text-center h-10 mt-3 sm:mt-4 !px-4 py-0 text-lg flex items-center">Cancel</button>
             </div>
         </form>
     </div>
@@ -268,8 +240,7 @@ ob_start();
             <div class="mb-4 flex flex-col">
                 <label class="text-sm font-medium text-gray-700 mb-1">Product Image</label>
                 <input type="file" id="editProductImage" name="editedProductImage" accept=".jpg, .jpeg, .png">
-                <img id="previewProductImage" class="border rounded-md mt-2" src="#" alt="Product Image"
-                    style="max-width: 100px; max-height: 100px; display: none;">
+                <img id="previewProductImage" class="border rounded-md mt-2" src="#" alt="Product Image" style="max-width: 100px; max-height: 100px; display: none;">
             </div>
 
             <!-- Description -->
@@ -298,23 +269,18 @@ ob_start();
                 <!-- Variation fields will be dynamically added here -->
             </div>
             <div id="editVariationInputs"></div>
-            <button type="button" onclick="addEditVariation()"
-                class="flex items-center text-blue-500 hover:text-blue-700 focus:outline-none">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24"
-                    stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+            <button type="button" onclick="addEditVariation()" class="flex items-center text-blue-500 hover:text-blue-700 focus:outline-none">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
                 </svg>
                 Add Variation
             </button>
             <!-- End of Variation Section -->
             <!-- Save Changes and Close Buttons -->
             <div class="flex justify-end">
-                <button id="saveChangesButton" type="submit"
-                    class="btn btn-primary rounded-md text-center h-10 mt-3 sm:mt-4 !px-4 py-0 text-lg flex items-center">Save
+                <button id="saveChangesButton" type="submit" class="btn btn-primary rounded-md text-center h-10 mt-3 sm:mt-4 !px-4 py-0 text-lg flex items-center">Save
                     Changes</button>
-                <button id="closeEditModalButton"
-                    class="btn btn-secondary rounded-md text-center h-10 mt-3 sm:mt-4 !px-4 py-0 text-lg flex items-center ml-2">Close</button>
+                <button id="closeEditModalButton" class="btn btn-secondary rounded-md text-center h-10 mt-3 sm:mt-4 !px-4 py-0 text-lg flex items-center ml-2">Close</button>
             </div>
         </form>
     </div>
@@ -340,8 +306,7 @@ ob_start();
             </div>
             <div class="mb-4 flex flex-col">
                 <label class="text-sm font-medium text-gray-700 mb-1">Product Image</label>
-                <img id="viewProductImage" class="border rounded-md" src="#" alt="Product Image"
-                    style="max-width: 100px; max-height: 100px;">
+                <img id="viewProductImage" class="border rounded-md" src="#" alt="Product Image" style="max-width: 100px; max-height: 100px;">
             </div>
             <div class="mb-4 flex flex-col">
                 <label class="text-sm font-medium text-gray-700 mb-1">Description</label>
@@ -368,8 +333,7 @@ ob_start();
             <!-- End of Variation Section -->
         </div>
         <div class="flex justify-end">
-            <button id="closeViewModal"
-                class="btn btn-secondary rounded-md text-center h-10 mt-3 sm:mt-4 !px-4 py-0 text-lg flex items-center">Close</button>
+            <button id="closeViewModal" class="btn btn-secondary rounded-md text-center h-10 mt-3 sm:mt-4 !px-4 py-0 text-lg flex items-center">Close</button>
         </div>
     </div>
 </div>
@@ -381,11 +345,9 @@ ob_start();
         <div class="border-b border-black flex-grow border-2 mt-2 mb-3"></div>
         <p class="text-lg font-bold" id="confirmationMessage"></p>
         <div class="flex justify-end">
-            <button id="confirmDelete"
-                class="btn btn-primary rounded-md text-center h-10 mt-3 sm:mt-4 !px-4 py-0 text-lg flex items-center mr-2">Confirm
+            <button id="confirmDelete" class="btn btn-primary rounded-md text-center h-10 mt-3 sm:mt-4 !px-4 py-0 text-lg flex items-center mr-2">Confirm
                 Delete</button>
-            <button id="cancelDelete"
-                class="btn btn-secondary rounded-md text-center h-10 mt-3 sm:mt-4 !px-4 py-0 text-lg flex items-center">Cancel</button>
+            <button id="cancelDelete" class="btn btn-secondary rounded-md text-center h-10 mt-3 sm:mt-4 !px-4 py-0 text-lg flex items-center">Cancel</button>
         </div>
     </div>
 </div>
@@ -405,7 +367,7 @@ ob_start();
 
 <!-- JAVASCRIPT -->
 <script>
-    $(document).ready(function () {
+    $(document).ready(function() {
         // Fetch products and populate the table
         function fetchProducts(page, limit) {
             $.ajax({
@@ -420,7 +382,7 @@ ob_start();
                     sortValue: $("#sortFilter").val() || "",
                     searchQuery: $("#searchInput").val() || ""
                 },
-                success: function (data) {
+                success: function(data) {
                     console.log("Total rows: " + data.products.length);
                     populateProductTable(data.products);
                     console.log('data.totalRows');
@@ -428,7 +390,7 @@ ob_start();
                     console.log(data.totalRows);
                     generatePagination(data.totalPages, data.totalRows, page);
                 },
-                error: function (xhr, status, error) {
+                error: function(xhr, status, error) {
                     handleFetchError();
                 }
             });
@@ -463,7 +425,7 @@ ob_start();
             }
 
             // Add click event to pagination buttons
-            paginationBar.find('.btn-pagination').click(function () {
+            paginationBar.find('.btn-pagination').click(function() {
                 const pageNumber = $(this).text();
                 console.log("Clicked page number: " + pageNumber); // Debug statement
                 fetchFilteredProducts(pageNumber, 5, categoryId, brandId, sortValue, searchQuery); // Include filter values in request data
@@ -480,23 +442,23 @@ ob_start();
         fetchProducts(1, 5);
 
         // Handle category filter change
-        $('#categoryFilter').change(function () {
+        $('#categoryFilter').change(function() {
             fetchFilteredProducts(1, 5, true);
         });
 
         // Handle brand filter change
-        $('#brandFilter').change(function () {
+        $('#brandFilter').change(function() {
             fetchFilteredProducts(1, 5, true);
         });
 
         // Handle sort filter change
-        $('#sortFilter').change(function () {
+        $('#sortFilter').change(function() {
             sortValue = $(this).val();
             fetchFilteredProducts(1, 5, true);
         });
 
         // Handle search input change
-        $('#searchInput').on('input', function () {
+        $('#searchInput').on('input', function() {
             fetchFilteredProducts(1, 5, true);
         });
 
@@ -532,12 +494,12 @@ ob_start();
                     sortValue: sortValue,
                     searchQuery: searchQuery
                 },
-                success: function (data) {
+                success: function(data) {
                     populateProductTable(data.products);
                     generatePagination(data.totalPages, data.totalRows, page, categoryId, brandId, sortValue, searchQuery);
 
                 },
-                error: function (xhr, status, error) {
+                error: function(xhr, status, error) {
                     handleFetchError();
                 }
             });
@@ -549,7 +511,7 @@ ob_start();
 
             if (data.length > 0) {
                 // Iterate through the data array
-                data.forEach(function (product) {
+                data.forEach(function(product) {
                     // Create table row for each product
                     const tr = $("<tr>").addClass("hover:bg-zinc-100 border-b bg-white-200");
 
@@ -560,9 +522,9 @@ ob_start();
                     availabilitySelect.append($("<option>").attr("value", "").text("-"));
 
                     // Fetch availability options for the current product
-                    fetchAvailabilityOptions(product.ProductID, function (availabilityOptions) {
+                    fetchAvailabilityOptions(product.ProductID, function(availabilityOptions) {
                         // Add options based on fetched availability options
-                        availabilityOptions.forEach(function (option) {
+                        availabilityOptions.forEach(function(option) {
                             const optionElement = $("<option>").attr("value", option).text(option);
                             availabilitySelect.append(optionElement);
                         });
@@ -596,7 +558,7 @@ ob_start();
                 });
 
                 // Add event listener for availability dropdown change
-                $(".availability-dropdown").on("change", function () {
+                $(".availability-dropdown").on("change", function() {
                     const productId = $(this).closest("tr").find(".editProduct").data("productid");
                     const newAvailability = $(this).val();
 
@@ -604,16 +566,16 @@ ob_start();
                     updateProductAvailability(productId, newAvailability);
                 });
 
-                $(".deleteProduct").on("click", function () {
+                $(".deleteProduct").on("click", function() {
                     const productId = $(this).data("productid");
                     const tr = $(this).closest("tr");
                     // Show the delete confirmation modal
                     $("#deleteModal").removeClass("hidden");
                     $("#confirmationMessage").text("Are you sure you want to delete this?");
                     // Set event listener for confirm delete button in the modal
-                    $("#confirmDelete").on("click", function () {
+                    $("#confirmDelete").on("click", function() {
                         // Call function to update product status to "inactive" in the backend
-                        updateProductStatus(productId, function () {
+                        updateProductStatus(productId, function() {
                             // Hide the delete confirmation modal
                             $("#deleteModal").addClass("hidden");
 
@@ -626,7 +588,7 @@ ob_start();
                     });
 
                     // Set event listener for cancel delete button in the modal
-                    $("#cancelDelete").on("click", function () {
+                    $("#cancelDelete").on("click", function() {
                         // Hide the delete confirmation modal
                         $("#deleteModal").addClass("hidden");
 
@@ -650,7 +612,7 @@ ob_start();
                     productId: productId,
                     status: "inactive"
                 },
-                success: function (response) {
+                success: function(response) {
                     // Callback function after successful update
                     if (callback && typeof callback === "function") {
                         callback();
@@ -660,13 +622,13 @@ ob_start();
                     $("#successPopup").removeClass("hidden");
 
                     // Hide the success popup after 3 seconds
-                    setTimeout(function () {
+                    setTimeout(function() {
                         $("#successPopup").addClass("hidden");
                         // Refresh the table after hiding the success popup
                         refreshTable();
                     }, 500);
                 },
-                error: function (xhr, status, error) {
+                error: function(xhr, status, error) {
                     // Handle error
                     console.error("Error updating product status:", error);
                 }
@@ -683,11 +645,11 @@ ob_start();
                     availability: availability
                 },
                 dataType: "json",
-                success: function (response) {
+                success: function(response) {
                     // Handle success
                     console.log("Availability updated successfully:", response);
                 },
-                error: function (xhr, status, error) {
+                error: function(xhr, status, error) {
                     // Handle error
                     console.error("Error updating availability:", error);
                 }
@@ -703,7 +665,7 @@ ob_start();
                     ProductID: productId
                 },
                 dataType: "json",
-                success: function (response) {
+                success: function(response) {
                     const availabilityOptions = response;
 
                     // If callback function is provided, invoke it with availability options
@@ -711,7 +673,7 @@ ob_start();
                         callback(availabilityOptions);
                     }
                 },
-                error: function (xhr, status, error) {
+                error: function(xhr, status, error) {
                     console.error("Error fetching availability options:", error);
                 }
             });
@@ -728,7 +690,7 @@ ob_start();
     function validateForm() {
         let isValid = true;
         // Loop through each input field
-        $('#addProductForm input[type="text"], #addProductForm textarea').each(function () {
+        $('#addProductForm input[type="text"], #addProductForm textarea').each(function() {
             // If the field is empty, add red border and show error message
             if (!$(this).val()) {
                 $(this).addClass('border-red-600');
@@ -753,17 +715,17 @@ ob_start();
     }
 
     // Open modal when Add Product button is clicked
-    $("#addProduct").click(function () {
+    $("#addProduct").click(function() {
         $("#addProductModal").removeClass("hidden");
     });
 
     // Close modal when Close button or "x" button is clicked
-    $("#closeModal, #closeAddModal").click(function () {
+    $("#closeModal, #closeAddModal").click(function() {
         $("#addProductModal").addClass("hidden");
     });
 
     // Close modal when clicking outside the modal
-    $("#addProductModal").click(function (event) {
+    $("#addProductModal").click(function(event) {
         if (event.target === this) {
             $(this).addClass("hidden");
         }
@@ -775,7 +737,7 @@ ob_start();
         const file = event.target.files[0];
         const reader = new FileReader();
 
-        reader.onloadend = function () {
+        reader.onloadend = function() {
             const img = $('<img>').attr('src', reader.result).addClass('previewproductimage');
             preview.empty().append(img);
         };
@@ -789,17 +751,17 @@ ob_start();
 
     //BULK UPLOAD SCRIPT
     // Open upload image modal
-    $("#uploadImage").click(function () {
+    $("#uploadImage").click(function() {
         $("#uploadImageModal").removeClass("hidden");
     });
 
     // Close upload image modal
-    $("#closeUploadModal").click(function () {
+    $("#closeUploadModal").click(function() {
         $("#uploadImageModal").addClass("hidden");
-    });
+    });ffetch
 
     // Handle form submission to upload images
-    $("#uploadImageForm").submit(function (event) {
+    $("#uploadImageForm").submit(function(event) {
         event.preventDefault();
         var formData = new FormData(this);
         $.ajax({
@@ -808,20 +770,20 @@ ob_start();
             data: formData,
             contentType: false,
             processData: false,
-            success: function (response) {
+            success: function(response) {
                 console.log("Images uploaded successfully:", response);
                 // Close modal after successful upload
                 $("#successPopup").removeClass("hidden");
                 $("#successMessage").text("Images Successfully Added!");
                 $("#successBulkPopup").removeClass("hidden");
-                setTimeout(function () {
+                setTimeout(function() {
                     $("#successBulkPopup").addClass("hidden"); // Hide success modal after 0.5 seconds
-                    setTimeout(function () {
+                    setTimeout(function() {
                         location.reload(); // Refresh the page after 1 second
                     }, 500); // 1 second
                 }, 500); // 0.5 seconds
             },
-            error: function (xhr, status, error) {
+            error: function(xhr, status, error) {
                 console.error("Error uploading images:", error);
                 // Handle error if any
             }
@@ -833,27 +795,27 @@ ob_start();
         url: '../../../backend/product/getproductcategory.php',
         type: 'GET',
         dataType: 'json',
-        success: function (categories) {
+        success: function(categories) {
             const categoryForm = $('#addproductCategory');
             categoryForm.empty();
             categoryForm.append($('<option>').prop('disabled', true).prop('selected', true).text('Select a Category'));
-            $.each(categories, function (index, category) {
+            $.each(categories, function(index, category) {
                 categoryForm.append($('<option>').val(category.CategoryID).text(category.CategoryName));
             });
             const categoryFilter = $('#categoryFilter');
             categoryFilter.empty();
             categoryFilter.append($('<option>').val('categoryreset').text('All Category')); // Add 'All Category' option
-            $.each(categories, function (index, category) {
+            $.each(categories, function(index, category) {
                 categoryFilter.append($('<option>').val(category.CategoryID).text(category.CategoryName));
             });
             const categoryDropdown = $('#editProductCategory');
             categoryDropdown.empty();
             categoryDropdown.append($('<option>').prop('disabled', true).prop('selected', true).text('Select a Category'));
-            $.each(categories, function (index, category) {
+            $.each(categories, function(index, category) {
                 categoryDropdown.append($('<option>').val(category.CategoryID).text(category.CategoryName));
             });
         },
-        error: function (xhr, status, error) {
+        error: function(xhr, status, error) {
             console.error('Error:', error);
         }
     });
@@ -862,33 +824,33 @@ ob_start();
         url: '../../../backend/product/getbrand.php',
         type: 'GET',
         dataType: 'json',
-        success: function (brands) {
+        success: function(brands) {
             const brandForm = $('#addproductBrand');
             brandForm.empty();
             brandForm.append($('<option>').prop('disabled', true).prop('selected', true).text('Select a Brand'));
-            $.each(brands, function (index, brand) {
+            $.each(brands, function(index, brand) {
                 brandForm.append($('<option>').val(brand.brand_id).text(brand.brand_name));
             });
             const brandFilter = $('#brandFilter');
             brandFilter.empty();
             brandFilter.append($('<option>').val('brandsreset').text('All Brand')); // Add 'All Brand' option
-            $.each(brands, function (index, brand) {
+            $.each(brands, function(index, brand) {
                 brandFilter.append($('<option>').val(brand.brand_id).text(brand.brand_name));
             });
             const brandDropdown = $("#editProductBrand");
             brandDropdown.empty();
             brandDropdown.append($('<option>').prop('disabled', true).prop('selected', true).text('Select a Brand'));
-            $.each(brands, function (index, brand) {
+            $.each(brands, function(index, brand) {
                 brandDropdown.append($('<option>').val(brand.brand_id).text(brand.brand_name));
             });
         },
-        error: function (xhr, status, error) {
+        error: function(xhr, status, error) {
             console.error('Error fetching brands:', error);
         }
     });
 
     // Handle form submission to add a new product
-    $('#addProductForm').on('submit', function (event) {
+    $('#addProductForm').on('submit', function(event) {
         event.preventDefault();
         // Validate form fields
         if (validateForm()) {
@@ -900,7 +862,7 @@ ob_start();
                 contentType: false,
                 processData: false,
                 // After successfully adding a product, show the success modal and hide the add product modal
-                success: function (data) {
+                success: function(data) {
                     var responseData = JSON.parse(data);
                     if (responseData.success) {
                         console.log("Product added successfully:", responseData);
@@ -909,14 +871,13 @@ ob_start();
                         // Hide add product modal
                         $("#addProductModal").addClass("hidden");
                         // Hide success modal and refresh the page after 3 seconds
-
-                        // setTimeout(function () {
-                        //     $("#successModal").addClass("hidden");
-                        //     // Refresh table after 1 second
-                        //     setTimeout(function () {
-                        //         location.reload(); // Refresh the page
-                        //     }, 500); //
-                        // }, 500); //
+                        setTimeout(function() {
+                            $("#successModal").addClass("hidden");
+                            // Refresh table after 1 second
+                            setTimeout(function() {
+                                location.reload(); // Refresh the page
+                            }, 500); //
+                        }, 500); //
                     } else {
                         console.error("Error adding product:", responseData.error);
                     }
@@ -964,7 +925,7 @@ ob_start();
 
         if (file) {
             const reader = new FileReader();
-            reader.onload = function () {
+            reader.onload = function() {
                 const img = document.createElement('img');
                 img.src = reader.result;
                 img.className = 'border rounded-md mt-2';
@@ -983,11 +944,11 @@ ob_start();
     // Declare productId variable in a broader scope
     let productId;
     // Add event listener to the "Edit" button
-    $(document).on("click", ".editProduct", function () {
+    $(document).on("click", ".editProduct", function() {
         // Set the value of productId in the broader scope
         productId = $(this).data("productid");
         // Fetch product details for the specified product ID
-        fetchProductDetails(productId, function (productDetails) {
+        fetchProductDetails(productId, function(productDetails) {
             // Populate the edit modal with the retrieved product details
             populateEditModal(productDetails);
             // Show the edit modal
@@ -1009,11 +970,11 @@ ob_start();
         $("#editProductImageInput").val(productImageURL);
 
         // Add event listener to change event of product image input field
-        $("#editProductImage").change(function () {
+        $("#editProductImage").change(function() {
             const file = this.files[0]; // Get the selected file
             if (file) {
                 const reader = new FileReader(); // Create a new FileReader object
-                reader.onload = function (e) {
+                reader.onload = function(e) {
                     // Set the source of the preview image to the data URL
                     $("#previewProductImage").attr("src", e.target.result).show();
                 };
@@ -1085,7 +1046,7 @@ ob_start();
         if (variationImagePreview) {
             if (file) {
                 const reader = new FileReader();
-                reader.onload = function () {
+                reader.onload = function() {
                     const img = document.createElement('img');
                     img.src = reader.result;
                     img.className = 'border rounded-md mt-2';
@@ -1107,11 +1068,11 @@ ob_start();
             url: '../../../backend/product/getbrand.php',
             type: 'GET',
             dataType: 'json',
-            success: function (brands) {
+            success: function(brands) {
                 const brandDropdown = $("#editProductBrand");
                 brandDropdown.empty();
                 brandDropdown.append($('<option>').prop('disabled', true).prop('selected', true).text('Select a Brand'));
-                $.each(brands, function (index, brand) {
+                $.each(brands, function(index, brand) {
                     brandDropdown.append($('<option>').val(brand.brand_id).text(brand.brand_name));
                 });
                 // Set the selected brand if available
@@ -1119,7 +1080,7 @@ ob_start();
                     brandDropdown.val(selectedBrandId);
                 }
             },
-            error: function (xhr, status, error) {
+            error: function(xhr, status, error) {
                 console.error('Error fetching brands:', error);
             }
         });
@@ -1131,11 +1092,11 @@ ob_start();
             url: '../../../backend/product/getproductcategory.php',
             type: 'GET',
             dataType: 'json',
-            success: function (categories) {
+            success: function(categories) {
                 const categoryDropdown = $('#editProductCategory');
                 categoryDropdown.empty();
                 categoryDropdown.append($('<option>').prop('disabled', true).prop('selected', true).text('Select a Category'));
-                $.each(categories, function (index, category) {
+                $.each(categories, function(index, category) {
                     categoryDropdown.append($('<option>').val(category.CategoryID).text(category.CategoryName));
                 });
                 // Set the selected category if available
@@ -1143,14 +1104,14 @@ ob_start();
                     categoryDropdown.val(selectedCategoryId);
                 }
             },
-            error: function (xhr, status, error) {
+            error: function(xhr, status, error) {
                 console.error('Error fetching categories:', error);
             }
         });
     }
 
     // Add event listener to save changes button in the edit modal
-    $('#editProductForm').submit(function (event) {
+    $('#editProductForm').submit(function(event) {
         event.preventDefault();
 
         // Gather edited product details
@@ -1171,7 +1132,7 @@ ob_start();
         formData.append('editedProductCategory', editedProductCategory);
         formData.append('editedProductImage', editedProductImage);
 
-        $(".editVariationContainer").each(function () {
+        $(".editVariationContainer").each(function() {
             const variationID = $(this).data("variation-id");
             const variationName = $(this).find(".editVariationName").val();
             const variationImage = $(this).find(".editVariationImage")[0].files[0];
@@ -1185,7 +1146,7 @@ ob_start();
             }
         });
         // Gather data for newly added variations
-        $(".newVariation").each(function () {
+        $(".newVariation").each(function() {
             const variationName = $(this).find(".editVariationName").val();
             const variationImage = $(this).find(".editVariationImage")[0].files[0];
 
@@ -1203,17 +1164,17 @@ ob_start();
             data: formData,
             contentType: false,
             processData: false,
-            success: function (response) {
+            success: function(response) {
                 // Show success popup
                 $("#successMessage").text("Product details updated successfully.");
                 $("#successPopup").removeClass("hidden");
                 // Close the success popup after a few seconds
-                setTimeout(function () {
+                setTimeout(function() {
                     $("#successPopup").addClass("hidden");
                     location.reload();
                 }, 1000);
             },
-            error: function (xhr, status, error) {
+            error: function(xhr, status, error) {
                 console.error("Error updating product details:", error);
                 // Handle error
             }
@@ -1254,7 +1215,7 @@ ob_start();
         editVariationDiv.remove();
     }
     // Add event listener to close the view modal when cancel button or close button is clicked
-    $(document).on("click", "#closeEditModalButton, .cancelButton", function () {
+    $(document).on("click", "#closeEditModalButton, .cancelButton", function() {
         event.preventDefault();
         // Hide the view modal
         $("#editProductModal").addClass("hidden");
@@ -1262,11 +1223,11 @@ ob_start();
 
     // VIEW MODAL
     // Add event listener to the "View" button
-    $(document).on("click", ".viewProduct", function () {
+    $(document).on("click", ".viewProduct", function() {
         const productId = $(this).data("productid"); // Get the product ID from the button data attribute
 
         // Fetch product details for the specified product ID
-        fetchProductDetails(productId, function (productDetails) {
+        fetchProductDetails(productId, function(productDetails) {
             // Populate the view modal with the retrieved product details
             populateViewModal(productDetails);
 
@@ -1284,13 +1245,13 @@ ob_start();
             data: {
                 productId: productId
             },
-            success: function (response) {
+            success: function(response) {
                 // Parse the JSON response
                 const productDetails = JSON.parse(response);
                 // Execute the callback function with the retrieved product details
                 callback(productDetails);
             },
-            error: function (xhr, status, error) {
+            error: function(xhr, status, error) {
                 console.error("Error fetching product details:", error);
             }
         });
@@ -1338,7 +1299,7 @@ ob_start();
     }
 
     // Add event listener to close the view modal when cancel button or close button is clicked
-    $(document).on("click", "#closeViewModalButton, #closeViewModal, .cancelButton", function () {
+    $(document).on("click", "#closeViewModalButton, #closeViewModal, .cancelButton", function() {
         // Hide the view modal
         $("#viewProductModal").addClass("hidden");
     });
@@ -1346,5 +1307,5 @@ ob_start();
 
 <?php
 $script = ob_get_clean();
-include ("../../../public/master.php");
+include("../../../public/master.php");
 ?>
