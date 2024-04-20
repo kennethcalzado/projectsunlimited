@@ -102,6 +102,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
         }
     }
+    // Check if variations to delete are set
+    if (isset($_POST['deletedVariations'])) {
+        $deletedVariations = $_POST['deletedVariations'];
+        foreach ($deletedVariations as $variationID) {
+            // Update variation status to "Inactive" in the database
+            $stmt = $conn->prepare("UPDATE product_variation SET status = 'inactive' WHERE VariationID = ?");
+            $stmt->bind_param("i", $variationID);
+            $result = $stmt->execute();
+            // Check for success or failure and handle accordingly
+        }
+    }
     if (isset($_POST['variations'])) {
         $variations = $_POST['variations'];
         foreach ($variations as $variationID => $variation) {

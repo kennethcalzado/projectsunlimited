@@ -33,19 +33,19 @@ if (isset($_GET['productId'])) {
         // Initialize array to hold variations
         $variations = array();
 
-        // Prepare and execute the query to fetch all variations for the specified product
+        // Prepare and execute the query to fetch active variations for the specified product
         $stmt2 = $conn->prepare("
             SELECT VariationID, VariationName, image_url
             FROM product_variation
-            WHERE ProductID = ?
+            WHERE ProductID = ? AND status = 'active'
         ");
         $stmt2->bind_param("i", $productId);
         $stmt2->execute();
         $result2 = $stmt2->get_result();
 
-        // Check if variations are found
+        // Check if active variations are found
         if ($result2->num_rows > 0) {
-            // Iterate through the result set to fetch all variations
+            // Iterate through the result set to fetch all active variations
             while ($row = $result2->fetch_assoc()) {
                 // Add variation details to variations array
                 $variation = array(
