@@ -45,9 +45,12 @@ ob_start();
     <div class="flex flex-col sm:flex-row justify-between items-center">
         <h1 class="text-4xl font-bold mb-2 ml-2 mt-8 text-black">Category</h1>
         <div class="flex justify-end">
-            <button id="addCategory" class="yellow-btn btn-primary rounded-md text-center h-10 mt-4 sm:mt-4 !px-4 py-0 text-lg flex items-center">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+            <button id="addCategory"
+                class="yellow-btn btn-primary rounded-md text-center h-10 mt-4 sm:mt-4 !px-4 py-0 text-lg flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                 </svg> Add Category </button>
         </div>
     </div>
@@ -55,17 +58,17 @@ ob_start();
     <div class="flex flex-col sm:flex-row items-center justify-center">
         <div class="flex flex-col sm:flex-row justify-between mb-4 sm:mb-0">
             <div class="relative mb-2 mt-4 sm:mb-0 sm:mr-8">
-                <label for="typeFilter" class="mr-2">Type</label>
+                <label for="typeFilter" class="mr-2">Page Type:</label>
                 <select id="typeFilter" class="border rounded-md px-2 py-1">
                     <option value="typereset">All Type</option>
-                    <!-- Add your brand options here -->
+                    <!-- Add your type options here -->
                 </select>
             </div>
             <div class="relative mb-2 mt-4 sm:mb-0 sm:mr-8">
                 <label for="statusFilter" class="mr-2">Status</label>
                 <select id="statusFilter" class="border rounded-md px-2 py-1">
                     <option value="statusreset">Status</option>
-                    <!-- Add your category options here -->
+                    <!-- Add your status options here -->
                 </select>
             </div>
             <div class="relative mb-2 mt-4 sm:mb-0 sm:mr-8">
@@ -79,10 +82,17 @@ ob_start();
                 <div class="relative mb-1 mt-2 sm:mb-0 sm:mr-2">
                     <!-- Search input -->
                     <div class="relative">
-                        <input class="border-2 border-gray-300 bg-white h-10 w-64 px-2 pr-10 mt-4 sm:!mt-0 rounded-lg text-[16px] focus:outline-none" type="text" name="search" placeholder="Search" id="searchInput">
+                        <input
+                            class="border-2 border-gray-300 bg-white h-10 w-64 px-2 pr-10 mt-4 sm:!mt-0 rounded-lg text-[16px] focus:outline-none"
+                            type="text" name="search" placeholder="Search" id="searchInput">
                         <button type="submit" class="absolute right-0 top-0 mt-7 mr-4 sm:mt-3">
-                            <svg class="text-gray-600 h-5 w-5 fill-current hover:text-gray-500 " xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1" x="0px" y="0px" viewBox="0 0 56.966 56.966" style="enable-background:new 0 0 56.966 56.966;" xml:space="preserve" width="512px" height="512px">
-                                <path d="M55.146,51.887L41.588,37.786c3.486-4.144,5.396-9.358,5.396-14.786c0-12.682-10.318-23-23-23s-23,10.318-23,23  s10.318,23,23,23c4.761,0,9.298-1.436,13.177-4.162l13.661,14.208c0.571,0.593,1.339,0.92,2.162,0.92  c0.779,0,1.518-0.297,2.079-0.837C56.255,54.982,56.293,53.08,55.146,51.887z M23.984,6c9.374,0,17,7.626,17,17s-7.626,17-17,17  s-17-7.626-17-17S14.61,6,23.984,6z" />
+                            <svg class="text-gray-600 h-5 w-5 fill-current hover:text-gray-500 "
+                                xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                                version="1.1" id="Capa_1" x="0px" y="0px" viewBox="0 0 56.966 56.966"
+                                style="enable-background:new 0 0 56.966 56.966;" xml:space="preserve" width="512px"
+                                height="512px">
+                                <path
+                                    d="M55.146,51.887L41.588,37.786c3.486-4.144,5.396-9.358,5.396-14.786c0-12.682-10.318-23-23-23s-23,10.318-23,23  s10.318,23,23,23c4.761,0,9.298-1.436,13.177-4.162l13.661,14.208c0.571,0.593,1.339,0.92,2.162,0.92  c0.779,0,1.518-0.297,2.079-0.837C56.255,54.982,56.293,53.08,55.146,51.887z M23.984,6c9.374,0,17,7.626,17,17s-7.626,17-17,17  s-17-7.626-17-17S14.61,6,23.984,6z" />
                             </svg>
                         </button>
                     </div>
@@ -132,18 +142,22 @@ ob_start();
         <form id="addCategoryForm" method="POST" enctype="multipart/form-data" class="mt-4">
             <div class="mb-4 flex flex-col">
                 <label for="addcategoryName" class="text-sm font-medium text-gray-700 mb-1">Category Name</label>
-                <input type="text" id="addcategoryName" name="productName" placeholder="Enter Product Name" class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent">
+                <input type="text" id="addcategoryName" name="productName" placeholder="Enter Product Name"
+                    class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent">
             </div>
             <div class="flex mb-4 justify-center">
                 <div class="flex flex-col mr-4" style="flex: 1;">
                     <label for="addcategoryType" class="text-sm font-medium text-gray-700 mb-2">Page Type:</label>
-                    <select id="addcategoryType" name="productBrand" class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent">
+                    <select id="addcategoryType" name="productBrand"
+                        class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent">
                         <option value="" disabled selected></option>
                     </select>
                 </div>
                 <div class="flex flex-col mr-4" style="flex: 1;">
                     <label for="addcategoryCat" class="text-sm font-medium text-gray-700 mb-2">Type of Category</label>
-                    <select id="addcategoryCat" name="productCategory" onchange="toggleMainCategoryDropdown()" class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent">
+                    <select id="addcategoryCat" name="productCategory" onchange="toggleMainCategoryDropdown()"
+                        class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent">
+                        <option value="" disabled selected>Select a Type of Category</option>
                         <option value="main">Main Category</option>
                         <option value="sub">Sub Category</option>
                     </select>
@@ -153,33 +167,85 @@ ob_start();
             <div id="mainCategoryDropdown" class="flex mb-4 justify-center hidden">
                 <div class="flex flex-col mr-4" style="flex: 1;">
                     <label for="mainCategory" class="text-sm font-medium text-gray-700 mb-2">Main Category</label>
-                    <select id="mainCategory" name="mainCategory" class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent">
+                    <select id="mainCategory" name="mainCategory"
+                        class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent">
                         <option value="" disabled selected></option>
                         <!-- Populate options dynamically -->
                     </select>
                 </div>
             </div>
             <div class="flex justify-end">
-                <button type="submit" id="addCategorybtn" class="btn btn-primary rounded-md text-center h-10 mt-3 sm:mt-4 !px-4 py-0 text-lg flex items-center mr-2">Add
+                <button type="submit" id="addCategorybtn"
+                    class="btn btn-primary rounded-md text-center h-10 mt-3 sm:mt-4 !px-4 py-0 text-lg flex items-center mr-2">Add
                     Category</button>
-                <button type="button" id="closeModal" class="btn btn-secondary rounded-md text-center h-10 mt-3 sm:mt-4 !px-4 py-0 text-lg flex items-center">Cancel</button>
+                <button type="button" id="closeModal"
+                    class="btn btn-secondary rounded-md text-center h-10 mt-3 sm:mt-4 !px-4 py-0 text-lg flex items-center">Cancel</button>
             </div>
         </form>
     </div>
 </div>
 <script>
-    $(document).ready(function() {
+    $(document).ready(function () {
         var itemsPerPage = 5;
         var currentPage = 1;
 
-        function displayCategories(categories, page) {
-            var startIndex = (page - 1) * itemsPerPage;
+        // Function to fetch and display categories based on filters and pagination
+        function fetchAndDisplayCategories() {
+            var typeFilter = $('#typeFilter').val();
+            var statusFilter = $('#statusFilter').val();
+            var sortFilter = $('#sortFilter').val();
+
+            $.ajax({
+                url: '../../../backend/category/fetchcategory.php',
+                type: 'GET',
+                dataType: 'json',
+                data: {
+                    type: typeFilter,
+                    status: statusFilter,
+                    sort: sortFilter,
+                    page: currentPage // Pass currentPage to the backend
+                },
+                success: function (response) {
+                    // Check if categories are found
+                    if (response.categories.length > 0) {
+                        // Display categories for the table
+                        displayCategories(response.categories);
+                    } else {
+                        // Display a message if no categories found
+                        $('#categorylisting').html('<tr><td colspan="4" class="text-center font-bold text-red-800">No categories found</td></tr>');
+                    }
+                    // Populate main category dropdown
+                    if (response.mainCategories.length > 0) {
+                        $('#mainCategory').empty(); // Empty the dropdown
+                        $('#mainCategory').append($('<option>').text("Select a Main Category").attr('disabled', true).attr('selected', true)); // Add option label
+                        $.each(response.mainCategories, function (index, category) {
+                            $('#mainCategory').append($('<option>').val(category.CategoryID).text(category.CategoryName));
+                        });
+                    } else {
+                        $('#mainCategory').empty();
+                        $('#mainCategory').append($('<option>').text("No main categories found").attr('disabled', true).attr('selected', true));
+                    }
+                },
+                error: function (xhr, status, error) {
+                    // Handle errors
+                    console.error("Status:", status);
+                    console.error("Error:", error);
+                    console.error("Response:", xhr.responseText);
+                    $('#categorylisting').html('<tr><td colspan="4" class="text-center font-bold text-red-800">Error fetching categories</td></tr>');
+                }
+            });
+        }
+
+
+        // Function to handle pagination and display categories
+        function displayCategories(categories) {
+            var startIndex = (currentPage - 1) * itemsPerPage;
             var endIndex = startIndex + itemsPerPage;
             var slicedCategories = categories.slice(startIndex, endIndex);
 
             $('#categorylisting').empty();
 
-            $.each(slicedCategories, function(index, category) {
+            $.each(slicedCategories, function (index, category) {
                 var row = $('<tr>');
                 row.append('<td class="px-4 py-2 border-b">' + category.CategoryName + '</td>');
                 row.append('<td class="px-4 py-2 border-b">' + category.type + '</td>');
@@ -194,10 +260,11 @@ ob_start();
                 $('#categorylisting').append(row);
             });
 
-            generatePagination(Math.ceil(categories.length / itemsPerPage), categories.length, page, categories);
+            generatePagination(Math.ceil(categories.length / itemsPerPage), categories.length);
         }
 
-        function generatePagination(totalPages, totalRows, currentPage, categories) {
+        // Function to generate pagination
+        function generatePagination(totalPages, totalRows) {
             const paginationBar = $('#pagination');
             paginationBar.empty();
 
@@ -212,9 +279,10 @@ ob_start();
                 }
             }
 
-            paginationBar.find('.btn-pagination').click(function() {
+            paginationBar.find('.btn-pagination').click(function () {
                 const pageNumber = $(this).text();
-                displayCategories(categories, parseInt(pageNumber));
+                currentPage = parseInt(pageNumber);
+                fetchAndDisplayCategories(); // Update categories when page changes
                 return false;
             });
 
@@ -222,65 +290,101 @@ ob_start();
             paginationBar.addClass('flex justify-end');
         }
 
+        // Fetch and display categories on page load
+        fetchAndDisplayCategories();
+
+        // Event listener for type filter change
+        $('#typeFilter').change(function () {
+            currentPage = 1; // Reset currentPage to 1 when filter changes
+            fetchAndDisplayCategories();
+        });
+
+        // Event listener for status filter change
+        $('#statusFilter').change(function () {
+            currentPage = 1; // Reset currentPage to 1 when filter changes
+            fetchAndDisplayCategories();
+        });
+
+        // Event listener for sort filter change
+        $('#sortFilter').change(function () {
+            currentPage = 1; // Reset currentPage to 1 when filter changes
+            fetchAndDisplayCategories();
+        });
+
+        // Show add category modal
+        $("#addCategory").click(function () {
+            $("#addProdCategoryModal").removeClass("hidden");
+        });
+
+        // Close modal when Close button or "x" button is clicked
+        $("#closeAddModal, #closeModal").click(function () {
+            $("#addProdCategoryModal").addClass("hidden");
+        });
+
+        // Function to toggle main category dropdown visibility
+        function toggleMainCategoryDropdown() {
+            var categoryType = $('#addcategoryCat').val();
+            var mainCategoryDropdown = $('#mainCategoryDropdown');
+
+            if (categoryType === "sub") {
+                mainCategoryDropdown.removeClass("hidden");
+            } else {
+                mainCategoryDropdown.addClass("hidden");
+            }
+        }
+
+        // Event listener for category type change
+        $('#addcategoryCat').change(function () {
+            toggleMainCategoryDropdown();
+        });
+
+        // Call the function initially to set the initial state of the main category dropdown
+        toggleMainCategoryDropdown();
+
+        // AJAX request to fetch page types
         $.ajax({
-            url: '../../../backend/category/fetchcategory.php',
+            url: '../../../backend/category/fetchcategorytype.php',
             type: 'GET',
             dataType: 'json',
-            success: function(response) {
-                if (response.length > 0) {
-                    displayCategories(response, currentPage);
-                } else {
-                    $('#categorylisting').html('<tr><td colspan="4">No categories found</td></tr>');
-                }
+            success: function (data) {
+                $('#addcategoryType').empty();
+                $('#typeFilter').empty();
+
+                $('#addcategoryType').append($('<option>').val('').text('Select Page Type'));
+                $('#typeFilter').append($('<option>').val('typereset').text('All Type'));
+
+                $.each(data, function (index, type) {
+                    $('#addcategoryType').append($('<option>').val(type).text(type));
+                    $('#typeFilter').append($('<option>').val(type).text(type));
+                });
             },
-            error: function(xhr, status, error) {
-                console.error("Status:", status);
-                console.error("Error:", error);
-                console.error("Response:", xhr.responseText);
-                $('#categorylisting').html('<tr><td colspan="4">Error fetching categories</td></tr>');
+            error: function (xhr, status, error) {
+                // Handle errors
+                console.error(xhr.responseText);
             }
         });
-    });
-    $("#addCategory").click(function() {
-        $("#addProdCategoryModal").removeClass("hidden");
-    });
-    // Close modal when Close button or "x" button is clicked
-    $("#closeAddModal, #closeModal").click(function() {
-        $("#addProdCategoryModal").addClass("hidden");
-    });
 
-    function toggleMainCategoryDropdown() {
-        var categoryType = document.getElementById("addcategoryCat").value;
-        var mainCategoryDropdown = document.getElementById("mainCategoryDropdown");
+        // AJAX request to fetch page types
+        $.ajax({
+            url: '../../../backend/category/fetchcategorystatus.php',
+            type: 'GET',
+            dataType: 'json',
+            success: function (data) {
+                $('#statusFilter').empty();
+                $('#statusFilter').append($('<option>').val('statusreset').text('Status'));
 
-        if (categoryType === "sub") {
-            mainCategoryDropdown.classList.remove("hidden");
-        } else {
-            mainCategoryDropdown.classList.add("hidden");
-        }
-    }
-
-    $.ajax({
-        url: '../../../backend/category/fetchcategorytype.php',
-        type: 'GET',
-        dataType: 'json',
-        success: function(data) {
-            // Clear existing options
-            $('#addcategoryType').empty();
-            // Add a default option
-            $('#addcategoryType').append($('<option>').val('').text('Select Page Type'));
-            // Populate options from the fetched data
-            $.each(data, function(index, category) {
-                $('#addcategoryType').append($('<option>').val(category.type).text(category.type));
-            });
-        },
-        error: function(xhr, status, error) {
-            // Handle errors
-            console.error(xhr.responseText);
-        }
+                $.each(data, function (index, status) { // Change 'status' to 'type'
+                    $('#statusFilter').append($('<option>').val(status).text(status)); // Change 'status' to 'type'
+                });
+            },
+            error: function (xhr, status, error) {
+                // Handle errors
+                console.error(xhr.responseText);
+            }
+        });
     });
 </script>
 <?php
 $script = ob_get_clean();
-include("../../../public/master.php");
+include ("../../../public/master.php");
 ?>

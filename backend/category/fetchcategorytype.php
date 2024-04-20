@@ -1,24 +1,34 @@
 <?php
+header('Content-Type: application/json');
+
+// Include your database connection
 include '../../backend/conn.php';
 
-// Fetch data from the productcategory table
-$query = "SELECT type FROM productcategory";
-$result = mysqli_query($conn, $query);
+// Fetch distinct types from the productcategory table
+$sql = "SELECT DISTINCT type FROM productcategory";
+$result = $conn->query($sql);
 
-// Check if query was successful
-if ($result) {
-    $categories = array();
-    // Loop through the results to fetch data
-    while ($row = mysqli_fetch_assoc($result)) {
-        $categories[] = $row;
+// Store types in an array
+$types = array();
+
+// Check if any types are fetched
+if ($result->num_rows > 0) {
+    while ($row = $result->fetch_assoc()) {
+        $types[] = $row['type'];
     }
-    // Return data as JSON
-    echo json_encode($categories);
-} else {
-    // Handle query error
-    echo "Error: " . mysqli_error($conn);
 }
 
+// Add "product" and "service" options if they are not already in the array
+if (!in_array("product", $types)) {
+    $types[] = "product";
+}
+if (!in_array("service", $types)) {
+    $types[] = "service";
+}
+
+// Return types as JSON
+echo json_encode($types);
+
 // Close database connection
-mysqli_close($conn);
+$conn->close();
 ?>

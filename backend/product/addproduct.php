@@ -61,8 +61,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $variationImageName = mysqli_real_escape_string($conn, $variationImageName);
 
                     // Construct the SQL query for variation insertion
-                    $variationSql = "INSERT INTO product_variation (ProductID, VariationName, image_url, availability, status) 
-                    VALUES ('$productId', '$variationName', '$variationImageName', 'AVAILABLE', 'active')";
+                    $variationSql = "INSERT INTO product_variation (ProductID, VariationName, image_url, availability, status, created_at) 
+                    VALUES ('$productId', '$variationName', '$variationImageName', 'AVAILABLE', 'active', CURRENT_TIMESTAMP)";   
 
                     // Execute the query for variation insertion
                     mysqli_query($conn, $variationSql);
