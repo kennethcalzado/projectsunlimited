@@ -573,20 +573,26 @@ ob_start();
 
                     // Append other product details to table row
                     tr.html(`
-                    <td>${product.ProductName}</td>
-                    <td><img class="centered-image" src="../../../assets/products/${product.image_urls[0]}" alt="Product Image" style="max-width: 100px; max-height: 100px;"></td>
-                    <td>${product.brand_name}</td>
-                    <td></td> <!-- This will be replaced by the availability dropdown -->
-                    <td>${product.CategoryName}</td>
-                    <td>${product.created_at}</td>
-                    <td>
-                        <div class="flex justify-center">
-                            <button type="button" class="btn btn-view rounded-md text-center sm:mt-4!px-4 text-sm flex items-center mr-2 viewProduct" data-productid="${product.ProductID}"><i class="fas fa-eye mr-2 fa-sm"></i><span class="hover:underline">View</span></button>
-                            <button type="button" class="btn btn-primary rounded-md text-center sm:mt-4!px-4 text-sm flex items-center mr-2 editProduct" data-productid="${product.ProductID}"><i class="fas fa-edit mr-2 fa-sm"></i>Edit</button>
-                            <button type="button" class="btn btn-danger rounded-md text-center sm:mt-4!px-4 text-sm flex items-center mr-2 deleteProduct" data-productid="${product.ProductID}"><i class="fas fa-trash-alt mr-2 fa-sm"></i>Delete</button>
-                        </div>
-                    </td>
-                `);
+                        <td>${product.ProductName}</td>
+                        <td><img class="centered-image" src="../../../assets/products/${product.image_urls[0]}" alt="Product Image" style="max-width: 100px; max-height: 100px;"></td>
+                        <td>${product.brand_name}</td>
+                        <td></td> <!-- This will be replaced by the availability dropdown -->
+                        <td>${product.CategoryName}</td>
+                        <td>
+                            <div>
+                                <span>${product.created_date}</span><br>
+                                <span class="text-sm text-gray-500">${product.created_time}</span>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="flex justify-center">
+                                <button type="button" class="btn btn-view rounded-md text-center sm:mt-4!px-4 text-sm flex items-center mr-2 viewProduct" data-productid="${product.ProductID}"><i class="fas fa-eye mr-2 fa-sm"></i><span class="hover:underline">View</span></button>
+                                <button type="button" class="btn btn-primary rounded-md text-center sm:mt-4!px-4 text-sm flex items-center mr-2 editProduct" data-productid="${product.ProductID}"><i class="fas fa-edit mr-2 fa-sm"></i>Edit</button>
+                                <button type="button" class="btn btn-danger rounded-md text-center sm:mt-4!px-4 text-sm flex items-center mr-2 deleteProduct" data-productid="${product.ProductID}"><i class="fas fa-trash-alt mr-2 fa-sm"></i>Delete</button>
+                            </div>
+                        </td>
+                    `);
+
 
                     // Append availability dropdown to table cell
                     tr.find("td:eq(3)").append(availabilitySelect);

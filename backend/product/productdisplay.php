@@ -7,7 +7,7 @@ include '../../backend/conn.php';
 // Check if the connection is established successfully
 if ($conn) {
     // Construct the basic SQL query
-    $sql = "SELECT p.ProductID, p.ProductName, b.brand_name, p.availability, p.image_urls, pc.CategoryName, DATE_FORMAT(p.created_at, '%b %d, %Y') AS created_at
+    $sql = "SELECT p.ProductID, p.ProductName, b.brand_name, p.availability, p.image_urls, pc.CategoryName, DATE_FORMAT(p.created_at, '%b %d, %Y') AS created_date, TIME_FORMAT(p.created_at, '%h:%i %p') AS created_time
     FROM product p
     LEFT JOIN brands b ON p.brand_id = b.brand_id
     LEFT JOIN productcategory pc ON p.CategoryID = pc.CategoryID
