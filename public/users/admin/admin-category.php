@@ -157,7 +157,7 @@ ob_start();
                     <label for="addcategoryCat" class="text-sm font-medium text-gray-700 mb-2">Type of Category</label>
                     <select id="addcategoryCat" name="productCategory" onchange="toggleMainCategoryDropdown()"
                         class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent">
-                        <option value="" disabled selected>Select a Type of Category</option>
+                        <option value="">Select a Type of Category</option>
                         <option value="main">Main Category</option>
                         <option value="sub">Sub Category</option>
                     </select>
@@ -174,6 +174,17 @@ ob_start();
                     </select>
                 </div>
             </div>
+            <!-- Main Category Image Insert -->
+            <div id="mainCategoryImage" class="flex flex-col mb-4 hidden">
+                <label for="mainCategoryImageInput" class="text-sm font-medium text-gray-700 mb-2">Main Category
+                    Image</label>
+                <input type="file" id="mainCategoryImageInput" name="mainCategoryImageInput"
+                    accept="image/jpeg, image/jpg, image/png"
+                    class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
+                    onchange="previewMainCategoryImage(event)">
+                <div id="mainCategoryImagePreview"></div>
+            </div>
+
             <div class="flex justify-end">
                 <button type="submit" id="addCategorybtn"
                     class="btn btn-primary rounded-md text-center h-10 mt-3 sm:mt-4 !px-4 py-0 text-lg flex items-center mr-2">Add
@@ -206,16 +217,18 @@ ob_start();
                     page: currentPage // Pass currentPage to the backend
                 },
                 success: function (response) {
-                    // Check if categories are found
-                    if (response.categories.length > 0) {
+                    if (response && response.categories && response.categories.length > 0) {
                         // Display categories for the table
                         displayCategories(response.categories);
                     } else {
-                        // Display a message if no categories found
-                        $('#categorylisting').html('<tr><td colspan="4" class="text-center font-bold text-red-800">No categories found</td></tr>');
+                        // Display "No Categories Found" message
+                        $('#categorylisting').html('<tr><td colspan="4" class="text-center font-bold text-red-800">No Categories Found</td></tr>');
+                        // Also, clear any existing pagination
+                        $('#pagination').empty();
                     }
+
                     // Populate main category dropdown
-                    if (response.mainCategories.length > 0) {
+                    if (response && response.mainCategories && response.mainCategories.length > 0) {
                         $('#mainCategory').empty(); // Empty the dropdown
                         $('#mainCategory').append($('<option>').text("Select a Main Category").attr('disabled', true).attr('selected', true)); // Add option label
                         $.each(response.mainCategories, function (index, category) {
@@ -235,8 +248,6 @@ ob_start();
                 }
             });
         }
-
-
         // Function to handle pagination and display categories
         function displayCategories(categories) {
             var startIndex = (currentPage - 1) * itemsPerPage;
@@ -320,27 +331,6 @@ ob_start();
         $("#closeAddModal, #closeModal").click(function () {
             $("#addProdCategoryModal").addClass("hidden");
         });
-
-        // Function to toggle main category dropdown visibility
-        function toggleMainCategoryDropdown() {
-            var categoryType = $('#addcategoryCat').val();
-            var mainCategoryDropdown = $('#mainCategoryDropdown');
-
-            if (categoryType === "sub") {
-                mainCategoryDropdown.removeClass("hidden");
-            } else {
-                mainCategoryDropdown.addClass("hidden");
-            }
-        }
-
-        // Event listener for category type change
-        $('#addcategoryCat').change(function () {
-            toggleMainCategoryDropdown();
-        });
-
-        // Call the function initially to set the initial state of the main category dropdown
-        toggleMainCategoryDropdown();
-
         // AJAX request to fetch page types
         $.ajax({
             url: '../../../backend/category/fetchcategorytype.php',
@@ -383,6 +373,36 @@ ob_start();
             }
         });
     });
+</script>
+<script>
+    function toggleMainCategoryDropdown() {
+        var categoryType = $('#addcategoryCat').val();
+        var mainCategoryDropdown = $('#mainCategoryDropdown');
+        var mainCategoryImage = $('#mainCategoryImage');
+
+        if (categoryType === "sub") {
+            mainCategoryDropdown.removeClass("hidden");
+            mainCategoryImage.addClass("hidden");
+        } else if (categoryType === "main") {
+            mainCategoryDropdown.addClass("hidden");
+            mainCategoryImage.removeClass("hidden");
+        }
+    }
+
+    // Event listener for category type change
+    $('#addcategoryCat').change(function () {
+        toggleMainCategoryDropdown();
+    });
+
+    // Function to preview main category image
+    function previewMainCategoryImage(event) {
+        var reader = new FileReader();
+        reader.onload = function () {
+            var output = document.getElementById('mainCategoryImagePreview');
+            output.innerHTML = '<img src="' + reader.result + '" class="max-w-full h-auto">';
+        }
+        reader.readAsDataURL(event.target.files[0]);
+    }
 </script>
 <?php
 $script = ob_get_clean();

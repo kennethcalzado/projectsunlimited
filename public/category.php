@@ -35,7 +35,7 @@ ob_start();
                         </a>
                         <a href="../public/modular.php" class="w-1/5 bg-white p-4 pt-3">
                             <!-- Image 4 -->
-                            <img src="../assets/image/MODULAR CABINETS.png" alt="Office" class="w-full h-70 object-cover  max-w-2xl transition duration-300 ease-in-out hover:scale-110 border-double border-black border-4">
+                            <img src="../assets/image/modularcabinet.png" alt="Office" class="w-full h-70 object-cover  max-w-2xl transition duration-300 ease-in-out hover:scale-110 border-double border-black border-4">
                         </a>
                     </div>
                 </div>
