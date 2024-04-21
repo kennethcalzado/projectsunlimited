@@ -142,20 +142,20 @@ ob_start();
         <form id="addCategoryForm" method="POST" enctype="multipart/form-data" class="mt-4">
             <div class="mb-4 flex flex-col">
                 <label for="addcategoryName" class="text-sm font-medium text-gray-700 mb-1">Category Name</label>
-                <input type="text" id="addcategoryName" name="productName" placeholder="Enter Product Name"
+                <input type="text" id="addcategoryName" name="productName" placeholder="Enter Category Name"
                     class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent">
             </div>
             <div class="flex mb-4 justify-center">
                 <div class="flex flex-col mr-4" style="flex: 1;">
                     <label for="addcategoryType" class="text-sm font-medium text-gray-700 mb-2">Page Type:</label>
-                    <select id="addcategoryType" name="productBrand"
+                    <select id="addcategoryType" name="pageType"
                         class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent">
                         <option value="" disabled selected></option>
                     </select>
                 </div>
                 <div class="flex flex-col mr-4" style="flex: 1;">
                     <label for="addcategoryCat" class="text-sm font-medium text-gray-700 mb-2">Type of Category</label>
-                    <select id="addcategoryCat" name="productCategory" onchange="toggleMainCategoryDropdown()"
+                    <select id="addcategoryCat" name="categoryType" onchange="toggleMainCategoryDropdown()"
                         class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent">
                         <option value="">Select a Type of Category</option>
                         <option value="main">Main Category</option>
@@ -193,6 +193,29 @@ ob_start();
                     class="btn btn-secondary rounded-md text-center h-10 mt-3 sm:mt-4 !px-4 py-0 text-lg flex items-center">Cancel</button>
             </div>
         </form>
+    </div>
+</div>
+<!-- Delete Confirmation Modal -->
+<div id="deleteModal" class="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 hidden">
+    <div class="bg-white p-4 rounded-md shadow-md w-full sm:w-[80%] md:w-[60%] lg:w-[40%] xl:w-[30%]">
+        <h2 class="text-2xl font-bold" id="confirmationTitle"> DELETE</h2>
+        <div class="border-b border-black flex-grow border-2 mt-2 mb-3"></div>
+        <p class="text-lg font-bold" id="confirmationMessage"></p>
+        <div class="flex justify-end">
+            <button id="confirmDelete"
+                class="btn btn-primary rounded-md text-center h-10 mt-3 sm:mt-4 !px-4 py-0 text-lg flex items-center mr-2">Confirm
+                Delete</button>
+            <button id="cancelDelete"
+                class="btn btn-secondary rounded-md text-center h-10 mt-3 sm:mt-4 !px-4 py-0 text-lg flex items-center">Cancel</button>
+        </div>
+    </div>
+</div>
+<!-- Success -->
+<div id="successPopup" class="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 hidden">
+    <div class="bg-white p-4 rounded-md shadow-md w-full h-40 sm:w-[70%] md:w-[60%] lg:w-[40%] xl:w-[30%]">
+        <h2 class="text-2xl font-extrabold" id="SuccessTitle">Success</h2>
+        <div class="border-b border-black flex-grow border-2 mt-2 mb-3"></div>
+        <p class="text-xl font-bold text-green-600" id="successMessage"></p>
     </div>
 </div>
 <script>
@@ -264,8 +287,8 @@ ob_start();
                 row.append('<td class="px-4 py-2 border-b">' +
                     '<div class="flex justify-center">' +
                     '<button type="button" class="btn btn-view rounded-md text-center sm:mt-4 px-4 text-sm flex items-center mr-2 viewCategory" data-categoryid="' + category.CategoryID + '"><i class="fas fa-eye mr-2 fa-sm"></i><span class="hover:underline">View</span></button>' +
-                    '<button type="button" class="btn btn-primary rounded-md text-center sm:mt-4 px-4 text-sm flex items-center mr-2 editCategory" data-categoryid="' + category.CategoryID + '"><i class="fas fa-edit mr-2 fa-sm"></i>Edit</button>' +
-                    '<button type="button" class="btn btn-danger rounded-md text-center sm:mt-4 px-4 text-sm flex items-center mr-2 deleteCategory" data-categoryid="' + category.CategoryID + '"><i class="fas fa-trash-alt mr-2 fa-sm"></i>Delete</button>' +
+                    '<button type="button" class="btn btn-primary rounded-md text-center sm:mt-4 px-4 text-sm flex items-center mr-2 editCategory" data-categoryid="' + category.CategoryID + '"><i class="fas fa-edit mr-2 fa-sm"></i><span class="hover:underline">Edit</span></button>' +
+                    '<button type="button" class="btn btn-danger rounded-md text-center sm:mt-4 px-4 text-sm flex items-center mr-2 deleteCategory" data-categoryid="' + category.CategoryID + '"><i class="fas fa-trash-alt mr-2 fa-sm"></i><span class="hover:underline">Delete</span></button>' +
                     '</div>' +
                     '</td>');
                 $('#categorylisting').append(row);
@@ -368,8 +391,38 @@ ob_start();
                 });
             },
             error: function (xhr, status, error) {
-                // Handle errors
                 console.error(xhr.responseText);
+            }
+        });
+    });
+    $('#addCategoryForm').submit(function (event) {
+        event.preventDefault(); 
+
+        var formData = new FormData($(this)[0]); 
+
+        $.ajax({
+            type: 'POST',
+            url: '../../../backend/category/addcategory.php',
+            data: formData,
+            contentType: false,
+            processData: false, 
+            success: function (response) {
+                console.log(response);
+
+                $('#successMessage').text("Category has been successfully added.");
+                $('#successPopup').removeClass("hidden");
+
+                $('#addProdCategoryModal').addClass("hidden");
+                setTimeout(function () { 
+                    location.reload(); 
+                }, 500);
+
+                setTimeout(function () {
+                    $('#successPopup').addClass("hidden");
+                }, 1000); 
+            },
+            error: function (xhr, status, error) {
+                console.error(error); 
             }
         });
     });
@@ -388,7 +441,6 @@ ob_start();
             mainCategoryImage.removeClass("hidden");
         }
     }
-
     // Event listener for category type change
     $('#addcategoryCat').change(function () {
         toggleMainCategoryDropdown();

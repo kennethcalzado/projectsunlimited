@@ -587,8 +587,8 @@ ob_start();
                         <td>
                             <div class="flex justify-center">
                                 <button type="button" class="btn btn-view rounded-md text-center sm:mt-4!px-4 text-sm flex items-center mr-2 viewProduct" data-productid="${product.ProductID}"><i class="fas fa-eye mr-2 fa-sm"></i><span class="hover:underline">View</span></button>
-                                <button type="button" class="btn btn-primary rounded-md text-center sm:mt-4!px-4 text-sm flex items-center mr-2 editProduct" data-productid="${product.ProductID}"><i class="fas fa-edit mr-2 fa-sm"></i>Edit</button>
-                                <button type="button" class="btn btn-danger rounded-md text-center sm:mt-4!px-4 text-sm flex items-center mr-2 deleteProduct" data-productid="${product.ProductID}"><i class="fas fa-trash-alt mr-2 fa-sm"></i>Delete</button>
+                                <button type="button" class="btn btn-primary rounded-md text-center sm:mt-4!px-4 text-sm flex items-center mr-2 editProduct" data-productid="${product.ProductID}"><i class="fas fa-edit mr-2 fa-sm"></i><span class="hover:underline">Edit</span></button>
+                                <button type="button" class="btn btn-danger rounded-md text-center sm:mt-4!px-4 text-sm flex items-center mr-2 deleteProduct" data-productid="${product.ProductID}"><i class="fas fa-trash-alt mr-2 fa-sm"></i><span class="hover:underline">Delete</span></button>
                             </div>
                         </td>
                     `);
