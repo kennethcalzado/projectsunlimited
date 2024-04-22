@@ -1,6 +1,6 @@
 <?php
 session_start();
-$pageTitle = "CMS - Blogs";
+$pageTitle = "CMS - Testimonials";
 ob_start();
 ?>
 
@@ -60,41 +60,25 @@ ob_start();
             <!-- Modal Content -->
             <div class="bg-white p-6 rounded-lg">
                 <div class="flex justify-between items-center mb-4">
-                    <h2 class="text-xl font-bold">Add New Blog</h2>
+                    <h2 class="text-xl font-bold">Add Testimonial</h2>
                     <span class="cursor-pointer text-gray-500 hover:text-gray-700" onclick="closeModal()">X</span>
                 </div>
-                <form action="../../../backend/blogs/add_blog.php" method="POST" enctype="multipart/form-data">
+                <form action="../../../backend/testimonials/add_testimonial.php" method="POST" enctype="multipart/form-data">
                     <div class="mb-4">
-                        <label for="title" class="block font-semibold mb-2">Title</label>
-                        <input type="text" name="title" id="title" class="border rounded px-4 py-2 w-full" required>
+                        <label for="message" class="block font-semibold mb-2">Message</label>
+                        <textarea name="message" id="message" class="border rounded px-4 py-2 w-full" required></textarea>
                     </div>
                     <div class="mb-4">
-                        <label for="description" class="block font-semibold mb-2">Description</label>
-                        <textarea name="description" id="description" class="border rounded px-4 py-2 w-full" required></textarea>
+                        <label for="name" class="block font-semibold mb-2">Name</label>
+                        <input type="text" name="name" id="name" class="border rounded px-4 py-2 w-full" required>
                     </div>
                     <div class="mb-4">
-                        <label for="thumbnail" class="block font-semibold mb-2">Thumbnail</label>
-                        <input type="file" name="thumbnail" id="thumbnail" class="border rounded px-4 py-2 w-full" accept="image/*">
-                    </div>
-                    <div class="mb-4">
-                        <label for="images" class="block font-semibold mb-2">Images</label>
-                        <input type="file" name="images[]" id="images" class="border rounded px-4 py-2 w-full" accept="image/*" multiple>
-                    </div>
-                    <div class="mb-4">
-                        <label for="date" class="block font-semibold mb-2">Date</label>
-                        <!-- Date picker input field -->
-                        <input type="date" name="date" id="date" class="border rounded px-4 py-2 w-full" required>
-                    </div>
-                    <div class="mb-4">
-                        <label for="type" class="block font-semibold mb-2">Type</label>
-                        <select name="type" id="type" class="border rounded px-4 py-2 w-full" required>
-                            <option value="News">News</option>
-                            <option value="Projects">Projects</option>
-                        </select>
+                        <label for="company" class="block font-semibold mb-2">Company</label>
+                        <input type="text" name="company" id="company" class="border rounded px-4 py-2 w-full" required>
                     </div>
                     <div class="text-right">
-                        <button type="button" class="btn btn-primary" onclick="confirmAdd()">Add Blog</button>
-                        <button type="submit" id="hiddenAddButton" class="btn btn-primary" hidden>Add Blog</button>
+                        <button type="button" class="btn btn-primary" onclick="confirmAdd()">Add</button>
+                        <button type="submit" id="hiddenAddButton" class="btn btn-primary" hidden>Add</button>
                         <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancel</button>
                     </div>
                 </form>
@@ -107,10 +91,10 @@ ob_start();
         <div class="max-w-3xl w-full h-[90vh] overflow-auto">
             <div class="bg-white p-6 rounded-lg">
                 <div class="flex justify-between items-center mb-4">
-                    <h2 class="text-xl font-bold mb-4">Delete Blog</h2>
+                    <h2 class="text-xl font-bold mb-4">Delete Testimonial</h2>
                     <span class="cursor-pointer text-gray-500 hover:text-gray-700" onclick="closeDeleteModal()">X</span>
                 </div>
-                <p style="font-size:large" class="mb-4">Are you sure you want to delete this blog?</p>
+                <p style="font-size:large" class="mb-4">Are you sure you want to delete this?</p>
                 <div class="text-right">
                     <input type="hidden" id="blogIdToDelete">
                     <button onclick="deleteBlog()" class="btn btn-primary">Delete</button>
@@ -125,46 +109,26 @@ ob_start();
         <div class="max-w-3xl w-full h-[90vh] overflow-auto">
             <div class="bg-white p-6 rounded-lg">
                 <div class="flex justify-between items-center mb-4">
-                    <h2 class="text-xl font-bold mb-4">Update Blog</h2>
+                    <h2 class="text-xl font-bold mb-4">Update Testimonial</h2>
                     <span class="cursor-pointer text-gray-500 hover:text-gray-700" onclick="closeUpdateModal()">X</span>
                 </div>
                 <!-- Form for updating the blog post -->
-                <form id="updateForm" action="../../../backend/blogs/update_blog.php" method="POST" enctype="multipart/form-data">
+                <form id="updateForm" action="../../../backend/testimonials/update_testimonial.php" method="POST" enctype="multipart/form-data">
                     <input type="hidden" name="blogIdToUpdate" id="blogIdToUpdate">
-                    <input type="hidden" name="removedImages" id="removedImages" value="">
                     <div class="mb-4">
-                        <label for="updateTitle" class="block font-semibold mb-2">Title</label>
-                        <input type="text" name="updateTitle" id="updateTitle" class="border rounded px-4 py-2 w-full" required>
+                        <label for="message" class="block font-semibold mb-2">Message</label>
+                        <textarea name="message" id="updateMessage" class="border rounded px-4 py-2 w-full" required></textarea>
                     </div>
                     <div class="mb-4">
-                        <label for="updateDescription" class="block font-semibold mb-2">Description</label>
-                        <textarea name="updateDescription" id="updateDescription" class="border rounded px-4 py-2 w-full" required></textarea>
+                        <label for="name" class="block font-semibold mb-2">Name</label>
+                        <input type="text" name="name" id="updateName" class="border rounded px-4 py-2 w-full" required>
                     </div>
                     <div class="mb-4">
-                        <label for="updateDate" class="block font-semibold mb-2">Date</label>
-                        <input type="date" name="updateDate" id="updateDate" class="border rounded px-4 py-2 w-full">
-                    </div>
-                    <div class="mb-4">
-                        <label for="updateThumbnail" class="block font-semibold mb-2">Thumbnail</label>
-                        <input type="file" name="updateThumbnail" id="updateThumbnail" class="border rounded px-4 py-2 w-full" accept="image/*">
-                    </div>
-                    <div class="mb-4">
-                        <label class="block font-semibold mb-2">Existing Images</label>
-                        <div id="existingImages" class="mb-2 flex flex-wrap">
-                            <!-- Existing images will be displayed here -->
-                        </div>
-                        <input type="file" name="updateImages[]" id="updateImages" class="border rounded px-4 py-2 w-full" accept="image/*" multiple>
-                    </div>
-
-                    <div class="mb-4">
-                        <label for="updateType" class="block font-semibold mb-2">Type</label>
-                        <select name="updateType" id="updateType" class="border rounded px-4 py-2 w-full" required>
-                            <option value="News">News</option>
-                            <option value="Projects">Projects</option>
-                        </select>
+                        <label for="company" class="block font-semibold mb-2">Company</label>
+                        <input type="text" name="company" id="updateCompany" class="border rounded px-4 py-2 w-full" required>
                     </div>
                     <div class="text-right">
-                        <button type="button" class="btn btn-primary" onclick="confirmUpdate()">Update Blog</button>
+                        <button type="button" class="btn btn-primary" onclick="confirmUpdate()">Update</button>
                         <button type="submit" id="hiddenSubmitButton" class="btn btn-primary" hidden></button>
                         <button type="button" onclick="closeUpdateModal()" class="btn btn-secondary">Cancel</button>
                     </div>
@@ -178,16 +142,15 @@ ob_start();
         // FILTER SCRIPTS
         $(document).ready(function() {
             // Event listener for category and sort filters
-            $('#categoryFilter, #sortFilter').change(function() {
+            $('#sortFilter').change(function() {
                 // Get the selected category and sort option
-                var category = $('#categoryFilter').val();
                 var sortOption = $('#sortFilter').val();
 
                 // Reset search input
                 $('#searchInput').val('');
 
                 // Call the function to fetch data based on the selected category and sort option
-                fetchData(category, sortOption);
+                fetchData(sortOption);
             });
 
             // Event listener for search input
@@ -196,21 +159,19 @@ ob_start();
                 var query = $(this).val();
 
                 // Get the selected category and sort option
-                var category = $('#categoryFilter').val();
                 var sortOption = $('#sortFilter').val();
 
-                // Call the function to fetch data based on the selected category, sort option, and search query
-                fetchData(category, sortOption, query);
+                // Call the function to fetch data based on the selected sort option, and search query
+                fetchData(sortOption, query);
             });
 
             // Function to fetch data based on category, sort option, and search query
-            function fetchData(category, sortOption, query = '', page = 1) {
+            function fetchData(sortOption, query = '', page = 1) {
                 var limit = 5; // Number of records per page
                 $.ajax({
-                    url: '../../../backend/blogs/fetch_data.php',
+                    url: '../../../backend/testimonials/fetch_data.php',
                     method: 'POST',
                     data: {
-                        category: category,
                         sortOption: sortOption,
                         query: query, // Include search query in the AJAX request
                         page: page, // Include page parameter for pagination
@@ -230,21 +191,18 @@ ob_start();
                 if (data.length > 0) {
                     $.each(data, function(index, item) {
                         html += '<tr>';
-                        html += '<td>' + item.title + '</td>';
-                        html += '<td>' + item.date + '</td>';
-                        html += '<td><img src="../../../assets/blogs_img/' + item.thumbnail + '" width="100" height="100"></td>';
-                        html += '<td class="description">' + item.description + '</td>';
-                        html += '<td>' + item.type + '</td>';
-                        html += '<td class="action-btns">';
-                        html += '<button onclick="viewPost(\'' + item.page + '\')" class="btn-view" target="_blank"><i class="fas fa-eye"></i> View</button>';
-                        html += '<button onclick="openUpdateModal(' + item.id + ', \'' + item.title.replace(/'/g, "\\'") + '\', \'' + encodeURIComponent(item.description) + '\', \'' + item.type + '\', \'' + item.date + '\', \'' + item.images + '\')" class="yellow-btn btn-primary" data-title="' + item.title.replace(/'/g, "\\'") + '" data-description="' + encodeURIComponent(item.description) + '" data-type="' + item.type + '" data-date="' + item.date + '" data-images="' + item.images + '"><i class="fas fa-edit"></i> Update</button>';
-                        html += '<button onclick="openDeleteModal(' + item.id + ')" class="btn btn-danger"><i class="fas fa-trash-alt"></i> Delete</button>';
-                        // Add more action buttons if needed
+                        html += '<td>' + item.cname + '</td>'; // Update with item.cname
+                        html += '<td>' + item.company + '</td>'; // Update with item.company
+                        html += '<td class="message">' + item.message + '</td>'; // Update with item.message
+                        html += '<td class="action-btns" valign="middle">';
+                        html += '<a href="" class="btn btn-view rounded-md text-center h-9 mt-3 sm:mt-4 !px-4 py-0 text-lg mr-2 hover:underline" target="_blank"><i class="fas fa-eye"></i> View</a>';
+                        html += '<button onclick="openUpdateModal(\'' + item.id + '\', \'' + item.message + '\', \'' + item.cname + '\', \'' + item.company + '\')" type="button" class="btn btn-primary rounded-md text-center h-9 mt-3 sm:mt-4 !px-4 py-0 text-lg mr-2 hover:underline" data-message="' + item.message + '" data-name="' + item.cname + '" data-company="' + item.company + '"><i class="fas fa-edit"></i> Update</button>';
+                        html += '<button onclick="openDeleteModal(\'' + item.id + '\')" type="button" class="btn btn-danger rounded-md text-center h-9 mt-3 sm:mt-4 !px-4 py-0 text-lg hover:underline"><i class="fas fa-trash-alt"></i> Delete</button>';
                         html += '</td>';
                         html += '</tr>';
                     });
                 } else {
-                    html += '<tr><td colspan="6">No records found</td></tr>';
+                    html += '<tr><td colspan="4">No records found</td></tr>';
                 }
                 $('#blogTable tbody').html(html);
             }
@@ -273,7 +231,7 @@ ob_start();
                     }
                     pageBtn.click(function(page) {
                         return function() {
-                            fetchData($('#categoryFilter').val(), $('#sortFilter').val(), $('#searchInput').val(), page);
+                            fetchData($('#sortFilter').val(), $('#searchInput').val(), page);
                         };
                     }(i));
                     pagination.append(pageBtn);
@@ -328,7 +286,7 @@ ob_start();
                         Swal.fire({
                             icon: 'success',
                             title: 'Success',
-                            text: 'Blog deleted successfully!',
+                            text: 'Testimonial deleted successfully!',
                             showConfirmButton: false,
                             timer: 1000
                         }).then(function() {
@@ -339,76 +297,29 @@ ob_start();
                         Swal.fire({
                             icon: 'error',
                             title: 'Error',
-                            text: 'Failed to delete blog. Please try again.'
+                            text: 'Failed to delete. Please try again.'
                         });
                     }
                 }
             };
-            xhr.open('POST', '../../../backend/blogs/delete_blog.php', true);
+            xhr.open('POST', '../../../backend/testimonials/delete_blog.php', true);
             xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
             xhr.send('blogId=' + blogId);
         }
 
-        // Update modal functions //
-        // Open the update modal with blog details //
-        function openUpdateModal(blogId, title, description, type, date, images) {
+        // Open the update modal with blog details
+        function openUpdateModal(blogId, message, name, company) {
             var modal = document.getElementById('updateModal');
+
             modal.classList.remove('hidden');
             modal.classList.remove('fade-out'); // Remove fade-out class if applied
             modal.classList.add('fade-in');
 
             // Set input values
             document.getElementById('blogIdToUpdate').value = blogId;
-            document.getElementById('updateTitle').value = title;
-            document.getElementById('updateDescription').value = decodeURIComponent(description);
-            document.getElementById('updateType').value = type;
-            document.getElementById('updateDate').value = date;
-
-            // Display existing images preview
-            var imagesPreview = document.getElementById('existingImages');
-            imagesPreview.innerHTML = ''; // Clear existing images preview
-
-            if (images.trim() === '') { // Check if images string is empty
-                var noImageText = document.createTextNode("No image uploaded");
-                imagesPreview.appendChild(noImageText);
-            } else {
-                var imagesArray = images.split(','); // Split the images string into an array
-                for (var i = 0; i < imagesArray.length; i++) {
-                    // Create container for each image and remove button
-                    var imgContainer = document.createElement('div');
-                    imgContainer.className = 'relative inline-block';
-                    imgContainer.setAttribute('data-image-index', i); // Store image index as a data attribute
-
-                    // Create image element
-                    var img = document.createElement('img');
-                    img.src = '../../../assets/blogs_img/' + imagesArray[i];
-                    img.width = 100;
-                    img.height = 100;
-                    img.className = 'mr-2 mb-2';
-                    imgContainer.appendChild(img);
-
-                    // Create remove button
-                    var removeBtn = document.createElement('button');
-                    removeBtn.textContent = 'X';
-                    removeBtn.className = 'absolute top-0 right-0 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center';
-                    removeBtn.style.fontSize = '0.75rem'; // Adjust font size if needed
-
-                    // Add click event listener to remove button
-                    removeBtn.addEventListener('click', function() {
-                        var indexToRemove = parseInt(this.parentElement.getAttribute('data-image-index'));
-                        var removedImagesInput = document.getElementById('removedImages');
-                        var removedIndexes = removedImagesInput.value ? JSON.parse(removedImagesInput.value) : [];
-                        console.log('Removing image at index:', indexToRemove); // Log the index to be removed
-                        removedIndexes.push(indexToRemove);
-                        removedImagesInput.value = JSON.stringify(removedIndexes);
-                        this.parentElement.remove();
-                    });
-
-                    imgContainer.appendChild(removeBtn);
-
-                    imagesPreview.appendChild(imgContainer); // Append the container to the images preview
-                }
-            }
+            document.getElementById('updateMessage').value = message;
+            document.getElementById('updateName').value = name;
+            document.getElementById('updateCompany').value = company;
         }
 
         // Close the update modal with fade-out animation
@@ -416,10 +327,6 @@ ob_start();
             var modal = document.getElementById('updateModal');
             modal.classList.remove('fade-in'); // Remove fade-in class if applied
             modal.classList.add('fade-out');
-
-            // Log the value of removedImages before form submission
-            var removedImagesInput = document.getElementById('removedImages');
-            console.log('Removed images:', removedImagesInput.value);
 
             setTimeout(function() {
                 modal.classList.add('hidden');
@@ -430,7 +337,7 @@ ob_start();
         function confirmUpdate() {
             Swal.fire({
                 title: 'Are you sure?',
-                text: 'You are about to update the blog.',
+                text: 'You are about to update.',
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#F9E89B', // Set confirm button color
@@ -441,7 +348,7 @@ ob_start();
             }).then((result) => {
                 if (result.isConfirmed) {
                     // Show success alert
-                    showSuccessAlert('Blog updated successfully!');
+                    showSuccessAlert('Updated successfully!');
                     // Add a small delay before clicking the hidden submit button
                     setTimeout(function() {
                         document.getElementById('hiddenSubmitButton').click();
@@ -455,7 +362,7 @@ ob_start();
         function confirmAdd() {
             Swal.fire({
                 title: 'Are you sure?',
-                text: 'You are about to add a new blog.',
+                text: 'You are about to add a new testimonial.',
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#F9E89B', // Set confirm button color
@@ -466,7 +373,7 @@ ob_start();
             }).then((result) => {
                 if (result.isConfirmed) {
                     // Show success alert
-                    showSuccessAlert('Blog added successfully!');
+                    showSuccessAlert('Added successfully!');
                     // Add a small delay before clicking the hidden submit button
                     setTimeout(function() {
                         document.getElementById('hiddenAddButton').click();
@@ -527,14 +434,6 @@ ob_start();
             </div>
             <div class="border-b border-black flex-grow border-4 mt-2 mb-2"></div>
             <div class="flex flex-col sm:flex-row items-center justify-center">
-                <div class="relative mb-2 mt-4 sm:mb-0 sm:mr-8">
-                    <label for="categoryFilter" class="mr-2">Filter by Category</label>
-                    <select id="categoryFilter" class="border rounded-md px-2 py-1">
-                        <option value="">All Categories</option>
-                        <option value="News">News & Updates</option>
-                        <option value="Projects">Projects</option>
-                    </select>
-                </div>
                 <div class="relative mb-2 mt-2 sm:mb-0 sm:mr-8">
                     <label for="sortFilter" class="mr-2">Sort</label>
                     <select id="sortFilter" class="border rounded-md px-2 py-1">
@@ -560,11 +459,9 @@ ob_start();
 
             <table id="blogTable" class="display">
                 <thead>
-                    <th scope="col" class="px-6 py-3 w-1/12">Title</th>
-                    <th scope="col" class="px-6 py-3 w-1/12">Date</th>
-                    <th scope="col" class="px-6 py-3 w-1/12">Thumbnail</th>
-                    <th scope="col" class="px-6 py-3 w-1/12">Description</th>
-                    <th scope="col" class="px-6 py-3 w-1/12">Type</th>
+                    <th scope="col" class="px-6 py-3 w-1/12">Name</th>
+                    <th scope="col" class="px-6 py-3 w-1/12">Company</th>
+                    <th scope="col" class="px-6 py-3 w-1/12">Message</th>
                     <th scope="col" class="px-6 py-3 w-1/6">Actions</th>
                 </thead>
 
@@ -572,21 +469,19 @@ ob_start();
                     <?php
                     include("../../../backend/conn.php");
 
-                    $sql = 'SELECT * FROM blogs ORDER BY date DESC';
+                    $sql = 'SELECT * FROM testimonials ORDER BY created_at DESC';
                     $result = mysqli_query($conn, $sql);
 
                     if (mysqli_num_rows($result) > 0) {
                         while ($row = mysqli_fetch_assoc($result)) {
                     ?>
                             <tr>
-                                <td><?php echo $row['title']; ?></td>
-                                <td><?php echo $row['date']; ?></td>
-                                <td><img src="../../../assets/blogs_img/<?php echo $row['thumbnail']; ?>"></td>
-                                <td class="description"><?php echo $row['description']; ?></td>
-                                <td><?php echo $row['type']; ?></td>
+                                <td><?php echo $row['cname']; ?></td>
+                                <td><?php echo $row['company']; ?></td>
+                                <td class="message"><?php echo $row['message']; ?></td>
                                 <td class="action-btns" valign="middle">
-                                    <a href="<?php echo $row['page']; ?>" class="btn btn-view rounded-md text-center h-9 mt-3 sm:mt-4 !px-4 py-0 text-lg mr-2 hover:underline" target="_blank"><i class="fas fa-eye"></i> View</a>
-                                    <button onclick="openUpdateModal('<?php echo $row['id']; ?>', '<?php echo $row['title']; ?>', '<?php echo $row['description']; ?>', '<?php echo $row['type']; ?>', '<?php echo $row['date']; ?>', '<?php echo $row['images']; ?>')" type="button" class="btn btn-primary rounded-md text-center h-9 mt-3 sm:mt-4 !px-4 py-0 text-lg mr-2 hover:underline" data-title="<?php echo $row['title']; ?>" data-description="<?php echo $row['description']; ?>" data-type="<?php echo $row['type']; ?>" data-date="<?php echo $row['date']; ?>" data-images="<?php echo $row['images']; ?>"><i class="fas fa-edit"></i> Update</button>
+                                    <a href="" class="btn btn-view rounded-md text-center h-9 mt-3 sm:mt-4 !px-4 py-0 text-lg mr-2 hover:underline" target="_blank"><i class="fas fa-eye"></i> View</a>
+                                    <button onclick="openUpdateModal('<?php echo $row['id']; ?>', '<?php echo $row['message']; ?>', '<?php echo $row['cname']; ?>', '<?php echo $row['company']; ?>')" type="button" class="btn btn-primary rounded-md text-center h-9 mt-3 sm:mt-4 !px-4 py-0 text-lg mr-2 hover:underline" data-message="<?php echo $row['message']; ?>" data-name="<?php echo $row['cname']; ?>" data-company="<?php echo $row['company']; ?>"><i class="fas fa-edit"></i> Update</button>
                                     <button onclick="openDeleteModal('<?php echo $row['id']; ?>')" type="button" class=" btn btn-danger rounded-md text-center h-9 mt-3 sm:mt-4 !px-4 py-0 text-lg hover:underline"><i class="fas fa-trash-alt"></i> Delete</button>
                                 </td>
                             </tr>
