@@ -197,7 +197,7 @@ ob_start();
         <img src="../assets/image/customers.png" style="display: block; margin: 0 auto; width: 65%; height: auto;">
     </section>
 
-    <section class="third-carousel-section relative">
+    <section id="third-carousel-section" class="third-carousel-section relative">
         <div class="third-carousel relative">
             <h1 style="text-align: right; padding-right: 80px; color: #F6E17A;" class="text-4xl font-bold">HEAR WHAT OUR FRIENDS HAVE TO SAY</h1>
 
@@ -360,9 +360,9 @@ confirmation, animation, x button modal  ------------
 logout modal ----------
 change home elements size --------
 content ng blogs ------
+testimonials cms -----
 page animations 
 mobile scaling
 profile admin (sinimulan na)
 connect db sa home display
-testimonials cms
 -->

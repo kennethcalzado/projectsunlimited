@@ -20,9 +20,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $stmt->bind_param("sss", $message, $name, $company);
 
     if ($stmt->execute()) {
+        // Redirect back to the page with success message
+        $_SESSION['success'] = "Testimonial added successfully!";
+        header("Location: " . $_SERVER['HTTP_REFERER']);
+        exit();
     } else {
         // Redirect back to the page with error message
-        $_SESSION['error'] = "Failed to add blog. Please try again.";
+        $_SESSION['error'] = "Failed to add testimonial. Please try again.";
         header("Location: " . $_SERVER['HTTP_REFERER']);
         exit();
     }
