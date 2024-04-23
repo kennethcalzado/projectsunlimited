@@ -195,8 +195,8 @@ ob_start();
                 <input type="file" id="addproductImage" name="productImage" accept=".jpg, .jpeg, .png"
                     class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
                     onchange="previewImage(event)">
+                    <div id="imagePreview"></div>
             </div>
-            <div id="imagePreview"></div>
             <div class="mb-4 flex flex-col">
                 <label for="addproductDescription" class="text-sm font-medium text-gray-700 mb-1">Description</label>
                 <textarea id="addproductDescription" name="productDescription" rows="4"
