@@ -12,7 +12,7 @@ ob_start();
     <link rel="stylesheet" href="../../../assets/input.css">
 
     <style>
-        td.description {
+        td.message {
             max-width: 200px;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -33,6 +33,9 @@ ob_start();
             margin-right: 10px;
         }
 
+        td {
+            padding: 2%;
+        }
 
         tr {
             border-bottom: 1px solid #e5e7eb;
@@ -193,11 +196,11 @@ ob_start();
                         html += '<tr>';
                         html += '<td>' + item.cname + '</td>'; // Update with item.cname
                         html += '<td>' + item.company + '</td>'; // Update with item.company
-                        html += '<td class="message">' + item.message + '</td>'; // Update with item.message
+                        html += '<td class="message">' + item.message + '</td>'; // Update with item.message using text()
                         html += '<td class="action-btns" valign="middle">';
-                        html += '<a href="" class="btn btn-view rounded-md text-center h-9 mt-3 sm:mt-4 !px-4 py-0 text-lg mr-2 hover:underline" target="_blank"><i class="fas fa-eye"></i> View</a>';
-                        html += '<button onclick="openUpdateModal(\'' + item.id + '\', \'' + item.message + '\', \'' + item.cname + '\', \'' + item.company + '\')" type="button" class="btn btn-primary rounded-md text-center h-9 mt-3 sm:mt-4 !px-4 py-0 text-lg mr-2 hover:underline" data-message="' + item.message + '" data-name="' + item.cname + '" data-company="' + item.company + '"><i class="fas fa-edit"></i> Update</button>';
-                        html += '<button onclick="openDeleteModal(\'' + item.id + '\')" type="button" class="btn btn-danger rounded-md text-center h-9 mt-3 sm:mt-4 !px-4 py-0 text-lg hover:underline"><i class="fas fa-trash-alt"></i> Delete</button>';
+                        html += '<button onclick="viewPost(\'../../home.php\', \'third-carousel-section\')" class="btn-view"><i class="fas fa-eye"></i> View</button>';
+                        html += '<button onclick="openUpdateModal(\'' + item.id + '\', \'' + item.message.replace(/'/g, "\\'") + '\', \'' + item.cname + '\', \'' + item.company + '\')" type="button" class="btn btn-primary" data-message="' + item.message.replace(/'/g, "\\'") + '" data-name="' + item.cname + '" data-company="' + item.company + '"><i class="fas fa-edit"></i> Update</button>';
+                        html += '<button onclick="openDeleteModal(\'' + item.id + '\')" type="button" class="btn btn-danger"><i class="fas fa-trash-alt"></i> Delete</button>';
                         html += '</td>';
                         html += '</tr>';
                     });
@@ -205,7 +208,11 @@ ob_start();
                     html += '<tr><td colspan="4">No records found</td></tr>';
                 }
                 $('#blogTable tbody').html(html);
+                $('#blogTable .message').text(function(i, text) {
+                    return text.length > 50 ? text.substr(0, 50) + '...' : text;
+                });
             }
+
 
             // Function to update pagination controls
             function updatePagination(totalCount, currentPage, limit) {
@@ -243,7 +250,7 @@ ob_start();
             }
 
             // Fetch initial data
-            fetchData('', 'new');
+            fetchData('new');
         });
     </script>
 
@@ -252,9 +259,12 @@ ob_start();
     <script>
         // MODAL SCRIPTS //
 
-        function viewPost(page) {
-            window.open(page, '_blank');
+        // Function to open the specified URL and navigate to a specific section
+        function viewPost(url, sectionId) {
+            // Open the URL with the specified sectionId in a new tab
+            window.open(url + '#' + sectionId, '_blank');
         }
+
 
         // DELETE MODAL //
 

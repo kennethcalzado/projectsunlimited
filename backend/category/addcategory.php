@@ -12,6 +12,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $categoryType = $_POST['categoryType'];
     $status = 'active'; // Assuming default status is 'active'
     $imageCover = ''; // Placeholder for image path
+    $imageHeader = ''; // Placeholder for image path
     $parentCategoryID = NULL;
 
     // Check if main category or subcategory
@@ -20,8 +21,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Handle image upload if provided
         if (!empty($_FILES['mainCategoryImageInput']['tmp_name'])) {
             $imageFilename = $_FILES['mainCategoryImageInput']['name']; // Get the filename
-            $imageCover = 'assets/category/' . $imageFilename; // Full path of the image
+            $imageCover = $imageFilename; // Full path of the image
             move_uploaded_file($_FILES['mainCategoryImageInput']['tmp_name'], '../../' . $imageCover); // Move uploaded image to desired directory
+        }
+        if (!empty($_FILES['mainCategoryCoverInput']['tmp_name'])) {
+            $imageFilename = $_FILES['mainCategoryCoverInput']['name']; // Get the filename
+            $imageHeader = $imageFilename; // Full path of the image
+            move_uploaded_file($_FILES['mainCategoryCoverInput']['tmp_name'], '../../' . $imageHeader); // Move uploaded image to desired directory
         }
     } else if ($categoryType == 'sub') {
         // Subcategory
@@ -29,8 +35,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     // Prepare and bind parameters
-    $stmt = $conn->prepare("INSERT INTO productcategory (CategoryName, ParentCategoryID, type, status, imagecover, created_at) VALUES (?, ?, ?, ?, ?, NOW())");
-    $stmt->bind_param("sisss", $categoryName, $parentCategoryID, $pageType, $status, $imageCover);
+    $stmt = $conn->prepare("INSERT INTO productcategory (CategoryName, ParentCategoryID, type, status, imagecover, imageheader, created_at) VALUES (?, ?, ?, ?, ?, ?, NOW())");
+    $stmt->bind_param("sissss", $categoryName, $parentCategoryID, $pageType, $status, $imageCover, $imageHeader);
 
     // Execute the statement
     if ($stmt->execute()) {

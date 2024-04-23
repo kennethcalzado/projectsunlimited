@@ -14,7 +14,7 @@ if (isset($_POST['sortOption'])) {
 
     // Append conditions based on the search term
     if ($searchTerm !== "") {
-        $sql .= " (cname LIKE '%$searchTerm%' OR company LIKE '%$searchTerm%')";
+        $sql .= " WHERE (cname LIKE '%$searchTerm%' OR company LIKE '%$searchTerm%')";
     }
 
     // Append sorting option
