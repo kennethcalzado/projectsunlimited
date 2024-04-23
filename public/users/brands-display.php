@@ -120,9 +120,8 @@ ob_start();
                 aria-label="Close modal">&times;</button>
         </div>
         <div class="border-b border-black flex-grow border-2 mt-2 mb-2"></div> <!--Divider-->
-        <div class="flex flex-wrap justify-between">
-            <form id="brandForm">
-
+        <form id="brandForm">
+            <div class="flex flex-wrap justify-between">
                 <!-- Image Section -->
                 <div id="imageDropzone"
                     class="relative w-1/3 rounded-xl ring-1 ring-black ring-offset-gray-700 overflow-hidden flex items-center justify-center group">
@@ -130,8 +129,7 @@ ob_start();
                         class="absolute inset-x-0 bottom-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200">
                         <label for="uploadBrandLogo"
                             class="bg-gray-800 text-sm text-white m-1 px-2 py-1 rounded-full cursor-pointer">Upload new
-                            brand
-                            logo</label>
+                            brand logo</label>
                         <input type="file" id="uploadBrandLogo" class="hidden">
                     </div>
                     <div class="mx-auto mb-4"> <!-- Container for the image -->
@@ -142,48 +140,50 @@ ob_start();
                 <!-- Data Section -->
                 <div class="w-2/3">
                     <div class="mx-4"> <!-- Container for the brand information -->
-                        <form id="brandForm">
-                            <div class="mb-4">
-                                <label for="brandName" class="block text-sm font-medium text-gray-700">Brand
-                                    Name:</label>
-                                <input type="text" id="brandName" name="brandName" placeholder="Brand Name"
-                                    class="pl-2 mt-1 w-full rounded-md border border-gray-700 shadow-sm" disabled>
-                            </div>
-                            <div class="mb-4">
-                                <label for="description"
-                                    class="block text-sm font-medium text-gray-700">Description:</label>
-                                <textarea id="description" name="description" placeholder="Description"
-                                    class="pl-2 mt-1 w-full rounded-md border border-gray-700 shadow-sm"
-                                    disabled></textarea>
-                            </div>
-                            <div class="mb-4">
-                                <label for="type" class="block text-sm font-medium text-gray-700">Type:</label>
-                                <input type="text" id="type" name="type" placeholder="Type"
-                                    class="pl-2 mt-1 w-full rounded-md border border-gray-700 shadow-sm" disabled>
-                            </div>
-                            <div class="mb-4">
-                                <label for="status" class="block text-sm font-medium text-gray-700">Status:</label>
-                                <input type="text" id="status" name="status" placeholder="Status"
-                                    class="pl-2 mt-1 w-full rounded-md border border-gray-700 shadow-sm" disabled>
-                            </div>
-                        </form>
+                        <div class="mb-4">
+                            <label for="brandName" class="block text-sm font-medium text-gray-700">Brand Name:</label>
+                            <input type="text" id="brandName" name="brandName" placeholder="Brand Name"
+                                class="pl-2 mt-1 w-full rounded-md border border-gray-700 shadow-sm">
+                            <div id="brandNameError" class="text-sm text-red-500 mt-1 error-message"></div>
+                        </div>
+                        <div class="mb-4">
+                            <label for="description"
+                                class="block text-sm font-medium text-gray-700">Description:</label>
+                            <textarea id="description" name="description" placeholder="Description"
+                                class="pl-2 mt-1 w-full rounded-md border border-gray-700 shadow-sm"></textarea>
+                            <div id="descriptionError" class="text-sm text-red-500 mt-1 error-message"></div>
+                        </div>
+                        <div class="mb-4">
+                            <label for="type" class="block text-sm font-medium text-gray-700">Type:</label>
+                            <input type="text" id="type" name="type" placeholder="Type"
+                                class="pl-2 mt-1 w-full rounded-md border border-gray-700 shadow-sm">
+                            <div id="typeError" class="text-sm text-red-500 mt-1 error-message"></div>
+                        </div>
+                        <div class="mb-4">
+                            <label for="status" class="block text-sm font-medium text-gray-700">Status:</label>
+                            <input type="text" id="status" name="status" placeholder="Status"
+                                class="pl-2 mt-1 w-full rounded-md border border-gray-700 shadow-sm">
+                            <div id="statusError" class="text-sm text-red-500 mt-1 error-message"></div>
+                        </div>
                     </div>
                 </div>
                 <div class="mt-8 text-xs text-center text-gray-500 ml-6 !-mt-[0.1px]">
+                    <div id="brandLogoError" class="text-sm text-red-500 mt-1 error-message"></div>
                     <div>Created At: <span id="createdAt"></span></div>
                     <div>Updated At: <span id="updatedAt"></span></div>
                 </div>
-            </form>
-        </div>
+            </div>
 
-        <div class="flex justify-end mt-4">
-            <button id="editBrandBtn" class="btn-primary mr-2">Edit</button>
-            <button id="submitBrandBtn" class="btn-primary mr-2 hidden">Submit</button>
-            <button id="hideBrandBtn" class="btn-danger mr-2">Hide</button>
-            <button id="closeBrandBtn" class="btn-secondary">Close</button>
-        </div>
+            <div class="flex justify-end mt-4">
+                <button id="editBrandBtn" type="button" class="btn-primary mr-2">Edit</button>
+                <button id="submitBrandBtn" type="submit" class="btn-primary mr-2 hidden">Submit</button>
+                <button id="hideBrandBtn" type="button" class="btn-danger mr-2">Hide</button>
+                <button id="closeBrandBtn" type="button" class="btn-secondary">Close</button>
+            </div>
+        </form>
     </div>
 </div>
+
 
 <div id="popup-container">
 </div>
@@ -337,7 +337,7 @@ ob_start();
         // Prevent dropdown from closing when clicking inside it
         $( '#combinedDropdown' ).on( 'click', function ( event )
         {
-            event.stopPropagation(); // Stop event propagation
+            event.stopPropagation();
         } );
 
         // Close the dropdown menu if the user clicks outside of it
@@ -363,7 +363,7 @@ ob_start();
             var data = table.row( $( this ).closest( 'tr' ) ).data();
             console.info( data );
             // Set modal title
-            $( '#brandModalTitle' ).text( data.brand_name );
+            $( '#brandModalTitle' ).text( 'View Brand: ' + data.brand_name );
 
             // Set image source
             $( '#brandImage' ).attr( 'src', data.logo_url );
@@ -381,13 +381,18 @@ ob_start();
             time = formatTime( data.updated_at );
             $( '#updatedAt' ).text( date + ' ' + time );
 
+            // Show the label when hovering over the upload button
+            $( '#imageDropzone' ).hover( function ()
+            {
+                $( 'label[for="uploadBrandLogo"]' ).hide();
+            } );
+
             $( 'label[for="uploadBrandLogo"]' ).addClass( 'hidden' );
 
             // Show the modal
             $( '#modal-container' ).toggleClass( 'hidden' );
         } );
 
-        // Function to enable drag and drop for image upload
         function enableDragAndDrop ()
         {
             var dropZone = $( '#imageDropzone' );
@@ -409,25 +414,7 @@ ob_start();
                         continue;
                     }
 
-                    var reader = new FileReader();
-
-                    // Closure to capture the file information.
-                    reader.onload = ( function ( theFile )
-                    {
-                        return function ( e )
-                        {
-                            // Render thumbnail.
-                            var span = $( '<span>' );
-                            span.html( ['<img class="thumb" src="', e.target.result,
-                                '" title="', escape( theFile.name ), '"/>'].join( '' ) );
-                            dropZone.empty().append( span );
-                            $( '#brandImage' ).attr( 'src', e.target.result ); // Update image preview
-                            $( '#imageFileName' ).text( theFile.name );
-                        };
-                    } )( file );
-
-                    // Read in the image file as a data URL.
-                    reader.readAsDataURL( file );
+                    renderImage( file );
                 }
             }
 
@@ -436,13 +423,43 @@ ob_start();
             {
                 event.stopPropagation();
                 event.preventDefault();
-                event.originalEvent.dataTransfer.dropEffect = 'copy'; // Explicitly show this is a copy.
+                event.originalEvent.dataTransfer.dropEffect = 'copy';
             }
 
             // Setup the dnd listeners.
             dropZone.on( 'dragover', handleDragOver );
             dropZone.on( 'drop', handleFileSelect );
         }
+
+        // Function to render the selected image
+        function renderImage ( file )
+        {
+            var reader = new FileReader();
+
+            // Closure to capture the file information.
+            reader.onload = function ( e )
+            {
+                // Render thumbnail.
+                var span = $( '<span>' );
+                span.html( ['<img class="thumb" src="', e.target.result,
+                    '" title="', escape( file.name ), '"/>'].join( '' ) );
+                $( '#brandImage' ).attr( 'src', e.target.result ); // Update image preview
+                $( '#imageFileName' ).text( file.name );
+            };
+
+            // Read in the image file as a data URL.
+            reader.readAsDataURL( file );
+        }
+
+        // Event listener for file input change
+        $( '#uploadBrandLogo' ).on( 'change', function ( e )
+        {
+            var file = e.target.files[0]; // Get the selected file
+            if ( file )
+            {
+                renderImage( file );
+            }
+        } );
 
         // Function to disable drag and drop for image upload
         function disableDragAndDrop ()
@@ -453,6 +470,10 @@ ob_start();
         $( document ).on( 'click', '.editBtn', function ()
         {
             var data = table.row( $( this ).closest( 'tr' ) ).data();
+            console.log( data );
+
+            const brandId = data.brand_id
+            $( '#brandForm' ).data( 'brandId', brandId );
 
             // Set modal title
             $( '#brandModalTitle' ).text( 'Edit Brand: ' + data.brand_name );
@@ -477,9 +498,6 @@ ob_start();
             $( '#imageDropzone' ).hover( function ()
             {
                 $( 'label[for="uploadBrandLogo"]' ).show();
-            }, function ()
-            {
-                $( 'label[for="uploadBrandLogo"]' ).hide();
             } );
 
             $( '#editBrandBtn' ).hide();
@@ -528,7 +546,140 @@ ob_start();
             disableDragAndDrop();
         }
 
-        
+        function validateForm ()
+        {
+            var brandName = $( '#brandName' ).val().trim();
+            var description = $( '#description' ).val().trim();
+            var type = $( '#type' ).val().trim();
+            var status = $( '#status' ).val().trim();
+
+            // Validation rules
+            var isValid = true;
+            if ( !brandName )
+            {
+                $( '#brandName' ).addClass( 'border-red-500' );
+                $( '#brandNameError' ).text( 'Brand Name is required.' );
+                isValid = false;
+            } else
+            {
+                $( '#brandName' ).removeClass( 'border-red-500' );
+                $( '#brandNameError' ).empty();
+            }
+
+            if ( !description )
+            {
+                $( '#description' ).addClass( 'border-red-500' );
+                $( '#descriptionError' ).text( 'Description is required.' );
+                isValid = false;
+            } else
+            {
+                $( '#description' ).removeClass( 'border-red-500' );
+                $( '#descriptionError' ).empty();
+            }
+
+            // if ( $( '#uploadBrandLogo' )[0].files.length === 0 )
+            // {
+            //     $( '#uploadBrandLogo' ).addClass( 'border-red-500' );
+            //     $( '#brandLogoError' ).text( 'Brand logo is required.' );
+            //     isValid = false;
+            // } else
+            // {
+            //     $( '#uploadBrandLogo' ).removeClass( 'border-red-500' );
+            //     $( '#brandLogoError' ).empty();
+            // }
+
+            if ( !type )
+            {
+                $( '#type' ).addClass( 'border-red-500' );
+                $( '#typeError' ).text( 'Type is required.' );
+                isValid = false;
+            } else
+            {
+                $( '#type' ).removeClass( 'border-red-500' );
+                $( '#typeError' ).empty();
+            }
+
+            if ( !status )
+            {
+                $( '#status' ).addClass( 'border-red-500' );
+                $( '#statusError' ).text( 'Status is required.' );
+                isValid = false;
+            } else
+            {
+                $( '#status' ).removeClass( 'border-red-500' );
+                $( '#statusError' ).empty();
+            }
+
+            return isValid;
+        }
+
+        $( '#brandForm' ).on( 'submit', function ( event )
+        {
+            event.preventDefault(); // Prevent default form submission
+
+            if ( validateForm() )
+            {
+                const brandId = $( '#brandForm' ).data( 'brandId' );
+                let formData = new FormData( this ); // Create a FormData object with the form
+                formData.append( 'brandId', brandId ); // Append brandId to formData
+
+                // Append brand logo file to formData
+                let brandLogoFile = $( '#uploadBrandLogo' ).prop( 'files' )[0];
+                if ( brandLogoFile )
+                {
+                    formData.append( 'brandLogo', brandLogoFile );
+                }
+
+                // If form is valid, proceed with form submission or AJAX request
+                console.log( 'Form is valid. Proceed with submission.' );
+
+                // AJAX request to submit the form data
+                $.ajax( {
+                    url: '/../../backend/brands/brands-update.php',
+                    type: 'POST',
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    success: function ( response )
+                    {
+                        Swal.fire( {
+                            icon: 'success',
+                            title: 'Success',
+                            text: 'Form submitted successfully!',
+                            showConfirmButton: false,
+                            timer: 1000
+                        } );
+
+                        // Assuming response contains updated brand data including brand logo URL
+                        const updatedBrandData = response.updatedBrandData;
+
+                        // Update the brand logo URL in the corresponding table row
+                        const brandId = updatedBrandData.brandId;
+                        const rowData = table.row( `#brand_${ brandId }` ).data(); // Assuming each row has an ID like 'brand_1', 'brand_2', etc.
+                        rowData.logo_url = updatedBrandData.logoUrl; // Update the logo URL in the table row data
+
+                        // Redraw the table to reflect the changes
+                        table.draw();
+                        closeModal();
+                    },
+                    error: function ( xhr, status, error )
+                    {
+                        // Handle error response from the server
+                        console.error( 'Error:', error );
+                        Swal.fire( {
+                            icon: 'error',
+                            title: 'Error',
+                            text: 'Failed to submit the form. Please try again. Error: ' + error
+                        } );
+                        table.columns().search( '' ).draw();
+                    }
+                } );
+            } else
+            {
+                console.log( 'Form is not valid. Please fill out all required fields.' );
+            }
+        } );
+
     } );
 </script>
 
