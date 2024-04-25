@@ -10,11 +10,8 @@ ob_start();
         <div class=" flex flex-row justify-between items-cent">
             <button id="addUserDropdownBtn"
                 class="yellow-btn btn-primary rounded-md text-center h-10 mt-3 mx-1 sm:mt-4 !px-4 py-0 text-lg items-center flex">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24"
-                    stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                </svg> Add User
+                <i class="fa-light fa-plus text-3xl pb-1 pr-2"></i>
+                Add User
             </button>
             <div class="absolute 
                 text-left text-sm text-center
@@ -471,7 +468,7 @@ ob_start();
 
                     const actiontd = $( '<td>' ).addClass( 'py-6 w-auto px-auto flex justify-center space-x-2' )
                         .append( editButton, deleteButton );
-                        
+
                     userRow.append( actiontd );
 
 
@@ -479,7 +476,7 @@ ob_start();
                 } );
             }
 
-            console.log(pagination);
+            console.log( pagination );
 
             // Update item count display
             const currentPage = parseInt( pagination.currentPage );

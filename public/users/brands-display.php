@@ -9,7 +9,7 @@ ob_start();
     <div class="flex flex-col sm:flex-row justify-between items-center">
         <h1 class="text-4xl font-bold mb-2 ml-2 mt-8 text-black">Brands List</h1>
         <div class=" flex flex-row justify-between items-cent">
-            <button id="addUserDropdownBtn"
+            <button id="addBrandsDropdownBtn"
                 class="yellow-btn btn-primary rounded-md text-center h-10 mt-3 mx-1 !px-4 py-0 text-lg items-center flex">
                 <i class="fa-light fa-plus text-3xl pb-1 pr-2"></i>
                 Add Brands
@@ -19,12 +19,11 @@ ob_start();
                 w-[150px] z-10
                 transition-all bg-[#F6E17A] rounded-md shadow-md
                 opacity-0 
-                translate-y-[60px] -translate-x-[11px] space-y-1" id="addUserDropdown">
-
-                <button class="hidden cursor-pointer hover:bg-[#F9E89B] p-4 rounded-md w-full" id="openCreateUserModal">
+                translate-y-[60px] -translate-x-[0.5px] space-y-1" id="addBrandsDropdown">
+                <button class="hidden cursor-pointer hover:bg-[#F9E89B] p-4 rounded-md w-full" id="addSingleBrand">
                     Add Single Brand
                 </button>
-                <button class="hidden cursor-pointer hover:bg-[#F9E89B] p-4 rounded-md w-full" id="openBulkUserModal">
+                <button class="hidden cursor-pointer hover:bg-[#F9E89B] p-4 rounded-md w-full" id="addMultipleBrands">
                     Upload Bulk Brands
                 </button>
             </div>
@@ -177,8 +176,8 @@ ob_start();
                 </div>
                 <div class="mt-8 text-xs text-center text-gray-500 ml-6 !-mt-[0.1px]">
                     <div id="brandLogoError" class="text-sm text-red-500 mt-1 error-message"></div>
-                    <div>Created At: <span id="createdAt"></span></div>
-                    <div>Updated At: <span id="updatedAt"></span></div>
+                    <div id="createdAtContainer">Created At: <span id="createdAt"></span></div>
+                    <div id="updatedAtContainer">Updated At: <span id="updatedAt"></span></div>
                 </div>
             </div>
 
@@ -366,100 +365,91 @@ ob_start();
         } );
 
         ////////////////// MODALS /////////////////////
-        $( document ).on( 'click', '.viewBtn', function ()
+        $( document ).on( 'click', '.viewBtn, .editBtn', function ()
         {
-            var data = table.row( $( this ).closest( 'tr' ) ).data();
+            const rowData = table.row( $( this ).closest( 'tr' ) ).data();
+            const isView = $( this ).hasClass( 'viewBtn' );
 
             // Set modal title
-            $( '#brandModalTitle' ).text( 'View Brand: ' + data.brand_name );
+            $( '#brandModalTitle' ).text( isView ? `View Brand: ${ rowData.brand_name }` : `Edit Brand: ${ rowData.brand_name }` );
 
             // Set image source
-            $( '#brandImage' ).attr( 'src', data.logo_url );
+            $( '#brandImage' ).attr( 'src', rowData.logo_url );
 
             // Set input field values
-            $( '#brandName' ).val( data.brand_name );
-            $( '#description' ).val( data.description );
-            $( '#type' ).val( data.type );
-            $( '#status' ).val( data.status );
-
-            var date = formatDate( data.created_at );
-            var time = formatTime( data.created_at );
-            $( '#createdAt' ).text( date + ' ' + time );
-            date = formatDate( data.updated_at );
-            time = formatTime( data.updated_at );
-            $( '#updatedAt' ).text( date + ' ' + time );
-
-            // Show the label when hovering over the upload button
-            $( '#imageDropzone' ).hover( function ()
-            {
-                $( 'label[for="uploadBrandLogo"]' ).hide();
-            } );
-
-            $( '#brandName, #description, #type, #status' ).prop( 'disabled', true );
-
-            // Show the submit button
-            $( '#editBrandBtn' ).show();
-            $( '#submitBrandBtn' ).hide();
-
-            // Show the modal
-            $( '#modal-container' ).toggleClass( 'hidden' );
-        } );
-
-        $( document ).on( 'click', '.editBtn', function ()
-        {
-            var data = table.row( $( this ).closest( 'tr' ) ).data();
-            console.log( data );
-
-            const brandId = data.brand_id
-            $( '#brandForm' ).data( 'brandId', brandId );
-
-            // Set modal title
-            $( '#brandModalTitle' ).text( 'Edit Brand: ' + data.brand_name );
-
-            // Set image source
-            $( '#brandImage' ).attr( 'src', data.logo_url );
-
-            // Set input field values
-            $( '#brandName' ).val( data.brand_name );
-            $( '#description' ).val( data.description );
-            $( '#type' ).val( data.type );
-            $( '#status' ).val( data.status );
+            $( '#brandName' ).val( rowData.brand_name );
+            $( '#description' ).val( rowData.description );
+            $( '#type' ).val( rowData.type );
+            $( '#status' ).val( rowData.status );
 
             // Set date and time texts
-            var date = formatDate( data.created_at );
-            var time = formatTime( data.created_at );
-            $( '#createdAt' ).text( date + ' ' + time );
+            const date = formatDate( rowData.created_at );
+            const time = formatTime( rowData.created_at );
+            $( '#createdAt' ).text( `${ date } ${ time }` );
 
-            date = formatDate( data.updated_at );
-            time = formatTime( data.updated_at );
-            $( '#updatedAt' ).text( date + ' ' + time );
+            $( '#updatedAt' ).text( `${ formatDate( rowData.updated_at ) } ${ formatTime( rowData.updated_at ) }` );
 
-            // Show the submit button
-            $( '#editBrandBtn' ).hide();
-            $( '#submitBrandBtn' ).show();
+            // Set modal elements visibility and behavior based on view or edit
+            if ( isView )
+            {
+                // Disable input fields
+                $( '#brandName, #description, #type, #status' ).prop( 'disabled', true );
+
+                // Hide submit button and show view button
+                $( '#editBrandBtn' ).show();
+                $( '#submitBrandBtn' ).hide();
+
+                $( '#editBrandBtn' ).hide();
+                $( '#hideBrandBtn' ).hide();
+                $( '#submitBrandBtn' ).show();
+                $( '#closeBrandBtn' ).text( 'Cancel' );
+
+                // Hide label when hovering over the upload button
+                $( '#imageDropzone' ).hover( function ()
+                {
+                    $( 'label[for="uploadBrandLogo"]' ).hide();
+                } );
+            } else
+            {
+                const brandId = rowData.brand_id;
+                $( '#brandForm' ).data( 'brandId', brandId );
+
+                // Enable input fields for editing
+                $( '#brandName, #description, #type, #status' ).prop( 'disabled', false );
+
+                // Show submit button and hide view button
+                $( '#editBrandBtn' ).hide();
+                $( '#submitBrandBtn' ).show();
+
+                // Show label when hovering over the upload button
+                $( '#imageDropzone' ).hover( function ()
+                {
+                    $( 'label[for="uploadBrandLogo"]' ).show();
+                } );
+
+                // Enable drag and drop for the brand logo
+                enableDragAndDrop();
+            }
 
             // Show the modal
             $( '#modal-container' ).toggleClass( 'hidden' );
-
-            // Enable input fields for editing
-            $( '#brandName, #description, #type, #status' ).prop( 'disabled', false );
-
-            // Show the label when hovering over the upload button
-            $( '#imageDropzone' ).hover( function ()
-            {
-                $( 'label[for="uploadBrandLogo"]' ).show();
-            } );
-
-            // Enable drag and drop for the brand logo
-            enableDragAndDrop();
         } );
 
-        // Click event handler for editing the brand
-        $( '#editBrandBtn' ).on( 'click', function ()
+        // Click event handler for adding a new brand
+        $( '#addSingleBrand' ).on( 'click', function ()
         {
+            // Reset form and error messages
+            $( '#brandForm' )[0].reset();
+            $( '.error-message' ).text( '' );
+
+            // Set modal title
+            $( '#brandModalTitle' ).text( 'Add New Brand: ' );
+
             // Show the submit button
             $( '#editBrandBtn' ).hide();
+            $( '#hideBrandBtn' ).hide();
             $( '#submitBrandBtn' ).show();
+            $( '#closeBrandBtn' ).text( 'Cancel' );
 
             // Enable input fields for editing
             $( '#brandName, #description, #type, #status' ).prop( 'disabled', false );
@@ -472,6 +462,9 @@ ob_start();
 
             // Enable drag and drop for the brand logo
             enableDragAndDrop();
+
+            // Show the modal
+            $( '#modal-container' ).toggleClass( 'hidden' );
         } );
 
         function enableDragAndDrop ()
@@ -758,6 +751,13 @@ ob_start();
             {
                 console.log( 'Form is not valid. Please fill out all required fields.' );
             }
+        } );
+
+        $( document ).on( 'click', '#addBrandsDropdownBtn', function ()
+        {
+            $( "#addBrandsDropdown" ).toggleClass( " transition-opacity opacity-100 ease-in-out duration-100" );
+            $( "#addSingleBrand" ).toggleClass( "hidden" );
+            $( "#addMultipleBrands" ).toggleClass( "hidden" );
         } );
 
     } );
