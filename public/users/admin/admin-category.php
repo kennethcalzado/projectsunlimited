@@ -206,7 +206,54 @@ ob_start();
         <p class="text-xl font-bold text-green-600" id="successMessage"></p>
     </div>
 </div>
+
+<?php $content = ob_get_clean();
+ob_start();
+?>
+<!-- JAVASCRIPT -->
 <script>
+    function toggleMainCategoryDropdown() {
+        var categoryType = $('#addcategoryCat').val();
+        var mainCategoryDropdown = $('#mainCategoryDropdown');
+        var mainCategoryImage = $('#mainCategoryImage');
+        var mainCategoryCover = $('#mainCategoryCover');
+
+        if (categoryType === "sub") {
+            mainCategoryDropdown.removeClass("hidden");
+            mainCategoryCover.addClass("hidden");
+            mainCategoryImage.addClass("hidden");
+        } else if (categoryType === "main") {
+            mainCategoryDropdown.addClass("hidden");
+            mainCategoryCover.removeClass("hidden");
+            mainCategoryImage.removeClass("hidden");
+        }
+    }
+
+    // Event listener for category type change
+    $('#addcategoryCat').change(function() {
+        toggleMainCategoryDropdown();
+    });
+
+    // Function to preview main category image
+    function previewMainCategoryImage(event) {
+        var reader = new FileReader();
+        reader.onload = function() {
+            var output = document.getElementById('mainCategoryImagePreview');
+            output.innerHTML = '<img src="' + reader.result + '" style="max-width: 100px; max-height: 100px;" class="mt-2 max-w-full h-auto">';
+        }
+        reader.readAsDataURL(event.target.files[0]);
+    }
+
+    // Function to preview main category image
+    function previewMainCategoryCover(event) {
+        var reader = new FileReader();
+        reader.onload = function() {
+            var output = document.getElementById('mainCategoryCoverPreview');
+            output.innerHTML = '<img src="' + reader.result + '" style="max-width: 450px; max-height: 450px;" class="mt-2 max-w-full h-auto">';
+        }
+        reader.readAsDataURL(event.target.files[0]);
+    }
+
     $(document).ready(function() {
         var itemsPerPage = 5;
         var currentPage = 1;
@@ -401,13 +448,13 @@ ob_start();
                 $('#successPopup').removeClass("hidden");
 
                 $('#addProdCategoryModal').addClass("hidden");
-                // setTimeout(function() {
-                //     location.reload();
-                // }, 500);
+                setTimeout(function() {
+                    location.reload();
+                }, 500);
 
-                // setTimeout(function() {
-                //     $('#successPopup').addClass("hidden");
-                // }, 1000);
+                setTimeout(function() {
+                    $('#successPopup').addClass("hidden");
+                }, 1000);
             },
             error: function(xhr, status, error) {
                 console.error(error);
@@ -415,49 +462,7 @@ ob_start();
         });
     });
 </script>
-<script>
-    function toggleMainCategoryDropdown() {
-        var categoryType = $('#addcategoryCat').val();
-        var mainCategoryDropdown = $('#mainCategoryDropdown');
-        var mainCategoryImage = $('#mainCategoryImage');
-        var mainCategoryCover = $('#mainCategoryCover');
 
-        if (categoryType === "sub") {
-            mainCategoryDropdown.removeClass("hidden");
-            mainCategoryCover.addClass("hidden");
-            mainCategoryImage.addClass("hidden");
-        } else if (categoryType === "main") {
-            mainCategoryDropdown.addClass("hidden");
-            mainCategoryCover.removeClass("hidden");
-            mainCategoryImage.removeClass("hidden");
-        }
-    }
-
-    // Event listener for category type change
-    $('#addcategoryCat').change(function() {
-        toggleMainCategoryDropdown();
-    });
-
-    // Function to preview main category image
-    function previewMainCategoryImage(event) {
-        var reader = new FileReader();
-        reader.onload = function() {
-            var output = document.getElementById('mainCategoryImagePreview');
-            output.innerHTML = '<img src="' + reader.result + '" style="max-width: 100px; max-height: 100px;" class="mt-2 max-w-full h-auto">';
-        }
-        reader.readAsDataURL(event.target.files[0]);
-    }
-
-    // Function to preview main category image
-    function previewMainCategoryCover(event) {
-        var reader = new FileReader();
-        reader.onload = function() {
-            var output = document.getElementById('mainCategoryCoverPreview');
-            output.innerHTML = '<img src="' + reader.result + '" style="max-width: 450px; max-height: 450px;" class="mt-2 max-w-full h-auto">';
-        }
-        reader.readAsDataURL(event.target.files[0]);
-    }
-</script>
 <?php
 $script = ob_get_clean();
 include("../../../public/master.php");
