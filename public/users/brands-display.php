@@ -132,8 +132,8 @@ ob_start();
                             brand logo</label>
                         <input type="file" id="uploadBrandLogo" class="hidden">
                     </div>
-                    <div class="mx-auto mb-4"> <!-- Container for the image -->
-                        <img id="brandImage" src="" alt="" class="w-full h-auto object-contain rounded-full">
+                    <div class="mx-auto"> <!-- Container for the image -->
+                        <img id="brandImage" src="" alt="" class="w-full h-auto object-cover">
                     </div>
                 </div>
 
@@ -155,14 +155,22 @@ ob_start();
                         </div>
                         <div class="mb-4">
                             <label for="type" class="block text-sm font-medium text-gray-700">Type:</label>
-                            <input type="text" id="type" name="type" placeholder="Type"
+                            <select id="type" name="type"
                                 class="pl-2 mt-1 w-full rounded-md border border-gray-700 shadow-sm">
+                                <option value="" disabled selected>Select Type</option>
+                                <option value="catalog">Catalog</option>
+                                <option value="inquiry">Inquiry</option>
+                            </select>
                             <div id="typeError" class="text-sm text-red-500 mt-1 error-message"></div>
                         </div>
                         <div class="mb-4">
                             <label for="status" class="block text-sm font-medium text-gray-700">Status:</label>
-                            <input type="text" id="status" name="status" placeholder="Status"
+                            <select id="status" name="status"
                                 class="pl-2 mt-1 w-full rounded-md border border-gray-700 shadow-sm">
+                                <option value="" disabled selected>Select Status</option>
+                                <option value="active">Active</option>
+                                <option value="inactive">Inactive</option>
+                            </select>
                             <div id="statusError" class="text-sm text-red-500 mt-1 error-message"></div>
                         </div>
                     </div>
@@ -211,7 +219,7 @@ ob_start();
                         return `
                             <div class="flex flex-col items-center justify-center">
                                 <div class="w-[100px] h-[100px] rounded-full ring-1 ring-black overflow-hidden flex items-center justify-center">
-                                    <img src="${ data.logo_url }" alt="${ data.brand_name }" class="block rounded-full max-w-[100px] max-h-[100px]">
+                                    <img src="${ data.logo_url }" alt="${ data.brand_name }" class="block object-fill max-w-[100px] max-h-[100px]">
                                 </div>
                                 <span class="block mt-2">${ data.brand_name }</span>
                                 <span class="text-xs text-gray-500 block">${ data.description }</span>
@@ -361,7 +369,7 @@ ob_start();
         $( document ).on( 'click', '.viewBtn', function ()
         {
             var data = table.row( $( this ).closest( 'tr' ) ).data();
-            console.info( data );
+
             // Set modal title
             $( '#brandModalTitle' ).text( 'View Brand: ' + data.brand_name );
 
@@ -387,10 +395,83 @@ ob_start();
                 $( 'label[for="uploadBrandLogo"]' ).hide();
             } );
 
-            $( 'label[for="uploadBrandLogo"]' ).addClass( 'hidden' );
+            $( '#brandName, #description, #type, #status' ).prop( 'disabled', true );
+
+            // Show the submit button
+            $( '#editBrandBtn' ).show();
+            $( '#submitBrandBtn' ).hide();
 
             // Show the modal
             $( '#modal-container' ).toggleClass( 'hidden' );
+        } );
+
+        $( document ).on( 'click', '.editBtn', function ()
+        {
+            var data = table.row( $( this ).closest( 'tr' ) ).data();
+            console.log( data );
+
+            const brandId = data.brand_id
+            $( '#brandForm' ).data( 'brandId', brandId );
+
+            // Set modal title
+            $( '#brandModalTitle' ).text( 'Edit Brand: ' + data.brand_name );
+
+            // Set image source
+            $( '#brandImage' ).attr( 'src', data.logo_url );
+
+            // Set input field values
+            $( '#brandName' ).val( data.brand_name );
+            $( '#description' ).val( data.description );
+            $( '#type' ).val( data.type );
+            $( '#status' ).val( data.status );
+
+            // Set date and time texts
+            var date = formatDate( data.created_at );
+            var time = formatTime( data.created_at );
+            $( '#createdAt' ).text( date + ' ' + time );
+
+            date = formatDate( data.updated_at );
+            time = formatTime( data.updated_at );
+            $( '#updatedAt' ).text( date + ' ' + time );
+
+            // Show the submit button
+            $( '#editBrandBtn' ).hide();
+            $( '#submitBrandBtn' ).show();
+
+            // Show the modal
+            $( '#modal-container' ).toggleClass( 'hidden' );
+
+            // Enable input fields for editing
+            $( '#brandName, #description, #type, #status' ).prop( 'disabled', false );
+
+            // Show the label when hovering over the upload button
+            $( '#imageDropzone' ).hover( function ()
+            {
+                $( 'label[for="uploadBrandLogo"]' ).show();
+            } );
+
+            // Enable drag and drop for the brand logo
+            enableDragAndDrop();
+        } );
+
+        // Click event handler for editing the brand
+        $( '#editBrandBtn' ).on( 'click', function ()
+        {
+            // Show the submit button
+            $( '#editBrandBtn' ).hide();
+            $( '#submitBrandBtn' ).show();
+
+            // Enable input fields for editing
+            $( '#brandName, #description, #type, #status' ).prop( 'disabled', false );
+
+            // Show the label when hovering over the upload button
+            $( '#imageDropzone' ).hover( function ()
+            {
+                $( 'label[for="uploadBrandLogo"]' ).show();
+            } );
+
+            // Enable drag and drop for the brand logo
+            enableDragAndDrop();
         } );
 
         function enableDragAndDrop ()
@@ -413,6 +494,9 @@ ob_start();
                     {
                         continue;
                     }
+
+                    // Set the selected file to the input type file
+                    $( '#uploadBrandLogo' ).prop( 'files', files );
 
                     renderImage( file );
                 }
@@ -466,59 +550,6 @@ ob_start();
         {
             $( '#imageDropzone' ).off( 'dragover drop' );
         }
-
-        $( document ).on( 'click', '.editBtn', function ()
-        {
-            var data = table.row( $( this ).closest( 'tr' ) ).data();
-            console.log( data );
-
-            const brandId = data.brand_id
-            $( '#brandForm' ).data( 'brandId', brandId );
-
-            // Set modal title
-            $( '#brandModalTitle' ).text( 'Edit Brand: ' + data.brand_name );
-
-            // Set image source
-            $( '#brandImage' ).attr( 'src', data.logo_url );
-
-            // Set input field values
-            $( '#brandName' ).val( data.brand_name );
-            $( '#description' ).val( data.description );
-            $( '#type' ).val( data.type );
-            $( '#status' ).val( data.status );
-
-            var date = formatDate( data.created_at );
-            var time = formatTime( data.created_at );
-            $( '#createdAt' ).text( date + ' ' + time );
-            date = formatDate( data.updated_at );
-            time = formatTime( data.updated_at );
-            $( '#updatedAt' ).text( date + ' ' + time );
-
-            // Show the label when hovering over the upload button
-            $( '#imageDropzone' ).hover( function ()
-            {
-                $( 'label[for="uploadBrandLogo"]' ).show();
-            } );
-
-            $( '#editBrandBtn' ).hide();
-            $( '#submitBrandBtn' ).show();
-
-            // Show the modal
-            $( '#modal-container' ).toggleClass( 'hidden' );
-
-            // Enable input fields for editing
-            $( '#brandName, #description, #type, #status' ).prop( 'disabled', false );
-
-            // Enable drag and drop for the brand logo
-            enableDragAndDrop();
-        } );
-
-        // Click event handler for editing the brand
-        $( '#editBrandBtn' ).on( 'click', function ()
-        {
-            // Enable input fields for editing
-            $( '#brandName, #description, #type, #status' ).prop( 'disabled', false );
-        } );
 
         // Click event handler for closing the modal
         $( '#closeBrandModal, #closeBrandBtn' ).on( 'click', function ()
@@ -649,17 +680,66 @@ ob_start();
                             showConfirmButton: false,
                             timer: 1000
                         } );
-
-                        // Assuming response contains updated brand data including brand logo URL
-                        const updatedBrandData = response.updatedBrandData;
+                        console.info( response );
 
                         // Update the brand logo URL in the corresponding table row
-                        const brandId = updatedBrandData.brandId;
-                        const rowData = table.row( `#brand_${ brandId }` ).data(); // Assuming each row has an ID like 'brand_1', 'brand_2', etc.
-                        rowData.logo_url = updatedBrandData.logoUrl; // Update the logo URL in the table row data
+                        const brandId = response.brand_id;
 
-                        // Redraw the table to reflect the changes
-                        table.draw();
+                        // Loop through each row in the table to find the matching brandId
+                        table.rows().every( function ()
+                        {
+                            const rowData = this.data();
+                            // console.info( response );
+                            // console.info( rowData );
+                            // console.info( rowData.brand_id );
+                            // console.info( brandId );
+                            // console.info( rowData.brand_id == brandId );
+
+                            if ( rowData.brand_id == brandId )
+                            {
+                                // Update the logo URL in the table row data
+                                this.data( response );
+
+                                $.each( response, function ( key, value )
+                                {
+                                    rowData[key] = value;
+                                } );
+
+                                rowData.logo_url = response.logo_url;
+                                rowData.brand_name = response.brand_name;
+                                rowData.description = response.description;
+                                rowData.type = response.type;
+                                rowData.status = response.status;
+                                rowData.updated_at = response.updated_at;
+
+                                // Regenerate the HTML for the row
+                                const updatedRowHtml = `
+                                    <div class="flex flex-col items-center justify-center">
+                                        <div class="w-[100px] h-[100px] rounded-full ring-1 ring-black overflow-hidden flex items-center justify-center">
+                                            <img src="${ response.logo_url }" alt="${ response.brand_name }" class="block object-fill max-w-[100px] max-h-[100px]">
+                                        </div>
+                                        <span class="block mt-2">${ response.brand_name }</span>
+                                        <span class="text-xs text-gray-500 block">${ response.description }</span>
+                                    </div>
+                                `;
+
+                                const updatedUpdatedAtHtml = `
+                                    <div>
+                                        <div>${ formatDate( response.updated_at ) }</div>
+                                        <div>${ formatTime( response.updated_at ) }</div>
+                                    </div>
+                                `;
+
+                                // Update the HTML of the row
+                                $( this.node() ).find( 'td:nth-child(1)' ).html( updatedRowHtml );
+                                $( this.node() ).find( 'td:nth-child(2)' ).html( response.type ); // Update Type column
+                                $( this.node() ).find( 'td:nth-child(3)' ).html( response.status ); // Update Status column
+                                $( this.node() ).find( 'td:nth-child(4)' ).html( updatedUpdatedAtHtml ); // Update Updated At column
+                                return false;
+                            }
+                            return true;
+                        } );
+
                         closeModal();
                     },
                     error: function ( xhr, status, error )

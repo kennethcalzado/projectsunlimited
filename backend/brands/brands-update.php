@@ -96,7 +96,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 // Update successful
 
                 // Fetch the updated brand data from the database
-                $sql_select_brand = "SELECT * FROM your_table_name WHERE brand_id = ?";
+                $sql_select_brand = "SELECT * FROM brands WHERE brand_id = ?";
                 $stmt_select_brand = $conn->prepare($sql_select_brand);
 
                 if ($stmt_select_brand) {
@@ -111,7 +111,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             // Fetch the brand data
                             $updatedBrandData = $result->fetch_assoc();
                             // Return the updated brand data as a JSON response
-                            $updatedBrandData['brandId'] = $brandId;
+
                             http_response_code(200);
                             header('Content-Type: application/json');
                             echo json_encode($updatedBrandData);
@@ -156,8 +156,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $response = ["success" => false, "message" => "Invalid request method"];
     http_response_code(405); // Set HTTP response code to indicate method not allowed
 }
-
-// Return JSON response
-header('Content-Type: application/json');
-echo json_encode($response);
 ?>
