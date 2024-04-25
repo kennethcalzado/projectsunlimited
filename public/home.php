@@ -1,6 +1,8 @@
 <?php
 $pageTitle = "Projects Unlimited ";
 ob_start();
+
+include("../backend/conn.php");
 ?>
 
 <!DOCTYPE html>
@@ -25,24 +27,46 @@ ob_start();
     <div id="content">
         <div class="carousel relative">
             <div class="carousel-inner flex">
-                <div class="carousel-item w-full bg-red-500 text-white text-center">
-                    <h1 class="text-4xl font-bold">Slide 1</h1>
-                </div>
-                <div class="carousel-item w-full bg-blue-500 text-white text-center">
-                    <h1 class="text-4xl font-bold">Slide 2</h1>
-                </div>
-                <div class="carousel-item w-full bg-green-500 text-white text-center">
-                    <h1 class="text-4xl font-bold">Slide 3</h1>
-                </div>
+                <?php
+                // Fetch the last 3 blog entries
+                $sql = "SELECT * FROM blogs ORDER BY date DESC LIMIT 3";
+                $result = $conn->query($sql);
+
+                if ($result->num_rows > 0) {
+                    // Output data of each row
+                    while ($row = $result->fetch_assoc()) {
+                        // Split the images string by commas
+                        $images = explode(",", $row['images']);
+                        // Output the first image as a carousel item
+                        echo '<div class="carousel-item relative w-full bg-red-500 text-white text-center">';
+                        echo '<img src="../assets/blogs_img/' . $images[0] . '" alt="Slide Image" style="object-fit: cover; width: 100%; height: 100%;">';
+                        // Add translucent overlay
+                        echo '<div class="absolute inset-0 bg-black opacity-50"></div>';
+                        // Add title text in the lower right corner
+                        echo '<h1 style="padding-right: 170px; padding-bottom: 140px;" class="absolute bottom-0 right-0 m-4 text-4xl font-bold">' . $row['title'] . '</h1>';
+                        // Add button with link from the page column
+                        echo '<a href="' . $row['page'] . '" style="margin-right: 185px; margin-bottom: 100px; border-radius: 5px;" class="absolute bottom-0 right-0 m-4 px-4 py-2 bg-yellow-400 text-black text-center rounded-md yellow-btn">Read More</a>';
+                        echo '</div>';
+                    }
+                } else {
+                    echo "0 results";
+                }
+                ?>
+            </div>
+            <!-- Carousel Dots -->
+            <div style="margin-bottom: 20px;" class="carousel-dots flex justify-center absolute bottom-4 w-full">
+                <?php
+                for ($i = 0; $i < $result->num_rows; $i++) {
+                    echo '<div class="carousel-dot w-4 h-4 rounded-full bg-gray-400 mx-2"></div>';
+                }
+                ?>
             </div>
             <div class="carousel-arrow prev" onclick="prevSlide()" style="font-size: 99px;">
-                <i style="padding-left: 120px" class="fas fa-chevron-left text-black"></i>
+                <i class="fas fa-chevron-left" style="color: #F6E17A; padding-left: 120px;"></i>
             </div>
             <div class="carousel-arrow next" onclick="nextSlide()" style="font-size: 99px;">
-                <i style="padding-right: 120px" class="fas fa-chevron-right text-black"></i>
+                <i class="fas fa-chevron-right" style="color: #F6E17A; padding-right: 120px;"></i>
             </div>
-
-
         </div>
     </div>
 
@@ -50,6 +74,7 @@ ob_start();
         let currentIndex = 0;
         const items = document.querySelectorAll(".carousel-item");
         const totalItems = items.length;
+        const dots = document.querySelectorAll(".carousel-dot");
 
         function nextSlide() {
             if (currentIndex < totalItems - 1) {
@@ -71,11 +96,24 @@ ob_start();
 
         function updateCarousel() {
             const width = items[currentIndex].clientWidth;
-            document.querySelector(
-                ".carousel-inner"
-            ).style.transform = `translateX(-${width * currentIndex}px)`;
+            document.querySelector(".carousel-inner").style.transform = `translateX(-${width * currentIndex}px)`;
+
+            // Update active dot
+            dots.forEach(dot => dot.classList.remove('active'));
+            dots[currentIndex].classList.add('active');
         }
+
+        // Automatic slide every 4 seconds
+        setInterval(nextSlide, 4000);
     </script>
+
+    <style>
+        /* Active dot style */
+        .carousel-dot.active {
+            background-color: #F6E17A;
+        }
+    </style>
+
 
 
     <section>
@@ -86,16 +124,23 @@ ob_start();
         <div class="column" align="center">
             <div class="about-us">
                 <h1 style="font-size: 31px; font-weight: 530;">ABOUT US</h1>
-                <button style="border-radius: 50px;" class="yellow-btn">Read more ►</button>
+                <a href="about.php">
+                    <button style="border-radius: 50px;" class="yellow-btn">Read more ►</button>
+                </a>
             </div>
         </div>
         <div class="column">
-            <p class="text-2xl font-semibold text-black px-16 mt-8">Projects Unlimited Philippines Inc., is a leading provider of interior products, and a preferred supplier for many architects, interior designers, contractors and homeowners.</p>
+            <p class="text-2xl font-semibold text-black px-16 mt-8" style="text-align: justify;">
+                Projects Unlimited Philippines Inc., is a leading provider of interior products, and a preferred supplier for many architects, interior designers, contractors, and homeowners.
+            </p>
         </div>
     </section>
     <div>
-        <p class="text-2xl font-semibold text-black px-16 mt-8" style="text-align: center;">For more information, download our Omnibus Brochure:
-            <button style="border-radius: 50px; font-weight: 400;" class="yellow-btn">Download <i class="fa-solid fa-download"></i></button>
+        <p class="text-2xl font-semibold text-black px-16 mt-8" style="text-align: center;">
+            For more information, download our Omnibus Brochure:
+            <a href="../assets/PROJECTS_UNLIMITED-OMNIBUS_BROCHURE.pdf" download>
+                <button style="border-radius: 50px; font-weight: 400;" class="yellow-btn">Download <i class="fa-solid fa-download"></i></button>
+            </a>
         </p>
     </div>
 
@@ -135,58 +180,72 @@ ob_start();
             NEWS & UPDATES
         </h1>
         <div style="display: flex; padding-top: 20px;">
-            <div style="flex: 2; padding-left: 50px; background-color: #ccc; height: 500px; display: flex; align-items: center;"> <!-- Left column for image -->
-                <!-- Placeholder image -->
+            <div style="flex: 2; padding-left: 50px; background-color: #ccc; height: 500px; display: flex; align-items: center; background-image: url('<?php $sql = "SELECT * FROM blogs ORDER BY date DESC LIMIT 1";
+                                                                                                                                                        $result = $conn->query($sql);
+                                                                                                                                                        if ($result->num_rows > 0) {
+                                                                                                                                                            $row = $result->fetch_assoc();
+                                                                                                                                                            $images = explode(",", $row['images']);
+                                                                                                                                                            echo '../assets/blogs_img/' . $images[0];
+                                                                                                                                                        } else {
+                                                                                                                                                            echo ''; // Default image path or no image available
+                                                                                                                                                        }    ?>'); background-size: cover; background-position: center;"> <!-- Left column for image -->
             </div>
             <div style="text-align: justify; flex: 1; padding-right: 100px; padding-left: 50px; display: flex; align-items: center;"> <!-- Right column for content -->
                 <div style="margin-left: auto;">
-                    <p class="text-2xl font-semibold text-black px-16 mt-8">
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed in turpis vel odio eleifend placerat. Quisque sodales urna sit amet risus vestibulum ultricies. Donec ac odio vel velit aliquam aliquam.
-                        <br>
+                    <?php
+                    // Reuse the fetched data
+                    if ($result->num_rows > 0) {
+                        // Display limited text from the description column
+                        $description = substr($row['description'], 0, 200); // Display first 200 characters
+                        echo '<p class="text-2xl font-semibold text-black px-16 mt-8">' . $description . '...</p>';
+                    } else {
+                        echo "No news available";
+                    }
+                    ?>
                     <div style="padding-top: 20px; text-align: center;">
-                        <button style="border-radius: 50px;" class="yellow-btn">For other updates ►</button>
+                        <a href="blogs.php">
+                            <button style="border-radius: 50px;" class="yellow-btn">For other updates ►</button>
+                        </a>
                     </div>
-                    </p>
                 </div>
             </div>
         </div>
     </section>
 
+
     <section style="padding-top: 40px; padding-bottom: 20px; background: linear-gradient(to bottom, transparent, #F6E17A);">
-        <h1 style="text-align: center; font-size: 38px; font-weight: 800;">
-            LATEST PRODUCTS
-        </h1>
+        <h1 style="text-align: center; font-size: 38px; font-weight: 800;">LATEST PRODUCTS</h1>
         <div style="display: flex; justify-content: space-around; padding-top: 20px; padding-left: 40px; padding-right: 40px;">
-            <!-- First product column -->
-            <div style="flex: 1; padding: 20px; height: 400px; ">
-                <div style="background-color: #E3E3E3; padding: 20px; height: 100%;">
-                    <!-- Placeholder content for product -->
-                </div>
-                <p style="text-align: center; font-weight:600;">XERA TB102 BROWN</p>
-                <p style="text-align: center;">Blackout Blinds</p>
-            </div>
-            <!-- Second product column -->
-            <div style="flex: 1; padding: 20px; height: 400px;">
-                <div style="background-color: #D5E8D4; padding: 20px; height: 100%;"></div>
-                <p style="text-align: center; font-weight:600;">XERA TB102 BROWN</p>
-                <p style="text-align: center;">Blackout Blinds</p>
-            </div>
-            <!-- Third product column -->
-            <div style="flex: 1; padding: 20px;  height: 400px;">
-                <div style="background-color: #E9D6D3; padding: 20px; height: 100%;"></div>
-                <p style="text-align: center; font-weight:600;">XERA TB102 BROWN</p>
-                <p style="text-align: center;">Blackout Blinds</p>
-            </div>
-            <!-- Fourth product column -->
-            <div style="flex: 1; padding: 20px; height: 400px;">
-                <div style="background-color: #D5DEE8; padding: 20px; height: 100%;"></div>
-                <p style="text-align: center; font-weight:600;">XERA TB102 BROWN</p>
-                <p style="text-align: center;">Blackout Blinds</p>
-            </div>
+            <?php
+            // Fetch products from the database
+            $sql = "SELECT * FROM product ORDER BY created_at DESC LIMIT 4";
+            $result = $conn->query($sql);
+
+            if ($result->num_rows > 0) {
+                while ($row = $result->fetch_assoc()) {
+                    // Split the image URLs string by commas
+                    $image_urls = explode(",", $row['image_urls']);
+                    // Take the first image URL
+                    $image_url = $image_urls[0];
+            ?>
+                    <!-- Product column -->
+                    <div style="flex: 1; padding: 20px; height: 400px;">
+                        <div style="background-image: url('../assets/products/<?php echo $image_url; ?>'); background-size: cover; background-position: center; padding: 20px; height: 100%;"></div>
+                        <p style="text-align: center; font-weight:600;"><?php echo $row['ProductName']; ?></p>
+                        <p style="text-align: center;"><?php echo $row['Description']; ?></p>
+                    </div>
+            <?php
+                }
+            } else {
+                echo "No products available";
+            }
+            ?>
         </div>
 
         <div style="padding-top: 100px; text-align: center;">
-            <button style="padding: 10px 80px;" class="white-btn">See other products ►</button>
+            <a href="category.php">
+                <button style="padding: 10px 80px;" class="white-btn">See other products ►</button>
+            </a>
         </div>
     </section>
 
@@ -202,18 +261,24 @@ ob_start();
             <h1 style="text-align: right; padding-right: 80px; color: #F6E17A;" class="text-4xl font-bold">HEAR WHAT OUR FRIENDS HAVE TO SAY</h1>
 
             <div class="third-carousel-inner flex">
-                <div class="third-carousel-item w-full text-white text-center">
-                    <h1 style="text-align: justify;" class="text-3xl font-bold">"Projects Unlimited delivers unparalleled excellence! Their team's attention to detail and commitment to quality surpassed our expectations. Seamless execution, innovative solutions, and outstanding professionalism make them the top choice for any project. Highly recommended!"</h1></br>
-                    <h1 style="padding-top: 10px;" class="text-3xl font-bold">Customer Name</h1>
-                    <h1 class="text-3xl font-bold">Company/Organization</h1>
-                </div>
+                <?php
+                // Fetch testimonials from the database
+                $sql = "SELECT * FROM testimonials";
+                $result = $conn->query($sql);
 
-                <div class="third-carousel-item w-full text-black text-center">
-                    <h1 class="text-4xl font-bold">Slide 2</h1>
-                </div>
-                <div class="third-carousel-item w-full text-black text-center">
-                    <h1 class="text-4xl font-bold">Slide 3</h1>
-                </div>
+                if ($result->num_rows > 0) {
+                    while ($row = $result->fetch_assoc()) {
+                        // Display carousel item for each testimonial
+                        echo '<div class="third-carousel-item w-full text-white text-center">';
+                        echo '<h1 style="text-align: justify; line-height: 1.5; padding-top: 50px;" class="text-3xl font-bold">"' . $row['message'] . '"</h1><br>';
+                        echo '<h1 style="padding-top: 50px;" class="text-3xl font-bold">' . $row['cname'] . '</h1>';
+                        echo '<h1 class="text-3xl font-bold">' . $row['company'] . '</h1>';
+                        echo '</div>';
+                    }
+                } else {
+                    echo "No testimonials available";
+                }
+                ?>
             </div>
 
             <div class="third-carousel-arrow prev" onclick="prevThirdSlide()" style="font-size: 99px; padding: 100px">
@@ -223,16 +288,19 @@ ob_start();
                 <i class="fas fa-chevron-right" style="color: #F6E17A;"></i>
             </div>
 
-
             <div class="third-carousel-dots absolute bottom-0 left-0 right-0 flex justify-center items-center w-full">
-                <span class="third-dot bg-black"></span>
-                <span class="third-dot bg-white"></span>
-                <span class="third-dot bg-white"></span>
+                <?php
+                // Reset result pointer
+                $result->data_seek(0);
+                $dotCount = 0;
+                while ($dotCount < $result->num_rows) {
+                    echo '<span class="third-dot bg-black"></span>';
+                    $dotCount++;
+                }
+                ?>
             </div>
-
         </div>
     </section>
-
 
     <script>
         let currentIndexSecondCarousel = 0;
@@ -338,7 +406,11 @@ ob_start();
                 updateCarouselThirdCarousel();
             });
         });
+
+        // Auto slide every 8 seconds
+        setInterval(nextSlideThirdCarousel, 8000);
     </script>
+
 </body>
 
 </html>
@@ -361,8 +433,10 @@ logout modal ----------
 change home elements size --------
 content ng blogs ------
 testimonials cms -----
+audit logs
+contact cms
 page animations 
 mobile scaling
 profile admin (sinimulan na)
-connect db sa home display
+connect db sa home display (brands nalang)
 -->
