@@ -185,6 +185,55 @@ ob_start();
         </form>
     </div>
 </div>
+<!-- View Category Modal -->
+<div id="viewCategoryModal" class="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 hidden">
+    <div class="bg-white p-4 rounded-md shadow-md max-w-3xl w-full h-[90vh] overflow-auto">
+        <div class="flex justify-between items-center mb-4">
+            <h2 class="text-2xl font-bold">Category Details</h2>
+            <button id="closeViewModalButton" class="text-gray-600 hover:text-gray-900 focus:outline-none">
+                <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
+                    </path>
+                </svg>
+            </button>
+        </div>
+        <div class="border-b border-black flex-grow border-2 mt-2 mb-3"></div>
+        <div class="mt-4">
+            <div class="mb-4 flex flex-col">
+                <label class="text-sm font-medium text-gray-700 mb-1">Category Name</label>
+                <p id="viewCategoryName" class="border rounded-md px-3 py-2 text-sm"></p>
+            </div>
+            <div class="mb-4 flex flex-col">
+                <label class="text-sm font-medium text-gray-700 mb-1">Page Type</label>
+                <p id="viewCategoryType" class="border rounded-md px-3 py-2 text-sm"></p>
+            </div>
+            <div class="mb-4 flex flex-col">
+                <label class="text-sm font-medium text-gray-700 mb-1">Type of Category</label>
+                <p id="viewCategoryTypeOfCategory" class="border rounded-md px-3 py-2 text-sm"></p>
+            </div>
+            <div id="viewCategoryImages" class="mb-4 flex flex-col hidden">
+                <label class="text-sm font-medium text-gray-700 mb-1">Category Images</label>
+                <div class="flex">
+                    <div id="viewCategoryImageCover" class="mr-4">
+                        <label class="text-xs font-medium text-gray-700 mb-1">Image Cover</label>
+                        <img id="viewCategoryCoverImage" class="border rounded-md" src="#" alt="Category Cover Image" style="max-width: 100px; max-height: 100px;">
+                    </div>
+                    <div id="viewCategoryImageHeader">
+                        <label class="text-xs font-medium text-gray-700 mb-1">Image Header</label>
+                        <img id="viewCategoryHeaderImage" class="border rounded-md" src="#" alt="Category Header Image" style="max-width: 100px; max-height: 100px;">
+                    </div>
+                </div>
+            </div>
+            <div class="mb-4 flex flex-col hidden" id="viewMainCategory">
+                <label class="text-sm font-medium text-gray-700 mb-1">Main Category</label>
+                <p id="viewMainCategoryName" class="border rounded-md px-3 py-2 text-sm"></p>
+            </div>
+        </div>
+        <div class="flex justify-end">
+            <button id="closeViewModal" class="btn btn-secondary rounded-md text-center h-10 mt-3 sm:mt-4 !px-4 py-0 text-lg flex items-center">Close</button>
+        </div>
+    </div>
+</div>
 <!-- Delete Confirmation Modal -->
 <div id="deleteModal" class="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 hidden">
     <div class="bg-white p-4 rounded-md shadow-md w-full sm:w-[80%] md:w-[60%] lg:w-[40%] xl:w-[30%]">
@@ -461,8 +510,57 @@ ob_start();
             }
         });
     });
-</script>
 
+ // Event listener for view category button click
+$(document).on('click', '.viewCategory', function() {
+    var categoryId = $(this).data('categoryid');
+    $.ajax({
+        url: '../../../backend/category/viewcategory.php',
+        type: 'POST',
+        dataType: 'json',
+        data: {
+            categoryId: categoryId
+        },
+        success: function(response) {
+            if (response && response.success) {
+                var category = response.category;
+                // Populate modal content based on category type
+                $('#viewCategoryName').text(category.CategoryName);
+                $('#viewCategoryType').text(category.type);
+                if (category.imagecover && category.imageheader) {
+                    $('#viewCategoryCoverImage').attr('src', category.imagecover);
+                    $('#viewCategoryHeaderImage').attr('src', category.imageheader);
+                    $('#viewCategoryImages').removeClass('hidden');
+                } else {
+                    $('#viewCategoryImages').addClass('hidden');
+                }
+                if (response.isMainCategory) {
+                    $('#viewCategoryTypeOfCategory').text('Main Category');
+                    $('#viewMainCategory').addClass('hidden');
+                } else {
+                    $('#viewCategoryTypeOfCategory').text('Sub Category');
+                    $('#viewMainCategoryName').text(category.MainCategoryName);
+                    $('#viewMainCategory').removeClass('hidden');
+                }
+                $('#viewCategoryModal').removeClass('hidden');
+            } else {
+                console.error("Error: " + response.message);
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error("Status: " + status);
+            console.error("Error: " + error);
+            console.error("Response: " + xhr.responseText);
+        }
+    });
+});
+
+// Close view modal when Close button or "x" button is clicked
+$("#closeViewModalButton, #closeViewModal").click(function() {
+    $("#viewCategoryModal").addClass("hidden");
+});
+
+</script>
 <?php
 $script = ob_get_clean();
 include("../../../public/master.php");
