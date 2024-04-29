@@ -228,6 +228,11 @@ ob_start();
                 <label class="text-sm font-medium text-gray-700 mb-1">Main Category</label>
                 <p id="viewMainCategoryName" class="border rounded-md px-3 py-2 text-sm"></p>
             </div>
+             <!-- Display Subcategories -->
+             <div id="subcategoriesList" class="mt-2">
+                <label class="text-sm font-medium text-gray-700 mb-1">Subcategories</label>
+                <ul id="subcategories" class="list-disc pl-5"></ul>
+            </div>
         </div>
         <div class="flex justify-end">
             <button id="closeViewModal" class="btn btn-secondary rounded-md text-center h-10 mt-3 sm:mt-4 !px-4 py-0 text-lg flex items-center">Close</button>
@@ -512,48 +517,57 @@ ob_start();
     });
 
  // Event listener for view category button click
-$(document).on('click', '.viewCategory', function() {
-    var categoryId = $(this).data('categoryid');
-    $.ajax({
-        url: '../../../backend/category/viewcategory.php',
-        type: 'POST',
-        dataType: 'json',
-        data: {
-            categoryId: categoryId
-        },
-        success: function(response) {
-            if (response && response.success) {
-                var category = response.category;
-                // Populate modal content based on category type
-                $('#viewCategoryName').text(category.CategoryName);
-                $('#viewCategoryType').text(category.type);
-                if (category.imagecover && category.imageheader) {
-                    $('#viewCategoryCoverImage').attr('src', category.imagecover);
-                    $('#viewCategoryHeaderImage').attr('src', category.imageheader);
-                    $('#viewCategoryImages').removeClass('hidden');
+    $(document).on('click', '.viewCategory', function() {
+        var categoryId = $(this).data('categoryid');
+        $.ajax({
+            url: '../../../backend/category/viewcategory.php',
+            type: 'POST',
+            dataType: 'json',
+            data: {
+                categoryId: categoryId
+            },
+            success: function(response) {
+                if (response && response.success) {
+                    var category = response.category;
+                    // Populate modal content based on category type
+                    $('#viewCategoryName').text(category.CategoryName);
+                    $('#viewCategoryType').text(category.type);
+                    if (category.imagecover && category.imageheader) {
+                        $('#viewCategoryCoverImage').attr('src', category.imagecover);
+                        $('#viewCategoryHeaderImage').attr('src', category.imageheader);
+                        $('#viewCategoryImages').removeClass('hidden');
+                    } else {
+                        $('#viewCategoryImages').addClass('hidden');
+                    }
+                    if (response.isMainCategory) {
+                        $('#viewCategoryTypeOfCategory').text('Main Category');
+                        $('#viewMainCategory').addClass('hidden');
+                        // Show subcategories and populate the list
+                        $('#subcategoriesList').removeClass('hidden');
+                        $('#subcategories').empty(); // Clear previous subcategories
+                        $.each(response.subcategories, function(index, subcategory) {
+                            $('#subcategories').append('<li class="text-sm text-gray-800">' + subcategory + '</li>');
+                        });
+                    } else {
+                        $('#viewCategoryTypeOfCategory').text('Sub Category');
+                        $('#viewMainCategoryName').text(category.MainCategoryName);
+                        $('#viewMainCategory').removeClass('hidden');
+                        // Hide subcategories for sub categories
+                        $('#subcategoriesList').addClass('hidden');
+                        $('#subcategories').empty(); // Clear previous subcategories
+                    }
+                    $('#viewCategoryModal').removeClass('hidden');
                 } else {
-                    $('#viewCategoryImages').addClass('hidden');
+                    console.error("Error: " + response.message);
                 }
-                if (response.isMainCategory) {
-                    $('#viewCategoryTypeOfCategory').text('Main Category');
-                    $('#viewMainCategory').addClass('hidden');
-                } else {
-                    $('#viewCategoryTypeOfCategory').text('Sub Category');
-                    $('#viewMainCategoryName').text(category.MainCategoryName);
-                    $('#viewMainCategory').removeClass('hidden');
-                }
-                $('#viewCategoryModal').removeClass('hidden');
-            } else {
-                console.error("Error: " + response.message);
+            },
+            error: function(xhr, status, error) {
+                console.error("Status: " + status);
+                console.error("Error: " + error);
+                console.error("Response: " + xhr.responseText);
             }
-        },
-        error: function(xhr, status, error) {
-            console.error("Status: " + status);
-            console.error("Error: " + error);
-            console.error("Response: " + xhr.responseText);
-        }
+        });
     });
-});
 
 // Close view modal when Close button or "x" button is clicked
 $("#closeViewModalButton, #closeViewModal").click(function() {
