@@ -1,5 +1,4 @@
 <?php
-// Include your database connection
 include '../../backend/conn.php';
 
 // Check if categoryId is set and not empty
@@ -22,17 +21,9 @@ if(isset($_POST['categoryId']) && !empty($_POST['categoryId'])) {
     if($result) {
         if(mysqli_num_rows($result) > 0) {
             $category = mysqli_fetch_assoc($result);
-            
-            // Check if the category ID is used as a parent category ID for any other category
-            $checkMainCategoryQuery = "SELECT COUNT(*) AS count FROM productcategory WHERE ParentCategoryID = $categoryId";
-            $mainCategoryResult = mysqli_query($conn, $checkMainCategoryQuery);
-            $mainCategoryData = mysqli_fetch_assoc($mainCategoryResult);
-            if (!empty($category['imagecover']) && !empty($category['imageheader']) && $mainCategoryData['count'] > 0) {
-                $isMainCategory = true;
-            } else {
-                $isMainCategory = false;
-            }
-            mysqli_free_result($mainCategoryResult);
+
+            // Check if the category has both imagecover and imageheader
+            $isMainCategory = !empty($category['imagecover']) && !empty($category['imageheader']);
 
             // Fetch subcategories if it's a main category
             if($isMainCategory) {
