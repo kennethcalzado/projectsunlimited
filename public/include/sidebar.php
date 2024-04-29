@@ -8,8 +8,7 @@ $image_path = $base_url . 'assets/image/projectslogo.png';
 ?>
 
 <!-- Logout Confirmation Modal -->
-<div id="logoutModal"
-    class="fixed inset-0 z-50 overflow-auto bg-black bg-opacity-50 flex justify-center items-center hidden">
+<div id="logoutModal" class="fixed inset-0 z-50 overflow-auto bg-black bg-opacity-50 flex justify-center items-center hidden">
     <div class="max-w-md w-full bg-white p-6 rounded-lg">
         <h2 class="text-xl font-bold mb-4">Are you sure you want to log out?</h2>
         <div class="flex justify-end">
@@ -23,8 +22,7 @@ $image_path = $base_url . 'assets/image/projectslogo.png';
      text-center bg-black text-white transition-all z-50">
 
     <div class="text-gray-100 text-xl flex justify-between">
-        <span id="toggle-sidebar" class="absolute text-white text-4xl top-4 !ml-2 mt-1 z-40 cursor-pointer burger"
-            onclick="toggleSidebar()">
+        <span id="toggle-sidebar" class="absolute text-white text-4xl top-4 !ml-2 mt-1 z-40 cursor-pointer burger" onclick="toggleSidebar()">
             <i class="bi bi-list px-2 text-3xl rounded-md hover:bg-yellow-600" title="Toggle Sidebar"></i>
         </span>
         <div class="p-3 mt-1 ml-32 flex items-center">
@@ -58,7 +56,7 @@ $image_path = $base_url . 'assets/image/projectslogo.png';
     <?php
     // Determine the user's role
     $userRole = $_SESSION['user_role'] ?? "guest"; // Default to 'guest' if the role is not set
-    
+
 
     if ($userRole == 'admin') { ?>
         <a href="/public/users/admin/users-table.php" class="group">
@@ -177,6 +175,26 @@ $image_path = $base_url . 'assets/image/projectslogo.png';
         </div>
     </a>
 
+    <a href="/public/users/admin/locations.php" class="group">
+        <div class="nav-item mt-3 flex items-center rounded-l-md px-6 p-2
+            transition-opacity duration-300 cursor-pointer text-white group-hover:bg-yellow-600 group-hover:ease-in">
+
+            <div class=" flex relative ">
+                <i class="bi bi-geo-alt-fill"></i>
+                <span class="text-[15px] ml-4 text-gray-200 font-bold">Locations</span>
+                <span class="tootlips 
+                    group-hover:ease-in group-hover:opacity-100 group-hover:visible 
+                    transition-opacity duration-300 
+                    bg-yellow-600 rounded-r-md 
+                    pr-5 py-[8.9px] m-4 mx-auto w-40
+                    text-[15px] font-bold text-white 
+                    absolute  invisible
+                    left-1/2 translate-x-[19%] -translate-y-[59.5%] opacity-0">Locations</span>
+            </div>
+        </div>
+    </a>
+
+
     <a href="/public/users/admin/cmsblogs.php" class="group">
         <div class="nav-item mt-3 flex items-center rounded-l-md px-6 p-2
             transition-opacity duration-300 cursor-pointer text-white group-hover:bg-yellow-600 group-hover:ease-in">
@@ -286,7 +304,7 @@ $image_path = $base_url . 'assets/image/projectslogo.png';
         var logoutModal = document.getElementById('logoutModal');
         logoutModal.classList.remove('fade-in');
         logoutModal.classList.add('fade-out');
-        setTimeout(function () {
+        setTimeout(function() {
             logoutModal.classList.add('hidden');
             logoutModal.classList.remove('fade-out'); // Remove fade-out class after animation
         }, 300);
@@ -315,12 +333,12 @@ $image_path = $base_url . 'assets/image/projectslogo.png';
             document.querySelector("#submenu").classList.toggle("hidden");
             document.querySelector("#sidebar-container").classList.toggle("overflow-y-auto");
             // Iterate over each element with class "nav-item" and apply the class toggle
-            document.querySelectorAll(".nav-item").forEach(function (navItem) {
+            document.querySelectorAll(".nav-item").forEach(function(navItem) {
                 navItem.classList.toggle("rounded-l-md");
                 navItem.classList.toggle("rounded-md");
             });
             // Iterate over each element with class "tootlips" and apply the class toggle
-            document.querySelectorAll(".tootlips").forEach(function (tooltip) {
+            document.querySelectorAll(".tootlips").forEach(function(tooltip) {
                 tooltip.classList.toggle("hidden");
             });
         } else {
@@ -328,12 +346,12 @@ $image_path = $base_url . 'assets/image/projectslogo.png';
             document.querySelector("#arrow").classList.toggle("hidden");
             document.querySelector("#submenu").classList.toggle("hidden");
             // Iterate over each element with class "nav-item" and apply the class toggle
-            document.querySelectorAll(".nav-item").forEach(function (navItem) {
+            document.querySelectorAll(".nav-item").forEach(function(navItem) {
                 navItem.classList.toggle("rounded-l-md");
                 navItem.classList.toggle("rounded-md");
             });
             // Iterate over each element with class "tootlips" and apply the class toggle
-            document.querySelectorAll(".tootlips").forEach(function (tooltip) {
+            document.querySelectorAll(".tootlips").forEach(function(tooltip) {
                 tooltip.classList.toggle("hidden");
             });
             document.querySelector("#sidebar-container").classList.toggle("overflow-y-auto");
@@ -346,20 +364,20 @@ $image_path = $base_url . 'assets/image/projectslogo.png';
 </script>
 
 <script>
-    $(document).ready(function () {
+    $(document).ready(function() {
         $.ajax({
             url: '../../../backend/brands/brands-get.php',
             type: 'GET',
             dataType: 'json',
-            success: function (brands) {
+            success: function(brands) {
                 // Render brand data
                 const submenu = $('#submenu');
 
-                brands.forEach(function (brand) {
+                brands.forEach(function(brand) {
                     submenu.append($('<h1>').text(brand.brand_name).addClass('cursor-pointer p-2 hover:bg-yellow-600 rounded-md mt-1'));
                 });
             },
-            error: function (xhr, status, error) {
+            error: function(xhr, status, error) {
                 console.error('Error:', error);
             }
         });
