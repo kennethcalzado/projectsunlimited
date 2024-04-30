@@ -663,17 +663,6 @@ ob_start();
                 $( '#descriptionError' ).empty();
             }
 
-            // if ( $( '#uploadBrandLogo' )[0].files.length === 0 )
-            // {
-            //     $( '#uploadBrandLogo' ).addClass( 'border-red-500' );
-            //     $( '#brandLogoError' ).text( 'Brand logo is required.' );
-            //     isValid = false;
-            // } else
-            // {
-            //     $( '#uploadBrandLogo' ).removeClass( 'border-red-500' );
-            //     $( '#brandLogoError' ).empty();
-            // }
-
             if ( !type )
             {
                 $( '#type' ).addClass( 'border-red-500' );
@@ -746,17 +735,7 @@ ob_start();
                             timer: 1000
                         } );
 
-                        console.info( response );
-
-                        if ( $( '#brandForm' ).data( 'isEdit' ) )
-                        {
-                            // Update the brand data in the table for editing process
-                            updateTableRow( response );
-                        } else
-                        {
-                            // Add the new brand data to the table for creation process
-                            addNewTableRow( response );
-                        }
+                        table.ajax.reload();
 
                         closeModal();
                     },
@@ -777,52 +756,6 @@ ob_start();
                 console.log( 'Form is not valid. Please fill out all required fields.' );
             }
         } );
-
-        // Function to update table row for editing process
-        function updateTableRow ( response )
-        {
-            const brandId = response.brand_id;
-
-            // Loop through each row in the table to find the matching brandId
-            $( '#dataTable' ).DataTable().rows().every( function ()
-            {
-                const rowData = this.data();
-
-                if ( rowData.brand_id == brandId )
-                {
-                    // Update the row data
-                    $.each( response, function ( key, value )
-                    {
-                        rowData[key] = value;
-                    } );
-
-                    // Redraw the DataTable
-                    this.invalidate().draw( false );
-                    return false;
-                }
-                return true;
-            } );
-        }
-
-        // Function to add new table row for creation process
-        function addNewTableRow ( response )
-        {
-            // Check if the response contains the necessary data
-            if ( response.brand_id && response.brand_name && response.type && response.status && response.updated_at )
-            {
-                // Append new row to the table
-                $( '#dataTable' ).DataTable().row.add( [
-                    response.brand_name,
-                    response.type,
-                    response.status,
-                    formatDate( response.updated_at ) + ' ' + formatTime( response.updated_at )
-                ] ).draw();
-            } else
-            {
-                console.error( 'Incomplete or invalid data in the response:', response );
-                // Optionally, you can handle this case by displaying an error message or logging the issue
-            }
-        }
 
         $( document ).on( 'click', '#addBrandsDropdownBtn', function ()
         {
