@@ -1,6 +1,9 @@
 <?php
 include '../../backend/conn.php'; // Include the database connection script
 
+$errorLogPath = __DIR__ . '\error.log';
+ini_set('error_log', $errorLogPath);
+
 try {
     // Your SQL query to fetch brands data along with catalogs
     $sql = "SELECT brands.*, GROUP_CONCAT(catalogs.catalog_path) AS catalog_paths 
@@ -19,8 +22,24 @@ try {
         while ($row = $result->fetch_assoc()) {
             // Convert catalog paths to an array if not null
             $catalogPaths = ($row['catalog_paths'] !== null) ? explode(',', $row['catalog_paths']) : array();
-            $row['catalogs'] = $catalogPaths;
-            unset($row['catalog_paths']); // Remove catalog paths from the row
+            $catalogs = array();
+            foreach ($catalogPaths as $path) {
+                // Check if the file exists and is readable before getting its size
+                $fullPath = realpath(__DIR__ . '/../../assets/catalogs') . '/' . basename($path);
+                if (is_readable($fullPath)) {
+                    // Get the file size for each catalog
+                    $size = filesize($fullPath); // This function returns the size in bytes
+                    $catalogs[] = array(
+                        'path' => $path,
+                        'size' => $size
+                    );
+                } else {
+                    // Log or display an error message for unreadable files
+                    error_log("File $fullPath is not readable");
+                }
+            }
+            $row['catalogs'] = $catalogs;
+            unset($row['catalog_paths']); 
             $brands[] = $row;
         }
     }

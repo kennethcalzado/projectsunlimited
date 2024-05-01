@@ -37,9 +37,8 @@ ob_start();
     <div class="relative overflow-x-auto mb-1 rounded-lg mt-4 ">
         <table id="brandsTable" class="hover order-column row-border!w-full  ">
             <div class="relative ml-1 mb-2 mt-2 sm:mb-0 sm:mr-8">
-                <button id="combinedDropdownButton" data-dropdown-toggle="combinedDropdown"
-                    class="yellow-btn btn-primary font-medium rounded-lg text-sm px-5 py-2 text-center inline-flex items-center"
-                    type="button">
+                <button id="combinedDropdownButton" data-dropdown-toggle="combinedDropdown" class="yellow-btn btn-primary font-medium rounded-lg 
+                    text-sm px-5 py-2 text-center inline-flex items-center" type="button">
                     Filters
                     <i class="fa-solid fa-angle-down pt-1 ml-2 text-md"></i>
                 </button>
@@ -52,13 +51,17 @@ ob_start();
                             <h3 class="text-gray-900 font-semibold">Type</h3>
                             <div class="flex items-center p-2 rounded hover:bg-[#F9E89B] ">
                                 <input id="typeCheckboxCatalog" type="checkbox" value="Catalog"
-                                    class="w-4 h-4 text-blue-600 bg-black border-gray-900 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                                    class="w-4 h-4 text-blue-600 bg-black border-gray-900 rounded 
+                                    focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 
+                                    dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
                                 <label for="typeCheckboxCatalog"
                                     class="w-full ms-2 text-sm font-medium text-gray-900 rounded dark:text-gray-900">Catalog</label>
                             </div>
                             <div class="flex items-center p-2 rounded hover:bg-[#F9E89B] ">
                                 <input id="typeCheckboxInquiry" type="checkbox" value="Inquiry"
-                                    class="w-4 h-4 text-blue-600 bg-black border-gray-900 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+                                    class="w-4 h-4 text-blue-600 bg-black border-gray-900 rounded 
+                                    focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 
+                                    dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
                                 <label for="typeCheckboxInquiry"
                                     class="w-full ms-2 text-sm font-medium text-gray-900 rounded dark:text-gray-900">Inquiry</label>
                             </div>
@@ -112,8 +115,8 @@ ob_start();
 </div>
 
 <div id="modal-container"
-    class="modal fixed inset-0 z-50 bg-black bg-opacity-50 flex items-center justify-center hidden">
-    <div class="bg-white rounded-lg shadow-2xl p-6 max-h-full max-w-2xl overflow-y-auto">
+    class="modal fixed inset-0 z-50 bg-black bg-opacity-50 flex items-center justify-center hidden  ">
+    <div class="bg-white rounded-lg shadow-2xl p-6 max-h-full !min-w-[672px] max-w-2xl overflow-y-auto">
         <div class="flex justify-between items-center">
             <h2 id="brandModalTitle" class="text-xl font-semibold"><!--Modal Title--></h2>
             <button id="closeBrandModal"
@@ -126,21 +129,27 @@ ob_start();
             <div class="flex flex-wrap justify-between">
                 <!-- Image Section -->
                 <div class="w-1/3 mt-2">
-                    <div id="imageDropzone"
-                        class="relative rounded-xl ring-1 ring-black ring-offset-gray-700 overflow-hidden flex items-center justify-center group h-full max-h-80">
-                        <div
-                            class="absolute inset-x-0 bottom-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200 ">
-                            <label for="uploadBrandLogo"
-                                class="bg-gray-800 text-sm text-white m-1 px-2 py-1 rounded-full cursor-pointer">Upload
-                                new
-                                brand logo</label>
+                    <div id="imageDropzone" class="relative rounded-xl ring-1 ring-black ring-offset-gray-700
+                         overflow-hidden flex items-center justify-center group h-full max-h-80">
+
+                        <!-- Dark overlay -->
+                        <div id="brandLogoOverlay"
+                            class="absolute inset-0 bg-black opacity-0 group-hover:opacity-50 transition-opacity duration-200">
+                        </div>
+
+                        <div class="absolute inset-x-0 bottom-0 flex items-center justify-center 
+                            opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                            <label for="uploadBrandLogo" class="bg-gray-800 text-sm text-white m-1 px-2 py-1 
+                                rounded-full cursor-pointer w-full text-center">
+                                Upload new brand logo
+                            </label>
                             <input type="file" id="uploadBrandLogo" class="hidden">
                         </div>
                         <div class="mx-auto"> <!-- Container for the image -->
                             <img id="brandImage" src="" alt="" class="w-full h-auto object-cover">
                         </div>
-
                     </div>
+
                     <div class="text-xs text-center text-gray-500 !-mt-[0.1px]">
                         <div id="brandLogoError" class="text-sm text-red-500 mt-1 error-message"></div>
                         <div id="createdAtContainer">Created At: <span id="createdAt"></span></div>
@@ -195,7 +204,8 @@ ob_start();
                 <label for="brandCatalogs" class="block text-sm font-medium text-gray-700">Upload
                     Catalogs:</label>
                 <input type="file" id="brandCatalogs" name="brandCatalogs[]" multiple
-                    class="pl-2 mt-1 w-full rounded-md border border-gray-700 shadow-sm">
+                    class="pl-2 mt-1 mb-2 w-full rounded-md border border-gray-700 shadow-sm">
+                <div id="uploadedCatalogList" class="mt-2 grid grid-cols-2 gap-4 overflow-y-auto"></div>
                 <div id="brandCatalogsError" class="text-sm text-red-500 mt-1 error-message"></div>
                 <!-- Catalog List Section -->
                 <div class="mt-4">
@@ -214,7 +224,6 @@ ob_start();
         </form>
     </div>
 </div>
-
 
 <div id="popup-container">
 </div>
@@ -422,12 +431,12 @@ ob_start();
                     // Append each catalog to the list
                     rowData.catalogs.forEach( catalog =>
                     {
-                        const fileName = catalog.split( '/' ).pop();
-                        const fileSize = rowData.file_size; // Assuming 'file_size' property exists
+                        const fileName = catalog.path.split( '/' ).pop();
+                        const fileSize = catalog.size;
                         const fileExtension = fileName.split( '.' ).pop();
 
                         // Create file container
-                        const fileContainer = createFileContainer( fileName, null, fileExtension );
+                        const fileContainer = createFileContainer( fileName, fileSize, fileExtension );
                         $( '#catalogList' ).append( fileContainer );
                     } );
                 } else
@@ -463,18 +472,15 @@ ob_start();
                 $( '#createdAt' ).text( `${ date } ${ time }` );
                 $( '#updatedAt' ).text( `${ formatDate( rowData.updated_at ) } ${ formatTime( rowData.updated_at ) }` );
 
-                // Hide submit button and show view button
-                $( '#editBrandBtn' ).show();
+                // Set buttons visibility
+                $( '#editBrandBtn, #hideBrandBtn' ).show();
                 $( '#submitBrandBtn' ).hide();
+                $( '#closeBrandBtn' ).text( 'Close' );
 
-                $( '#editBrandBtn, #hideBrandBtn' ).hide();
-                $( '#submitBrandBtn' ).show();
-                $( '#closeBrandBtn' ).text( 'Cancel' );
-
-                // Hide label when hovering over the upload button
+                // Hide upload button when hovering over the brand logo
                 $( '#imageDropzone' ).hover( function ()
                 {
-                    $( 'label[for="uploadBrandLogo"]' ).hide();
+                    $( 'label[for="uploadBrandLogo"],#brandLogoOverlay' ).hide();
                 } );
             } else if ( isEdit )
             {
@@ -499,21 +505,22 @@ ob_start();
                 $( '#createdAt' ).text( `${ date } ${ time }` );
                 $( '#updatedAt' ).text( `${ formatDate( rowData.updated_at ) } ${ formatTime( rowData.updated_at ) }` );
 
-                // Show submit button and hide view button
+                // Set buttons visibility
+                $( '#submitBrandBtn, #hideBrandBtn' ).show();
                 $( '#editBrandBtn' ).hide();
-                $( '#submitBrandBtn' ).show();
+                $( '#closeBrandBtn' ).text( 'Cancel' );
 
                 // Show label when hovering over the upload button
                 $( '#imageDropzone' ).hover( function ()
                 {
-                    $( 'label[for="uploadBrandLogo"]' ).show();
+                    $( 'label[for="uploadBrandLogo"],#brandLogoOverlay' ).show();
                 } );
-
-                // Set the form data to indicate it is for creating a new brand
-                $( '#brandForm' ).data( 'isEdit', true );
 
                 // Enable drag and drop for the brand logo
                 enableDragAndDrop();
+
+                // Set the form data to indicate it is for creating a new brand
+                $( '#brandForm' ).data( 'isEdit', true );
             } else if ( isCreate )
             {
                 // Reset form and error messages
@@ -523,20 +530,24 @@ ob_start();
                 // Set modal title
                 $( '#brandModalTitle' ).text( 'Add New Brand: ' );
 
-                // Show the submit button
-                $( '#editBrandBtn, #hideBrandBtn' ).hide();
-                $( '#submitBrandBtn' ).show();
-                $( '#closeBrandBtn' ).text( 'Cancel' );
-
-                $( '#createdAtContainer, #updatedAtContainer' ).hide();
+                // Set upload section for create operation
+                $( '#brandImage' ).addClass( 'fa-solid fa-image text-3xl' );
 
                 // Enable input fields for editing
                 $( '#brandName, #description, #type, #status' ).prop( 'disabled', false );
 
+                // Set buttons visibility
+                $( '#submitBrandBtn' ).show();
+                $( '#editBrandBtn, #hideBrandBtn' ).hide();
+                $( '#closeBrandBtn' ).text( 'Cancel' );
+
+                // Hide dates as they are not needed in create mode
+                $( '#createdAtContainer, #updatedAtContainer' ).hide();
+
                 // Show the label when hovering over the upload button
                 $( '#imageDropzone' ).hover( function ()
                 {
-                    $( 'label[for="uploadBrandLogo"]' ).show();
+                    $( 'label[for="uploadBrandLogo"],#brandLogoOverlay' ).show();
                 } );
 
                 // Enable drag and drop for the brand logo
@@ -548,6 +559,25 @@ ob_start();
 
             // Show the modal
             $( '#modal-container' ).toggleClass( 'hidden' );
+        } );
+
+        $( '#brandCatalogs' ).on( 'change', function ()
+        {
+            const files = $( this )[0].files; // Get uploaded files
+            $( '#uploadedCatalogList' ).empty(); // Clear previous files
+
+            // Loop through uploaded files
+            for ( let i = 0; i < files.length; i++ )
+            {
+                const file = files[i];
+                const fileName = file.name;
+                const fileSize = file.size;
+                const fileExtension = fileName.split( '.' ).pop().toLowerCase();
+
+                // Create file container and append it to the catalog list
+                const fileContainer = createFileContainer( fileName, fileSize, fileExtension );
+                $( '#uploadedCatalogList' ).append( fileContainer );
+            }
         } );
 
         // Function to create file container
@@ -593,39 +623,6 @@ ob_start();
             const i = parseInt( Math.floor( Math.log( bytes ) / Math.log( 1024 ) ) );
             return Math.round( bytes / Math.pow( 1024, i ), 2 ) + ' ' + sizes[i];
         }
-        // Click event handler for adding a new brand
-        // $( '#addSingleBrand' ).on( 'click', function ()
-        // {
-        //     // Reset form and error messages
-        //     $( '#brandForm' )[0].reset();
-        //     $( '.error-message' ).text( '' );
-
-        //     // Set modal title
-        //     $( '#brandModalTitle' ).text( 'Add New Brand: ' );
-
-        //     // Show the submit button
-        //     $( '#editBrandBtn' ).hide();
-        //     $( '#hideBrandBtn' ).hide();
-        //     $( '#submitBrandBtn' ).show();
-        //     $( '#closeBrandBtn' ).text( 'Cancel' );
-
-        //     $( '#createdAtContainer, #updatedAtContainer' ).hide();
-
-        //     // Enable input fields for editing
-        //     $( '#brandName, #description, #type, #status' ).prop( 'disabled', false );
-
-        //     // Show the label when hovering over the upload button
-        //     $( '#imageDropzone' ).hover( function ()
-        //     {
-        //         $( 'label[for="uploadBrandLogo"]' ).show();
-        //     } );
-
-        //     // Enable drag and drop for the brand logo
-        //     enableDragAndDrop();
-
-        //     // Show the modal
-        //     $( '#modal-container' ).toggleClass( 'hidden' );
-        // } );
 
         function enableDragAndDrop ()
         {
@@ -782,7 +779,6 @@ ob_start();
                 $( '#status' ).removeClass( 'border-red-500' );
                 $( '#statusError' ).empty();
             }
-
             return isValid;
         }
 
