@@ -10,8 +10,8 @@ if(isset($_POST['categoryId']) && !empty($_POST['categoryId'])) {
     $query = "SELECT pc.CategoryName, pc.type, 
                      CONCAT('../../../assets/category/', pc.imagecover) AS imagecover,
                      CONCAT('../../../assets/catheader/', pc.imageheader) AS imageheader, 
-                     mc.CategoryName AS MainCategoryName
-
+                     mc.CategoryName AS MainCategoryName,
+                     mc.CategoryID AS MainCategoryID
               FROM productcategory pc
               LEFT JOIN productcategory mc ON pc.ParentCategoryID = mc.CategoryID
               WHERE pc.CategoryID = $categoryId";
@@ -28,8 +28,8 @@ if(isset($_POST['categoryId']) && !empty($_POST['categoryId'])) {
 
             // Fetch subcategories if it's a main category
             if($isMainCategory) {
-                $checkSubcategoriesQuery = "SELECT CategoryName FROM productcategory WHERE ParentCategoryID = $categoryId";
-                $subcategoriesResult = mysqli_query($conn, $checkSubcategoriesQuery);
+                $subcategoriesQuery = "SELECT CategoryID, CategoryName FROM productcategory WHERE ParentCategoryID = $categoryId";
+                $subcategoriesResult = mysqli_query($conn, $subcategoriesQuery);
 
                 if($subcategoriesResult) {
                     $subcategories = array();

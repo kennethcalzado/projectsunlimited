@@ -456,9 +456,15 @@ ob_start();
                         $.each(response.mainCategories, function (index, category) {
                             $('#mainCategory').append($('<option>').val(category.CategoryID).text(category.CategoryName));
                         });
+                        $('#editMainCategory').empty(); // Empty the dropdown
+                        $('#editMainCategory').append($('<option>').text("Select a Main Category").attr('disabled', true).attr('selected', true)); // Add option label
+                        $.each(response.mainCategories, function (index, category) {
+                            $('#editMainCategory').append($('<option>').val(category.CategoryID).text(category.CategoryName));
+                        });
                     } else {
                         $('#mainCategory').empty();
                         $('#mainCategory').append($('<option>').text("No main categories found").attr('disabled', true).attr('selected', true));
+                        $('#editMainCategory').append($('<option>').text("No main categories found").attr('disabled', true).attr('selected', true));
                     }
                 },
                 error: function (xhr, status, error) {
@@ -640,7 +646,7 @@ ob_start();
             type: 'POST',
             dataType: 'json',
             data: {
-                categoryId: categoryId
+                categoryId: categoryId,
             },
             success: function (response) {
                 if (response && response.success) {
@@ -661,9 +667,13 @@ ob_start();
                         // Show subcategories and populate the list
                         $('#subcategoriesList').removeClass('hidden');
                         $('#subcategories').empty(); // Clear previous subcategories
-                        $.each(response.subcategories, function (index, subcategory) {
-                            $('#subcategories').append('<li class="text-sm text-gray-700">' + subcategory + '</li>');
-                        });
+                        if (response.subcategories && response.subcategories.length === 0) {
+                            $('#subcategories').append('<p class="text-sm font-medium text-red-700">No Subcategories Available</p>');
+                        } else if (response.subcategories) {
+                            $.each(response.subcategories, function (index, subcategory) {
+                                $('#subcategories').append('<li class="text-sm text-gray-700">' + subcategory + '</li>');
+                            });
+                        }
                     } else {
                         $('#viewCategoryTypeOfCategory').text('Sub Category');
                         $('#viewMainCategoryName').text(category.MainCategoryName);
@@ -677,6 +687,7 @@ ob_start();
                     console.error("Error: " + response.message);
                 }
             },
+
             error: function (xhr, status, error) {
                 console.error("Status: " + status);
                 console.error("Error: " + error);
@@ -689,16 +700,110 @@ ob_start();
         $("#viewCategoryModal").addClass("hidden");
     });
 
-    // EDIT MODAL
     $(document).on('click', '.editCategory', function () {
+        // Reset modal content
+        resetEditModal();
+
         var categoryId = $(this).data('categoryid');
-        $("#editCategoryModal").removeClass("hidden");
+        $.ajax({
+            url: '../../../backend/category/editmodaldisplay.php',
+            type: 'POST',
+            dataType: 'json',
+            data: {
+                categoryId: categoryId,
+            },
+            success: function (response) {
+                if (response && response.success) {
+                    var category = response.category;
+                    // Populate modal content based on category type
+                    $('#editCategoryName').val(category.CategoryName); // Populate and make Category Name input editable
+                    $('#editCategoryType').val(category.type); // Populate and make Category Type select editable
+                    $('#editCategoryType').trigger('change'); // Trigger change event to handle Main/Sub Category dropdown visibility
+
+                    // If it's a subcategory, populate the Main Category dropdown
+                    if (!response.isMainCategory) {
+                        $('#editCategoryCat').val("sub"); // Select Sub Category option
+                        $('#editMainCategoryDropdown').removeClass('hidden'); // Show Main Category dropdown
+                        $('#editMainCategory').val(category.MainCategoryID); // Populate Main Category select
+                    } else {
+                        $('#editCategoryCat').val("main"); // Select Main Category option
+                        $('#editMainCategoryDropdown').addClass('hidden'); // Hide Main Category dropdown
+                        // If it's a main category, show image cover and header inputs
+                        $('#editMainCategoryImage').removeClass('hidden');
+                        $('#editMainCategoryCover').removeClass('hidden');
+                        // Populate image cover and header previews if they exist
+                        if (category.imagecover) {
+                            $('#editMainCategoryImagePreview').html('<img src="' + category.imagecover + '" style="max-width: 100px; max-height: 100px;" class="mt-2 max-w-full h-auto">');
+                        }
+                        if (category.imageheader) {
+                            $('#editMainCategoryCoverPreview').html('<img src="' + category.imageheader + '" style="max-width: 200px; max-height: 200px;" class="mt-2 max-w-full h-auto">');
+                        }
+                    }
+
+                    // Show the edit modal
+                    $('#editCategoryModal').removeClass('hidden');
+                } else {
+                    console.error("Error: " + response.message);
+                }
+            },
+            error: function (xhr, status, error) {
+                console.error("Status: " + status);
+                console.error("Error: " + error);
+                console.error("Response: " + xhr.responseText);
+            }
+        });
     });
+
+    function resetEditModal() {
+        // Reset all input values and hide/display elements
+        $('#editCategoryName').val('');
+        $('#editCategoryType').val('');
+        $('#editMainCategory').val('');
+        $('#editMainCategoryDropdown').addClass('hidden');
+        $('#editMainCategoryImage').addClass('hidden');
+        $('#editMainCategoryCover').addClass('hidden');
+        $('#editMainCategoryImagePreview').empty();
+        $('#editMainCategoryCoverPreview').empty();
+    }
 
     // Close edit modal when Close button or "x" button is clicked
     $("#closeEditModal, #closeEditModalBtn").click(function () {
         $("#editCategoryModal").addClass("hidden");
     });
+
+    // Submit edited category details
+    $('#editCategoryForm').submit(function (event) {
+        event.preventDefault();
+
+        var formData = new FormData($(this)[0]);
+
+        $.ajax({
+            type: 'POST',
+            url: '../../../backend/category/updatecategory.php',
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function (response) {
+                console.log(response);
+
+                $('#successMessage').text("Category has been successfully edited.");
+                $('#successPopup').removeClass("hidden");
+
+                $('#editCategoryModal').addClass("hidden");
+                setTimeout(function () {
+                    location.reload();
+                }, 500);
+
+                setTimeout(function () {
+                    $('#successPopup').addClass("hidden");
+                }, 1000);
+            },
+            error: function (xhr, status, error) {
+                console.error(error);
+            }
+        });
+    });
+
 </script>
 <?php
 $script = ob_get_clean();
