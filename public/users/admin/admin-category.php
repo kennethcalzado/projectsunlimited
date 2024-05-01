@@ -647,7 +647,6 @@ ob_start();
             dataType: 'json',
             data: {
                 categoryId: categoryId,
-                mode: 'view'
             },
             success: function (response) {
                 if (response && response.success) {
@@ -701,16 +700,17 @@ ob_start();
         $("#viewCategoryModal").addClass("hidden");
     });
 
-    // EDIT MODAL
     $(document).on('click', '.editCategory', function () {
+        // Reset modal content
+        resetEditModal();
+
         var categoryId = $(this).data('categoryid');
         $.ajax({
-            url: '../../../backend/category/viewcategory.php',
+            url: '../../../backend/category/editmodaldisplay.php',
             type: 'POST',
             dataType: 'json',
             data: {
                 categoryId: categoryId,
-                mode: 'view'
             },
             success: function (response) {
                 if (response && response.success) {
@@ -753,6 +753,19 @@ ob_start();
             }
         });
     });
+
+    function resetEditModal() {
+        // Reset all input values and hide/display elements
+        $('#editCategoryName').val('');
+        $('#editCategoryType').val('');
+        $('#editMainCategory').val('');
+        $('#editMainCategoryDropdown').addClass('hidden');
+        $('#editMainCategoryImage').addClass('hidden');
+        $('#editMainCategoryCover').addClass('hidden');
+        $('#editMainCategoryImagePreview').empty();
+        $('#editMainCategoryCoverPreview').empty();
+    }
+
     // Close edit modal when Close button or "x" button is clicked
     $("#closeEditModal, #closeEditModalBtn").click(function () {
         $("#editCategoryModal").addClass("hidden");
