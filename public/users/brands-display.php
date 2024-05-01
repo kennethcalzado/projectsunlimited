@@ -112,37 +112,47 @@ ob_start();
 </div>
 
 <div id="modal-container"
-    class="modal fixed inset-0 z-50 overflow-auto bg-black bg-opacity-50 flex items-center justify-center hidden">
-    <div class="bg-white rounded-lg shadow-2xl p-6 w-full max-w-2xl">
+    class="modal fixed inset-0 z-50 bg-black bg-opacity-50 flex items-center justify-center hidden">
+    <div class="bg-white rounded-lg shadow-2xl p-6 max-h-full max-w-2xl overflow-y-auto">
         <div class="flex justify-between items-center">
-            <h2 id="brandModalTitle" class="text-xl font-semibold">Brand Details</h2>
+            <h2 id="brandModalTitle" class="text-xl font-semibold"><!--Modal Title--></h2>
             <button id="closeBrandModal"
-                class="close rounded-full text-gray-600 px-2 hover:text-gray-800 focus:outline-none hover:bg-gray-300"
+                class="close rounded-full text-gray-600 px-2 hover:text-red-700 focus:outline-none hover:bg-gray-100"
                 aria-label="Close modal">&times;</button>
         </div>
         <div class="border-b border-black flex-grow border-2 mt-2 mb-2"></div> <!--Divider-->
+        <h3 class="text-lg font-medium mb-2">Brand Information</h3>
         <form id="brandForm">
             <div class="flex flex-wrap justify-between">
                 <!-- Image Section -->
-                <div id="imageDropzone"
-                    class="relative w-1/3 rounded-xl ring-1 ring-black ring-offset-gray-700 overflow-hidden flex items-center justify-center group">
-                    <div
-                        class="absolute inset-x-0 bottom-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-                        <label for="uploadBrandLogo"
-                            class="bg-gray-800 text-sm text-white m-1 px-2 py-1 rounded-full cursor-pointer">Upload new
-                            brand logo</label>
-                        <input type="file" id="uploadBrandLogo" class="hidden">
+                <div class="w-1/3 mt-2">
+                    <div id="imageDropzone"
+                        class="relative rounded-xl ring-1 ring-black ring-offset-gray-700 overflow-hidden flex items-center justify-center group h-full max-h-80">
+                        <div
+                            class="absolute inset-x-0 bottom-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200 ">
+                            <label for="uploadBrandLogo"
+                                class="bg-gray-800 text-sm text-white m-1 px-2 py-1 rounded-full cursor-pointer">Upload
+                                new
+                                brand logo</label>
+                            <input type="file" id="uploadBrandLogo" class="hidden">
+                        </div>
+                        <div class="mx-auto"> <!-- Container for the image -->
+                            <img id="brandImage" src="" alt="" class="w-full h-auto object-cover">
+                        </div>
+
                     </div>
-                    <div class="mx-auto"> <!-- Container for the image -->
-                        <img id="brandImage" src="" alt="" class="w-full h-auto object-cover">
+                    <div class="text-xs text-center text-gray-500 !-mt-[0.1px]">
+                        <div id="brandLogoError" class="text-sm text-red-500 mt-1 error-message"></div>
+                        <div id="createdAtContainer">Created At: <span id="createdAt"></span></div>
+                        <div id="updatedAtContainer">Updated At: <span id="updatedAt"></span></div>
                     </div>
                 </div>
-
                 <!-- Data Section -->
                 <div class="w-2/3">
                     <div class="mx-4"> <!-- Container for the brand information -->
                         <div class="mb-4">
-                            <label for="brandName" class="block text-sm font-medium text-gray-700">Brand Name:</label>
+                            <label for="brandName" class="block text-sm font-medium text-gray-700">Brand
+                                Name:</label>
                             <input type="text" id="brandName" name="brandName" placeholder="Brand Name"
                                 class="pl-2 mt-1 w-full rounded-md border border-gray-700 shadow-sm">
                             <div id="brandNameError" class="text-sm text-red-500 mt-1 error-message"></div>
@@ -151,9 +161,11 @@ ob_start();
                             <label for="description"
                                 class="block text-sm font-medium text-gray-700">Description:</label>
                             <textarea id="description" name="description" placeholder="Description"
-                                class="pl-2 mt-1 w-full rounded-md border border-gray-700 shadow-sm"></textarea>
+                                class="pl-2 mt-1 w-full rounded-md border border-gray-700 shadow-sm"
+                                rows="5"></textarea>
                             <div id="descriptionError" class="text-sm text-red-500 mt-1 error-message"></div>
                         </div>
+
                         <div class="mb-4">
                             <label for="type" class="block text-sm font-medium text-gray-700">Type:</label>
                             <select id="type" name="type"
@@ -176,10 +188,20 @@ ob_start();
                         </div>
                     </div>
                 </div>
-                <div class="mt-8 text-xs text-center text-gray-500 ml-6 !-mt-[0.1px]">
-                    <div id="brandLogoError" class="text-sm text-red-500 mt-1 error-message"></div>
-                    <div id="createdAtContainer">Created At: <span id="createdAt"></span></div>
-                    <div id="updatedAtContainer">Updated At: <span id="updatedAt"></span></div>
+            </div>
+
+            <div class="mt-8 w-full">
+                <h3 class="text-lg font-medium mb-2">Brand Catalogs</h3>
+                <label for="brandCatalogs" class="block text-sm font-medium text-gray-700">Upload
+                    Catalogs:</label>
+                <input type="file" id="brandCatalogs" name="brandCatalogs[]" multiple
+                    class="pl-2 mt-1 w-full rounded-md border border-gray-700 shadow-sm">
+                <div id="brandCatalogsError" class="text-sm text-red-500 mt-1 error-message"></div>
+                <!-- Catalog List Section -->
+                <div class="mt-4">
+                    <label for="catalogList" class="block text-sm font-medium text-gray-700">Catalog
+                        List:</label>
+                    <div id="catalogList" class="grid grid-cols-2 gap-4 overflow-y-auto"></div>
                 </div>
             </div>
 
@@ -192,6 +214,7 @@ ob_start();
         </form>
     </div>
 </div>
+
 
 <div id="popup-container">
 </div>
@@ -266,11 +289,11 @@ ob_start();
             ],
             order: [[3, 'desc']], // Default sorting by the fouth column (Updated At)
             paging: true,
-            pageLength: 4, // Initial number of rows per page
+            pageLength: 5, // Initial number of rows per page
             searching: true,
             processing: true,
             serverSide: false, // Disable server-side processing
-            lengthMenu: [4, 10, 20], // Dropdown for changing the number of rows per page
+            lengthMenu: [5, 10, 20], // Dropdown for changing the number of rows per page
             stateSave: false,
             language: {
                 info: "Showing _START_ to _END_ of _TOTAL_ entries",
@@ -373,6 +396,8 @@ ob_start();
             const isEdit = $( this ).hasClass( 'editBtn' );
             const isCreate = $( this ).hasClass( 'createSBtn' );
 
+            console.log( rowData );
+
             // Set modal title
             if ( isView )
             {
@@ -383,6 +408,38 @@ ob_start();
             } else if ( isCreate )
             {
                 $( '#brandModalTitle' ).text( 'Add New Brand: ' );
+            }
+
+            // Display catalogs or brochures based on the operation
+            if ( isView || isEdit )
+            {
+                // Display catalogs or brochures for viewing or editing
+                if ( rowData.catalogs && rowData.catalogs.length > 0 )
+                {
+                    // Clear previous catalog list
+                    $( '#catalogList' ).empty();
+
+                    // Append each catalog to the list
+                    rowData.catalogs.forEach( catalog =>
+                    {
+                        const fileName = catalog.split( '/' ).pop();
+                        const fileSize = rowData.file_size; // Assuming 'file_size' property exists
+                        const fileExtension = fileName.split( '.' ).pop();
+
+                        // Create file container
+                        const fileContainer = createFileContainer( fileName, null, fileExtension );
+                        $( '#catalogList' ).append( fileContainer );
+                    } );
+                } else
+                {
+                    $( '#catalogList' ).html( '<p class="text-sm text-red-700">No catalogs available.</p>' );
+                }
+
+                // Other view or edit operations...
+            } else if ( isCreate )
+            {
+                // Additional logic for creating brand and handling catalog uploads
+                // Show/hide elements, enable/disable fields, etc.
             }
 
             // Set modal elements visibility and behavior based on view or edit
@@ -410,8 +467,7 @@ ob_start();
                 $( '#editBrandBtn' ).show();
                 $( '#submitBrandBtn' ).hide();
 
-                $( '#editBrandBtn' ).hide();
-                $( '#hideBrandBtn' ).hide();
+                $( '#editBrandBtn, #hideBrandBtn' ).hide();
                 $( '#submitBrandBtn' ).show();
                 $( '#closeBrandBtn' ).text( 'Cancel' );
 
@@ -468,8 +524,7 @@ ob_start();
                 $( '#brandModalTitle' ).text( 'Add New Brand: ' );
 
                 // Show the submit button
-                $( '#editBrandBtn' ).hide();
-                $( '#hideBrandBtn' ).hide();
+                $( '#editBrandBtn, #hideBrandBtn' ).hide();
                 $( '#submitBrandBtn' ).show();
                 $( '#closeBrandBtn' ).text( 'Cancel' );
 
@@ -495,6 +550,49 @@ ob_start();
             $( '#modal-container' ).toggleClass( 'hidden' );
         } );
 
+        // Function to create file container
+        function createFileContainer ( fileName, fileSize, fileExtension )
+        {
+            const container = $( '<div>' ).addClass( 'bg-gray-200 rounded-md p-2 flex flex-col items-center justify-center text-center' );
+            const icon = $( '<i>' ).addClass( getFileIconClass( fileExtension ) + ' text-3xl mb-1' );
+            const name = $( '<p>' ).addClass( 'text-sm font-medium' ).text( fileName );
+            const size = $( '<p>' ).addClass( 'text-xs text-gray-500' ).text( formatSize( fileSize ) );
+            container.append( icon, name, size );
+            return container;
+        }
+
+        function getFileIconClass ( extension )
+        {
+            switch ( extension.toLowerCase() )
+            {
+                case 'pdf':
+                    return 'far fa-file-pdf';
+                case 'doc':
+                case 'docx':
+                    return 'far fa-file-word';
+                case 'xls':
+                case 'xlsx':
+                    return 'far fa-file-excel';
+                case 'ppt':
+                case 'pptx':
+                    return 'far fa-file-powerpoint';
+                case 'jpg':
+                case 'jpeg':
+                case 'png':
+                case 'gif':
+                    return 'far fa-file-image';
+                default:
+                    return 'far fa-file';
+            }
+        }
+
+        function formatSize ( bytes )
+        {
+            const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+            if ( bytes == 0 ) return '0 Byte';
+            const i = parseInt( Math.floor( Math.log( bytes ) / Math.log( 1024 ) ) );
+            return Math.round( bytes / Math.pow( 1024, i ), 2 ) + ' ' + sizes[i];
+        }
         // Click event handler for adding a new brand
         // $( '#addSingleBrand' ).on( 'click', function ()
         // {
