@@ -66,7 +66,7 @@ ob_start();
             message.</p>
         <div class="flex px-8">
             <div class="w-1/2 p-8">
-                <form action="#" method="post" class="space-y-4">
+                <form id="contactForm" class="space-y-4">
                     <div class="mb-4">
                         <label for="name" class="block text-black font-bold text-xl">Name:</label>
                         <input type="text" id="name" name="name" placeholder="Name" class="w-full p-2 border rounded-md"
@@ -90,12 +90,11 @@ ob_start();
                     </div>
                     <div class="mb-4">
                         <label for="message" class="block text-black font-bold text-xl">Message:</label>
-                        <textarea id="message" name="message" rows="4" placeholder="Message"
+                        <textarea id="message" name="message" rows="4" placeholder="Enter Your Inquiry or Concern"
                             class="w-full p-2 border resize-none rounded-md" required></textarea>
                     </div>
                     <div class="mb-4 flex justify-end">
-                        <button style="border-radius: 10px;"
-                            class="yellow-btn text-xl w-50 h-12 font-semibold">Submit</button>
+                    <button id="submitButton" style="border-radius: 10px;" class="yellow-btn text-xl w-50 h-12 font-semibold">Submit</button>
                     </div>
                 </form>
             </div>
@@ -154,4 +153,31 @@ include ("../public/master.php");
             phoneInput.setCustomValidity('');
         }
     });
+
+    $(document).ready(function() {
+    $('#submitButton').click(function(e) {
+        e.preventDefault(); // Prevent form submission
+
+        // Get form data
+        var formData = $('#contactForm').serialize();
+
+        // Send AJAX request to server-side script
+        $.ajax({
+            type: 'POST',
+            url: '../backend/contact/contact.php', // Path to your server-side script
+            data: formData,
+            success: function(response) {
+                $('#contactForm').html('<p class="text-3xl font-extrabold text-black px-16 mt-8">Thank You for Contacting Projects Unlimited! We will get back to you in a while.</p>');
+                setTimeout(function() {
+                    location.reload();
+                }, 2000);
+            },
+            error: function(xhr, status, error) {
+                console.error(xhr.responseText); // Log error message
+                alert('An error occurred while sending the email. Please try again later.');
+            }
+        });
+    });
+});
+
 </script>
