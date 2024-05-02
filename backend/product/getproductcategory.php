@@ -12,15 +12,26 @@ if ($result === false) {
     exit();
 }
 
-$productCategory = array();
+$productCategories = [
+    "Main Category" => [], // Initialize array for main categories
+    "Sub Category" => []   // Initialize array for sub categories
+];
+
 if ($result->num_rows > 0) {
     // Fetch productCategory data
     while ($row = $result->fetch_assoc()) {
-        $productCategory[] = $row;
+        // Check if the category is a Main Category or Sub Category
+        if ($row['ParentCategoryID'] === null) {
+            // Group as Main Category
+            $productCategories["Main Category"][] = $row;
+        } else {
+            // Group as Sub Category
+            $productCategories["Sub Category"][] = $row;
+        }
     }
 }
 
-// Return JSON response with productCategory data
+// Return JSON response with grouped productCategory data
 header('Content-Type: application/json');
-echo json_encode($productCategory);
+echo json_encode($productCategories);
 ?>

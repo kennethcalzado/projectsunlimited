@@ -255,6 +255,7 @@ ob_start();
             </div>
             <!-- Display Subcategories -->
             <div id="subcategoriesList" class="mt-2">
+            <div class="border-b border-grey-800 flex-grow border-1.5 mt-2 mb-2"></div>
                 <label class="text-sm font-medium text-gray-700 mb-1">Subcategories</label>
                 <ul id="subcategories" class="list-disc pl-5"></ul>
             </div>
@@ -292,10 +293,11 @@ ob_start();
                         <option value="" disabled selected></option>
                     </select>
                 </div>
-                <div class="flex flex-col mr-4" style="flex: 1;">
-                    <label for="editCategoryCat" class="text-sm font-medium text-gray-700 mb-2">Type of Category</label>
+                <div class="flex flex-col" style="flex: 1;">
+                    <label for="editCategoryCat" class="text-sm font-medium text-gray-700 mb-2">Type of Category (Not Modifiable)</label>
                     <select id="editCategoryCat" name="editCategoryType" onchange="toggleMainCategoryDropdown()"
-                        class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent">
+                        class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
+                        disabled>
                         <option value="">Select a Type of Category</option>
                         <option value="main">Main Category</option>
                         <option value="sub">Sub Category</option>
@@ -304,7 +306,7 @@ ob_start();
             </div>
             <!-- Main Category Dropdown -->
             <div id="editMainCategoryDropdown" class="flex mb-4 justify-center hidden">
-                <div class="flex flex-col mr-4" style="flex: 1;">
+                <div class="flex flex-col" style="flex: 1;">
                     <label for="editMainCategory" class="text-sm font-medium text-gray-700 mb-2">Main Category</label>
                     <select id="editMainCategory" name="editMainCategory"
                         class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent">
@@ -571,9 +573,7 @@ ob_start();
 
                 $('#addcategoryType').append($('<option>').val('').text('Select Page Type'));
                 $('#typeFilter').append($('<option>').val('typereset').text('All Type'));
-
                 $('#editCategoryType').append($('<option>').val('').text('Select Page Type'));
-                $('#typeFilter').append($('<option>').val('typereset').text('All Type'));
 
                 $.each(data, function (index, type) {
                     $('#addcategoryType').append($('<option>').val(type).text(type));
@@ -706,7 +706,7 @@ ob_start();
 
         var categoryId = $(this).data('categoryid');
         $.ajax({
-            url: '../../../backend/category/editmodaldisplay.php',
+            url: '../../../backend/category/editmodaldisplay.php?=' + categoryId, 
             type: 'POST',
             dataType: 'json',
             data: {
@@ -779,7 +779,7 @@ ob_start();
 
         $.ajax({
             type: 'POST',
-            url: '../../../backend/category/updatecategory.php',
+            url: '../../../backend/category/updatecategory.php?=' + categoryId,
             data: formData,
             contentType: false,
             processData: false,

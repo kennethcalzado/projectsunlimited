@@ -195,7 +195,7 @@ ob_start();
                 <input type="file" id="addproductImage" name="productImage" accept=".jpg, .jpeg, .png"
                     class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
                     onchange="previewImage(event)">
-                    <div id="imagePreview"></div>
+                <div id="imagePreview"></div>
             </div>
             <div class="mb-4 flex flex-col">
                 <label for="addproductDescription" class="text-sm font-medium text-gray-700 mb-1">Description</label>
@@ -293,6 +293,7 @@ ob_start();
                 </div>
             </div>
             <!-- Variation Section -->
+            <div class="border-b border-grey-800 flex-grow border-1.5 mt-2 mb-2"></div>
             <label class="text-sm font-medium text-gray-700 mb-1">Variations</label>
             <div class="mb-4 flex flex-col" id="editVariations">
                 <!-- Variation fields will be dynamically added here -->
@@ -359,6 +360,7 @@ ob_start();
             </div>
             <!-- Variation Section -->
             <div class="mb-4 flex flex-col">
+                <div class="border-b border-grey-800 flex-grow border-1.5 mt-2 mb-2"></div>
                 <label class="text-sm font-medium text-gray-700 mb-1">Variations</label>
                 <div id="viewVariations">
                     <!-- Variation fields will be dynamically added here -->
@@ -841,28 +843,42 @@ ob_start();
         dataType: 'json',
         success: function (categories) {
             const categoryForm = $('#addproductCategory');
-            categoryForm.empty();
-            categoryForm.append($('<option>').prop('disabled', true).prop('selected', true).text('Select a Category'));
-            $.each(categories, function (index, category) {
-                categoryForm.append($('<option>').val(category.CategoryID).text(category.CategoryName));
-            });
             const categoryFilter = $('#categoryFilter');
-            categoryFilter.empty();
-            categoryFilter.append($('<option>').val('categoryreset').text('All Category')); // Add 'All Category' option
-            $.each(categories, function (index, category) {
-                categoryFilter.append($('<option>').val(category.CategoryID).text(category.CategoryName));
-            });
             const categoryDropdown = $('#editProductCategory');
+
+            // Clear existing options
+            categoryForm.empty();
+            categoryFilter.empty();
             categoryDropdown.empty();
+
+            // Append initial options
+            categoryForm.append($('<option>').prop('disabled', true).prop('selected', true).text('Select a Category'));
+            categoryFilter.append($('<option>').val('categoryreset').text('All Category')); // Add 'All Category' option
             categoryDropdown.append($('<option>').prop('disabled', true).prop('selected', true).text('Select a Category'));
-            $.each(categories, function (index, category) {
-                categoryDropdown.append($('<option>').val(category.CategoryID).text(category.CategoryName));
+
+            // Append main categories
+            const mainCategoryOptgroup = $('<optgroup label="Main Category">');
+            $.each(categories["Main Category"], function (index, mainCategory) {
+                mainCategoryOptgroup.append($('<option>').val(mainCategory.CategoryID).text(mainCategory.CategoryName));
             });
+            categoryForm.append(mainCategoryOptgroup.clone());
+            categoryFilter.append(mainCategoryOptgroup.clone());
+            categoryDropdown.append(mainCategoryOptgroup.clone());
+
+            // Append sub categories
+            const subCategoryOptgroup = $('<optgroup label="Sub Category">');
+            $.each(categories["Sub Category"], function (index, subCategory) {
+                subCategoryOptgroup.append($('<option>').val(subCategory.CategoryID).text(subCategory.CategoryName));
+            });
+            categoryForm.append(subCategoryOptgroup.clone());
+            categoryFilter.append(subCategoryOptgroup.clone());
+            categoryDropdown.append(subCategoryOptgroup.clone());
         },
         error: function (xhr, status, error) {
             console.error('Error:', error);
         }
     });
+
 
     $.ajax({
         url: '../../../backend/product/getbrand.php',
@@ -1125,30 +1141,41 @@ ob_start();
             }
         });
     }
+// Function to fetch and populate category dropdown
+function fetchAndPopulateCategoryDropdown(selectedCategoryId) {
+    $.ajax({
+        url: '../../../backend/product/getproductcategory.php',
+        type: 'GET',
+        dataType: 'json',
+        success: function (categories) {
+            const categoryDropdown = $('#editProductCategory');
+            categoryDropdown.empty();
+            categoryDropdown.append($('<option>').prop('disabled', true).prop('selected', true).text('Select a Category'));
 
-    // Function to fetch and populate category dropdown
-    function fetchAndPopulateCategoryDropdown(selectedCategoryId) {
-        $.ajax({
-            url: '../../../backend/product/getproductcategory.php',
-            type: 'GET',
-            dataType: 'json',
-            success: function (categories) {
-                const categoryDropdown = $('#editProductCategory');
-                categoryDropdown.empty();
-                categoryDropdown.append($('<option>').prop('disabled', true).prop('selected', true).text('Select a Category'));
-                $.each(categories, function (index, category) {
-                    categoryDropdown.append($('<option>').val(category.CategoryID).text(category.CategoryName));
-                });
-                // Set the selected category if available
-                if (selectedCategoryId) {
-                    categoryDropdown.val(selectedCategoryId);
-                }
-            },
-            error: function (xhr, status, error) {
-                console.error('Error fetching categories:', error);
+            // Append main categories
+            const mainCategoryOptgroup = $('<optgroup label="Main Category">');
+            $.each(categories["Main Category"], function (index, mainCategory) {
+                mainCategoryOptgroup.append($('<option>').val(mainCategory.CategoryID).text(mainCategory.CategoryName));
+            });
+            categoryDropdown.append(mainCategoryOptgroup.clone());
+
+            // Append sub categories
+            const subCategoryOptgroup = $('<optgroup label="Sub Category">');
+            $.each(categories["Sub Category"], function (index, subCategory) {
+                subCategoryOptgroup.append($('<option>').val(subCategory.CategoryID).text(subCategory.CategoryName));
+            });
+            categoryDropdown.append(subCategoryOptgroup.clone());
+
+            // Set the selected category if available
+            if (selectedCategoryId) {
+                categoryDropdown.val(selectedCategoryId);
             }
-        });
-    }
+        },
+        error: function (xhr, status, error) {
+            console.error('Error fetching categories:', error);
+        }
+    });
+}
 
     // Add event listener to save changes button in the edit modal
     $('#editProductForm').submit(function (event) {
