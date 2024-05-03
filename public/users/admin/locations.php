@@ -214,10 +214,9 @@ ob_start();
                         html += '<td>' + item.address + '</td>'; // Update with item.address
                         html += '<td>' + item.phone + '</td>'; // Update with item.phone
                         html += '<td>' + item.email + '</td>'; // Update with item.email
-                        html += '<td class="map">' + item.map + '</td>'; // Update with item.map
                         html += '<td class="action-btns" valign="middle">';
                         html += '<button onclick="viewPost(\'../../contact.php\')" class="btn-view rounded-md text-center h-9 mt-3 sm:mt-4 !px-4 py-0 text-lg mr-2 hover:underline"><i class="fas fa-eye"></i> View</button>';
-                        html += '<button onclick="openUpdateModal(\'' + item.id + '\', \'' + item.name.replace(/'/g, "\\'") + '\', \'' + item.address.replace(/'/g, "\\'") + '\', \'' + item.phone.replace(/'/g, "\\'") + '\', \'' + item.email.replace(/'/g, "\\'") + '\', \'' + item.map.replace(/'/g, "\\'") + '\')" type="button" class="btn btn-primary rounded-md text-center h-9 mt-3 sm:mt-4 !px-4 py-0 text-lg mr-2 hover:underline" data-name="' + item.name.replace(/'/g, "\\'") + '" data-address="' + item.address.replace(/'/g, "\\'") + '" data-phone="' + item.phone.replace(/'/g, "\\'") + '" data-email="' + item.email.replace(/'/g, "\\'") + '" data-map="' + item.map.replace(/'/g, "\\'") + '"><i class="fas fa-edit"></i> Update</button>';
+                        html += '<button onclick="openUpdateModal(\'' + item.id + '\', \'' + item.name.replace(/'/g, "\\'") + '\', \'' + item.address.replace(/'/g, "\\'") + '\', \'' + item.phone.replace(/'/g, "\\'") + '\', \'' + item.email.replace(/'/g, "\\'") + '\', \'' + escapeHtmlQuotes(item.map) + '\')" type="button" class="btn btn-primary rounded-md text-center h-9 mt-3 sm:mt-4 !px-4 py-0 text-lg mr-2 hover:underline" data-name="' + item.name.replace(/'/g, "\\'") + '" data-address="' + item.address.replace(/'/g, "\\'") + '" data-phone="' + item.phone.replace(/'/g, "\\'") + '" data-email="' + item.email.replace(/'/g, "\\'") + '" data-map="' + escapeHtmlQuotes(item.map) + '"><i class="fas fa-edit"></i> Update</button>';
                         html += '<button onclick="openDeleteModal(\'' + item.id + '\')" type="button" class="btn btn-danger rounded-md text-center h-9 mt-3 sm:mt-4 !px-4 py-0 text-lg hover:underline"><i class="fas fa-trash-alt"></i> Delete</button>';
                         html += '</td>';
                         html += '</tr>';
@@ -230,6 +229,12 @@ ob_start();
                     return text.length > 50 ? text.substr(0, 50) + '...' : text;
                 });
             }
+
+            // Function to escape double quotes in map values
+            function escapeHtmlQuotes(str) {
+                return str.replace(/"/g, '&quot;');
+            }
+
 
             // Function to update pagination controls
             function updatePagination(totalCount, currentPage, limit) {
@@ -492,7 +497,6 @@ ob_start();
                     <th scope="col" class="px-6 py-3 w-1/12">Address</th>
                     <th scope="col" class="px-6 py-3 w-1/12">Phone</th>
                     <th scope="col" class="px-6 py-3 w-1/12">Email</th>
-                    <th scope="col" class="px-6 py-3 w-1/12">Map</th>
                     <th scope="col" class="px-6 py-3 w-1/6">Actions</th>
                 </thead>
 
@@ -511,10 +515,10 @@ ob_start();
                                 <td><?php echo $row['address']; ?></td>
                                 <td><?php echo $row['phone']; ?></td>
                                 <td><?php echo $row['email']; ?></td>
-                                <td class="map"><?php echo $row['map']; ?></td>
+                                <td class="map"><?php echo htmlspecialchars($row['map']); ?></td>
                                 <td class="action-btns" valign="middle">
                                     <a href="" class="btn btn-view rounded-md text-center h-9 mt-3 sm:mt-4 !px-4 py-0 text-lg mr-2 hover:underline" target="_blank"><i class="fas fa-eye"></i> View</a>
-                                    <button onclick="openUpdateModal('<?php echo $row['id']; ?>', '<?php echo $row['name']; ?>', '<?php echo $row['address']; ?>', '<?php echo $row['phone']; ?>' , '<?php echo $row['email']; ?>' , '<?php echo $row['map']; ?>')" type="button" class="btn btn-primary rounded-md text-center h-9 mt-3 sm:mt-4 !px-4 py-0 text-lg mr-2 hover:underline" data-name="<?php echo $row['name']; ?>" data-address="<?php echo $row['address']; ?>" data-phone="<?php echo $row['phone']; ?>" data-email="<?php echo $row['email']; ?>" data-map="<?php echo $row['map']; ?>"><i class="fas fa-edit"></i> Update</button>
+                                    <button onclick="openUpdateModal('<?php echo $row['id']; ?>', '<?php echo $row['name']; ?>', '<?php echo $row['address']; ?>', '<?php echo $row['phone']; ?>' , '<?php echo $row['email']; ?>' , '<?php echo htmlspecialchars($row['map']); ?>')" type="button" class="btn btn-primary rounded-md text-center h-9 mt-3 sm:mt-4 !px-4 py-0 text-lg mr-2 hover:underline" data-name="<?php echo $row['name']; ?>" data-address="<?php echo $row['address']; ?>" data-phone="<?php echo $row['phone']; ?>" data-email="<?php echo $row['email']; ?>" data-map="<?php echo htmlspecialchars($row['map']); ?>"><i class="fas fa-edit"></i> Update</button>
                                     <button onclick="openDeleteModal('<?php echo $row['id']; ?>')" type="button" class=" btn btn-danger rounded-md text-center h-9 mt-3 sm:mt-4 !px-4 py-0 text-lg hover:underline"><i class="fas fa-trash-alt"></i> Delete</button>
                                 </td>
                             </tr>
@@ -525,6 +529,7 @@ ob_start();
                     }
                     ?>
                 </tbody>
+
 
             </table>
             <div class="flex flex-col sm:flex-row px-2 sm:self-center sm:items-center justify-between bottom-0">
