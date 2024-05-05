@@ -434,17 +434,16 @@ ob_start();
                         const fileName = catalog.path.split( '/' ).pop();
                         const fileSize = catalog.size;
                         const fileExtension = fileName.split( '.' ).pop();
-
+                        const catalogId = catalog.catalogId;
+                        
                         // Create file container
-                        const fileContainer = createFileContainer( fileName, fileSize, fileExtension );
+                        const fileContainer = createFileContainer( fileName, fileSize, fileExtension, catalogId );
                         $( '#catalogList' ).append( fileContainer );
                     } );
                 } else
                 {
                     $( '#catalogList' ).html( '<p class="text-sm text-red-700">No catalogs available.</p>' );
                 }
-
-                // Other view or edit operations...
             } else if ( isCreate )
             {
                 // Additional logic for creating brand and handling catalog uploads
@@ -581,10 +580,10 @@ ob_start();
         } );
 
         // Function to create file container
-        function createFileContainer ( fileName, fileSize, fileExtension )
+        function createFileContainer ( fileName, fileSize, fileExtension, catalogId)
         {
             const container = $( '<div>' ).addClass( 'relative bg-gray-200 rounded-md p-2 flex flex-col items-center justify-center text-center' );
-            const deleteButton = $( '<button>' ).addClass( 'absolute top-0 right-0 w-6 h-6 text-center text-gray-500 bg-transparent border-none outline-none cursor-pointer rounded-full  hover:text-red-700 hover:bg-gray-100' ).html( '&times;' );
+            const deleteButton = $( '<button>' ).addClass( 'absolute top-0 right-0 w-6 h-6 text-center text-gray-500 bg-transparent border-none outline-none cursor-pointer rounded-full  hover:text-red-700 hover:bg-gray-100' ).html( '&times;' ).attr('type', 'button');
             const icon = $( '<i>' ).addClass( getFileIconClass( fileExtension ) + ' text-3xl mb-1' );
             const name = $( '<p>' ).addClass( 'text-sm font-medium' ).text( fileName );
             const size = $( '<p>' ).addClass( 'text-xs text-gray-500' ).text( formatSize( fileSize ) );
@@ -592,8 +591,7 @@ ob_start();
             // Add click event to delete button
             deleteButton.on( 'click', function ()
             {
-                // Remove the file container from the DOM
-                container.remove();
+                deleteCatalog(catalogId, container);
             } );
 
             // Append elements to the container
@@ -633,6 +631,54 @@ ob_start();
             if ( bytes == 0 ) return '0 Byte';
             const i = parseInt( Math.floor( Math.log( bytes ) / Math.log( 1024 ) ) );
             return Math.round( bytes / Math.pow( 1024, i ), 2 ) + ' ' + sizes[i];
+        }
+
+        // Function to delete the catalog via AJAX with confirmation
+        function deleteCatalog ( catalogId , container)
+        {
+            // Show confirmation dialog using SweetAlert
+            Swal.fire( {
+                title: 'Are you sure?',
+                text: 'You are about to delete this catalog. This action cannot be undone.',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Yes, delete it!'
+            } ).then( ( result ) =>
+            {
+                if ( result.isConfirmed )
+                {
+                    // If user confirms, proceed with catalog deletion
+                    $.ajax( {
+                        url: '/../../backend/brands/catalog-delete.php', 
+                        type: 'POST',
+                        data: { catalogId: catalogId },
+                        dataType: 'json',
+                        success: function ( response )
+                        {
+                            // Remove the file container from the DOM
+                            container.remove();
+                            // Handle success response
+                            Swal.fire( {
+                                icon: 'success',
+                                title: 'Success!',
+                                text: 'Catalog deleted successfully.'
+                            } );
+                        },
+                        error: function ( xhr, status, error )
+                        {
+                            // Handle error response
+                            Swal.fire( {
+                                icon: 'error',
+                                title: 'Error!',
+                                text: 'Failed to delete catalog. Please try again later.'
+                            } );
+                            console.error( 'Error deleting catalog:', error );
+                        }
+                    } );
+                }
+            } );
         }
 
         function enableDragAndDrop ()

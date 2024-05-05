@@ -6,7 +6,7 @@ ini_set('error_log', $errorLogPath);
 
 try {
     // Your SQL query to fetch brands data along with catalogs
-    $sql = "SELECT brands.*, GROUP_CONCAT(catalogs.catalog_path) AS catalog_paths 
+    $sql = "SELECT brands.*, GROUP_CONCAT(catalogs.catalog_id) AS catalog_ids, GROUP_CONCAT(catalogs.catalog_path) AS catalog_paths 
             FROM brands 
             LEFT JOIN catalogs ON brands.brand_id = catalogs.brand_id 
             GROUP BY brands.brand_id";
@@ -20,26 +20,27 @@ try {
     // Fetch data and add to the array
     if ($result->num_rows > 0) {
         while ($row = $result->fetch_assoc()) {
-            // Convert catalog paths to an array if not null
+            // Convert catalog paths and ids to arrays
+            $catalogIds = ($row['catalog_ids'] !== null) ? explode(',', $row['catalog_ids']) : array();
             $catalogPaths = ($row['catalog_paths'] !== null) ? explode(',', $row['catalog_paths']) : array();
+            
+            // Combine catalog ids and paths into an array of arrays
             $catalogs = array();
-            foreach ($catalogPaths as $path) {
-                // Check if the file exists and is readable before getting its size
-                $fullPath = realpath(__DIR__ . '/../../assets/catalogs') . '/' . basename($path);
-                if (is_readable($fullPath)) {
-                    // Get the file size for each catalog
-                    $size = filesize($fullPath); // This function returns the size in bytes
-                    $catalogs[] = array(
-                        'path' => $path,
-                        'size' => $size
-                    );
-                } else {
-                    // Log or display an error message for unreadable files
-                    error_log("File $fullPath is not readable");
-                }
+            foreach ($catalogIds as $index => $catalogId) {
+                $catalogs[] = array(
+                    'catalogId' => $catalogId,
+                    'path' => $catalogPaths[$index],
+                    'size' => filesize('../../assets/catalogs/' . basename($catalogPaths[$index])) // Get file size
+                );
             }
+
+            // Remove redundant columns from the row
+            unset($row['catalog_ids'], $row['catalog_paths']);
+
+            // Add the catalogs array to the row
             $row['catalogs'] = $catalogs;
-            unset($row['catalog_paths']); 
+
+            // Add the modified row to the brands array
             $brands[] = $row;
         }
     }
