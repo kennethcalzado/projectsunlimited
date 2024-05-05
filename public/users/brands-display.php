@@ -120,7 +120,7 @@ ob_start();
         <div class="flex justify-between items-center">
             <h2 id="brandModalTitle" class="text-xl font-semibold"><!--Modal Title--></h2>
             <button id="closeBrandModal"
-                class="close rounded-full text-gray-600 px-2 hover:text-red-700 focus:outline-none hover:bg-gray-100"
+                class="close rounded-full text-gray-600 px-2 hover:text-red-700 hover:bg-gray-100 focus:outline-none "
                 aria-label="Close modal">&times;</button>
         </div>
         <div class="border-b border-black flex-grow border-2 mt-2 mb-2"></div> <!--Divider-->
@@ -583,11 +583,22 @@ ob_start();
         // Function to create file container
         function createFileContainer ( fileName, fileSize, fileExtension )
         {
-            const container = $( '<div>' ).addClass( 'bg-gray-200 rounded-md p-2 flex flex-col items-center justify-center text-center' );
+            const container = $( '<div>' ).addClass( 'relative bg-gray-200 rounded-md p-2 flex flex-col items-center justify-center text-center' );
+            const deleteButton = $( '<button>' ).addClass( 'absolute top-0 right-0 w-6 h-6 text-center text-gray-500 bg-transparent border-none outline-none cursor-pointer rounded-full  hover:text-red-700 hover:bg-gray-100' ).html( '&times;' );
             const icon = $( '<i>' ).addClass( getFileIconClass( fileExtension ) + ' text-3xl mb-1' );
             const name = $( '<p>' ).addClass( 'text-sm font-medium' ).text( fileName );
             const size = $( '<p>' ).addClass( 'text-xs text-gray-500' ).text( formatSize( fileSize ) );
-            container.append( icon, name, size );
+
+            // Add click event to delete button
+            deleteButton.on( 'click', function ()
+            {
+                // Remove the file container from the DOM
+                container.remove();
+            } );
+
+            // Append elements to the container
+            container.append( deleteButton, icon, name, size );
+
             return container;
         }
 

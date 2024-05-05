@@ -53,7 +53,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             // Move the uploaded file to the desired location
             $uploadDir = '../../assets/brands/';
             $fileName = basename($fileName);
-            $uploadPath = $uploadDir. $fileName;
+            $uploadPath = $uploadDir . $fileName;
 
             if (!move_uploaded_file($fileTmpPath, $uploadPath)) {
                 http_response_code(500); // Set HTTP response code to indicate internal server error
@@ -74,6 +74,57 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             // Get the inserted brand ID
             $brandId = $stmt->insert_id;
 
+            // Handle brand catalogs
+            if (isset($_FILES['brandCatalogs'])) {
+                // Loop through each uploaded catalog file and handle it
+                foreach ($_FILES['brandCatalogs']['tmp_name'] as $key => $tmp_name) {
+                    // Retrieve file information
+                    $fileName = $_FILES['brandCatalogs']['name'][$key];
+                    $fileSize = $_FILES['brandCatalogs']['size'][$key];
+                    $fileType = $_FILES['brandCatalogs']['type'][$key];
+                    $fileError = $_FILES['brandCatalogs']['error'][$key];
+                    $fileTmpPath = $_FILES['brandCatalogs']['tmp_name'][$key];
+
+                    // Perform further validation and sanitization of file name and path
+                    $fileName = sanitizeFileName($fileName);
+                    $uploadDir = '../../assets/catalogs/';
+                    $uploadPath = $uploadDir . $fileName;
+
+                    // Check for errors
+                    if ($fileError === UPLOAD_ERR_OK) {
+                        // Move the uploaded file to the desired location
+                        if (move_uploaded_file($fileTmpPath, $uploadPath)) {
+                            // Insert the catalog information into the database
+                            $sqlInsertCatalog = "INSERT INTO catalogs (brand_id, catalog_title, catalog_path) VALUES (?, ?, ?)";
+                            $stmtInsertCatalog = $conn->prepare($sqlInsertCatalog);
+                            if ($stmtInsertCatalog) {
+                                $stmtInsertCatalog->bind_param("iss", $brandId, $fileName, $uploadPath);
+                                if ($stmtInsertCatalog->execute()) {
+                                    // Catalog insert successful
+                                } else {
+                                    // Catalog insert failed
+                                    $response = ["success" => false, "message" => "Failed to insert catalog"];
+                                    http_response_code(500); // Set HTTP response code to indicate internal server error
+                                }
+                                $stmtInsertCatalog->close();
+                            }
+                        } else {
+                            // Handle file upload errors
+                            $response = ["success" => false, "message" => "File upload error: $fileError"];
+                            http_response_code(400); // Set HTTP response code to indicate bad request
+                            echo json_encode($response);
+                            exit;
+                        }
+                    }
+                }
+            } else {
+                // Failed to move the uploaded file
+                $response = ["success" => false, "message" => "Failed to move uploaded file"];
+                http_response_code(500); // Set HTTP response code to indicate internal server error
+                echo json_encode($response);
+                exit;
+            }
+
             // Fetch the inserted brand data from the database
             $sql_select_brand = "SELECT * FROM brands WHERE brand_id =?";
             $stmt_select_brand = $conn->prepare($sql_select_brand);
@@ -92,7 +143,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             }
         } else {
             http_response_code(500);
-            echo json_encode(['success' => false, 'message' => 'Error: '. $sql. '<br>'. $conn->error]);
+            echo json_encode(['success' => false, 'message' => 'Error: ' . $sql . '<br>' . $conn->error]);
         }
 
         // Close the statement and database connection
@@ -104,3 +155,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         echo json_encode(['success' => false, 'message' => 'Required fields are missing']);
     }
 }
+
+
+function sanitizeFileName($fileName)
+{
+    // Remove any characters that are not alphanumeric, underscores, hyphens, or periods
+    $fileName = preg_replace("/[^a-zA-Z0-9_\-.]/", "", $fileName);
+    return $fileName;
+}
+?>
