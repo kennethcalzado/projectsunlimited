@@ -21,9 +21,8 @@ body {
 
 .logo-image {
     width: 150px;
-    /* Adjust the width according to your design */
     height: auto;
-    /* Maintain aspect ratio */
+    padding-top: 13px;
 }
 
 /**banner home**/
@@ -233,10 +232,13 @@ p {
 /*contact us*/
 .address-item {
     transition: background-color 0.5s;
+    padding: 10px;
+    border: 3px solid #000000;
+        background-color: #949494;
 }
 
 .address-item:hover {
-    background-color: #949494;
+    background-color: #F6E381;
     /* Change to your desired color */
 }
 

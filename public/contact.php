@@ -4,16 +4,20 @@ ob_start();
 
 include("../backend/conn.php");
 
-// SQL to fetch data from the database
+function extractMapURL($iframeCode)
+{
+    preg_match('/src="([^"]+)"/', $iframeCode, $matches);
+    $mapURL = isset($matches[1]) ? $matches[1] : '';
+    return $mapURL;
+}
+
 $sql = "SELECT * FROM locations";
 $result = $conn->query($sql);
 
 $locations = array();
 
 if ($result->num_rows > 0) {
-    // Output data of each row
     while ($row = $result->fetch_assoc()) {
-        // Push each row into the $locations array
         $locations[] = $row;
     }
 } else {
@@ -22,20 +26,16 @@ if ($result->num_rows > 0) {
 
 function generateLocationHTML($location)
 {
-    // Sanitize output
     $name = htmlspecialchars($location['name']);
     $address = htmlspecialchars($location['address']);
     $phone = htmlspecialchars($location['phone']);
     $email = htmlspecialchars($location['email']);
-    $map = htmlspecialchars($location['map']);
+    $map = ($location['map']);
 
-    // Extract the src attribute from the map iframe code
-    $startPos = strpos($map, 'src="') + 5; // Find the position of 'src="' and move 5 characters forward
-    $endPos = strpos($map, '"', $startPos); // Find the position of '"' after the starting position
-    $mapLink = substr($map, $startPos, $endPos - $startPos); // Extract the src attribute value
+    $mapURL = extractMapURL($map);
 
     return "
-    <li class='address-item cursor-pointer font-bold text-xl' onclick=\"updateMap('$mapLink', '$name')\">$name
+    <li class='address-item cursor-pointer font-bold text-xl' onclick=\"updateMap('$mapURL', '$name')\">$name
         <ul>
             <li>Address: $address</li>
             <li>Phone: $phone</li>
@@ -61,7 +61,7 @@ function generateLocationHTML($location)
     <div class="container mx-auto px-4 py-8">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
             <iframe id="googleMap" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3860.9708020807752!2d120.97184307591911!3d14.600739177071674!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3397ca102318b44d%3A0x6483de216eafa800!2sProjects%20Unlimited!5e0!3m2!1sen!2sph!4v1710422091205!5m2!1sen!2sph" width="100%" height="500" style="border:0" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-            <div class="address-container mt-8">
+            <div class="address-container">
                 <h2 class="text-xl font-semibold mb-4">You can visit us at these locations:</h2>
                 <ul>
                     <?php foreach ($locations as $location) : ?>
@@ -125,75 +125,54 @@ include("../public/master.php");
 
 <!--SCRIPT-->
 <script>
-    function updateMap(location) {
-            var iframe = document.getElementById('googleMap');
-            if (location === 'Manila') {
-                iframe.src = "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3860.9708020807752!2d120.97184307591911!3d14.600739177071674!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3397ca102318b44d%3A0x6483de216eafa800!2sProjects%20Unlimited!5e0!3m2!1sen!2sph!4v1710422091205!5m2!1sen!2sph";
-                // Remove 'selected' class from all other items
-                document.querySelectorAll('.address-item').forEach(item => item.classList.remove('selected'));
-                // Add 'selected' class to the clicked item
-                document.querySelector('[onclick="updateMap(\'Manila\')"]').classList.add('selected');
-            } else if (location === 'Pasig') {
-                iframe.src = "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3861.4406192475753!2d121.06409777591882!3d14.573950777726974!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3397c86d7367414f%3A0x6cf953f8a47b432a!2sProjects%20Unlimited%20Philippines%20Incorporated!5e0!3m2!1sen!2sph!4v1710422217773!5m2!1sen!2sph";
-                // Remove 'selected' class from all other items
-                document.querySelectorAll('.address-item').forEach(item => item.classList.remove('selected'));
-                // Add 'selected' class to the clicked item
-                document.querySelector('[onclick="updateMap(\'Pasig\')"]').classList.add('selected');
-            } else if (location === 'Granada') {
-                iframe.src = "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3860.8409048597996!2d121.03616457591919!3d14.608137276890506!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3397b7d3e58c488b%3A0xd8dba9813fbcf336!2sProjects%20Unlimited!5e0!3m2!1sen!2sph!4v1710422178842!5m2!1sen!2sph";
-                // Remove 'selected' class from all other items
-                document.querySelectorAll('.address-item').forEach(item => item.classList.remove('selected'));
-                // Add 'selected' class to the clicked item
-                document.querySelector('[onclick="updateMap(\'Granada\')"]').classList.add('selected');
-            }
-            iframe.src = mapLink;
+    function updateMap(mapURL, location) {
+        var iframe = document.getElementById('googleMap');
+        iframe.src = mapURL;
 
-            // Remove 'selected' class from all other items
-            document.querySelectorAll('.address-item').forEach(item => item.classList.remove('selected'));
-            // Add 'selected' class to the clicked item
-            document.querySelector(`[onclick="updateMap('${mapLink}', '${location}')"]`).classList.add('selected');
+        document.querySelectorAll('.address-item').forEach(item => item.classList.remove('selected'));
+        document.querySelector(`[onclick="updateMap('${mapURL}', '${location}')"]`).classList.add('selected');
+    }
+
+    const phoneInput = document.getElementById('phone');
+    const phoneError = document.getElementById('phone-error');
+
+    phoneInput.addEventListener('input', function() {
+        // Remove non-numeric characters
+        phoneInput.value = phoneInput.value.replace(/\D/g, '');
+
+        // Check if the input contains letters
+        if (/[a-zA-Z]/.test(phoneInput.value)) {
+            phoneError.textContent = 'Phone number should only contain numbers.';
+            phoneInput.setCustomValidity('Invalid phone number.');
+        } else {
+            phoneError.textContent = '';
+            phoneInput.setCustomValidity('');
         }
+    });
 
-        const phoneInput = document.getElementById('phone');
-        const phoneError = document.getElementById('phone-error');
+    $(document).ready(function() {
+        $('#submitButton').click(function(e) {
+            e.preventDefault(); // Prevent form submission
 
-        phoneInput.addEventListener('input', function() {
-            // Remove non-numeric characters
-            phoneInput.value = phoneInput.value.replace(/\D/g, '');
+            // Get form data
+            var formData = $('#contactForm').serialize();
 
-            // Check if the input contains letters
-            if (/[a-zA-Z]/.test(phoneInput.value)) {
-                phoneError.textContent = 'Phone number should only contain numbers.';
-                phoneInput.setCustomValidity('Invalid phone number.');
-            } else {
-                phoneError.textContent = '';
-                phoneInput.setCustomValidity('');
-            }
-        });
-
-        $(document).ready(function() {
-            $('#submitButton').click(function(e) {
-                e.preventDefault(); // Prevent form submission
-
-                // Get form data
-                var formData = $('#contactForm').serialize();
-
-                // Send AJAX request to server-side script
-                $.ajax({
-                    type: 'POST',
-                    url: '../backend/contact/contact.php', // Path to your server-side script
-                    data: formData,
-                    success: function(response) {
-                        $('#contactForm').html('<p class="text-3xl font-extrabold text-black px-16 mt-8">Thank You for Contacting Projects Unlimited! We will get back to you in a while.</p>');
-                        setTimeout(function() {
-                            location.reload();
-                        }, 2000);
-                    },
-                    error: function(xhr, status, error) {
-                        console.error(xhr.responseText); // Log error message
-                        alert('An error occurred while sending the email. Please try again later.');
-                    }
-                });
+            // Send AJAX request to server-side script
+            $.ajax({
+                type: 'POST',
+                url: '../backend/contact/contact.php', // Path to your server-side script
+                data: formData,
+                success: function(response) {
+                    $('#contactForm').html('<p class="text-3xl font-extrabold text-black px-16 mt-8">Thank You for Contacting Projects Unlimited! We will get back to you in a while.</p>');
+                    setTimeout(function() {
+                        location.reload();
+                    }, 2000);
+                },
+                error: function(xhr, status, error) {
+                    console.error(xhr.responseText); // Log error message
+                    alert('An error occurred while sending the email. Please try again later.');
+                }
             });
         });
+    });
 </script>
