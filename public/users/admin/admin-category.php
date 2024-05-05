@@ -686,191 +686,191 @@ ob_start();
         $("#viewCategoryModal").addClass("hidden");
     });
 
-    // EDIT MODAL
-    $(document).on('click', '.editCategory', function () {
-        resetEditModal();
+  // EDIT MODAL
+$(document).on('click', '.editCategory', function () {
+    resetEditModal();
 
-        var categoryId = $(this).data('categoryid');
-        window.categoryId = categoryId;
-        $.ajax({
-            url: '../../../backend/category/editmodaldisplay.php?=' + categoryId,
-            type: 'POST',
-            dataType: 'json',
-            data: {
-                categoryId: categoryId,
-            },
-            success: function (response) {
-                if (response && response.success) {
-                    var category = response.category;
-                    $('#editCategoryName').val(category.CategoryName);
-                    $('#editCategoryType').val(category.type);
-                    $('#editCategoryType').trigger('change');
+    var categoryId = $(this).data('categoryid');
+    window.categoryId = categoryId;
+    $.ajax({
+        url: '../../../backend/category/editmodaldisplay.php?=' + categoryId,
+        type: 'POST',
+        dataType: 'json',
+        data: {
+            categoryId: categoryId,
+        },
+        success: function (response) {
+            if (response && response.success) {
+                var category = response.category;
+                $('#editCategoryName').val(category.CategoryName);
+                $('#editCategoryType').val(category.type);
+                $('#editCategoryType').trigger('change');
 
-                    // Initialize initialCategoryType with the current category type
-                    window.initialCategoryType = category.type;
+                // Initialize initialCategoryType with the current category type
+                window.initialCategoryType = category.type;
 
-                    if (!response.isMainCategory) {
-                        $('#editCategoryCat').val("sub"); // Select Sub Category option
-                        $('#editMainCategoryDropdown').removeClass('hidden'); // Show Main Category dropdown
-                        $('#editMainCategory').val(category.MainCategoryID); // Populate Main Category select
-                    } else {
-                        $('#editCategoryCat').val("main"); // Select Main Category option
-                        $('#editMainCategoryDropdown').addClass('hidden'); // Hide Main Category dropdown
-                        // If it's a main category, show image cover and header inputs
-                        $('#editMainCategoryImage').removeClass('hidden');
-                        $('#editMainCategoryCover').removeClass('hidden');
-                        // Populate image cover and header previews if they exist
-                        if (category.imagecover) {
-                            $('#editMainCategoryImagePreview').html('<img src="' + category.imagecover + '" style="max-width: 100px; max-height: 100px;" class="mt-2 max-w-full h-auto">');
-                        }
-                        if (category.imageheader) {
-                            $('#editMainCategoryCoverPreview').html('<img src="' + category.imageheader + '" style="max-width: 200px; max-height: 200px;" class="mt-2 max-w-full h-auto">');
-                        }
-                    }
-
-                    // Show the edit modal
-                    $('#editCategoryModal').removeClass('hidden');
+                if (!response.isMainCategory) {
+                    $('#editCategoryCat').val("sub"); // Select Sub Category option
+                    $('#editMainCategoryDropdown').removeClass('hidden'); // Show Main Category dropdown
+                    $('#editMainCategory').val(category.MainCategoryID); // Populate Main Category select
                 } else {
-                    console.error("Error: " + response.message);
+                    $('#editCategoryCat').val("main"); // Select Main Category option
+                    $('#editMainCategoryDropdown').addClass('hidden'); // Hide Main Category dropdown
+                    // If it's a main category, show image cover and header inputs
+                    $('#editMainCategoryImage').removeClass('hidden');
+                    $('#editMainCategoryCover').removeClass('hidden');
+                    // Populate image cover and header previews if they exist
+                    if (category.imagecover) {
+                        $('#editMainCategoryImagePreview').html('<img src="' + category.imagecover + '" style="max-width: 100px; max-height: 100px;" class="mt-2 max-w-full h-auto">');
+                    }
+                    if (category.imageheader) {
+                        $('#editMainCategoryCoverPreview').html('<img src="' + category.imageheader + '" style="max-width: 200px; max-height: 200px;" class="mt-2 max-w-full h-auto">');
+                    }
                 }
-            },
-            error: function (xhr, status, error) {
-                console.error("Status: " + status);
-                console.error("Error: " + error);
-                console.error("Response: " + xhr.responseText);
-            }
-        });
-    });
-    // Add an event listener to capture changes in editCategoryType dropdown
-    $('#editCategoryType').change(function () {
-        window.selectedCategoryType = $(this).val();
-    });
 
-    // Update resetEditModal function to reset editCategoryType dropdown
-    function resetEditModal() {
-        $('#editCategoryName').val('');
-        $('#editCategoryType').val('');
-        $('#editMainCategory').val('');
-        $('#editMainCategoryDropdown').addClass('hidden');
-        $('#editMainCategoryImage').addClass('hidden');
-        $('#editMainCategoryCover').addClass('hidden');
+                // Show the edit modal
+                $('#editCategoryModal').removeClass('hidden');
+            } else {
+                console.error("Error: " + response.message);
+            }
+        },
+        error: function (xhr, status, error) {
+            console.error("Status: " + status);
+            console.error("Error: " + error);
+            console.error("Response: " + xhr.responseText);
+        }
+    });
+});
+
+// Add an event listener to capture changes in editCategoryType dropdown
+$('#editCategoryType').change(function () {
+    window.selectedCategoryType = $(this).val();
+});
+
+// Update resetEditModal function to reset editCategoryType dropdown
+function resetEditModal() {
+    $('#editCategoryName').val('');
+    $('#editCategoryType').val('');
+    $('#editMainCategory').val('');
+    $('#editMainCategoryDropdown').addClass('hidden');
+    $('#editMainCategoryImage').addClass('hidden');
+    $('#editMainCategoryCover').addClass('hidden');
+    $('#editMainCategoryImagePreview').empty();
+    $('#editMainCategoryCoverPreview').empty();
+}
+
+$("#closeEditModal, #closeEditModalBtn").click(function () {
+    $("#editCategoryModal").addClass("hidden");
+});
+
+// Add an event listener to capture changes in editCategoryCat dropdown
+$('#editCategoryCat').change(function () {
+    var selectedCategoryCat = $(this).val();
+    toggleCategoryFields(selectedCategoryCat);
+    if (selectedCategoryCat === "sub") {
+        // Reset page path, imagecover, imageheader fields if changing to Sub Category
         $('#editMainCategoryImagePreview').empty();
         $('#editMainCategoryCoverPreview').empty();
     }
+});
 
-    $("#closeEditModal, #closeEditModalBtn").click(function () {
-        $("#editCategoryModal").addClass("hidden");
-    });
+// Function to toggle visibility of category-related fields based on selected category type
+function toggleCategoryFields(selectedCategoryCat) {
+    if (selectedCategoryCat === "main") {
+        $('#editMainCategoryDropdown').addClass('hidden');
+        $('#editMainCategoryImage').removeClass('hidden');
+        $('#editMainCategoryCover').removeClass('hidden');
+    } else if (selectedCategoryCat === "sub") {
+        $('#editMainCategoryDropdown').removeClass('hidden');
+        $('#editMainCategoryImage').addClass('hidden');
+        $('#editMainCategoryCover').addClass('hidden');
+    }
+}
 
-    // Add an event listener to capture changes in editCategoryCat dropdown
-    $('#editCategoryCat').change(function () {
-        var selectedCategoryCat = $(this).val();
-        toggleCategoryFields(selectedCategoryCat);
-        if (selectedCategoryCat === "sub") {
-            // Reset page path, imagecover, imageheader fields if changing to Sub Category
-            $('#editMainCategoryImagePreview').empty();
-            $('#editMainCategoryCoverPreview').empty();
-        }
-    });
+// Modify the form submission to include the selected category type and update related fields
+$('#editCategoryForm').submit(function (event) {
+    event.preventDefault();
 
-    // Function to toggle visibility of category-related fields based on selected category type
-    function toggleCategoryFields(selectedCategoryCat) {
-        if (selectedCategoryCat === "main") {
-            $('#editMainCategoryDropdown').addClass('hidden');
-            $('#editMainCategoryImage').removeClass('hidden');
-            $('#editMainCategoryCover').removeClass('hidden');
-        } else if (selectedCategoryCat === "sub") {
-            $('#editMainCategoryDropdown').removeClass('hidden');
-            $('#editMainCategoryImage').addClass('hidden');
-            $('#editMainCategoryCover').addClass('hidden');
+    var formData = new FormData($(this)[0]);
+    var categoryId = window.categoryId;
+    var selectedCategoryType = window.selectedCategoryType;
+
+    console.log("Category ID:", categoryId);
+    console.log("Category Type:", selectedCategoryType); // Capture selected category type
+
+    // Append selected category type to form data
+    formData.append('editCategoryType', selectedCategoryType);
+
+    // Check if the category type is being changed
+    if (selectedCategoryType !== initialCategoryType) {
+        if (selectedCategoryType === "sub") {
+            // Reset page path, imagecover, and imageheader fields if changing to Sub Category
+            formData.append('editPagePath', null);
+            formData.append('editMainCategoryImageInput', null);
+            formData.append('editMainCategoryCoverInput', null);
+            // Update parent category ID based on the selected main category
+            var selectedMainCategory = $('#editMainCategory').val();
+            formData.append('editParentCategoryID', selectedMainCategory);
+        } else {
+            // If changing to Main Category, keep existing page path, imagecover, and imageheader values
+            // Set parent category ID to NULL
+            formData.append('editParentCategoryID', null);
         }
     }
 
-    // Modify the form submission to include the selected category type and update related fields
-    $('#editCategoryForm').submit(function (event) {
-        event.preventDefault();
+    // Perform AJAX request to update category
+    $.ajax({
+        type: 'POST',
+        url: '../../../backend/category/updatecategory.php?categoryId=' + categoryId,
+        data: formData,
+        contentType: false,
+        processData: false,
+        success: function (response) {
+            console.log(response);
 
-        var formData = new FormData($(this)[0]);
-        var categoryId = window.categoryId;
-        var selectedCategoryType = window.selectedCategoryType;
+            $('#successMessage').text("Category has been successfully edited.");
+            $('#successPopup').removeClass("hidden");
 
-        console.log("Category ID:", categoryId);
-        console.log("Category Type:", selectedCategoryType); // Capture selected category type
-
-        // Append selected category type to form data
-        formData.append('editCategoryType', selectedCategoryType);
-
-        // Check if the category type is being changed
-        if (selectedCategoryType !== initialCategoryType) {
-            if (selectedCategoryType === "sub") {
-                // Reset page path, imagecover, and imageheader fields if changing to Sub Category
-                formData.append('editPagePath', null);
-                formData.append('editMainCategoryImageInput', null);
-                formData.append('editMainCategoryCoverInput', null);
-                // Update parent category ID based on the selected main category
-                var selectedMainCategory = $('#editMainCategory').val();
-                formData.append('editParentCategoryID', selectedMainCategory);
-            } else {
-                // If changing to Main Category, keep existing page path, imagecover, and imageheader values
-                // Set parent category ID to NULL
-                formData.append('editParentCategoryID', null);
-            }
+            $('#editCategoryModal').addClass("hidden");
+        },
+        error: function (xhr, status, error) {
+            console.error(error);
         }
-
-        // Perform AJAX request to update category
-        $.ajax({
-            type: 'POST',
-            url: '../../../backend/category/updatecategory.php?categoryId=' + categoryId,
-            data: formData,
-            contentType: false,
-            processData: false,
-            success: function (response) {
-                console.log(response);
-
-                $('#successMessage').text("Category has been successfully edited.");
-                $('#successPopup').removeClass("hidden");
-
-                $('#editCategoryModal').addClass("hidden");
-            },
-            error: function (xhr, status, error) {
-                console.error(error);
-            }
-        });
     });
+});
 
-    // Function to preview main category image
-    function previewMainCategoryImage(event) {
-        var input = event.target;
-        var reader = new FileReader();
-        reader.onload = function () {
-            var dataURL = reader.result;
-            var preview = document.getElementById('editMainCategoryImagePreview');
-            preview.innerHTML = '<img src="' + dataURL + '" style="max-width: 100px; max-height: 100px;" class="mt-2 max-w-full h-auto">';
-        };
-        reader.readAsDataURL(input.files[0]);
-    }
+// Function to preview main category image
+function previewMainCategoryImage(event) {
+    var input = event.target;
+    var reader = new FileReader();
+    reader.onload = function () {
+        var dataURL = reader.result;
+        var preview = document.getElementById('editMainCategoryImagePreview');
+        preview.innerHTML = '<img src="' + dataURL + '" style="max-width: 100px; max-height: 100px;" class="mt-2 max-w-full h-auto">';
+    };
+    reader.readAsDataURL(input.files[0]);
+}
 
-    // Function to preview main category cover image
-    function previewMainCategoryCover(event) {
-        var input = event.target;
-        var reader = new FileReader();
-        reader.onload = function () {
-            var dataURL = reader.result;
-            var preview = document.getElementById('editMainCategoryCoverPreview');
-            preview.innerHTML = '<img src="' + dataURL + '" style="max-width: 200px; max-height: 200px;" class="mt-2 max-w-full h-auto">';
-        };
-        reader.readAsDataURL(input.files[0]);
-    }
+// Function to preview main category cover image
+function previewMainCategoryCover(event) {
+    var input = event.target;
+    var reader = new FileReader();
+    reader.onload = function () {
+        var dataURL = reader.result;
+        var preview = document.getElementById('editMainCategoryCoverPreview');
+        preview.innerHTML = '<img src="' + dataURL + '" style="max-width: 200px; max-height: 200px;" class="mt-2 max-w-full h-auto">';
+    };
+    reader.readAsDataURL(input.files[0]);
+}
 
-    // Add event listeners for file input changes to preview images
-    $('#editMainCategoryImageInput').change(function (event) {
-        previewMainCategoryImage(event);
-    });
+// Add event listeners for file input changes to preview images
+$('#editMainCategoryImageInput').change(function (event) {
+    previewMainCategoryImage(event);
+});
 
-    $('#editMainCategoryCoverInput').change(function (event) {
-        previewMainCategoryCover(event);
-    });
-
+$('#editMainCategoryCoverInput').change(function (event) {
+    previewMainCategoryCover(event);
+});
 
 </script>
 <?php
