@@ -43,7 +43,11 @@ if ($result->num_rows > 0) {
     }
 
     // Fetch main categories
-    $mainCategoriesSql = "SELECT CategoryID, CategoryName FROM productcategory";
+    $mainCategoriesSql = "SELECT DISTINCT pc.CategoryID, pc.CategoryName, pc.type, pc.status 
+    FROM productcategory pc 
+    LEFT JOIN productcategory pcp ON pc.CategoryID = pcp.ParentCategoryID 
+    WHERE (pcp.CategoryID IS NOT NULL OR (pc.imagecover IS NOT NULL AND pc.imageheader IS NOT NULL))";
+
     $mainCategoriesResult = $conn->query($mainCategoriesSql);
     $mainCategories = array();
     while ($row = $mainCategoriesResult->fetch_assoc()) {
