@@ -1,80 +1,135 @@
 <?php
-
 include '../../backend/conn.php';
 
+// Check if the request method is POST
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-    if (isset($_GET['categoryId'])) {
+    // Check if categoryId, editCategoryName, editCategoryType, and editCategoryCat are set
+    if (isset($_GET['categoryId'], $_POST['editCategoryName'], $_POST['editCategoryType'], $_POST['editCategoryCat'])) {
 
         $categoryId = $_GET['categoryId'];
-
-        // Fetch the existing category details
-        $oldCategoryDetails = mysqli_fetch_assoc(mysqli_query($conn, "SELECT CategoryName, type FROM productcategory WHERE CategoryID = $categoryId"));
-        $oldCategoryName = $oldCategoryDetails['CategoryName'];
-        $oldCategoryType = $oldCategoryDetails['type'];
-
         $categoryName = $_POST['editCategoryName'];
-        $categoryType = $_POST['editCategoryType']; // Add this line to fetch the new category type
-        
-        // Check if only CategoryName field is changed
-        $isCategoryNameChanged = false;
-        if ($oldCategoryName !== $categoryName) {
-            $isCategoryNameChanged = true;
-        }
-        
-        // Check if only CategoryType field is changed
-        $isCategoryTypeChanged = false;
-        if ($oldCategoryType !== $categoryType) {
-            $isCategoryTypeChanged = true;
-        }
-
-        // Update query
-        $sql = "UPDATE productcategory SET CategoryName = ?";
-        $sqlParams = array("s", &$categoryName);
+        $categoryType = $_POST['editCategoryType'];
+        $editCategoryCat = $_POST['editCategoryCat']; // Added line to retrieve editCategoryCat value
 
         // Additional fields related to category type
-        if ($isCategoryNameChanged) {
-            // Update other fields only if CategoryName is changed
-            // Construct the page path
-            $pagePath = $oldCategoryType === 'main' ? '../../pages/' . $categoryName . '.php' : null;
+        $pagePath = isset($_POST['editPagePath']) ? $_POST['editPagePath'] : null;
+        $imageCover = isset($_FILES['editMainCategoryImageInput']['name']) ? $_FILES['editMainCategoryImageInput']['name'] : null;
+        $imageHeader = isset($_FILES['editMainCategoryCoverInput']['name']) ? $_FILES['editMainCategoryCoverInput']['name'] : null;
+        $parentCategoryId = isset($_POST['editParentCategoryID']) ? $_POST['editParentCategoryID'] : null;
 
-            // Update page path
-            $sql .= ", page_path = ?";
-            $sqlParams[0] .= "s";
-            $sqlParams[] = &$pagePath;
+        // Retrieve the current parent category ID
+        $currentParentCategoryIdQuery = mysqli_query($conn, "SELECT ParentCategoryID FROM productcategory WHERE CategoryID = $categoryId");
+        $currentParentCategoryId = mysqli_fetch_assoc($currentParentCategoryIdQuery)['ParentCategoryID'];
+
+        // Update query based on category type
+        if ($editCategoryCat === "sub") {
+            // Reset page path, imagecover, imageheader, and parent category ID
+            $sql = "UPDATE productcategory SET CategoryName = '$categoryName', type = '$categoryType', imagecover = NULL, imageheader = NULL WHERE CategoryID = $categoryId";
+        } else {
+            // Save image paths
+            $imageCoverPath = '';
+            $imageHeaderPath = '';
+
+            // Handle image uploads
+            if (!empty($_FILES['editMainCategoryImageInput']['tmp_name'])) {
+                $imageCoverFilename = $_FILES['editMainCategoryImageInput']['name'];
+                $imageCoverPath = '../../assets/category/' . $imageCoverFilename;
+                move_uploaded_file($_FILES['editMainCategoryImageInput']['tmp_name'], $imageCoverPath);
+                $imageCoverPath = $imageCoverFilename; // Save only the file name
+            }
+
+            if (!empty($_FILES['editMainCategoryCoverInput']['tmp_name'])) {
+                $imageHeaderFilename = $_FILES['editMainCategoryCoverInput']['name'];
+                $imageHeaderPath = '../../assets/catheader/' . $imageHeaderFilename;
+                move_uploaded_file($_FILES['editMainCategoryCoverInput']['tmp_name'], $imageHeaderPath);
+                $imageHeaderPath = $imageHeaderFilename; // Save only the file name
+            }
+
+            // Save page content to file
+            $pageContent = '<?php
+            $pageTitle = "Products - ' . $categoryName . '";
+            ob_start();
+            ?>
+            <style>
+                #productModal {
+                    width: 100%;
+                    height: 100%;
+                    z-index: 1000;
+                }
+                .modal-content {
+                    width: 90%;
+                    max-width: 800px;
+                }
+                .overlay {
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    background-color: rgba(0, 0, 0, 0.5);
+                    z-index: 999i;
+                }
+                body.modal-open {
+                    overflow: hidden;
+                }
+            </style>
+            <div class="content">
+                <div class="relative">
+                    <img src="../assets/catheader/' . $imageHeader . '" class="w-full h-96 object-cover object-top">
+                    <div class="absolute inset-0 bg-black opacity-50"></div>
+                    <div class="absolute inset-0 flex items-center justify-center text-center">
+                        <p class="text-white font-extrabold text-4xl">' . strtoupper($categoryName) . '<br></p>
+                    </div>
+                </div>
+                <header class="bg-[#F6E381]">
+                </header>
+            </div>
+            <?php
+            $content = ob_get_clean();
+            include ("../public/master.php");
+            ?>';
+
+            // Create directories if they don't exist
+            if (!file_exists('../../assets/category')) {
+                mkdir('../../assets/category', 0777, true); // recursively create the directory
+            }
+            if (!file_exists('../../assets/catheader')) {
+                mkdir('../../assets/catheader', 0777, true); // recursively create the directory
+            }
+            if (!file_exists('../../pages')) {
+                mkdir('../../pages', 0777, true); // recursively create the directory
+            }
+
+            // Save page content to file
+            $filePath = '../../pages/' . $categoryName . '.php';
+
+            // Create the page/file
+            file_put_contents($filePath, $pageContent);
+
+            // Update page path, imagecover, imageheader, and parent category ID only if not provided in form data
+            $sql = "UPDATE productcategory SET CategoryName = '$categoryName'";
+            if (empty($pagePath)) {
+                $sql .= ", page_path = '/" . urlencode($categoryName) . ".php'";
+            }
+            if (empty($imageCover)) {
+                $sql .= ", imagecover = '$imageCoverPath'";
+            }
+            if (empty($imageHeader)) {
+                $sql .= ", imageheader = '$imageHeaderPath'";
+            }
+            // Retain the current parent category ID if not provided in form data
+            if (empty($parentCategoryId)) {
+                $sql .= ", ParentCategoryID = '$currentParentCategoryId'";
+            }
+            $sql .= " WHERE CategoryID = $categoryId";
         }
-        
-        // Add condition to handle CategoryType change
-        if ($isCategoryTypeChanged) {
-            $sql .= ", type = ?";
-            $sqlParams[0] .= "s";
-            $sqlParams[] = &$categoryType;
-        }
 
-        // Complete the SQL statement
-        $sql .= " WHERE CategoryID = ?";
-        $sqlParams[0] .= "i";
-        $sqlParams[] = &$categoryId;
-
-        // Prepare statement
-        $stmt = mysqli_prepare($conn, $sql);
-
-        // Check for errors
-        if (!$stmt) {
-            echo json_encode(array("success" => false, "message" => "Error preparing statement: " . mysqli_error($conn)));
-            exit(); // Terminate the script
-        }
-
-        // Bind parameters
-        call_user_func_array('mysqli_stmt_bind_param', array_merge(array($stmt), $sqlParams));
-
-        // Execute query
-        if (mysqli_stmt_execute($stmt)) {
+        if (mysqli_query($conn, $sql)) {
             echo json_encode(array("success" => true, "message" => "Category updated successfully"));
         } else {
             echo json_encode(array("success" => false, "message" => "Error updating category: " . mysqli_error($conn)));
         }
-        
     } else {
         echo json_encode(array("success" => false, "message" => "Category ID not provided"));
     }
