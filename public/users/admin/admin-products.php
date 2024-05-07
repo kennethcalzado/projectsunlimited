@@ -79,6 +79,13 @@ ob_start();
                 </select>
             </div>
             <div class="relative mb-2 mt-4 sm:mb-0 sm:mr-8">
+                <label for="statusFilter" class="mr-2">Status</label>
+                <select id="statusFilter" class="border rounded-md px-2 py-1">
+                    <option value="statusreset">Status</option>
+                    <!-- Add your status options here -->
+                </select>
+            </div>
+            <div class="relative mb-2 mt-4 sm:mb-0 sm:mr-8">
                 <label for="sortFilter" class="mr-2">Sort</label>
                 <select id="sortFilter" class="border rounded-md px-2 py-1">
                     <option value="newest">Newest to Oldest</option>
@@ -125,6 +132,9 @@ ob_start();
                     </th>
                     <th scope="col" class="px-6 py-3 w-1/12">
                         Category
+                    </th>
+                    <th scope="col" class="px-6 py-3 w-1/12">
+                        Status
                     </th>
                     <th scope="col" class="px-6 py-3 w-1/12">
                         Date Added
@@ -394,7 +404,8 @@ ob_start();
                     categoryId: $("#categoryFilter").val() || "",
                     brandId: $("#brandFilter").val() || "",
                     sortValue: $("#sortFilter").val() || "",
-                    searchQuery: $("#searchInput").val() || ""
+                    searchQuery: $("#searchInput").val() || "",
+                    statusFilter: $('#statusFilter').val()|| ""
                 },
                 success: function (data) {
                     console.log("Total rows: " + data.products.length);
@@ -408,10 +419,9 @@ ob_start();
                     handleFetchError();
                 }
             });
-
         }
 
-        function generatePagination(totalPages, totalRows, currentPage, categoryId, brandId, sortValue, searchQuery) {
+        function generatePagination(totalPages, totalRows, currentPage, categoryId, brandId, sortValue, searchQuery, statusFilter) {
             const paginationBar = $('#pagination');
 
             // Clear existing pagination bar
@@ -442,7 +452,7 @@ ob_start();
             paginationBar.find('.btn-pagination').click(function () {
                 const pageNumber = $(this).text();
                 console.log("Clicked page number: " + pageNumber); // Debug statement
-                fetchFilteredProducts(pageNumber, 5, categoryId, brandId, sortValue, searchQuery); // Include filter values in request data
+                fetchFilteredProducts(pageNumber, 5, categoryId, brandId, sortValue, searchQuery, statusFilter); // Include filter values in request data
             });
 
             // Add active class to current page button
@@ -472,15 +482,21 @@ ob_start();
         });
 
         // Handle search input change
+        $('#statusFilter').on('input', function () {
+            fetchFilteredProducts(1, 5, true);
+        });
+
+        // Handle search input change
         $('#searchInput').on('input', function () {
             fetchFilteredProducts(1, 5, true);
         });
 
-        function fetchFilteredProducts(page, limit, categoryId, brandId, sortValue, searchQuery) {
+        function fetchFilteredProducts(page, limit, categoryId, brandId, sortValue, searchQuery, statusFilter) {
             // Get selected values
             categoryId = $('#categoryFilter').val();
             brandId = $('#brandFilter').val();
             sortValue = $('#sortFilter').val();
+            statusFilter = $('#statusFilter').val();
             searchQuery = $('#searchInput').val();
 
             // Check if 'All Category' is selected
@@ -495,6 +511,11 @@ ob_start();
                 brandId = '';
             }
 
+            // Check if 'Status' is selected
+            if (status === 'statusreset') {
+                // If 'Status' is selected, pass an empty string as status to fetch all products
+                status = '';
+            }
             // Fetch filtered products
             $.ajax({
                 url: "../../../backend/product/productdisplay.php",
@@ -506,11 +527,12 @@ ob_start();
                     categoryId: categoryId,
                     brandId: brandId,
                     sortValue: sortValue,
+                    status: statusFilter,
                     searchQuery: searchQuery
                 },
                 success: function (data) {
                     populateProductTable(data.products);
-                    generatePagination(data.totalPages, data.totalRows, page, categoryId, brandId, sortValue, searchQuery);
+                    generatePagination(data.totalPages, data.totalRows, page, categoryId, brandId, sortValue, statusFilter, searchQuery);
 
                 },
                 error: function (xhr, status, error) {
@@ -554,6 +576,7 @@ ob_start();
                         <td>${product.brand_name}</td>
                         <td></td> <!-- This will be replaced by the availability dropdown -->
                         <td>${product.CategoryName}</td>
+                        <td>${product.status}</td>
                         <td>
                             <div>
                                 <span>${product.created_date}</span><br>
@@ -1173,6 +1196,24 @@ ob_start();
             }
         });
     }
+
+    $.ajax({
+            url: '../../../backend/product/getproductstatus.php',
+            type: 'GET',
+            dataType: 'json',
+            success: function (data) {
+                $('#statusFilter').empty();
+                $('#statusFilter').append($('<option>').val('statusreset').text('Status'));
+
+                $.each(data, function (index, status) {
+                    $('#statusFilter').append($('<option>').val(status).text(status));
+                });
+            },
+            error: function (xhr, status, error) {
+                console.error(xhr.responseText);
+            }
+        });
+    
 
     // Add event listener to save changes button in the edit modal
     $('#editProductForm').submit(function (event) {

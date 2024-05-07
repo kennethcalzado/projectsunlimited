@@ -18,12 +18,12 @@ if ($result->num_rows > 0) {
     }
 }
 
-// Add "product" and "service" options if they are not already in the array
+// Add "product" and "customizable" options if they are not already in the array
 if (!in_array("product", $types)) {
     $types[] = "product";
 }
-if (!in_array("service", $types)) {
-    $types[] = "service";
+if (!in_array("customizable", $types)) {
+    $types[] = "customizable";
 }
 
 // Return types as JSON

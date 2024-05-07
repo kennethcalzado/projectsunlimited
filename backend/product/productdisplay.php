@@ -7,12 +7,11 @@ include '../../backend/conn.php';
 // Check if the connection is established successfully
 if ($conn) {
     // Construct the basic SQL query
-    $sql = "SELECT p.ProductID, p.ProductName, b.brand_name, p.availability, p.image_urls, pc.CategoryName, DATE_FORMAT(p.created_at, '%b %d, %Y') AS created_date, TIME_FORMAT(p.created_at, '%h:%i %p') AS created_time
+    $sql = "SELECT p.ProductID, p.ProductName, b.brand_name, p.availability, p.image_urls, pc.CategoryName, DATE_FORMAT(p.created_at, '%b %d, %Y') AS created_date, TIME_FORMAT(p.created_at, '%h:%i %p') AS created_time, p.status
     FROM product p
     LEFT JOIN brands b ON p.brand_id = b.brand_id
     LEFT JOIN productcategory pc ON p.CategoryID = pc.CategoryID
-    WHERE p.image_urls IS NOT NULL AND p.image_urls != ''
-    AND p.status = 'active'";
+    WHERE p.image_urls IS NOT NULL AND p.image_urls != ''";
 
     // Check if any filter parameters are provided
     if (isset($_GET['categoryId']) && $_GET['categoryId'] !== '') {
@@ -31,6 +30,15 @@ if ($conn) {
         }
     }
 
+    if (isset($_GET['status']) && $_GET['status'] !== '') {
+        // Add brand filter to the SQL query
+        $status = mysqli_real_escape_string($conn, $_GET['status']);
+        if ($status !== 'statusreset') {
+            $sql .= " AND p.status = '$status'";
+        }
+    }
+
+
     // Check if search term is provided
     if (isset($_GET['searchQuery']) && !empty($_GET['searchQuery'])) {
         // Sanitize and escape the search term to prevent SQL injection
@@ -40,7 +48,8 @@ if ($conn) {
                    OR b.brand_name LIKE '%$searchTerm%' 
                    OR p.availability LIKE '%$searchTerm%' 
                    OR pc.CategoryName LIKE '%$searchTerm%'
-                   OR p.created_at LIKE '%$searchTerm%')";
+                   OR p.created_at LIKE '%$searchTerm%'
+                   OR p.status LIKE '%$searchTerm%')";
     }
 
     // Check if a sorting option is provided
