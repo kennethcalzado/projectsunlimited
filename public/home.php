@@ -440,4 +440,8 @@ mobile scaling
 profile admin (sinimulan na)
 connect db sa home display (brands nalang)
 finalize main page contents
+dagdag office hours sa locations
+filecontent sa add blog
+insert real data
+update history from gdrive
 -->
