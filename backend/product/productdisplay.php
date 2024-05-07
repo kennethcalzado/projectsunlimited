@@ -57,13 +57,13 @@ if ($conn) {
         $sortValue = $_GET['sortValue'];
         // Add sorting based on creation date
         if ($sortValue == 'newest') {
-            $sql .= " ORDER BY p.created_at DESC";
+            $sql .= " ORDER BY CASE WHEN p.status = 'inactive' THEN 1 ELSE 0 END, p.created_at DESC";
         } elseif ($sortValue == 'oldest') {
-            $sql .= " ORDER BY p.created_at ASC";
+            $sql .= " ORDER BY CASE WHEN p.status = 'inactive' THEN 1 ELSE 0 END, p.created_at ASC";
         }
     } else {
         // Default sorting by newest to oldest
-        $sql .= " ORDER BY p.created_at DESC";
+        $sql .= " ORDER BY CASE WHEN p.status = 'inactive' THEN 1 ELSE 0 END, p.created_at DESC";
     }
 
     // Execute the SQL query to get total count of items
