@@ -97,7 +97,7 @@ include ("../public/master.php");
         // Set imageCover and imageHeader to NULL for subcategories
         $imageCover = NULL;
         $imageHeader = NULL;
-        $pagePathRelativeToRoot = ''; // For subcategories, page path may not be applicable or different logic may apply
+        $pagePathRelativeToRoot = NULL; // For subcategories, page path may not be applicable or different logic may apply
     }
 
 
