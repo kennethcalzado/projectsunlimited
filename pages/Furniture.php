@@ -1,5 +1,5 @@
 <?php
-$pageTitle = "Products - Heeseung";
+$pageTitle = "Products - Furniture";
 ob_start();
 ?>
 <style>
@@ -27,10 +27,10 @@ ob_start();
 </style>
 <div class="content">
     <div class="relative">
-        <img src="../assets/catheader/stock.png" class="w-full h-96 object-cover object-top">
+        <img src="../assets/catheader/lhtqjazuprq-breather.jpg" class="w-full h-96 object-cover object-top">
         <div class="absolute inset-0 bg-black opacity-50"></div>
         <div class="absolute inset-0 flex items-center justify-center text-center">
-            <p class="text-white font-extrabold text-4xl">HEESEUNG<br></p>
+            <p class="text-white font-extrabold text-4xl">FURNITURE<br></p>
         </div>
     </div>
     <header class="bg-[#F6E381]">

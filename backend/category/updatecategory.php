@@ -18,11 +18,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $imageHeader = isset($_FILES['editMainCategoryCoverInput']['name']) ? $_FILES['editMainCategoryCoverInput']['name'] : null;
         $parentCategoryId = isset($_POST['editParentCategoryID']) ? $_POST['editParentCategoryID'] : null;
 
+        // Verify if the provided ParentCategoryID exists
+        if (!empty($parentCategoryId)) {
+            $checkParentCategoryQuery = "SELECT * FROM productcategory WHERE CategoryID = $parentCategoryId";
+            $parentCategoryResult = mysqli_query($conn, $checkParentCategoryQuery);
+            if (!$parentCategoryResult || mysqli_num_rows($parentCategoryResult) == 0) {
+                echo json_encode(array("success" => false, "message" => "Parent Category ID does not exist"));
+                exit(); // Stop execution if Parent Category ID does not exist
+            }
+        }
+
         // Retrieve the current parent category ID
         $currentParentCategoryIdQuery = mysqli_query($conn, "SELECT ParentCategoryID FROM productcategory WHERE CategoryID = $categoryId");
         $currentParentCategoryId = mysqli_fetch_assoc($currentParentCategoryIdQuery)['ParentCategoryID'];
 
-        // Update query based on category type
+        // Update query based on category type and category change
         if ($editCategoryCat === "sub") {
             // Reset page path, imagecover, imageheader, and parent category ID
             $sql = "UPDATE productcategory SET CategoryName = '$categoryName', type = '$categoryType', imagecover = NULL, imageheader = NULL WHERE CategoryID = $categoryId";
@@ -48,47 +58,50 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             // Save page content to file
             $pageContent = '<?php
-            $pageTitle = "Products - ' . $categoryName . '";
-            ob_start();
-            ?>
-            <style>
-                #productModal {
-                    width: 100%;
-                    height: 100%;
-                    z-index: 1000;
-                }
-                .modal-content {
-                    width: 90%;
-                    max-width: 800px;
-                }
-                .overlay {
-                    position: fixed;
-                    top: 0;
-                    left: 0;
-                    width: 100%;
-                    height: 100%;
-                    background-color: rgba(0, 0, 0, 0.5);
-                    z-index: 999i;
-                }
-                body.modal-open {
-                    overflow: hidden;
-                }
-            </style>
-            <div class="content">
-                <div class="relative">
-                    <img src="../assets/catheader/' . $imageHeader . '" class="w-full h-96 object-cover object-top">
-                    <div class="absolute inset-0 bg-black opacity-50"></div>
-                    <div class="absolute inset-0 flex items-center justify-center text-center">
-                        <p class="text-white font-extrabold text-4xl">' . strtoupper($categoryName) . '<br></p>
-                    </div>
-                </div>
-                <header class="bg-[#F6E381]">
-                </header>
+    $pageTitle = "Products - ' . $categoryName . '";
+    ob_start();
+    ?>
+    <style>
+        #productModal {
+            width: 100%;
+            height: 100%;
+            z-index: 1000;
+        }
+        .modal-content {
+            width: 90%;
+            max-width: 800px;
+        }
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 999i;
+        }
+        body.modal-open {
+            overflow: hidden;
+        }
+    </style>
+    <div class="content">
+        <div class="relative">
+            <img src="../assets/catheader/' . $imageHeader . '" class="w-full h-96 object-cover object-top">
+            <div class="absolute inset-0 bg-black opacity-50"></div>
+            <div class="absolute inset-0 flex items-center justify-center text-center">
+                <p class="text-white font-extrabold text-4xl">' . strtoupper($categoryName) . '<br></p>
             </div>
-            <?php
-            $content = ob_get_clean();
-            include ("../public/master.php");
-            ?>';
+        </div>
+        <header class="bg-[#F6E381]">
+        </header>
+    </div>
+    <?php
+    $content = ob_get_clean();
+    include ("../public/master.php");
+    ?>';
+
+            // Replace old category name with new one in the page content
+            $pageContent = str_replace('Products - ' . $categoryName, 'Products - ' . $categoryName, $pageContent);
 
             // Create directories if they don't exist
             if (!file_exists('../../assets/category')) {
@@ -101,26 +114,50 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 mkdir('../../pages', 0777, true); // recursively create the directory
             }
 
-            // Save page content to file
-            $filePath = '../../pages/' . $categoryName . '.php';
+            // Check if page already exists for the category
+            $existingPagePathQuery = mysqli_query($conn, "SELECT page_path FROM productcategory WHERE CategoryID = $categoryId");
+            $existingPagePath = mysqli_fetch_assoc($existingPagePathQuery)['page_path'];
 
-            // Create the page/file
-            file_put_contents($filePath, $pageContent);
-
-            // Update page path, imagecover, imageheader, and parent category ID only if not provided in form data
-            $sql = "UPDATE productcategory SET CategoryName = '$categoryName'";
-            if (empty($pagePath)) {
-                $sql .= ", page_path = '/" . urlencode($categoryName) . ".php'";
+            // If page path exists, update file name only, else create a new page
+            if (!empty($existingPagePath) && file_exists('../../pages/' . $existingPagePath)) {
+                $filePath = '../../pages/' . $existingPagePath;
+                $newFilePath = '../../pages/' . urlencode($categoryName) . '.php';
+                if ($existingPagePath !== urlencode($categoryName) . '.php') {
+                    rename($filePath, $newFilePath);
+                    // Update the page path in the database
+                    $updatePagePathQuery = "UPDATE productcategory SET page_path = '/" . urlencode($categoryName) . ".php' WHERE CategoryID = $categoryId";
+                    mysqli_query($conn, $updatePagePathQuery);
+                }
+                $pagePath = "/$categoryName.php";
+            } else {
+                // Save page content to file
+                $filePath = '../../pages/' . urlencode($categoryName) . '.php';
+                // Create the page/file
+                file_put_contents($filePath, $pageContent);
+                $pagePath = "/$categoryName.php";
+                // Update the page path in the database
+                $updatePagePathQuery = "UPDATE productcategory SET page_path = '/" . urlencode($categoryName) . ".php' WHERE CategoryID = $categoryId";
+                mysqli_query($conn, $updatePagePathQuery);
             }
-            if (empty($imageCover)) {
+
+
+            // Update page path, imagecover, imageheader, and parent category ID
+            $sql = "UPDATE productcategory SET CategoryName = '$categoryName', type = '$categoryType'";
+            // Update page path
+            if (empty($pagePath)) {
+                $sql .= ", page_path = '$pagePath'";
+            }
+            // Update imagecover if provided
+            if (!empty($imageCover)) {
                 $sql .= ", imagecover = '$imageCoverPath'";
             }
-            if (empty($imageHeader)) {
+            // Update imageheader if provided
+            if (!empty($imageHeader)) {
                 $sql .= ", imageheader = '$imageHeaderPath'";
             }
-            // Retain the current parent category ID if not provided in form data
-            if (empty($parentCategoryId)) {
-                $sql .= ", ParentCategoryID = '$currentParentCategoryId'";
+            // Update parent category ID if provided
+            if (!empty($parentCategoryId)) {
+                $sql .= ", ParentCategoryID = '$parentCategoryId'";
             }
             $sql .= " WHERE CategoryID = $categoryId";
         }
