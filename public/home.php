@@ -439,4 +439,5 @@ page animations
 mobile scaling
 profile admin (sinimulan na)
 connect db sa home display (brands nalang)
+finalize main page contents
 -->

@@ -1,79 +1,11 @@
 <?php
-// Start session if not already started
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
-
-// Include database connection
-include("../../backend/conn.php");
-
-// Check if form is submitted
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Validate form inputs
-    $title = $_POST['title'];
-    $date = $_POST['date']; // Retrieve the selected date from the form
-    $description = $_POST['description'];
-    $type = $_POST['type'];
-    $page = "{$type}_{$blog_id}";
-
-    // Define the target directory for thumbnails
-    $target_dir = "../../assets/blogs_img/";
-
-    // Define the target directory for images
-    $image_target_dir = "../../assets/blogs_img/";
-
-    // Check if thumbnail file is uploaded
-    if (isset($_FILES['thumbnail'])) {
-        $thumbnail_name = $_FILES['thumbnail']['name'];
-        $thumbnail_tmp_name = $_FILES['thumbnail']['tmp_name'];
-
-        // Move uploaded thumbnail file to desired location
-        $thumbnail_target_path = $target_dir . basename($thumbnail_name);
-        if (move_uploaded_file($thumbnail_tmp_name, $thumbnail_target_path)) {
-            $thumbnail_name = basename($thumbnail_name);
-        } else {
-            // Handle error if thumbnail file couldn't be moved
-            // You can add your error handling code here
-            $thumbnail_name = "default_thumbnail.jpg"; // Use default thumbnail
-        }
-    } else {
-        // If thumbnail is not uploaded, use a default thumbnail
-        $thumbnail_name = "default_thumbnail.jpg"; // Change this to your default thumbnail name
-    }
-
-    // Check if images files are uploaded
-    $images = array();
-    if (!empty($_FILES['images']['name'][0])) {
-        foreach ($_FILES['images']['name'] as $key => $image_name) {
-            if ($_FILES['images']['error'][$key] === UPLOAD_ERR_OK) {
-                $image_tmp_name = $_FILES['images']['tmp_name'][$key];
-                $images[] = $image_name;
-
-                // Move uploaded image files to desired location
-                $target_file_image = $image_target_dir . basename($image_name);
-                move_uploaded_file($image_tmp_name, $target_file_image);
-            }
-        }
-    } else {
-    }
-
-    // Insert data into the database
-    $sql = "INSERT INTO blogs (title, date, thumbnail, description, images, type) VALUES (?, ?, ?, ?, ?, ?)";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("ssssss", $title, $date, $thumbnail_name, $description, implode(',', $images), $type);
-
-    if ($stmt->execute()) {
-        // Create new PHP file based on blog type and ID
-        $blog_id = $conn->insert_id; // Get the ID of the inserted blog
-        $filename = "../../public/blogs/{$type}_{$blog_id}.php";
-        $file_content = '<?php
-$pageTitle = \'News & Projects\';
+$pageTitle = 'News & Projects';
 ob_start();
 include("../../backend/conn.php");
 
 // Extract the blog ID from the filename
 $filename = basename(__FILE__); // Get the current filename
-$parts = explode(\'_\', $filename);
+$parts = explode('_', $filename);
 $blog_id = (int) end($parts); // Extract the numeric value after the underscore
 
 // Retrieve data of the inserted blog based on its ID
@@ -87,10 +19,10 @@ if ($result->num_rows > 0) {
     $blog_data = $result->fetch_assoc();
 
     // Retrieve images data for the carousel
-    $images = explode(\',\', $blog_data[\'images\']);
+    $images = explode(',', $blog_data['images']);
 }
 
-$date = strtotime($blog_data[\'date\']);
+$date = strtotime($blog_data['date']);
 $formatted_date = date("F j, Y", $date);
 ?>
 
@@ -139,7 +71,7 @@ $formatted_date = date("F j, Y", $date);
 
         .title::after {
             content: "";
-            background-image: url(\'../../assets/image/arrowgold.png\');
+            background-image: url('../../assets/image/arrowgold.png');
             background-size: contain;
             width: 30px;
             height: 30px;
@@ -156,7 +88,7 @@ $formatted_date = date("F j, Y", $date);
         }
 
         .card-group:hover .title::after {
-            background-image: url(\'../../assets/image/arrowgold.png\');
+            background-image: url('../../assets/image/arrowgold.png');
         }
 
         .date {
@@ -198,13 +130,13 @@ $formatted_date = date("F j, Y", $date);
     <section style="text-align: center; padding-left: 190px; padding-right: 190px; padding-bottom: 25px;">
         <div class="flex justify-between items-center mb-3">
             <!-- "Back" link -->
-            <a href="../blogs.php" class="text-black font-semibold text-2xl flex items-center mt-8" style="transition: color 0.3s;" onmouseover="this.style.color=\'#F6E17A\'" onmouseout="this.style.color=\'black\'">
+            <a href="../blogs.php" class="text-black font-semibold text-2xl flex items-center mt-8" style="transition: color 0.3s;" onmouseover="this.style.color='#F6E17A'" onmouseout="this.style.color='black'">
                 <i class="fas fa-chevron-left mr-2"></i> Back
             </a>
             <!-- Spacer -->
             <div></div> <!-- This empty div acts as a spacer to push the title to the center -->
             <!-- Title -->
-            <h1 class="text-black font-bold text-4xl text-center" style="padding-top: 25px;"><?php echo $blog_data[\'title\']; ?></h1>
+            <h1 class="text-black font-bold text-4xl text-center" style="padding-top: 25px;"><?php echo $blog_data['title']; ?></h1>
 
             <div></div>
             <h1 class="text-black font-semibold text-2xl text-center" style="padding-top: 25px;"><?php echo $formatted_date; ?></h1>
@@ -219,14 +151,14 @@ $formatted_date = date("F j, Y", $date);
                     // Function to convert URLs into clickable links
 function makeClickableLinks($text)
 {
-    $text = preg_replace_callback(\'#(https?://\S+|www.\S+)#i\', function ($matches) {
-        return \'<a href="\' . $matches[1] . \'" target="_blank" style="text-decoration: none; color: inherit;" onmouseover="this.style.color=\'#F6E17A\';" onmouseout="this.style.color=\'inherit\';">\' . $matches[1] . \'</a>\';
+    $text = preg_replace_callback('#(https?://\S+|www.\S+)#i', function ($matches) {
+        return '<a href="' . $matches[1] . '" target="_blank" style="text-decoration: none; color: inherit;" onmouseover="this.style.color='#F6E17A';" onmouseout="this.style.color='inherit';">' . $matches[1] . '</a>';
     }, $text);
     return $text;
 }
 
 
-                    echo nl2br(makeClickableLinks($blog_data[\'description\']));
+                    echo nl2br(makeClickableLinks($blog_data['description']));
                     ?>
                 </p>
             </div>
@@ -283,7 +215,7 @@ function makeClickableLinks($text)
                 const width = items[currentIndex].clientWidth;
                 document.querySelector(
                     ".carousel-inner"
-                ).style.transform = \'translateX(-\' + (width * currentIndex) + \'px)\';
+                ).style.transform = 'translateX(-' + (width * currentIndex) + 'px)';
             }
 
             // Function to auto-swipe the carousel
@@ -315,32 +247,32 @@ function makeClickableLinks($text)
                     $totalItems = $otherResult->num_rows; // Total number of items 
 
                     // Generate the first background div
-                    echo \'<div class="w-full flex justify-center"><div class="absolute h-[160px] m-[98px] w-3/5 bg-[#F6E381]" style="z-index: -1;"></div></div>\';
+                    echo '<div class="w-full flex justify-center"><div class="absolute h-[160px] m-[98px] w-3/5 bg-[#F6E381]" style="z-index: -1;"></div></div>';
 
-                    echo \'<div class="flex flex-wrap justify-center items-center">\';; // Start flex container and center items
+                    echo '<div class="flex flex-wrap justify-center items-center">';; // Start flex container and center items
                     while ($row = $otherResult->fetch_assoc()) {
-                        $formattedDate = date("F j, Y", strtotime($row[\'date\']));
-                        echo \'
-                <div class="card-group z-10" data-category="\' . $row[\'type\'] . \'">
-                    <a href="\' . $row[\'page\'] . \'" class="card-link">
-                        <div class="date">\' . $formattedDate . \'</div>
+                        $formattedDate = date("F j, Y", strtotime($row['date']));
+                        echo '
+                <div class="card-group z-10" data-category="' . $row['type'] . '">
+                    <a href="' . $row['page'] . '" class="card-link">
+                        <div class="date">' . $formattedDate . '</div>
                         <div class="placeholder">
-                            <img src="../../assets/blogs_img/\' . $row[\'thumbnail\'] . \'" alt="Thumbnail" class="thumbnail">
+                            <img src="../../assets/blogs_img/' . $row['thumbnail'] . '" alt="Thumbnail" class="thumbnail">
                         </div>
-                        <div class="title">\' . $row[\'title\'] . \'</div>
+                        <div class="title">' . $row['title'] . '</div>
                     </a>
-                </div>\';
+                </div>';
                         $counter++;
 
                         // Check if the current item is the last one or if the next item will start a new row
                         if ($counter % $itemsPerRow == 0 || $counter == $totalItems) {
-                            // Check if it\'s not the last item and there are enough items to complete another row
+                            // Check if it's not the last item and there are enough items to complete another row
                             if ($counter != $totalItems && $totalItems - $counter >= $itemsPerRow) {
-                                echo \'<div class="w-full flex justify-center"><div class="absolute h-[160px] m-[98px] w-3/5 bg-[#F6E381]" style="z-index: -1;"></div></div><div class="flex flex-wrap justify-center items-center">\';
+                                echo '<div class="w-full flex justify-center"><div class="absolute h-[160px] m-[98px] w-3/5 bg-[#F6E381]" style="z-index: -1;"></div></div><div class="flex flex-wrap justify-center items-center">';
                             }
                         }
                     }
-                    echo \'</div>\'; // Close flex container
+                    echo '</div>'; // Close flex container
                 } else {
                     echo "No other blogs found.";
                 }
@@ -356,39 +288,4 @@ function makeClickableLinks($text)
 <?php
 $content = ob_get_clean();
 include("../master.php");
-?>"';
-
-        // Write content to the new PHP file
-        $result = file_put_contents($filename, $file_content);
-
-        if ($result !== false) {
-            // Update the page column with the filename
-            $sql_update_page = "UPDATE blogs SET page = ? WHERE id = ?";
-            $stmt_update_page = $conn->prepare($sql_update_page);
-            $stmt_update_page->bind_param("si", $filename, $blog_id);
-            $stmt_update_page->execute();
-
-            if ($stmt_update_page->affected_rows > 0) {
-                // Redirect back to the page with success message
-                $_SESSION['success'] = "Blog added successfully!";
-                header("Location: " . $_SERVER['HTTP_REFERER']);
-                exit();
-            } else {
-                // Redirect back to the page with error message
-                $_SESSION['error'] = "Failed to update page column. Please try again.";
-                header("Location: " . $_SERVER['HTTP_REFERER']);
-                exit();
-            }
-        } else {
-            // Error occurred while writing file
-            $_SESSION['error'] = "Failed to create PHP file. Please check file permissions.";
-            header("Location: " . $_SERVER['HTTP_REFERER']);
-            exit();
-        }
-    } else {
-        // Failed to insert data into the database
-        $_SESSION['error'] = "Failed to insert blog data into the database. Please try again.";
-        header("Location: " . $_SERVER['HTTP_REFERER']);
-        exit();
-    }
-}
+?>"
