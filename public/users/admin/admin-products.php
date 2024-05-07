@@ -375,32 +375,6 @@ ob_start();
         </div>
     </div>
 </div>
-
-<!-- Delete Confirmation Modal -->
-<div id="deleteModal" class="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 hidden">
-    <div class="bg-white p-4 rounded-md shadow-md w-full sm:w-[80%] md:w-[60%] lg:w-[40%] xl:w-[30%]">
-        <h2 class="text-2xl font-bold" id="confirmationTitle"> DELETE</h2>
-        <div class="border-b border-black flex-grow border-2 mt-2 mb-3"></div>
-        <p class="text-lg font-bold" id="confirmationMessage"></p>
-        <div class="flex justify-end">
-            <button id="confirmDelete"
-                class="btn btn-primary rounded-md text-center h-10 mt-3 sm:mt-4 !px-4 py-0 text-lg flex items-center mr-2">Confirm
-                Delete</button>
-            <button id="cancelDelete"
-                class="btn btn-secondary rounded-md text-center h-10 mt-3 sm:mt-4 !px-4 py-0 text-lg flex items-center">Cancel</button>
-        </div>
-    </div>
-</div>
-
-<!-- Success -->
-<div id="successPopup" class="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 hidden">
-    <div class="bg-white p-4 rounded-md shadow-md w-full h-40 sm:w-[70%] md:w-[60%] lg:w-[40%] xl:w-[30%]">
-        <h2 class="text-2xl font-extrabold" id="SuccessTitle">Success</h2>
-        <div class="border-b border-black flex-grow border-2 mt-2 mb-3"></div>
-        <p class="text-xl font-bold text-green-600" id="successMessage"></p>
-    </div>
-</div>
-
 <?php $content = ob_get_clean();
 ob_start();
 ?>
@@ -615,33 +589,36 @@ ob_start();
                 $(".deleteProduct").on("click", function () {
                     const productId = $(this).data("productid");
                     const tr = $(this).closest("tr");
-                    // Show the delete confirmation modal
-                    $("#deleteModal").removeClass("hidden");
-                    $("#confirmationMessage").text("Are you sure you want to delete this?");
-                    // Set event listener for confirm delete button in the modal
-                    $("#confirmDelete").on("click", function () {
-                        // Call function to update product status to "inactive" in the backend
-                        updateProductStatus(productId, function () {
-                            // Hide the delete confirmation modal
-                            $("#deleteModal").addClass("hidden");
 
-                            // Hide the corresponding row in the frontend table
-                            tr.hide();
-                        });
-
-                        // Remove the event listener to prevent multiple executions
-                        $("#confirmDelete").off("click");
-                    });
-
-                    // Set event listener for cancel delete button in the modal
-                    $("#cancelDelete").on("click", function () {
-                        // Hide the delete confirmation modal
-                        $("#deleteModal").addClass("hidden");
-
-                        // Remove the event listener to prevent multiple executions
-                        $("#cancelDelete").off("click");
+                    // Show Swal confirmation alert
+                    Swal.fire({
+                        title: 'Delete Product',
+                        text: 'Are you sure you want to delete this product?',
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#d33',
+                        cancelButtonColor: '#3085d6',
+                        confirmButtonText: 'Yes, delete it!',
+                        cancelButtonText: 'Cancel'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            // Call function to update product status to "inactive" in the backend
+                            updateProductStatus(productId, function () {
+                                // Hide the corresponding row in the frontend table
+                                tr.hide();
+                            });
+                            // Show success Swal alert
+                            Swal.fire({
+                                title: 'Deleted!',
+                                text: 'Product has been deleted.',
+                                icon: 'success',
+                                showConfirmButton: false,
+                                timer: 1500
+                            });
+                        }
                     });
                 });
+
             } else {
                 productListing.html("<tr><td colspan='7' class='text-center font-bold text-red-800'>No products available</td></tr>");
             }
@@ -649,8 +626,6 @@ ob_start();
 
         // Function to update product status to "inactive" in the backend
         function updateProductStatus(productId, callback) {
-            // Send a request to the backend to update product status
-            // Example AJAX request:
             $.ajax({
                 url: "../../../backend/product/deleteproduct.php",
                 type: "POST",
@@ -667,15 +642,12 @@ ob_start();
                     $("#successMessage").text("Product deleted successfully!");
                     $("#successPopup").removeClass("hidden");
 
-                    // Hide the success popup after 3 seconds
                     setTimeout(function () {
                         $("#successPopup").addClass("hidden");
-                        // Refresh the table after hiding the success popup
-                        refreshTable();
-                    }, 500);
+                        location.reload();
+                    }, 1000);
                 },
                 error: function (xhr, status, error) {
-                    // Handle error
                     console.error("Error updating product status:", error);
                 }
             });
@@ -818,20 +790,31 @@ ob_start();
             processData: false,
             success: function (response) {
                 console.log("Images uploaded successfully:", response);
-                // Close modal after successful upload
-                $("#successPopup").removeClass("hidden");
-                $("#successMessage").text("Images Successfully Added!");
-                $("#successBulkPopup").removeClass("hidden");
-                setTimeout(function () {
-                    $("#successBulkPopup").addClass("hidden"); // Hide success modal after 0.5 seconds
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success',
+                    text: 'Images successfully added!',
+                    showConfirmButton: false,
+                    timer: 1000
+                }).then(function () {
+                    $("#successPopup").removeClass("hidden");
+                    $("#successMessage").text("Images Successfully Added!");
+                    $("#successBulkPopup").removeClass("hidden");
                     setTimeout(function () {
-                        location.reload(); // Refresh the page after 1 second
-                    }, 500); // 1 second
-                }, 500); // 0.5 seconds
+                        $("#successBulkPopup").addClass("hidden"); // Hide success modal after 0.5 seconds
+                        setTimeout(function () {
+                            location.reload(); // Refresh the page after 1 second
+                        }, 500); // 1 second
+                    }, 500); // 0.5 seconds
+                });
             },
             error: function (xhr, status, error) {
                 console.error("Error uploading images:", error);
-                // Handle error if any
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Failed to upload images. Please try again.'
+                });
             }
         });
     });
@@ -921,27 +904,41 @@ ob_start();
                 data: formData,
                 contentType: false,
                 processData: false,
-                // After successfully adding a product, show the success modal and hide the add product modal
+                // After successfully adding a product, show the success Swal alert
                 success: function (data) {
                     var responseData = JSON.parse(data);
                     if (responseData.success) {
-                        console.log("Product added successfully:", responseData);
-                        $("#successPopup").removeClass("hidden");
-                        $("#successMessage").text("Product Successfully Added!");
-                        // Hide add product modal
-                        $("#addProductModal").addClass("hidden");
-                        // Hide success modal and refresh the page after 3 seconds
-                        setTimeout(function () {
-                            $("#successModal").addClass("hidden");
-                            // Refresh table after 1 second
+                        // Show success Swal alert
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Success',
+                            text: 'Product successfully added!',
+                            showConfirmButton: false,
+                            timer: 1500
+                        }).then(function () {
+                            // Show success modal
+                            $("#successPopup").removeClass("hidden");
+                            $("#successMessage").text("Product Successfully Added!");
+                            // Hide add product modal
+                            $("#addProductModal").addClass("hidden");
+                            // Refresh the table after a short delay
                             setTimeout(function () {
-                                location.reload(); // Refresh the page
-                            }, 500); //
-                        }, 500); //
+                                location.reload();
+                            }, 500);
+                        });
                     } else {
                         console.error("Error adding product:", responseData.error);
                     }
                 },
+                error: function (xhr, status, error) {
+                    console.error("Error adding product:", error);
+                    // Show error Swal alert
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Failed to add product. Please try again.'
+                    });
+                }
             });
         }
     });
@@ -1141,41 +1138,41 @@ ob_start();
             }
         });
     }
-// Function to fetch and populate category dropdown
-function fetchAndPopulateCategoryDropdown(selectedCategoryId) {
-    $.ajax({
-        url: '../../../backend/product/getproductcategory.php',
-        type: 'GET',
-        dataType: 'json',
-        success: function (categories) {
-            const categoryDropdown = $('#editProductCategory');
-            categoryDropdown.empty();
-            categoryDropdown.append($('<option>').prop('disabled', true).prop('selected', true).text('Select a Category'));
+    // Function to fetch and populate category dropdown
+    function fetchAndPopulateCategoryDropdown(selectedCategoryId) {
+        $.ajax({
+            url: '../../../backend/product/getproductcategory.php',
+            type: 'GET',
+            dataType: 'json',
+            success: function (categories) {
+                const categoryDropdown = $('#editProductCategory');
+                categoryDropdown.empty();
+                categoryDropdown.append($('<option>').prop('disabled', true).prop('selected', true).text('Select a Category'));
 
-            // Append main categories
-            const mainCategoryOptgroup = $('<optgroup label="Main Category">');
-            $.each(categories["Main Category"], function (index, mainCategory) {
-                mainCategoryOptgroup.append($('<option>').val(mainCategory.CategoryID).text(mainCategory.CategoryName));
-            });
-            categoryDropdown.append(mainCategoryOptgroup.clone());
+                // Append main categories
+                const mainCategoryOptgroup = $('<optgroup label="Main Category">');
+                $.each(categories["Main Category"], function (index, mainCategory) {
+                    mainCategoryOptgroup.append($('<option>').val(mainCategory.CategoryID).text(mainCategory.CategoryName));
+                });
+                categoryDropdown.append(mainCategoryOptgroup.clone());
 
-            // Append sub categories
-            const subCategoryOptgroup = $('<optgroup label="Sub Category">');
-            $.each(categories["Sub Category"], function (index, subCategory) {
-                subCategoryOptgroup.append($('<option>').val(subCategory.CategoryID).text(subCategory.CategoryName));
-            });
-            categoryDropdown.append(subCategoryOptgroup.clone());
+                // Append sub categories
+                const subCategoryOptgroup = $('<optgroup label="Sub Category">');
+                $.each(categories["Sub Category"], function (index, subCategory) {
+                    subCategoryOptgroup.append($('<option>').val(subCategory.CategoryID).text(subCategory.CategoryName));
+                });
+                categoryDropdown.append(subCategoryOptgroup.clone());
 
-            // Set the selected category if available
-            if (selectedCategoryId) {
-                categoryDropdown.val(selectedCategoryId);
+                // Set the selected category if available
+                if (selectedCategoryId) {
+                    categoryDropdown.val(selectedCategoryId);
+                }
+            },
+            error: function (xhr, status, error) {
+                console.error('Error fetching categories:', error);
             }
-        },
-        error: function (xhr, status, error) {
-            console.error('Error fetching categories:', error);
-        }
-    });
-}
+        });
+    }
 
     // Add event listener to save changes button in the edit modal
     $('#editProductForm').submit(function (event) {
@@ -1239,17 +1236,30 @@ function fetchAndPopulateCategoryDropdown(selectedCategoryId) {
             processData: false,
             success: function (response) {
                 // Show success popup
-                $("#successMessage").text("Product details updated successfully.");
-                $("#successPopup").removeClass("hidden");
-                // Close the success popup after a few seconds
-                setTimeout(function () {
-                    $("#successPopup").addClass("hidden");
-                    location.reload();
-                }, 1000);
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success',
+                    text: 'Product details updated successfully!',
+                    showConfirmButton: false,
+                    timer: 1000
+                }).then(function () {
+                    $("#successMessage").text("Product details updated successfully.");
+                    $("#successPopup").removeClass("hidden");
+                    $("#editProductModal").addClass("hidden");
+                    // Close the success popup after a few seconds
+                    setTimeout(function () {
+                        $("#successPopup").addClass("hidden");
+                        location.reload();
+                    }, 500);
+                });
             },
             error: function (xhr, status, error) {
                 console.error("Error updating product details:", error);
-                // Handle error
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Failed to update product details. Please try again.'
+                });
             }
         });
     });
