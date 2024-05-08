@@ -163,7 +163,7 @@ ob_start();
 
     <script>
         // Get the founding year of the company
-        const foundingYear = 1958;
+        const foundingYear = 1968;
 
         // Function to update the year count with animation
         function updateYearCount() {

@@ -13,14 +13,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $blogId = $_POST['blogIdToUpdate'];
     $name = $_POST['name'];
     $address = $_POST['address'];
+    $time = $_POST['time'];
     $phone = $_POST['phone'];
     $email = $_POST['email'];
     $map = $_POST['map'];
 
     // Update data in the database
-    $sql = "UPDATE locations SET name = ?, address = ?, phone = ?, email = ?, map = ?";
-    $param_types = "sssss";
-    $param_values = array($name, $address, $phone, $email, $map);
+    $sql = "UPDATE locations SET name = ?, address = ?, time = ?, phone = ?, email = ?, map = ?";
+    $param_types = "ssssss";
+    $param_values = array($name, $address, $time, $phone, $email, $map);
 
     $sql .= " WHERE id = ?";
     $param_types .= "i";

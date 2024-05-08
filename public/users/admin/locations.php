@@ -76,6 +76,10 @@ ob_start();
                         <input type="text" name="address" id="address" class="border rounded px-4 py-2 w-full" required>
                     </div>
                     <div class="mb-4">
+                        <label for="time" class="block font-semibold mb-2">Time</label>
+                        <input type="text" name="time" id="time" class="border rounded px-4 py-2 w-full" required>
+                    </div>
+                    <div class="mb-4">
                         <label for="phone" class="block font-semibold mb-2">Phone</label>
                         <input type="text" name="phone" id="phone" class="border rounded px-4 py-2 w-full" required>
                     </div>
@@ -133,6 +137,10 @@ ob_start();
                     <div class="mb-4">
                         <label for="address" class="block font-semibold mb-2">Address</label>
                         <input type="text" name="address" id="updateAddress" class="border rounded px-4 py-2 w-full" required>
+                    </div>
+                    <div class="mb-4">
+                        <label for="time" class="block font-semibold mb-2">Time</label>
+                        <input type="text" name="time" id="updateTime" class="border rounded px-4 py-2 w-full" required>
                     </div>
                     <div class="mb-4">
                         <label for="phone" class="block font-semibold mb-2">Phone</label>
@@ -212,11 +220,12 @@ ob_start();
                         html += '<tr>';
                         html += '<td>' + item.name + '</td>'; // Update with item.name
                         html += '<td>' + item.address + '</td>'; // Update with item.address
+                        html += '<td>' + item.time + '</td>'; // Update with item.address
                         html += '<td>' + item.phone + '</td>'; // Update with item.phone
                         html += '<td>' + item.email + '</td>'; // Update with item.email
                         html += '<td class="action-btns" valign="middle">';
                         html += '<button onclick="viewPost(\'../../contact.php\')" class="btn-view rounded-md text-center h-9 mt-3 sm:mt-4 !px-4 py-0 text-lg mr-2 hover:underline"><i class="fas fa-eye"></i> View</button>';
-                        html += '<button onclick="openUpdateModal(\'' + item.id + '\', \'' + item.name.replace(/'/g, "\\'") + '\', \'' + item.address.replace(/'/g, "\\'") + '\', \'' + item.phone.replace(/'/g, "\\'") + '\', \'' + item.email.replace(/'/g, "\\'") + '\', \'' + escapeHtmlQuotes(item.map) + '\')" type="button" class="btn btn-primary rounded-md text-center h-9 mt-3 sm:mt-4 !px-4 py-0 text-lg mr-2 hover:underline" data-name="' + item.name.replace(/'/g, "\\'") + '" data-address="' + item.address.replace(/'/g, "\\'") + '" data-phone="' + item.phone.replace(/'/g, "\\'") + '" data-email="' + item.email.replace(/'/g, "\\'") + '" data-map="' + escapeHtmlQuotes(item.map) + '"><i class="fas fa-edit"></i> Update</button>';
+                        html += '<button onclick="openUpdateModal(\'' + item.id + '\', \'' + item.name.replace(/'/g, "\\'") + '\', \'' + item.address.replace(/'/g, "\\'") + item.time.replace(/'/g, "\\'") + '\', \'' + item.phone.replace(/'/g, "\\'") + '\', \'' + item.email.replace(/'/g, "\\'") + '\', \'' + escapeHtmlQuotes(item.map) + '\')" type="button" class="btn btn-primary rounded-md text-center h-9 mt-3 sm:mt-4 !px-4 py-0 text-lg mr-2 hover:underline" data-name="' + item.name.replace(/'/g, "\\'") + '" data-address="' + item.address.replace(/'/g, "\\'") + '" data-time="' + item.time.replace(/'/g, "\\'") + '" data-phone="' + item.phone.replace(/'/g, "\\'") + '" data-email="' + item.email.replace(/'/g, "\\'") + '" data-map="' + escapeHtmlQuotes(item.map) + '"><i class="fas fa-edit"></i> Update</button>';
                         html += '<button onclick="openDeleteModal(\'' + item.id + '\')" type="button" class="btn btn-danger rounded-md text-center h-9 mt-3 sm:mt-4 !px-4 py-0 text-lg hover:underline"><i class="fas fa-trash-alt"></i> Delete</button>';
                         html += '</td>';
                         html += '</tr>';
@@ -351,6 +360,7 @@ ob_start();
             document.getElementById('blogIdToUpdate').value = blogId;
             document.getElementById('updateName').value = name;
             document.getElementById('updateAddress').value = address;
+            document.getElementById('updateTime').value = time;
             document.getElementById('updatePhone').value = phone;
             document.getElementById('updateEmail').value = email;
             document.getElementById('updateMap').value = map;
@@ -495,6 +505,7 @@ ob_start();
                 <thead>
                     <th scope="col" class="px-6 py-3 w-1/12">Name</th>
                     <th scope="col" class="px-6 py-3 w-1/12">Address</th>
+                    <th scope="col" class="px-6 py-3 w-1/12">Time</th>
                     <th scope="col" class="px-6 py-3 w-1/12">Phone</th>
                     <th scope="col" class="px-6 py-3 w-1/12">Email</th>
                     <th scope="col" class="px-6 py-3 w-1/6">Actions</th>
@@ -513,12 +524,13 @@ ob_start();
                             <tr>
                                 <td><?php echo $row['name']; ?></td>
                                 <td><?php echo $row['address']; ?></td>
+                                <td><?php echo $row['time']; ?></td>
                                 <td><?php echo $row['phone']; ?></td>
                                 <td><?php echo $row['email']; ?></td>
                                 <td class="map"><?php echo htmlspecialchars($row['map']); ?></td>
                                 <td class="action-btns" valign="middle">
                                     <a href="" class="btn btn-view rounded-md text-center h-9 mt-3 sm:mt-4 !px-4 py-0 text-lg mr-2 hover:underline" target="_blank"><i class="fas fa-eye"></i> View</a>
-                                    <button onclick="openUpdateModal('<?php echo $row['id']; ?>', '<?php echo $row['name']; ?>', '<?php echo $row['address']; ?>', '<?php echo $row['phone']; ?>' , '<?php echo $row['email']; ?>' , '<?php echo htmlspecialchars($row['map']); ?>')" type="button" class="btn btn-primary rounded-md text-center h-9 mt-3 sm:mt-4 !px-4 py-0 text-lg mr-2 hover:underline" data-name="<?php echo $row['name']; ?>" data-address="<?php echo $row['address']; ?>" data-phone="<?php echo $row['phone']; ?>" data-email="<?php echo $row['email']; ?>" data-map="<?php echo htmlspecialchars($row['map']); ?>"><i class="fas fa-edit"></i> Update</button>
+                                    <button onclick="openUpdateModal('<?php echo $row['id']; ?>', '<?php echo $row['name']; ?>', '<?php echo $row['address']; ?>' , '<?php echo $row['time']; ?>', '<?php echo $row['phone']; ?>' , '<?php echo $row['email']; ?>' , '<?php echo htmlspecialchars($row['map']); ?>')" type="button" class="btn btn-primary rounded-md text-center h-9 mt-3 sm:mt-4 !px-4 py-0 text-lg mr-2 hover:underline" data-name="<?php echo $row['name']; ?>" data-address="<?php echo $row['address']; ?>" data-time="<?php echo $row['time']; ?>" data-phone="<?php echo $row['phone']; ?>" data-email="<?php echo $row['email']; ?>" data-map="<?php echo htmlspecialchars($row['map']); ?>"><i class="fas fa-edit"></i> Update</button>
                                     <button onclick="openDeleteModal('<?php echo $row['id']; ?>')" type="button" class=" btn btn-danger rounded-md text-center h-9 mt-3 sm:mt-4 !px-4 py-0 text-lg hover:underline"><i class="fas fa-trash-alt"></i> Delete</button>
                                 </td>
                             </tr>

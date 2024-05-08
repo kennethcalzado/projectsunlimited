@@ -28,6 +28,7 @@ function generateLocationHTML($location)
 {
     $name = htmlspecialchars($location['name']);
     $address = htmlspecialchars($location['address']);
+    $time = htmlspecialchars($location['time']);
     $phone = htmlspecialchars($location['phone']);
     $email = htmlspecialchars($location['email']);
     $map = ($location['map']);
@@ -38,6 +39,7 @@ function generateLocationHTML($location)
     <li class='address-item cursor-pointer font-bold text-xl' onclick=\"updateMap('$mapURL', '$name')\">$name
         <ul>
             <li>Address: $address</li>
+            <li>Time: $time</li>
             <li>Phone: $phone</li>
             <li>Email: $email</li>
         </ul>
