@@ -587,7 +587,7 @@ ob_start();
                             <div class="flex justify-center">
                                 <button type="button" class="btn btn-view rounded-md text-center sm:mt-4!px-4 text-sm flex items-center mr-2 viewProduct" data-productid="${product.ProductID}"><i class="fas fa-eye mr-2 fa-sm"></i><span class="hover:underline">View</span></button>
                                 <button type="button" class="btn btn-primary rounded-md text-center sm:mt-4!px-4 text-sm flex items-center mr-2 editProduct" data-productid="${product.ProductID}"><i class="fas fa-edit mr-2 fa-sm"></i><span class="hover:underline">Edit</span></button>
-                                <button type="button" class="btn btn-danger rounded-md text-center sm:mt-4!px-4 text-sm flex items-center mr-2 deleteProduct" data-productid="${product.ProductID}"><i class="fas fa-trash-alt mr-2 fa-sm"></i><span class="hover:underline">Delete</span></button>
+                                <button type="button" class="btn btn-danger rounded-md text-center sm:mt-4!px-4 text-sm flex items-center mr-2 deleteProduct" data-productid="${product.ProductID}"><i class="fa-solid fa-eye-slash mr-2"></i><span class="hover:underline">Inactivate</button>
                             </div>
                         </td>
                     `);
@@ -615,13 +615,13 @@ ob_start();
 
                     // Show Swal confirmation alert
                     Swal.fire({
-                        title: 'Delete Product',
-                        text: 'Are you sure you want to delete this product?',
+                        title: 'Inactivate Product',
+                        text: 'Are you sure you want to inactivate this product?',
                         icon: 'warning',
                         showCancelButton: true,
                         confirmButtonColor: '#d33',
                         cancelButtonColor: '#3085d6',
-                        confirmButtonText: 'Yes, delete it!',
+                        confirmButtonText: 'Yes!',
                         cancelButtonText: 'Cancel'
                     }).then((result) => {
                         if (result.isConfirmed) {
@@ -633,8 +633,7 @@ ob_start();
                             // Show success Swal alert
                             Swal.fire({
                                 title: 'Deleted!',
-                                text: 'Product has been deleted.',
-                                icon: 'success',
+                                text: 'Product status has been set to inactive',
                                 showConfirmButton: false,
                                 timer: 1500
                             });
