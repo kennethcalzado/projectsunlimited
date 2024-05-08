@@ -98,7 +98,6 @@ ob_start();
             // Initialize error message
             let isValid = true;
 
-
             if ( !email || email.trim() === '' )
             {
                 $( '#email' ).addClass( 'border-red-500' );

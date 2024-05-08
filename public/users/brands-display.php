@@ -192,6 +192,7 @@ ob_start();
                                 <option value="" disabled selected>Select Status</option>
                                 <option value="active">Active</option>
                                 <option value="inactive">Inactive</option>
+                                <option value="hidden">Hidden</option>
                             </select>
                             <div id="statusError" class="text-sm text-red-500 mt-1 error-message"></div>
                         </div>
@@ -216,17 +217,15 @@ ob_start();
             </div>
 
             <div class="flex justify-end mt-4">
-                <button id="editBrandBtn" type="button" class="btn-primary mr-2">Edit</button>
+                <button id="editBrandBtn" type="button" class="editBtn btn-primary mr-2">Edit</button>
                 <button id="submitBrandBtn" type="submit" class="btn-primary mr-2 hidden">Submit</button>
-                <button id="hideBrandBtn" type="button" class="btn-danger mr-2">Hide</button>
+                <button id="hideBrandBtn" type="button" class="delBtn btn-danger mr-2">Hide</button>
                 <button id="closeBrandBtn" type="button" class="btn-secondary">Close</button>
             </div>
         </form>
     </div>
 </div>
 
-<div id="popup-container">
-</div>
 <?php $content = ob_get_clean();
 ob_start();
 ?>
@@ -282,19 +281,23 @@ ob_start();
                     orderable: false,
                     render: function ( data )
                     {
+                        const isHidden = data.status === 'hidden';
+                        const hideButtonText = isHidden ? 'Unhide' : 'Hide';
+
                         return `
-                            <button class="viewBtn btn-view !m-0 hover:underline text-[14px]">
-                                <i class="fas fa-eye pr-[3px]"></i>View
-                            </button>
-                            <button class="editBtn yellow-btn btn-primary !m-0  hover:underline text-[14px]">
-                                <i class="fas fa-edit pr-[3px]"></i>Edit
-                            </button>
-                            <button class="delBtn btn-danger !m-0  hover:underline text-[14px]">
-                                <i class="fas fa-trash pr-[3px]"></i>Hide
-                            </button>
-                    `;
+                                <button class="viewBtn btn-view !m-0 hover:underline text-[14px]">
+                                    <i class="fas fa-eye pr-[3px]"></i>View
+                                </button>
+                                <button class="editBtn yellow-btn btn-primary !m-0 hover:underline text-[14px]">
+                                    <i class="fas fa-edit pr-[3px]"></i>Edit
+                                </button>
+                                <button class="delBtn btn-danger !m-0 hover:underline text-[14px]">
+                                    <i class="fas fa-trash pr-[3px]"></i>${ hideButtonText }
+                                </button>
+                            `;
                     }
                 }
+
             ],
             order: [[3, 'desc']], // Default sorting by the fouth column (Updated At)
             paging: true,
@@ -435,7 +438,7 @@ ob_start();
                         const fileSize = catalog.size;
                         const fileExtension = fileName.split( '.' ).pop();
                         const catalogId = catalog.catalogId;
-                        
+
                         // Create file container
                         const fileContainer = createFileContainer( fileName, fileSize, fileExtension, catalogId );
                         $( '#catalogList' ).append( fileContainer );
@@ -444,6 +447,10 @@ ob_start();
                 {
                     $( '#catalogList' ).html( '<p class="text-sm text-red-700">No catalogs available.</p>' );
                 }
+
+                // Set hide button text based on status
+                const hideButtonText = rowData.status === 'hidden' ? 'Unhide' : 'Hide';
+                $( '#hideBrandBtn' ).text( hideButtonText );
             } else if ( isCreate )
             {
                 // Additional logic for creating brand and handling catalog uploads
@@ -580,22 +587,25 @@ ob_start();
         } );
 
         // Function to create file container
-        function createFileContainer ( fileName, fileSize, fileExtension, catalogId)
+        function createFileContainer ( fileName, fileSize, fileExtension, catalogId )
         {
             const container = $( '<div>' ).addClass( 'relative bg-gray-200 rounded-md p-2 flex flex-col items-center justify-center text-center' );
-            const deleteButton = $( '<button>' ).addClass( 'absolute top-0 right-0 w-6 h-6 text-center text-gray-500 bg-transparent border-none outline-none cursor-pointer rounded-full  hover:text-red-700 hover:bg-gray-100' ).html( '&times;' ).attr('type', 'button');
+            const deleteButton = $( '<button>' ).addClass( 'absolute top-0 right-0 w-6 h-6 text-center text-gray-500 bg-transparent border-none outline-none cursor-pointer rounded-full hover:text-red-700 hover:bg-gray-100' ).html( '&times;' ).attr( 'type', 'button' );
             const icon = $( '<i>' ).addClass( getFileIconClass( fileExtension ) + ' text-3xl mb-1' );
-            const name = $( '<p>' ).addClass( 'text-sm font-medium' ).text( fileName );
+            const name = $( '<p>' ).addClass( 'text-sm font-medium whitespace-normal break-all' ).text( fileName );
             const size = $( '<p>' ).addClass( 'text-xs text-gray-500' ).text( formatSize( fileSize ) );
+
+            // Create a download link for the PDF
+            const downloadLink = $( '<a>' ).addClass( 'text-blue-500 hover:underline mt-1' ).attr( 'href', `/../../backend/brands/catalog-download.php?catalogId=${ catalogId }` ).attr( 'target', '_blank' ).text( 'Download' );
 
             // Add click event to delete button
             deleteButton.on( 'click', function ()
             {
-                deleteCatalog(catalogId, container);
+                deleteCatalog( catalogId, container );
             } );
 
             // Append elements to the container
-            container.append( deleteButton, icon, name, size );
+            container.append( deleteButton, icon, name, size, downloadLink );
 
             return container;
         }
@@ -634,7 +644,7 @@ ob_start();
         }
 
         // Function to delete the catalog via AJAX with confirmation
-        function deleteCatalog ( catalogId , container)
+        function deleteCatalog ( catalogId, container )
         {
             // Show confirmation dialog using SweetAlert
             Swal.fire( {
@@ -651,7 +661,7 @@ ob_start();
                 {
                     // If user confirms, proceed with catalog deletion
                     $.ajax( {
-                        url: '/../../backend/brands/catalog-delete.php', 
+                        url: '/../../backend/brands/catalog-delete.php',
                         type: 'POST',
                         data: { catalogId: catalogId },
                         dataType: 'json',
@@ -659,6 +669,8 @@ ob_start();
                         {
                             // Remove the file container from the DOM
                             container.remove();
+                            table.ajax.reload();
+
                             // Handle success response
                             Swal.fire( {
                                 icon: 'success',
@@ -680,6 +692,94 @@ ob_start();
                 }
             } );
         }
+
+        // Function to delete the brands via AJAX with confirmation
+        function handleBrandDelete ( brandId, buttonText )
+        {
+            // Determine the appropriate confirmation message and success message based on button text
+            let confirmationMessage = '';
+            let successMessage = '';
+            if ( buttonText === 'Hide' )
+            {
+                confirmationMessage = 'You are about to hide this brand. Are you sure?';
+                successMessage = 'Brand hidden successfully.';
+            } else if ( buttonText === 'Unhide' )
+            {
+                confirmationMessage = 'You are about to unhide this brand. Are you sure?';
+                successMessage = 'Brand unhidden successfully.';
+            }
+
+            // Show confirmation dialog using SweetAlert
+            Swal.fire( {
+                title: 'Are you sure?',
+                text: confirmationMessage,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Yes, ' + buttonText + ' it!'
+            } ).then( ( result ) =>
+            {
+                if ( result.isConfirmed )
+                {
+                    // If user confirms, proceed with brand deletion
+                    $.ajax( {
+                        url: '/../../backend/brands/brands-hide.php',
+                        type: 'POST',
+                        data: {
+                            brandId: brandId,
+                            status: buttonText
+                        },
+                        dataType: 'json',
+                        success: function ( response )
+                        {
+                            // Reload the DataTable to reflect the changes
+                            table.ajax.reload();
+
+                            Swal.fire( {
+                                icon: 'success',
+                                title: 'Success!',
+                                text: successMessage
+                            } );
+
+                            // Check if modal is currently shown
+                            if (!( $( '#modal-container' ).hasClass( 'hidden' )) )
+                            {
+                                // If modal is shown, close it
+                                closeModal();
+                            }
+                        },
+                        error: function ( xhr, status, error )
+                        {
+                            // Handle error response
+                            Swal.fire( {
+                                icon: 'error',
+                                title: 'Error!',
+                                text: 'Failed to ' + buttonText.toLowerCase() + ' brand. Please try again later.'
+                            } );
+                            console.error( 'Error ' + buttonText.toLowerCase() + ' brand:', error );
+                        }
+                    } );
+                }
+            } );
+        }
+
+        // Event handler for brand deletion from the table's action column
+        $( document ).on( 'click', '.delBtn', function ()
+        {
+            const buttonText = $( this ).text().trim(); // Get the text of the button
+            const rowData = table.row( $( this ).closest( 'tr' ) ).data();
+            const brandId = rowData.brand_id;
+            handleBrandDelete( brandId, buttonText ); // Pass the button text to the function
+        } );
+
+        // Event handler for brand deletion from the modal form
+        $( '#hideBrandBtn' ).on( 'click', function ()
+        {
+            const buttonText = $( this ).text().trim(); // Get the text of the button
+            const brandId = $( '#brandForm' ).data( 'brandId' );
+            handleBrandDelete( brandId, buttonText ); // Pass the button text to the function
+        } );
 
         function enableDragAndDrop ()
         {
@@ -776,6 +876,11 @@ ob_start();
 
             // Disable input fields
             $( '#brandName, #description, #type, #status' ).prop( 'disabled', true );
+
+            // Clear catalog lists and upload field
+            $( '#uploadedCatalogList' ).empty(); // Clear previous files
+            $( '#catalogList' ).empty(); // Clear previous files
+            $( '#brandCatalogs' ).val( '' );
 
             // Hide the modal
             $( '#modal-container' ).toggleClass( 'hidden' );
@@ -886,6 +991,7 @@ ob_start();
                             timer: 1000
                         } );
 
+                        $( '#brandForm' ).trigger( 'reset' );
                         table.ajax.reload();
 
                         closeModal();
@@ -899,7 +1005,7 @@ ob_start();
                             title: 'Error',
                             text: 'Failed to submit the form. Please try again. Error: ' + error
                         } );
-                        table.columns().search( '' ).draw();
+                        table.ajax.reload();
                     }
                 } );
             } else

@@ -1,5 +1,5 @@
 <?php
-session_start();
+
 $pageTitle = "Brands";
 ob_start();
 ?>
@@ -130,8 +130,6 @@ ob_start();
         });
     });
 </script>
-
-
 
 <?php
 $script = ob_get_clean();

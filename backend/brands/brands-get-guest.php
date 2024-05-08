@@ -3,7 +3,7 @@ include '../../backend/conn.php'; // Include the database connection script
 
 try {
     // Your SQL query to fetch brands data with associated catalogs
-    $sql = "SELECT b.brand_name, b.logo_url, b.description, b.type, c.catalog_title, c.pdf_url 
+    $sql = "SELECT b.brand_name, b.logo_url, b.description, b.type, c.catalog_title, c.catalog_path 
             FROM brands AS b 
             LEFT JOIN catalogs AS c ON b.brand_id = c.brand_id 
             WHERE b.status = 'active'";
@@ -30,10 +30,10 @@ try {
                 );
             }
             // Add catalog details to the brand's catalogs array
-            if (!is_null($row['catalog_title']) && !is_null($row['pdf_url'])) {
+            if (!is_null($row['catalog_title']) && !is_null($row['catalog_path'])) {
                 $brands[$brand_name]['catalogs'][] = array(
                     'catalog_title' => $row['catalog_title'],
-                    'pdf_url' => $row['pdf_url']
+                    'catalog_path' => $row['catalog_path']
                 );
             }
         }
