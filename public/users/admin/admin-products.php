@@ -38,6 +38,15 @@ ob_start();
         .item-count {
             margin-right: auto;
         }
+
+        .btn-reactivate {
+            background-color: #059669;
+            color: black;
+            border: none;
+            padding: 5px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
     </style>
 </head>
 
@@ -405,7 +414,7 @@ ob_start();
                     brandId: $("#brandFilter").val() || "",
                     sortValue: $("#sortFilter").val() || "",
                     searchQuery: $("#searchInput").val() || "",
-                    statusFilter: $('#statusFilter').val()|| ""
+                    statusFilter: $('#statusFilter').val() || ""
                 },
                 success: function (data) {
                     console.log("Total rows: " + data.products.length);
@@ -587,10 +596,13 @@ ob_start();
                             <div class="flex justify-center">
                                 <button type="button" class="btn btn-view rounded-md text-center sm:mt-4!px-4 text-sm flex items-center mr-2 viewProduct" data-productid="${product.ProductID}"><i class="fas fa-eye mr-2 fa-sm"></i><span class="hover:underline">View</span></button>
                                 <button type="button" class="btn btn-primary rounded-md text-center sm:mt-4!px-4 text-sm flex items-center mr-2 editProduct" data-productid="${product.ProductID}"><i class="fas fa-edit mr-2 fa-sm"></i><span class="hover:underline">Edit</span></button>
-                                <button type="button" class="btn btn-danger rounded-md text-center sm:mt-4!px-4 text-sm flex items-center mr-2 deleteProduct" data-productid="${product.ProductID}"><i class="fa-solid fa-eye-slash mr-2"></i><span class="hover:underline">Inactivate</button>
+                                ${product.status === 'active' ?
+                            `<button type="button" class="btn btn-danger rounded-md text-center sm:mt-4!px-4 text-sm flex items-center mr-2 deleteProduct" data-productid="${product.ProductID}" id="deleteButton"><i class="fa-solid fa-eye-slash mr-2"></i><span class="hover:underline">Inactivate</span></button>` :
+                            `<button type="button" class="btn btn-reactivate rounded-md text-center sm:mt-4!px-4 text-sm flex items-center mr-2 reactivateProduct" data-productid="${product.ProductID}" id="reactivateButton"><i class="fa-solid fa-check-circle mr-2"></i><span class="hover:underline">Reactivate</span></button>`}
                             </div>
                         </td>
                     `);
+
 
 
                     // Append availability dropdown to table cell
@@ -609,6 +621,7 @@ ob_start();
                     updateProductAvailability(productId, newAvailability);
                 });
 
+                // Click event handler for inactivate button
                 $(".deleteProduct").on("click", function () {
                     const productId = $(this).data("productid");
                     const tr = $(this).closest("tr");
@@ -626,16 +639,47 @@ ob_start();
                     }).then((result) => {
                         if (result.isConfirmed) {
                             // Call function to update product status to "inactive" in the backend
-                            updateProductStatus(productId, function () {
+                            updateProductStatus(productId, "inactive", function () {
                                 // Hide the corresponding row in the frontend table
                                 tr.hide();
                             });
                             // Show success Swal alert
                             Swal.fire({
-                                title: 'Deleted!',
+                                title: 'Inactivated!',
                                 text: 'Product status has been set to inactive',
-                                showConfirmButton: false,
-                                timer: 1500
+                                icon: 'success'
+                            });
+                        }
+                    });
+                });
+
+                // Click event handler for reactivate button
+                $(".reactivateProduct").on("click", function () {
+                    const productId = $(this).data("productid");
+                    const tr = $(this).closest("tr");
+
+                    // Show Swal confirmation alert
+                    Swal.fire({
+                        title: 'Reactivate Product',
+                        text: 'Are you sure you want to reactivate this product?',
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Yes!',
+                        cancelButtonText: 'Cancel'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            // Call function to update product status to "active" in the backend
+                            updateProductStatus(productId, "active", function () {
+                                // Hide the corresponding row in the frontend table
+                                tr.hide();
+                            });
+                            // Show success Swal alert
+                            Swal.fire({
+                                title: 'Reactivated!',
+                                text: 'Product status has been set to active',
+                                icon: 'success'
                             });
                         }
                     });
@@ -646,34 +690,39 @@ ob_start();
             }
         }
 
-        // Function to update product status to "inactive" in the backend
-        function updateProductStatus(productId, callback) {
+        // Function to update product status to "inactive" or "active" in the backend
+        function updateProductStatus(productId, status, callback) {
             $.ajax({
                 url: "../../../backend/product/deleteproduct.php",
                 type: "POST",
                 data: {
                     productId: productId,
-                    status: "inactive"
+                    status: status
                 },
                 success: function (response) {
-                    // Callback function after successful update
-                    if (callback && typeof callback === "function") {
-                        callback();
-                    }
-                    // Show success popup
-                    $("#successMessage").text("Product deleted successfully!");
-                    $("#successPopup").removeClass("hidden");
-
-                    setTimeout(function () {
-                        $("#successPopup").addClass("hidden");
+                    const message = status === "inactive" ? "Product has been inactivated successfully!" : "Product has been reactivated successfully!";
+                    // Show success Swal alert
+                    Swal.fire({
+                        title: 'Success!',
+                        text: message,
+                        icon: 'success'
+                    }).then(() => {
+                        // Reload page after update
                         location.reload();
-                    }, 1000);
+                    });
                 },
                 error: function (xhr, status, error) {
                     console.error("Error updating product status:", error);
+                    // Show error Swal alert
+                    Swal.fire({
+                        title: 'Error!',
+                        text: 'Failed to update product status. Please try again later.',
+                        icon: 'error'
+                    });
                 }
             });
         }
+
 
         // Function to update product availability in the backend
         function updateProductAvailability(productId, availability) {
@@ -1197,22 +1246,22 @@ ob_start();
     }
 
     $.ajax({
-            url: '../../../backend/product/getproductstatus.php',
-            type: 'GET',
-            dataType: 'json',
-            success: function (data) {
-                $('#statusFilter').empty();
-                $('#statusFilter').append($('<option>').val('statusreset').text('Status'));
+        url: '../../../backend/product/getproductstatus.php',
+        type: 'GET',
+        dataType: 'json',
+        success: function (data) {
+            $('#statusFilter').empty();
+            $('#statusFilter').append($('<option>').val('statusreset').text('Status'));
 
-                $.each(data, function (index, status) {
-                    $('#statusFilter').append($('<option>').val(status).text(status));
-                });
-            },
-            error: function (xhr, status, error) {
-                console.error(xhr.responseText);
-            }
-        });
-    
+            $.each(data, function (index, status) {
+                $('#statusFilter').append($('<option>').val(status).text(status));
+            });
+        },
+        error: function (xhr, status, error) {
+            console.error(xhr.responseText);
+        }
+    });
+
 
     // Add event listener to save changes button in the edit modal
     $('#editProductForm').submit(function (event) {
