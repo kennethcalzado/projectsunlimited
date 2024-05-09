@@ -40,7 +40,7 @@ ob_start();
         }
 
         .btn-reactivate {
-            background-color: #059669;
+            background-color: #10B981;
             color: black;
             border: none;
             padding: 5px 20px;
@@ -597,10 +597,11 @@ ob_start();
                                 <button type="button" class="btn btn-view rounded-md text-center sm:mt-4!px-4 text-sm flex items-center mr-2 viewProduct" data-productid="${product.ProductID}"><i class="fas fa-eye mr-2 fa-sm"></i><span class="hover:underline">View</span></button>
                                 <button type="button" class="btn btn-primary rounded-md text-center sm:mt-4!px-4 text-sm flex items-center mr-2 editProduct" data-productid="${product.ProductID}"><i class="fas fa-edit mr-2 fa-sm"></i><span class="hover:underline">Edit</span></button>
                                 ${product.status === 'active' ?
-                            `<button type="button" class="btn btn-danger rounded-md text-center sm:mt-4!px-4 text-sm flex items-center mr-2 deleteProduct" data-productid="${product.ProductID}" id="deleteButton"><i class="fa-solid fa-eye-slash mr-2"></i><span class="hover:underline">Inactivate</span></button>` :
-                            `<button type="button" class="btn btn-reactivate rounded-md text-center sm:mt-4!px-4 text-sm flex items-center mr-2 reactivateProduct" data-productid="${product.ProductID}" id="reactivateButton"><i class="fa-solid fa-check-circle mr-2"></i><span class="hover:underline">Reactivate</span></button>`}
+                                `<button type="button" class="btn btn-danger rounded-md text-center sm:mt-4!px-4 text-sm flex items-center mr-2 deleteProduct" data-productid="${product.ProductID}" id="deleteButton"><i class="fa-solid fa-eye-slash mr-2"></i><span class="hover:underline">Inactivate</span></button>` :
+                                `<button type="button" class="btn btn-reactivate rounded-md text-center sm:mt-4!px-4 text-sm flex items-center mr-2 reactivateProduct hover:bg-emerald-400" data-productid="${product.ProductID}" id="reactivateButton"><i class="fa-solid fa-check-circle mr-2"></i><span class="hover:underline">Reactivate</span></button>`}
                             </div>
                         </td>
+
                     `);
 
 
