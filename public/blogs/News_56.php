@@ -149,14 +149,13 @@ $formatted_date = date("F j, Y", $date);
                 <p class="text-2xl text-black" style="text-align: justify; padding-right: 20px;">
                     <?php
                     // Function to convert URLs into clickable links
-function makeClickableLinks($text)
-{
-    $text = preg_replace_callback('#(https?://\S+|www.\S+)#i', function ($matches) {
-        return '<a href="' . $matches[1] . '" target="_blank" style="text-decoration: none; color: inherit;" onmouseover="this.style.color='#F6E17A';" onmouseout="this.style.color='inherit';">' . $matches[1] . '</a>';
-    }, $text);
-    return $text;
-}
-
+                    function makeClickableLinks($text)
+                    {
+                        $text = preg_replace_callback('#(https?://\S+|www\.\S+)#i', function ($matches) {
+                            return '<a href="' . $matches[1] . '" target="_blank" style="text-decoration: none; color: inherit;" onmouseover="this.style.color=\'#F6E17A\';" onmouseout="this.style.color=\'inherit\';">' . $matches[1] . '</a>';
+                        }, $text);
+                        return $text;
+                    }
 
                     echo nl2br(makeClickableLinks($blog_data['description']));
                     ?>
@@ -249,7 +248,7 @@ function makeClickableLinks($text)
                     // Generate the first background div
                     echo '<div class="w-full flex justify-center"><div class="absolute h-[160px] m-[98px] w-3/5 bg-[#F6E381]" style="z-index: -1;"></div></div>';
 
-                    echo '<div class="flex flex-wrap justify-center items-center">';; // Start flex container and center items
+                    echo '<div class="flex flex-wrap justify-center items-center">'; // Start flex container and center items
                     while ($row = $otherResult->fetch_assoc()) {
                         $formattedDate = date("F j, Y", strtotime($row['date']));
                         echo '
@@ -288,4 +287,5 @@ function makeClickableLinks($text)
 <?php
 $content = ob_get_clean();
 include("../master.php");
-?>"
+?>
+

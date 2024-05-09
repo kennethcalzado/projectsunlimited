@@ -179,24 +179,26 @@ ob_start();
             <div id="mainCategoryImage" class="flex flex-col mb-4 hidden">
                 <label for="mainCategoryImageInput" class="text-sm font-medium text-gray-700 mb-2">Main Category
                     Image</label>
-                <p class="text-sm font-medium italic mb-2">The image will be used for the product category selction
+                <p class="text-sm font-medium italic mb-2">The image will be used for the product category selection
                     page.</p>
                 <input type="file" id="mainCategoryImageInput" name="mainCategoryImageInput"
                     accept="image/jpeg, image/jpg, image/png"
                     class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
-                    onchange="previewMainCategoryImage(event)">
-                <div id="mainCategoryImagePreview"></div>
+                    onchange="previewAddMainCategoryImage(event)">
+                <!-- Image preview container -->
+                <div id="mainCategoryImagePreview" class="mt-2"></div>
             </div>
-            <!-- Main Category Image Insert -->
+            <!-- Main Category Cover Insert -->
             <div id="mainCategoryCover" class="flex flex-col mb-4 hidden">
                 <label for="mainCategoryCoverInput" class="text-sm font-medium text-gray-700 mb-2">Main Category
-                    Cover</label>
+                    Header</label>
                 <p class="text-sm font-medium italic mb-2">The image will be used for the product header cover.</p>
                 <input type="file" id="mainCategoryCoverInput" name="mainCategoryCoverInput"
                     accept="image/jpeg, image/jpg, image/png"
                     class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
-                    onchange="previewMainCategoryCover(event)">
-                <div id="mainCategoryCoverPreview"></div>
+                    onchange="previewAddMainCategoryCover(event)">
+                <!-- Cover image preview container -->
+                <div id="mainCategoryCoverPreview" class="mt-2"></div>
             </div>
 
             <div class="flex justify-end">
@@ -213,7 +215,7 @@ ob_start();
 <div id="viewCategoryModal" class="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 hidden">
     <div class="bg-white p-4 rounded-md shadow-md max-w-3xl w-full h-[90vh] overflow-auto">
         <div class="flex justify-between items-center mb-4">
-            <h2 class="text-2xl font-bold">Category Details</h2>
+            <h2 id="viewCategoryTitle" class="text-2xl font-bold">Category Details</h2>
             <button id="closeViewModalButton" class="text-gray-600 hover:text-gray-900 focus:outline-none">
                 <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
@@ -330,7 +332,7 @@ ob_start();
             <!-- Main Category Image Insert -->
             <div id="editMainCategoryCover" class="flex flex-col mb-4 hidden">
                 <label for="editMainCategoryCoverInput" class="text-sm font-medium text-gray-700 mb-2">Main Category
-                    Cover</label>
+                    Header</label>
                 <p class="text-sm font-medium italic mb-2">The image will be used for the product header cover.</p>
                 <input type="file" id="editMainCategoryCoverInput" name="editMainCategoryCoverInput"
                     accept="image/jpeg, image/jpg, image/png"
@@ -377,6 +379,23 @@ ob_start();
 ?>
 <!-- JAVASCRIPT -->
 <script>
+    function previewAddMainCategoryImage(event) {
+        var reader = new FileReader();
+        reader.onload = function () {
+            var output = document.getElementById('mainCategoryImagePreview');
+            output.innerHTML = '<img src="' + reader.result + '" style="max-width: 100px; max-height: 100px;" class="mt-2 max-w-full h-auto">';
+        }
+        reader.readAsDataURL(event.target.files[0]);
+    }
+    function previewAddMainCategoryCover(event) {
+        var reader = new FileReader();
+        reader.onload = function () {
+            var output = document.getElementById('mainCategoryCoverPreview');
+            output.innerHTML = '<img src="' + reader.result + '" style="max-width: 450px; max-height: 450px;" class="mt-2 max-w-full h-auto">';
+        }
+        reader.readAsDataURL(event.target.files[0]);
+    }
+
     $(document).ready(function () {
         function toggleMainCategoryDropdown() {
             var categoryType = $('#addcategoryCat').val();
@@ -399,27 +418,6 @@ ob_start();
         $('#addcategoryCat').change(function () {
             toggleMainCategoryDropdown();
         });
-
-        // Function to preview main category image
-        function previewMainCategoryImage(event) {
-            var reader = new FileReader();
-            reader.onload = function () {
-                var output = document.getElementById('mainCategoryImagePreview');
-                output.innerHTML = '<img src="' + reader.result + '" style="max-width: 100px; max-height: 100px;" class="mt-2 max-w-full h-auto">';
-            }
-            reader.readAsDataURL(event.target.files[0]);
-        }
-
-        // Function to preview main category image
-        function previewMainCategoryCover(event) {
-            var reader = new FileReader();
-            reader.onload = function () {
-                var output = document.getElementById('mainCategoryCoverPreview');
-                output.innerHTML = '<img src="' + reader.result + '" style="max-width: 450px; max-height: 450px;" class="mt-2 max-w-full h-auto">';
-            }
-            reader.readAsDataURL(event.target.files[0]);
-        }
-
 
         var itemsPerPage = 5;
         var currentPage = 1;
@@ -481,7 +479,6 @@ ob_start();
             var slicedCategories = categories.slice(startIndex, endIndex);
 
             $('#categorylisting').empty();
-
             $.each(slicedCategories, function (index, category) {
                 var row = $('<tr>');
                 row.append('<td class="px-4 py-2 border-b">' + category.CategoryName + '</td>');
@@ -491,11 +488,14 @@ ob_start();
                     '<div class="flex justify-center">' +
                     '<button type="button" class="btn btn-view rounded-md text-center sm:mt-4 px-4 text-sm flex items-center mr-2 viewCategory" data-categoryid="' + category.CategoryID + '"><i class="fas fa-eye mr-2 fa-sm"></i><span class="hover:underline">View</span></button>' +
                     '<button type="button" class="btn btn-primary rounded-md text-center sm:mt-4 px-4 text-sm flex items-center mr-2 editCategory" data-categoryid="' + category.CategoryID + '"><i class="fas fa-edit mr-2 fa-sm"></i><span class="hover:underline">Edit</span></button>' +
-                    '<button type="button" class="btn btn-danger rounded-md text-center sm:mt-4 px-4 text-sm flex items-center mr-2 deleteCategory" data-categoryid="' + category.CategoryID + '"><i class="fas fa-trash-alt mr-2 fa-sm"></i><span class="hover:underline">Delete</span></button>' +
+                    '<button type="button" id="' + (category.status === "active" ? 'btn-inactivate' : 'btn-reactivate') + '" class="btn ' + (category.status === "active" ? 'btn-danger' : 'bg-emerald-600') + ' rounded-md text-center sm:mt-4 px-4 text-sm flex items-center mr-2 deleteCategory" data-categoryid="' + category.CategoryID + '">' +
+                    ((category.status === "active") ? '<i class="fa-solid fa-eye-slash mr-2"></i><span class="hover:underline">Inactivate</span>' : '<i class="fa-solid fa-check-circle mr-2"></i><span class="hover:underline">Reactivate</span>') +
+                    '</button>' +
                     '</div>' +
                     '</td>');
                 $('#categorylisting').append(row);
             });
+
 
             generatePagination(Math.ceil(categories.length / itemsPerPage), categories.length);
         }
@@ -857,53 +857,56 @@ ob_start();
         $("#editCategoryModal").addClass("hidden");
     });
 
+    $(document).on('click', '#btn-inactivate, #btn-reactivate', function () {
+    var categoryId = $(this).data('categoryid');
+    var categoryName = $(this).closest('tr').find('td:eq(0)').text();
+    var action = $(this).attr('id') === 'btn-inactivate' ? 'inactivate' : 'reactivate';
 
-    // Event listener for delete button
-    $(document).on('click', '.deleteCategory', function () {
-        var categoryId = $(this).data('categoryid');
-        var categoryName = $(this).closest('tr').find('td:eq(0)').text();
-
-        // Show Swal confirmation alert
-        Swal.fire({
-            title: 'Delete Category',
-            text: 'Are you sure you want to delete the category "' + categoryName + '"?',
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#d33',
-            cancelButtonColor: '#3085d6',
-            confirmButtonText: 'Yes, delete it!',
-            cancelButtonText: 'Cancel'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                // Call AJAX to delete the category
-                $.ajax({
-                    url: '../../../backend/category/deletecategory.php?categoryId=' + categoryId,
-                    type: 'POST',
-                    data: { categoryId: categoryId },
-                    success: function (response) {
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Success',
-                            text: 'Category deleted successfully!',
-                            showConfirmButton: false,
-                            timer: 1000
-                        }).then(function () {
-                            window.location.reload();
-                        });
-                    },
-                    error: function (xhr, status, error) {
-                        console.error(error);
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Error',
-                            text: 'Failed to delete category. Please try again.'
-                        });
-                    }
-                });
-            }
-        });
+    // Show Swal confirmation alert
+    Swal.fire({
+        title: (action === 'inactivate' ? 'Inactivate' : 'Reactivate') + ' Category',
+        text: 'Are you sure you want to ' + action + ' the category "' + categoryName + '"?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Yes!',
+        cancelButtonText: 'Cancel'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // Call AJAX to update the category status
+            $.ajax({
+                url: '../../../backend/category/deletecategory.php',
+                type: 'POST',
+                data: {
+                    categoryId: categoryId,
+                    action: action
+                },
+                success: function (response) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success',
+                        text: 'Category status set to ' + action + ' successfully!',
+                        confirmButtonText: 'OK'
+                    }).then(function (result) {
+                        if (result.isConfirmed) {
+                            window.location.reload(); // Reload page after clicking "OK"
+                        }
+                    });
+                },
+                error: function (xhr, status, error) {
+                    console.error(error);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Failed to set the status of category. Please try again.',
+                        confirmButtonText: 'OK'
+                    });
+                }
+            });
+        }
     });
-
+});
 
 </script>
 <?php

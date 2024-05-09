@@ -29,7 +29,7 @@ include("../backend/conn.php");
             <div class="carousel-inner flex">
                 <?php
                 // Fetch the last 3 blog entries
-                $sql = "SELECT * FROM blogs ORDER BY date DESC LIMIT 3";
+                $sql = "SELECT * FROM blogs ORDER BY date DESC LIMIT 5";
                 $result = $conn->query($sql);
 
                 if ($result->num_rows > 0) {
@@ -434,14 +434,14 @@ change home elements size --------
 content ng blogs ------
 testimonials cms -----
 contact cms -------
+dagdag office hours sa locations -------
+filecontent sa add blog ------
+insert real data (blogs) -----
 audit logs
 page animations 
 mobile scaling
 profile admin (sinimulan na)
 connect db sa home display (brands nalang)
 finalize main page contents
-dagdag office hours sa locations
-filecontent sa add blog
-insert real data
 update history from gdrive
 -->

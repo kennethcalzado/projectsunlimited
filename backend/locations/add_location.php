@@ -12,14 +12,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Validate form inputs
     $name = $_POST['name'];
     $address = $_POST['address'];
+    $time = $_POST['time'];
     $phone = $_POST['phone'];
     $email = $_POST['email'];
     $map = $_POST['map'];
 
     // Insert data into the database
-    $sql = "INSERT INTO locations (name, address, phone, email, map) VALUES (?, ?, ?, ?, ?)";
+    $sql = "INSERT INTO locations (name, address, time, phone, email, map) VALUES (?, ?, ?, ?, ?, ?)";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("sssss", $name, $address, $phone, $email, $map);
+    $stmt->bind_param("ssssss", $name, $address, $time, $phone, $email, $map);
 
     if ($stmt->execute()) {
         // Redirect back to the page with success message

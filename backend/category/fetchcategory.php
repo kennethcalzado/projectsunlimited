@@ -25,10 +25,13 @@ if ($statusFilter != 'statusreset') {
     $sql .= "AND status = '$statusFilter' ";
 }
 
+// Modify the default sorting to order 'inactive' categories last
+$sql .= "ORDER BY CASE WHEN status = 'inactive' THEN 1 ELSE 0 END, created_at";
+
 if ($sortFilter == 'newest') {
-    $sql .= "ORDER BY created_at DESC";
+    $sql .= " DESC";
 } elseif ($sortFilter == 'oldest') {
-    $sql .= "ORDER BY created_at ASC";
+    $sql .= " ASC";
 }
 
 // Execute SQL query
