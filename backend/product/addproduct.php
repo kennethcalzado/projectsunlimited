@@ -33,8 +33,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $mainImageName = mysqli_real_escape_string($conn, $mainImageName);
 
         // Construct the SQL query for the main product
-        $sql = "INSERT INTO product (ProductName, brand_id, Description, image_urls, CategoryID, created_at) 
-        VALUES ('$productName', '$brand_id', '$description', '$mainImageName', '$categoryID', NOW())";
+        $sql = "INSERT INTO product (ProductName, brand_id, Description, image_urls, CategoryID) 
+        VALUES ('$productName', '$brand_id', '$description', '$mainImageName', '$categoryID')";
 
         // Execute the query for the main product
         if (mysqli_query($conn, $sql)) {
@@ -61,9 +61,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $variationImageName = mysqli_real_escape_string($conn, $variationImageName);
 
                     // Construct the SQL query for variation insertion
-                    $variationSql = "INSERT INTO product_variation (ProductID, VariationName, image_url, availability, status, created_at) 
-                    VALUES ('$productId', '$variationName', '$variationImageName', 'AVAILABLE', 'active', CURRENT_TIMESTAMP)";   
-
+                    $variationSql = "INSERT INTO product_variation (ProductID, VariationName, image_url, availability, status) 
+                    VALUES ('$productId', '$variationName', '$variationImageName', 'AVAILABLE', 'active')";
                     // Execute the query for variation insertion
                     mysqli_query($conn, $variationSql);
                 }
@@ -83,4 +82,3 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Return error response for invalid request
     echo json_encode(["error" => "Invalid request"]);
 }
-?>
