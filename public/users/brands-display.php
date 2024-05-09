@@ -226,6 +226,57 @@ ob_start();
     </div>
 </div>
 
+<div id="uploadBrandModal"
+    class="modal fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 z-20 w-full hidden">
+    <div class="bg-black opacity-25 w-full h-full absolute -z-10"></div>
+    <div class="bg-white p-4 rounded-md w-full max-w-md">
+        <div class="flex justify-between items-center">
+            <h2 class="text-2xl font-bold">Upload .xlsx or .csv file for Brands</h2>
+            <button id="closeUploadBrandModal"
+                class="close rounded-full text-gray-600 px-2 text-center text-lg hover:text-gray-800 focus:outline-none hover:bg-gray-300"
+                aria-label="Close modal">&times;</button>
+        </div>
+        <div class="border-b border-black flex-grow border-2 mt-2 mb-3"></div>
+        <!-- Instructions -->
+        <p class="text-black justify-center mb-4 text-lg"><b class="mr-2">Instruction:</b> To upload multiple or bulk
+            brands into the table, select an Excel or a CSV file.</p>
+        <!-- Brand Upload Form -->
+        <form id="uploadBrandForm" enctype="multipart/form-data" class="mt-2">
+            <div class="mb-4 flex flex-col">
+                <label for="dropzone-brand-file" class="text-sm font-medium text-gray-700 mb-1">Select File</label>
+                <!-- File Selection Area -->
+                <div id="brand-dropzone-holder" class="flex items-center justify-center w-full">
+                    <label for="dropzone-brand-file"
+                        class="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-900 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
+                        <div class="flex flex-col items-center justify-center pt-5 pb-6">
+                            <div id="brand-uploadModalIconHolder">
+                                <i class="fa-solid fa-file-arrow-up text-3xl mb-3 text-zinc-300"></i>
+                            </div>
+                            <p class="mb-2 text-sm text-gray-500 dark:text-gray-400"><span class="font-semibold">Click
+                                    to upload</span> or drag and drop</p>
+                            <p class="text-xs text-gray-500 dark:text-gray-400">CSV, or XLSX (MAX. 800x400px)</p>
+                            <!-- Placeholder for the file name -->
+                            <p id="brand-file-name" class="text-xs text-gray-500 dark:text-gray-400 mt-2"></p>
+                        </div>
+                        <!-- Hidden input for file selection -->
+                        <input id="dropzone-brand-file" type="file" class="hidden" name="upload_brand"
+                            accept=".xlsx, .csv" />
+                    </label>
+                </div>
+            </div>
+            <!-- Form Buttons -->
+            <div class="flex justify-end">
+                <button type="submit" id="uploadBrandSubmitBtn"
+                    class="btn btn-primary rounded-md text-center h-10 mt-3 sm:mt-4 !px-4 py-0 text-lg flex items-center mr-2">Upload
+                    File</button>
+                <button type="button" id="cancelUploadBrandModal"
+                    class="btn btn-secondary rounded-md text-center h-10 mt-3 sm:mt-4 !px-4 py-0 text-lg flex items-center">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
 <?php $content = ob_get_clean();
 ob_start();
 ?>
@@ -743,7 +794,7 @@ ob_start();
                             } );
 
                             // Check if modal is currently shown
-                            if (!( $( '#modal-container' ).hasClass( 'hidden' )) )
+                            if ( !( $( '#modal-container' ).hasClass( 'hidden' ) ) )
                             {
                                 // If modal is shown, close it
                                 closeModal();
@@ -856,6 +907,208 @@ ob_start();
         function disableDragAndDrop ()
         {
             $( '#imageDropzone' ).off( 'dragover drop' );
+        }
+
+        $( document ).on( 'click', '#addMultipleBrands', function ()
+        {
+            $( '#uploadBrandModal' ).toggleClass( 'hidden' );
+
+            $( "#addBrandsDropdown" ).toggleClass( "transition-opacity opacity-100 ease-in-out duration-100" );
+            $( "#addSingleBrand" ).toggleClass( "hidden" );
+            $( "#addMultipleBrands" ).toggleClass( "hidden" );
+        } );
+
+        // Event handler for file input change
+        $( '#dropzone-brand-file' ).on( 'change', function ( e )
+        {
+            e.preventDefault();
+            e.stopPropagation();
+            var files = e.target.files || e.originalEvent.dataTransfer.files;
+            handleFiles( files );
+        } );
+
+        // Event handler for drop
+        $( '#dropzone-holder' ).on( 'drop', function ( e )
+        {
+            e.preventDefault();
+            e.stopPropagation();
+            if ( e.originalEvent.dataTransfer && e.originalEvent.dataTransfer.files )
+            {
+                var files = e.originalEvent.dataTransfer.files;
+                handleFiles( files );
+            } else
+            {
+                console.error( "Data transfer not found in drop event" );
+            }
+            $( this ).removeClass( 'dragover' );
+        } );
+
+        // Event handler for drag over
+        $( '#dropzone-holder' ).on( 'dragover', function ( e )
+        {
+            e.preventDefault();
+            e.stopPropagation();
+            $( this ).addClass( 'dragover' );
+        } );
+
+        // Event handler for drag leave
+        $( '#dropzone-holder' ).on( 'dragleave', function ( e )
+        {
+            e.preventDefault();
+            e.stopPropagation();
+            $( this ).removeClass( 'dragover' );
+        } );
+
+        function handleFiles ( files )
+        {
+            var errors = [];
+
+            if ( files.length > 0 )
+            {
+                var fileInput = files[0];
+                var fileSize = fileInput.size; // Size in bytes
+                var fileName = fileInput.name;
+                var fileExtension = fileName.split( '.' ).pop().toLowerCase();
+                var maxSizeInMb = 5;
+                var maxSizeInBytes = 1024 * 1024 * maxSizeInMb; // 5 MB
+
+                // Check file size
+                if ( fileSize > maxSizeInBytes )
+                {
+                    errors.push( 'File size exceeds ' + maxSizeInMb + 'MB limit.' );
+                }
+
+                // Check file extension
+                if ( fileExtension !== 'csv' && fileExtension !== 'xlsx' )
+                {
+                    errors.push( 'Please select a valid Excel file (.xlsx) or CSV file.' );
+                }
+
+                if ( errors.length === 0 )
+                {
+                    $( '#brand-file-name' ).text( 'File Name: ' + fileName ).addClass( 'underline underline-offset-4 font-bold' );
+                    $( '#brand-uploadModalIconHolder' ).empty();
+
+                    if ( fileExtension == 'csv' )
+                    {
+                        $( '#brand-uploadModalIconHolder' ).append( $( '<i>' ).addClass( 'text-3xl mb-3 fa-solid fa-file-csv text-green-500' ) );
+                    } else if ( fileExtension == 'xlsx' )
+                    {
+                        $( '#brand-uploadModalIconHolder' ).append( $( '<i>' ).addClass( 'text-3xl mb-3 fa-solid fa-file-excel text-green-500' ) );
+                    }
+                } else
+                {
+                    if ( errors.length > 0 )
+                    {
+                        // Join the errors array elements into a single string with line breaks
+                        var message = errors.join( '\n' );
+                        Swal.fire( {
+                            icon: 'error',
+                            title: 'Error',
+                            text: message
+                        } );
+                    } else
+                    {
+                        Swal.fire( {
+                            icon: 'error',
+                            title: 'Error',
+                            text: errors
+                        } );
+                    }
+                }
+            } else
+            {
+                errors.push( 'No file selected.' );
+            }
+
+            return errors;
+        }
+
+        // Event handler for form submission
+        $( '#uploadBrandForm' ).submit( function ( e )
+        {
+            e.preventDefault();
+            var files = $( '#dropzone-brand-file' )[0].files; // Corrected line
+            if ( files && files.length > 0 )
+            { // Added check for files existence
+                var errors = handleFiles( files ); // Define errors here
+
+                if ( errors.length === 0 )
+                {
+                    Swal.fire( {
+                        title: 'Upload File',
+                        text: 'Are you sure you want to upload this file?',
+                        icon: 'question',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Yes, upload it!'
+                    } ).then( ( result ) =>
+                    {
+                        if ( result.isConfirmed )
+                        {
+                            // Perform file upload
+                            var formData = new FormData( this );
+                            $.ajax( {
+                                url: '/../../backend/brands/brands-upload.php',
+                                type: 'POST',
+                                data: formData,
+                                processData: false,
+                                contentType: false,
+                                success: function ( response )
+                                {
+                                    // Reload the DataTable to reflect the changes
+                                    table.ajax.reload();
+
+                                    // Handle success response
+                                    Swal.fire( {
+                                        icon: 'success',
+                                        title: 'Success!',
+                                        text: 'File uploaded successfully.'
+                                    } );
+                                    toggleUploadBrandModal(); // Hide the modal
+                                },
+                                error: function ( xhr, status, error )
+                                {
+                                    // Handle error response
+                                    Swal.fire( {
+                                        icon: 'error',
+                                        title: 'Error!',
+                                        text: 'Failed to upload file. Please try again later.'
+                                    } );
+                                    console.error( 'Error uploading file:', error );
+                                }
+                            } );
+                        }
+                    } );
+                }
+            } else
+            {
+                Swal.fire( {
+                    icon: 'error',
+                    title: 'Error!',
+                    text: 'No file selected.'
+                } );
+            }
+        } );
+
+        // Click event handler for closing the modal
+        $( '#closeUploadBrandModal, #cancelUploadBrandModal' ).on( 'click', function ()
+        {
+            closeUploadBrandModal();
+        } );
+
+        function closeUploadBrandModal ()
+        {
+            // Reset the form by triggering a reset event
+            $( '#uploadBrandForm' )[0].reset();
+
+            // Clear the file name display
+            $( '#brand-file-name' ).text( '' );
+            $( '#brand-uploadModalIconHolder' ).empty();
+            $( '#brand-uploadModalIconHolder' ).append( $( '<i>' ).addClass( 'fa-solid fa-file-arrow-up text-3xl mb-3 text-zinc-300' ) );
+
+            $( '#uploadBrandModal' ).toggleClass( 'hidden' );
         }
 
         // Click event handler for closing the modal
