@@ -510,19 +510,16 @@ ob_start();
 
             // Check if 'All Category' is selected
             if (categoryId === 'categoriesreset') {
-                // If 'All Category' is selected, pass an empty string as categoryId to fetch all products
                 categoryId = '';
             }
 
             // Check if 'All Brand' is selected
             if (brandId === 'brandsreset') {
-                // If 'All Brand' is selected, pass an empty string as brandId to fetch all products
                 brandId = '';
             }
 
             // Check if 'Status' is selected
             if (status === 'statusreset') {
-                // If 'Status' is selected, pass an empty string as status to fetch all products
                 status = '';
             }
             // Fetch filtered products
@@ -577,8 +574,6 @@ ob_start();
                         // Set selected option based on product's availability
                         availabilitySelect.val(product.availability);
                     });
-
-                    // Append other product details to table row
                     tr.html(`
                         <td>${product.ProductName}</td>
                         <td><img class="centered-image" src="../../../assets/products/${product.image_urls[0]}" alt="Product Image" style="max-width: 100px; max-height: 100px;"></td>
@@ -597,8 +592,8 @@ ob_start();
                                 <button type="button" class="btn btn-view rounded-md text-center sm:mt-4!px-4 text-sm flex items-center mr-2 viewProduct" data-productid="${product.ProductID}"><i class="fas fa-eye mr-2 fa-sm"></i><span class="hover:underline">View</span></button>
                                 <button type="button" class="btn btn-primary rounded-md text-center sm:mt-4!px-4 text-sm flex items-center mr-2 editProduct" data-productid="${product.ProductID}"><i class="fas fa-edit mr-2 fa-sm"></i><span class="hover:underline">Edit</span></button>
                                 ${product.status === 'active' ?
-                                `<button type="button" class="btn btn-danger rounded-md text-center sm:mt-4!px-4 text-sm flex items-center mr-2 deleteProduct" data-productid="${product.ProductID}" id="deleteButton"><i class="fa-solid fa-eye-slash mr-2"></i><span class="hover:underline">Inactivate</span></button>` :
-                                `<button type="button" class="btn btn-reactivate rounded-md text-center sm:mt-4!px-4 text-sm flex items-center mr-2 reactivateProduct hover:bg-emerald-400" data-productid="${product.ProductID}" id="reactivateButton"><i class="fa-solid fa-check-circle mr-2"></i><span class="hover:underline">Reactivate</span></button>`}
+                            `<button type="button" class="btn btn-danger rounded-md text-center sm:mt-4!px-4 text-sm flex items-center mr-2 deleteProduct" data-productid="${product.ProductID}" id="deleteButton"><i class="fa-solid fa-eye-slash mr-2"></i><span class="hover:underline">Inactivate</span></button>` :
+                            `<button type="button" class="btn btn-reactivate rounded-md text-center sm:mt-4!px-4 text-sm flex items-center mr-2 reactivateProduct hover:bg-emerald-400" data-productid="${product.ProductID}" id="reactivateButton"><i class="fa-solid fa-check-circle mr-2"></i><span class="hover:underline">Reactivate</span></button>`}
                             </div>
                         </td>
 
@@ -776,15 +771,16 @@ ob_start();
             productListing.html("<tr><td colspan='7' class='text-center justify-center font-bold text-red-800'>Failed to fetch products</td></tr>");
         }
     });
-
     function validateForm() {
         let isValid = true;
-        // Loop through each input field
+
+        // Validate each input field in the main form
         $('#addProductForm input[type="text"], #addProductForm textarea').each(function () {
-            // If the field is empty, add red border and show error message
-            if (!$(this).val()) {
+            // If the field is empty or contains potentially harmful input, add red border and show error message
+            const fieldValue = $(this).val().trim();
+            if (!fieldValue || containsHarmfulInput(fieldValue)) {
                 $(this).addClass('border-red-600');
-                $(this).siblings('.error-message').text('Please fill this field').show();
+                $(this).siblings('.error-message').text('Please fill this field with valid input').show();
                 isValid = false;
             } else {
                 $(this).removeClass('border-red-600'); // Remove red border when field is filled
@@ -801,8 +797,22 @@ ob_start();
             fileInput.removeClass('border-red-600');
             fileInput.siblings('.error-message').hide();
         }
+
         return isValid;
     }
+
+
+    // Function to check if input contains potentially harmful content
+    function containsHarmfulInput(input) {
+        // Define patterns for HTML and SQL injection
+        const htmlPattern = /<[^>]*>/;
+        const sqlPattern = /[\b]*(?:\|select|update|delete|insert|drop|truncate|create|grant|alter|execute|exec|union|order by|group by|column_name|table_name|information_schema)\b/i;
+
+        // Check if input matches any of the patterns
+        return htmlPattern.test(input) || sqlPattern.test(input);
+    }
+
+
 
     // Open modal when Add Product button is clicked
     $("#addProduct").click(function () {
@@ -1267,7 +1277,6 @@ ob_start();
     // Add event listener to save changes button in the edit modal
     $('#editProductForm').submit(function (event) {
         event.preventDefault();
-
         // Gather edited product details
         const editedProductName = $("#editProductName").val();
         const editedProductDescription = $("#editProductDescription").val();

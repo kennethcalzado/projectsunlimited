@@ -13,9 +13,16 @@ if ($conn->connect_error) {
 $typeFilter = isset($_GET['type']) ? $_GET['type'] : '';
 $statusFilter = isset($_GET['status']) ? $_GET['status'] : '';
 $sortFilter = isset($_GET['sort']) ? $_GET['sort'] : '';
+$searchQuery = isset($_GET['searchQuery']) ? $_GET['searchQuery'] : ''; // Add search query parameter
 
-// Build SQL query with filters
+// Build SQL query with filters and search condition
 $sql = "SELECT CategoryID, CategoryName, type, status FROM productcategory WHERE 1 ";
+
+// Add search condition
+if (!empty($searchQuery)) {
+    $searchQuery = $conn->real_escape_string($searchQuery); // Prevent SQL injection
+    $sql .= "AND (CategoryName LIKE '%$searchQuery%' OR type LIKE '%$searchQuery%' OR status LIKE '%$searchQuery%') ";
+}
 
 if ($typeFilter != 'typereset') {
     $sql .= "AND type = '$typeFilter' ";

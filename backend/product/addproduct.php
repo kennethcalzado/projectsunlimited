@@ -9,9 +9,11 @@ include '../../backend/conn.php'; // Include the file that establishes the datab
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Retrieve form data for the main product
     $productName = $_POST["productName"];
-    $brand_id = $_POST["productBrand"];
     $description = $_POST["productDescription"];
-    $categoryID = $_POST["productCategory"];
+
+    // Handle optional form fields
+    $brand_id = isset($_POST["productBrand"]) ? $_POST["productBrand"] : null;
+    $categoryID = isset($_POST["productCategory"]) ? $_POST["productCategory"] : null;
 
     // Handle image upload for the main product
     $mainImagePath = "../../assets/products/";
@@ -34,7 +36,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         // Construct the SQL query for the main product
         $sql = "INSERT INTO product (ProductName, brand_id, Description, image_urls, CategoryID) 
-        VALUES ('$productName', '$brand_id', '$description', '$mainImageName', '$categoryID')";
+        VALUES ('$productName',";
+
+        // If $brand_id is not set, insert NULL, otherwise, insert the value
+        $sql .= isset($brand_id) ? "'$brand_id'" : "NULL";
+
+        $sql .= ", '$description', '$mainImageName',";
+
+        // If $categoryID is not set, insert NULL, otherwise, insert the value
+        $sql .= isset($categoryID) ? "'$categoryID')" : "NULL)";
+
+
 
         // Execute the query for the main product
         if (mysqli_query($conn, $sql)) {
@@ -82,3 +94,4 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Return error response for invalid request
     echo json_encode(["error" => "Invalid request"]);
 }
+?>
