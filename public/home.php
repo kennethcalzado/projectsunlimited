@@ -180,7 +180,7 @@ include("../backend/conn.php");
             NEWS & UPDATES
         </h1>
         <div style="display: flex; padding-top: 20px;">
-            <div style="flex: 2; padding-left: 50px; background-color: #ccc; height: 500px; display: flex; align-items: center; background-image: url('<?php $sql = "SELECT * FROM blogs ORDER BY date DESC LIMIT 1";
+            <div style="flex: 2; padding-left: 50px; background-color: #ccc; height: 500px; display: flex; align-items: center; background-image: url(' <?php $sql = "SELECT * FROM blogs ORDER BY date DESC LIMIT 1";
                                                                                                                                                         $result = $conn->query($sql);
                                                                                                                                                         if ($result->num_rows > 0) {
                                                                                                                                                             $row = $result->fetch_assoc();
@@ -188,8 +188,9 @@ include("../backend/conn.php");
                                                                                                                                                             echo '../assets/blogs_img/' . $images[0];
                                                                                                                                                         } else {
                                                                                                                                                             echo ''; // Default image path or no image available
-                                                                                                                                                        }    ?>'); background-size: cover; background-position: center;"> <!-- Left column for image -->
+                                                                                                                                                        }    ?>'); background-size: cover; background-position: center;">
             </div>
+
             <div style="text-align: justify; flex: 1; padding-right: 100px; padding-left: 50px; display: flex; align-items: center;"> <!-- Right column for content -->
                 <div style="margin-left: auto;">
                     <?php
@@ -443,5 +444,5 @@ mobile scaling
 profile admin (sinimulan na)
 connect db sa home display (brands nalang)
 finalize main page contents
-update history from gdrive
+update history from gdrive (pics)
 -->

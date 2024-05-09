@@ -81,11 +81,11 @@ ob_start();
                     </div>
                     <div class="mb-4">
                         <label for="phone" class="block font-semibold mb-2">Phone</label>
-                        <input type="text" name="phone" id="phone" class="border rounded px-4 py-2 w-full" required>
+                        <input type="text" name="phone" id="phone" class="border rounded px-4 py-2 w-full">
                     </div>
                     <div class="mb-4">
                         <label for="email" class="block font-semibold mb-2">Email</label>
-                        <input type="text" name="email" id="email" class="border rounded px-4 py-2 w-full" required>
+                        <input type="text" name="email" id="email" class="border rounded px-4 py-2 w-full">
                     </div>
                     <div class="mb-4">
                         <label for="map" class="block font-semibold mb-2">Map</label>
@@ -144,11 +144,11 @@ ob_start();
                     </div>
                     <div class="mb-4">
                         <label for="phone" class="block font-semibold mb-2">Phone</label>
-                        <input type="text" name="phone" id="updatePhone" class="border rounded px-4 py-2 w-full" required>
+                        <input type="text" name="phone" id="updatePhone" class="border rounded px-4 py-2 w-full">
                     </div>
                     <div class="mb-4">
                         <label for="email" class="block font-semibold mb-2">Email</label>
-                        <input type="text" name="email" id="updateEmail" class="border rounded px-4 py-2 w-full" required>
+                        <input type="text" name="email" id="updateEmail" class="border rounded px-4 py-2 w-full">
                     </div>
                     <div class="mb-4">
                         <label for="map" class="block font-semibold mb-2">Map</label>
@@ -220,12 +220,12 @@ ob_start();
                         html += '<tr>';
                         html += '<td>' + item.name + '</td>'; // Update with item.name
                         html += '<td>' + item.address + '</td>'; // Update with item.address
-                        html += '<td>' + item.time + '</td>'; // Update with item.address
+                        html += '<td>' + item.time + '</td>'; // Update with item.time
                         html += '<td>' + item.phone + '</td>'; // Update with item.phone
                         html += '<td>' + item.email + '</td>'; // Update with item.email
                         html += '<td class="action-btns" valign="middle">';
                         html += '<button onclick="viewPost(\'../../contact.php\')" class="btn-view rounded-md text-center h-9 mt-3 sm:mt-4 !px-4 py-0 text-lg mr-2 hover:underline"><i class="fas fa-eye"></i> View</button>';
-                        html += '<button onclick="openUpdateModal(\'' + item.id + '\', \'' + item.name.replace(/'/g, "\\'") + '\', \'' + item.address.replace(/'/g, "\\'") + item.time.replace(/'/g, "\\'") + '\', \'' + item.phone.replace(/'/g, "\\'") + '\', \'' + item.email.replace(/'/g, "\\'") + '\', \'' + escapeHtmlQuotes(item.map) + '\')" type="button" class="btn btn-primary rounded-md text-center h-9 mt-3 sm:mt-4 !px-4 py-0 text-lg mr-2 hover:underline" data-name="' + item.name.replace(/'/g, "\\'") + '" data-address="' + item.address.replace(/'/g, "\\'") + '" data-time="' + item.time.replace(/'/g, "\\'") + '" data-phone="' + item.phone.replace(/'/g, "\\'") + '" data-email="' + item.email.replace(/'/g, "\\'") + '" data-map="' + escapeHtmlQuotes(item.map) + '"><i class="fas fa-edit"></i> Update</button>';
+                        html += '<button onclick="openUpdateModal(\'' + item.id + '\', \'' + item.name.replace(/'/g, "\\'") + '\', \'' + item.address.replace(/'/g, "\\'") + '\', \'' + item.time.replace(/'/g, "\\'") + '\', \'' + item.phone.replace(/'/g, "\\'") + '\', \'' + item.email.replace(/'/g, "\\'") + '\', \'' + escapeHtmlQuotes(item.map) + '\')" type="button" class="btn btn-primary rounded-md text-center h-9 mt-3 sm:mt-4 !px-4 py-0 text-lg mr-2 hover:underline" data-name="' + item.name.replace(/'/g, "\\'") + '" data-address="' + item.address.replace(/'/g, "\\'") + '" data-time="' + item.time.replace(/'/g, "\\'") + '" data-phone="' + item.phone.replace(/'/g, "\\'") + '" data-email="' + item.email.replace(/'/g, "\\'") + '" data-map="' + escapeHtmlQuotes(item.map) + '"><i class="fas fa-edit"></i> Update</button>';
                         html += '<button onclick="openDeleteModal(\'' + item.id + '\')" type="button" class="btn btn-danger rounded-md text-center h-9 mt-3 sm:mt-4 !px-4 py-0 text-lg hover:underline"><i class="fas fa-trash-alt"></i> Delete</button>';
                         html += '</td>';
                         html += '</tr>';
@@ -349,7 +349,7 @@ ob_start();
         }
 
         // Open the update modal with blog details
-        function openUpdateModal(blogId, name, address, phone, email, map) {
+        function openUpdateModal(blogId, name, address, time, phone, email, map) {
             var modal = document.getElementById('updateModal');
 
             modal.classList.remove('hidden');

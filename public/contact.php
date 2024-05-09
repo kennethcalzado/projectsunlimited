@@ -35,16 +35,24 @@ function generateLocationHTML($location)
 
     $mapURL = extractMapURL($map);
 
-    return "
-    <li class='address-item cursor-pointer font-bold text-xl' onclick=\"updateMap('$mapURL', '$name')\">$name
+    $html = "<li class='address-item cursor-pointer font-bold text-xl' onclick=\"updateMap('$mapURL', '$name')\">$name
         <ul>
             <li>Address: $address</li>
-            <li>Time: $time</li>
-            <li>Phone: $phone</li>
-            <li>Email: $email</li>
-        </ul>
-    </li>";
+            <li>Time: $time</li>";
+
+    if (!empty($phone)) {
+        $html .= "<li>Phone: $phone</li>";
+    }
+
+    if (!empty($email)) {
+        $html .= "<li>Email: $email</li>";
+    }
+
+    $html .= "</ul></li>";
+
+    return $html;
 }
+
 ?>
 
 <div class="content">

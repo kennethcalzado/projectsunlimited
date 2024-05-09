@@ -7,7 +7,7 @@ ob_start();
     <section>
         <div class="content">
             <div class="relative">
-                <img src="../assets/image/history.png" class="w-full h-96 object-cover">
+                <img src="../assets/image/history.png" class="w-full h-100 object-cover">
                 <div class="absolute inset-0 bg-black opacity-50"></div>
                 <div class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50">
                     <p class="text-white font-bold text-4xl text-center">TIMELESS INTERIOR PRODUCTS SINCE <br> <span class="text-[#F6E381]">1968</span></p>
@@ -19,12 +19,12 @@ ob_start();
         <div style=" text-align: center; ">
             <div style="position: relative; width: 100%; height: 100%;">
                 <center>
-                    <img src="../assets/image/projectslogo.png" style="padding-bottom:10px; display: block; width: 70%; height: 60%;">
+                    <img src="../assets/image/projectslogo.png" style="padding-bottom:70px; padding-top:40px; display: block; width: 60%; height: 50%;">
                 </center>
                 <div style="position: absolute; bottom: 0; left: 0; width: 100%; height: 20%; background: linear-gradient(to top, rgba(246, 225, 122, 1) 1%, transparent);"></div>
             </div>
             <div style=" background-color: #F6E17A; width: 100%; text-align: center; padding: 0px 190px;">
-                <p class="text-2xl font-semibold text-black" style=" text-align: justify; padding: 10px 40px; margin: 0;">
+                <p class="text-2xl font-semibold text-black" style=" text-align: justify; padding: 20px 40px 40px 40px; margin: 0;">
                     It started as a leading provider of two major flooring products –
                     vinyl tiles and ceramic tiles – working exclusively with the
                     biggest producers in USA (Amtico Vinyl and Tarkett Vinyl Floors),
@@ -67,9 +67,9 @@ ob_start();
 
 
         <div style="position: relative; display: flex; align-items: center; z-index: -1; height: 100vh;">
-            <h1 id="years" style="color: #F6E17A; font-size: 800px; font-weight: font-black; margin: 0; letter-spacing: -0.13em; position: relative; z-index: 1; margin-left: -90px;"></h1>
+            <h1 id="years" style="color: #F6E17A; font-size: 800px; font-weight: font-black; margin: 0; letter-spacing: -0.13em; position: relative; z-index: 1; margin-left: -90px; margin-top: -120px;"></h1>
 
-            <div style="display: flex; flex-direction: column; z-index: 1;">
+            <div style="display: flex; flex-direction: column; z-index: 1; margin-top: -100px;">
                 <p style="padding-left: 80px; color: #F6E17A; font-size: 98px; margin: 0; font-weight: font-black;">Y</p>
                 <p style="padding-left: 80px; color: #F6E17A; font-size: 98px; margin: 0; font-weight: font-black;">E</p>
                 <p style="padding-left: 80px; color: #F6E17A; font-size: 98px; margin: 0; font-weight: font-black;">A</p>

@@ -171,6 +171,10 @@ ob_start();
             /* Adjust the gap between the cards */
         }
     </style>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/js/all.min.js"></script>
 </head>
 
 <body class="bg-gray-100">
@@ -233,161 +237,162 @@ ob_start();
             </div>
         </div>
     </div>
+    <script>
+        function showPasswordRequirements() {
+            const passwordRequirements = document.querySelector('.passreq');
+            passwordRequirements.classList.add('show');
+        }
+
+        // Function to hide password requirements
+        function hidePasswordRequirements() {
+            const passwordRequirements = document.querySelector('.passreq');
+            passwordRequirements.classList.remove('show');
+        }
+
+        // Event listener for focus on password input
+        const passwordInput = document.querySelector('input[name="password"]');
+        passwordInput.addEventListener('focus', showPasswordRequirements);
+
+        // Event listener for blur on password input
+        passwordInput.addEventListener('blur', hidePasswordRequirements);
+
+
+
+        function checkPasswordMatch(confirmPassword) {
+            const password = document.querySelector('input[name="password"]').value;
+            const confirmPasswordIcon = document.getElementById('confirmPasswordIcon');
+
+            if (confirmPassword === password && confirmPassword !== '') {
+                confirmPasswordIcon.innerHTML = '<i class="fas fa-check checklogo2" style="color: #08b708;"></i>';
+            } else {
+                confirmPasswordIcon.innerHTML = '<i class="fas fa-times checklogo2" style="color: red;"></i>';
+            }
+        }
+
+        function closeError() {
+            var errorContainer = document.getElementById('errorContainer');
+            errorContainer.style.display = 'none';
+        }
+
+        // Automatically close the error after 3 seconds (3000 milliseconds)
+        setTimeout(function() {
+            closeError();
+        }, 3000);
+    </script>
+
+    <script>
+        const toggleOldPasswordVisibility = () => {
+            const confirmPasswordField = document.getElementById('oldPass');
+            const toggleIcon = document.querySelector('.toggle-old-password i');
+
+            if (confirmPasswordField.type === 'password') {
+                confirmPasswordField.type = 'text';
+                toggleIcon.classList.remove('fa-eye');
+                toggleIcon.classList.add('fa-eye-slash');
+            } else {
+                confirmPasswordField.type = 'password';
+                toggleIcon.classList.remove('fa-eye-slash');
+                toggleIcon.classList.add('fa-eye');
+            }
+        };
+    </script>
+
+    <script>
+        const toggleConfirmPasswordVisibility = () => {
+            const confirmPasswordField = document.getElementById('passwordconfirm');
+            const toggleIcon = document.querySelector('.toggle-confirm-password i');
+
+            if (confirmPasswordField.type === 'password') {
+                confirmPasswordField.type = 'text';
+                toggleIcon.classList.remove('fa-eye');
+                toggleIcon.classList.add('fa-eye-slash');
+            } else {
+                confirmPasswordField.type = 'password';
+                toggleIcon.classList.remove('fa-eye-slash');
+                toggleIcon.classList.add('fa-eye');
+            }
+        };
+
+        const togglePasswordVisibility = () => {
+            const passwordField = document.getElementById('password');
+            const toggleIcon = document.querySelector('.toggle-password i');
+
+            if (passwordField.type === 'password') {
+                passwordField.type = 'text';
+                toggleIcon.classList.remove('fa-eye');
+                toggleIcon.classList.add('fa-eye-slash');
+            } else {
+                passwordField.type = 'password';
+                toggleIcon.classList.remove('fa-eye-slash');
+                toggleIcon.classList.add('fa-eye');
+            }
+        };
+    </script>
+
+    <script>
+        function checkPasswordStrength(password) {
+            const lengthReq = document.getElementById('length');
+            const specialCharReq = document.getElementById('specialChar');
+            const numberReq = document.getElementById('number');
+            const capitalReq = document.getElementById('capital');
+            const passwordStrengthIcon = document.getElementById('passwordStrengthIcon'); // New
+
+            // Check length
+            if (password.length >= 8) {
+                lengthReq.style.color = 'green';
+            } else {
+                lengthReq.style.color = 'red';
+            }
+
+            // Check for at least one special character
+            if (/[!@#$%^&*(),.?\':{}|<>]/.test(password)) {
+                specialCharReq.style.color = 'green';
+            } else {
+                specialCharReq.style.color = 'red';
+            }
+
+            // Check for at least one number
+            if (/[0-9]/.test(password)) {
+                numberReq.style.color = 'green';
+            } else {
+                numberReq.style.color = 'red';
+            }
+
+            // Check for at least one capital letter
+            if (/[A-Z]/.test(password)) {
+                capitalReq.style.color = 'green';
+            } else {
+                capitalReq.style.color = 'red';
+            }
+
+            // Update the password strength icon
+            const passwordStrength = calculatePasswordStrength(password);
+            if (passwordStrength >= 4) {
+                passwordStrengthIcon.innerHTML = '<i class="fas fa-check checklogo" style="color:#08b708;"></i>';
+            } else {
+                passwordStrengthIcon.innerHTML = '<i class="fas fa-times checklogo" style="color:#CC212D;"></i>';
+            }
+        }
+
+        function restrictToNumbers(input) {
+            input.value = input.value.replace(/\D/g, ''); // Replace any non-numeric characters with an empty string
+        }
+
+        // Function to calculate password strength (customize this as needed)
+        function calculatePasswordStrength(password) {
+            let strength = 0;
+            // Add your own logic to calculate password strength
+            // For simplicity, let's assume 1 point for each fulfilled requirement
+            if (password.length >= 8) strength++;
+            if (/[!@#$%^&*(),.?\':{}|<>]/.test(password)) strength++;
+            if (/[0-9]/.test(password)) strength++;
+            if (/[A-Z]/.test(password)) strength++;
+            return strength;
+        }
+    </script>
 </body>
 
-<script>
-    function showPasswordRequirements() {
-        const passwordRequirements = document.querySelector('.passreq');
-        passwordRequirements.classList.add('show');
-    }
 
-    // Function to hide password requirements
-    function hidePasswordRequirements() {
-        const passwordRequirements = document.querySelector('.passreq');
-        passwordRequirements.classList.remove('show');
-    }
-
-    // Event listener for focus on password input
-    const passwordInput = document.querySelector('input[name="password"]');
-    passwordInput.addEventListener('focus', showPasswordRequirements);
-
-    // Event listener for blur on password input
-    passwordInput.addEventListener('blur', hidePasswordRequirements);
-
-
-
-    function checkPasswordMatch(confirmPassword) {
-        const password = document.querySelector('input[name="password"]').value;
-        const confirmPasswordIcon = document.getElementById('confirmPasswordIcon');
-
-        if (confirmPassword === password && confirmPassword !== '') {
-            confirmPasswordIcon.innerHTML = '<i class="fas fa-check checklogo2" style="color: #08b708;"></i>';
-        } else {
-            confirmPasswordIcon.innerHTML = '<i class="fas fa-times checklogo2" style="color: red;"></i>';
-        }
-    }
-
-    function closeError() {
-        var errorContainer = document.getElementById('errorContainer');
-        errorContainer.style.display = 'none';
-    }
-
-    // Automatically close the error after 3 seconds (3000 milliseconds)
-    setTimeout(function() {
-        closeError();
-    }, 3000);
-</script>
-
-<script>
-    const toggleOldPasswordVisibility = () => {
-        const confirmPasswordField = document.getElementById('oldPass');
-        const toggleIcon = document.querySelector('.toggle-old-password i');
-
-        if (confirmPasswordField.type === 'password') {
-            confirmPasswordField.type = 'text';
-            toggleIcon.classList.remove('fa-eye');
-            toggleIcon.classList.add('fa-eye-slash');
-        } else {
-            confirmPasswordField.type = 'password';
-            toggleIcon.classList.remove('fa-eye-slash');
-            toggleIcon.classList.add('fa-eye');
-        }
-    };
-</script>
-
-<script>
-    const toggleConfirmPasswordVisibility = () => {
-        const confirmPasswordField = document.getElementById('passwordconfirm');
-        const toggleIcon = document.querySelector('.toggle-confirm-password i');
-
-        if (confirmPasswordField.type === 'password') {
-            confirmPasswordField.type = 'text';
-            toggleIcon.classList.remove('fa-eye');
-            toggleIcon.classList.add('fa-eye-slash');
-        } else {
-            confirmPasswordField.type = 'password';
-            toggleIcon.classList.remove('fa-eye-slash');
-            toggleIcon.classList.add('fa-eye');
-        }
-    };
-
-    const togglePasswordVisibility = () => {
-        const passwordField = document.getElementById('password');
-        const toggleIcon = document.querySelector('.toggle-password i');
-
-        if (passwordField.type === 'password') {
-            passwordField.type = 'text';
-            toggleIcon.classList.remove('fa-eye');
-            toggleIcon.classList.add('fa-eye-slash');
-        } else {
-            passwordField.type = 'password';
-            toggleIcon.classList.remove('fa-eye-slash');
-            toggleIcon.classList.add('fa-eye');
-        }
-    };
-</script>
-
-<script>
-    function checkPasswordStrength(password) {
-        const lengthReq = document.getElementById('length');
-        const specialCharReq = document.getElementById('specialChar');
-        const numberReq = document.getElementById('number');
-        const capitalReq = document.getElementById('capital');
-        const passwordStrengthIcon = document.getElementById('passwordStrengthIcon'); // New
-
-        // Check length
-        if (password.length >= 8) {
-            lengthReq.style.color = 'green';
-        } else {
-            lengthReq.style.color = 'red';
-        }
-
-        // Check for at least one special character
-        if (/[!@#$%^&*(),.?\':{}|<>]/.test(password)) {
-            specialCharReq.style.color = 'green';
-        } else {
-            specialCharReq.style.color = 'red';
-        }
-
-        // Check for at least one number
-        if (/[0-9]/.test(password)) {
-            numberReq.style.color = 'green';
-        } else {
-            numberReq.style.color = 'red';
-        }
-
-        // Check for at least one capital letter
-        if (/[A-Z]/.test(password)) {
-            capitalReq.style.color = 'green';
-        } else {
-            capitalReq.style.color = 'red';
-        }
-
-        // Update the password strength icon
-        const passwordStrength = calculatePasswordStrength(password);
-        if (passwordStrength >= 4) {
-            passwordStrengthIcon.innerHTML = '<i class="fas fa-check checklogo" style="color:#08b708;"></i>';
-        } else {
-            passwordStrengthIcon.innerHTML = '<i class="fas fa-times checklogo" style="color:#CC212D;"></i>';
-        }
-    }
-
-    function restrictToNumbers(input) {
-        input.value = input.value.replace(/\D/g, ''); // Replace any non-numeric characters with an empty string
-    }
-
-    // Function to calculate password strength (customize this as needed)
-    function calculatePasswordStrength(password) {
-        let strength = 0;
-        // Add your own logic to calculate password strength
-        // For simplicity, let's assume 1 point for each fulfilled requirement
-        if (password.length >= 8) strength++;
-        if (/[!@#$%^&*(),.?\':{}|<>]/.test(password)) strength++;
-        if (/[0-9]/.test(password)) strength++;
-        if (/[A-Z]/.test(password)) strength++;
-        return strength;
-    }
-</script>
 
 
 <?php
