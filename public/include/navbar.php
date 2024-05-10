@@ -9,12 +9,12 @@
             </div>
             <div class="hidden md:flex space-x-4 items-center">
                 <ul class="flex space-x-4 items-center">
-                    <li><a href="/public/home.php" class="text-white font-bold hover:text-[#F6E381]">Home</a></li>
-                    <li><a href="/public/about.php" class="text-white font-bold hover:text-[#F6E381]">About Us</a></li>
-                    <li><a href="/public/brands/arno.php" class="text-white font-bold hover:text-[#F6E381]">Brands</a></li>
-                    <li><a href="/public/category.php" class="text-white font-bold hover:text-[#F6E381]">Products</a></li>
-                    <li><a href="/public/blogs.php" class="text-white font-bold hover:text-[#F6E381]">Blogs</a></li>
-                    <li>
+                    <li class="animate-spin"><a href="/public/home.php" class="text-white font-bold hover:text-[#F6E381]">Home</a></li>
+                    <li class="animate-spin"><a href="/public/about.php" class="text-white font-bold hover:text-[#F6E381]">About Us</a></li>
+                    <li class="animate-spin"><a href="/public/brands/arno.php" class="text-white font-bold hover:text-[#F6E381]">Brands</a></li>
+                    <li class="animate-spin"><a href="/public/category.php" class="text-white font-bold hover:text-[#F6E381]">Products</a></li>
+                    <li class="animate-spin"><a href="/public/blogs.php" class="text-white font-bold hover:text-[#F6E381]">Blogs</a></li>
+                    <li class="animate-spin">
                         <a href="/public/contact.php" class="rounded-full bg-[#F6E381] text-black font-bold flex items-center justify-center px-4 py-2 hover:bg-[#D7CB79]">
                             <i class="fas fa-phone-alt mr-2"></i>
                             Contact Us
