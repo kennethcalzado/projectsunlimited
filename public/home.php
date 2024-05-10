@@ -24,7 +24,7 @@ include("../backend/conn.php");
 </head>
 
 <body>
-    <div id="content">
+    <div class="animate-bounce" id="content">
         <div class="carousel relative">
             <div class="carousel-inner flex">
                 <?php
@@ -36,10 +36,10 @@ include("../backend/conn.php");
                     // Output data of each row
                     while ($row = $result->fetch_assoc()) {
                         // Split the images string by commas
-                        $images = explode(",", $row['images']);
+                        $images = $row['thumbnail'];
                         // Output the first image as a carousel item
                         echo '<div class="carousel-item relative w-full bg-red-500 text-white text-center">';
-                        echo '<img src="../assets/blogs_img/' . $images[0] . '" alt="Slide Image" style="object-fit: cover; width: 100%; height: 100%;">';
+                        echo '<img src="../assets/blogs_img/' . $images . '" alt="Slide Image" style="object-fit: cover; width: 100%; height: 100%;">';
                         // Add translucent overlay
                         echo '<div class="absolute inset-0 bg-black opacity-50"></div>';
                         // Add title text in the lower right corner
@@ -438,11 +438,11 @@ contact cms -------
 dagdag office hours sa locations -------
 filecontent sa add blog ------
 insert real data (blogs) -----
+profile admin (sinimulan na) --------
+update history from gdrive (pics) digicam pic kulang sa through the eyars ----
 audit logs
 page animations 
 mobile scaling
-profile admin (sinimulan na)
 connect db sa home display (brands nalang)
 finalize main page contents
-update history from gdrive (pics)
 -->

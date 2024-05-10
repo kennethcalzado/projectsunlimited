@@ -2,6 +2,8 @@
 session_start();
 $pageTitle = "Profile";
 ob_start();
+
+include("../../backend/conn.php");
 ?>
 
 <head>
@@ -41,7 +43,7 @@ ob_start();
             opacity: 0;
             overflow: hidden;
             transition: height 0.3s ease, opacity 0.3s ease;
-            margin-bottom: -5.5%;
+            margin-bottom: 2%;
         }
 
         .passreq.show {
@@ -92,25 +94,25 @@ ob_start();
         .checklogo {
             position: absolute;
             font-size: 22px;
-            left: 91%;
-            top: 47%;
+            top: 50%;
             transform: translateY(-50%);
+            padding-left: 10px;
         }
 
         .checklogo2 {
             position: absolute;
             font-size: 22px;
-            left: 91%;
             top: 50%;
             transform: translateY(-50%);
+            padding-left: 10px;
         }
 
         .checklogo3 {
             position: absolute;
             font-size: 22px;
-            left: 95%;
-            top: 100%;
+            top: 50%;
             transform: translateY(-50%);
+            padding-left: 10px;
         }
 
         .error-container {
@@ -171,10 +173,6 @@ ob_start();
             /* Adjust the gap between the cards */
         }
     </style>
-
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/js/all.min.js"></script>
 </head>
 
 <body class="bg-gray-100">
@@ -193,17 +191,17 @@ ob_start();
                                 <label for="oldPass" class="block mb-2">Input Old Password</label>
                                 <div class="input-group input-group-alternative mb-4 relative">
                                     <input class="form-control input-field bg-gray-100 w-full pr-10" id="oldPass" required name="oldPass" type="password">
-                                    <span toggle="#oldPass" class="toggle-old-password cursor-pointer absolute top-0 right-0 mr-3">
-                                        <i class="fa fa-eye" aria-hidden="true"></i>
+                                    <span toggle="#oldPass" class="toggle-password cursor-pointer absolute top-0 right-20 mr-1" onclick="togglePasswordVisibility('oldPass')">
+                                        <i class="fa fa-eye-slash" aria-hidden="true"></i>
                                     </span>
                                 </div>
 
                                 <label for="password" class="block mb-2">New Password</label>
                                 <div class="input-group input-group-alternative mb-4 relative">
                                     <input class="form-control input-field bg-gray-100 w-full pr-10" id="password" required name="password" type="password" minlength="8" oninput="checkPasswordStrength(this.value)">
-                                    <span id="passwordStrengthIcon" class="absolute top-0 right-0 mr-3"></span>
-                                    <span toggle="#passwordconfirm" class="toggle-password cursor-pointer absolute top-0 right-0 mr-3">
-                                        <i class="fa fa-eye" aria-hidden="true"></i>
+                                    <span id="passwordStrengthIcon" class="checklogo absolute top-0 right-0" style="transform: translateY(-50%);"></span>
+                                    <span toggle="#password" class="toggle-password cursor-pointer absolute top-0 right-20 mr-1" onclick="togglePasswordVisibility('password')">
+                                        <i class="fa fa-eye-slash" aria-hidden="true"></i>
                                     </span>
                                 </div>
 
@@ -221,9 +219,9 @@ ob_start();
                                 <label for="passwordconfirm" class="block mb-2">Confirm New Password</label>
                                 <div class="input-group input-group-alternative mb-4 relative">
                                     <input class="form-control input-field bg-gray-100 w-full pr-10" id="passwordconfirm" required name="passwordconfirm" type="password" minlength="8" oninput="checkPasswordMatch(this.value)">
-                                    <span id="confirmPasswordIcon" class="absolute top-0 right-0 mr-3"></span>
-                                    <span toggle="#passwordconfirm" class="toggle-confirm-password cursor-pointer absolute top-0 right-0 mr-3">
-                                        <i class="fa fa-eye" aria-hidden="true"></i>
+                                    <span id="confirmPasswordIcon" class="checklogo absolute top-0 right-0"></span>
+                                    <span toggle="#passwordconfirm" class="toggle-password cursor-pointer absolute top-0 right-20 mr-1" onclick="togglePasswordVisibility('passwordconfirm')">
+                                        <i class="fa fa-eye-slash" aria-hidden="true"></i>
                                     </span>
                                 </div>
 
@@ -237,6 +235,25 @@ ob_start();
             </div>
         </div>
     </div>
+
+
+    <script>
+        function togglePasswordVisibility(inputId) {
+            const passwordInput = document.getElementById(inputId);
+            const toggleIcon = document.querySelector(`[toggle="#${inputId}"] i`);
+
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                toggleIcon.classList.remove('fa-eye-slash');
+                toggleIcon.classList.add('fa-eye');
+            } else {
+                passwordInput.type = 'password';
+                toggleIcon.classList.remove('fa-eye');
+                toggleIcon.classList.add('fa-eye-slash');
+            }
+        }
+    </script>
+
     <script>
         function showPasswordRequirements() {
             const passwordRequirements = document.querySelector('.passreq');
@@ -265,68 +282,9 @@ ob_start();
             if (confirmPassword === password && confirmPassword !== '') {
                 confirmPasswordIcon.innerHTML = '<i class="fas fa-check checklogo2" style="color: #08b708;"></i>';
             } else {
-                confirmPasswordIcon.innerHTML = '<i class="fas fa-times checklogo2" style="color: red;"></i>';
+                confirmPasswordIcon.innerHTML = '<i class="fas fa-times checklogo2" style="color: #CC212D;"></i>';
             }
         }
-
-        function closeError() {
-            var errorContainer = document.getElementById('errorContainer');
-            errorContainer.style.display = 'none';
-        }
-
-        // Automatically close the error after 3 seconds (3000 milliseconds)
-        setTimeout(function() {
-            closeError();
-        }, 3000);
-    </script>
-
-    <script>
-        const toggleOldPasswordVisibility = () => {
-            const confirmPasswordField = document.getElementById('oldPass');
-            const toggleIcon = document.querySelector('.toggle-old-password i');
-
-            if (confirmPasswordField.type === 'password') {
-                confirmPasswordField.type = 'text';
-                toggleIcon.classList.remove('fa-eye');
-                toggleIcon.classList.add('fa-eye-slash');
-            } else {
-                confirmPasswordField.type = 'password';
-                toggleIcon.classList.remove('fa-eye-slash');
-                toggleIcon.classList.add('fa-eye');
-            }
-        };
-    </script>
-
-    <script>
-        const toggleConfirmPasswordVisibility = () => {
-            const confirmPasswordField = document.getElementById('passwordconfirm');
-            const toggleIcon = document.querySelector('.toggle-confirm-password i');
-
-            if (confirmPasswordField.type === 'password') {
-                confirmPasswordField.type = 'text';
-                toggleIcon.classList.remove('fa-eye');
-                toggleIcon.classList.add('fa-eye-slash');
-            } else {
-                confirmPasswordField.type = 'password';
-                toggleIcon.classList.remove('fa-eye-slash');
-                toggleIcon.classList.add('fa-eye');
-            }
-        };
-
-        const togglePasswordVisibility = () => {
-            const passwordField = document.getElementById('password');
-            const toggleIcon = document.querySelector('.toggle-password i');
-
-            if (passwordField.type === 'password') {
-                passwordField.type = 'text';
-                toggleIcon.classList.remove('fa-eye');
-                toggleIcon.classList.add('fa-eye-slash');
-            } else {
-                passwordField.type = 'password';
-                toggleIcon.classList.remove('fa-eye-slash');
-                toggleIcon.classList.add('fa-eye');
-            }
-        };
     </script>
 
     <script>
@@ -374,10 +332,6 @@ ob_start();
             }
         }
 
-        function restrictToNumbers(input) {
-            input.value = input.value.replace(/\D/g, ''); // Replace any non-numeric characters with an empty string
-        }
-
         // Function to calculate password strength (customize this as needed)
         function calculatePasswordStrength(password) {
             let strength = 0;
@@ -399,4 +353,112 @@ ob_start();
 $script = ob_get_clean();
 include("../../public/master.php");
 include("../../backend/conn.php");
+
+if (isset($_SESSION['user_id'])) {
+    $user_id = $_SESSION['user_id'];
+} else {
+    echo 'Employee not found.';
+    exit();
+}
+
+if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['oldPass'])  && isset($_POST['password']) && isset($_POST['passwordconfirm'])) {
+    // Retrieve the entered old password from the form
+    $enteredOldPassword = $_POST['oldPass'];
+
+    // Retrieve the old password hash from the database
+    $selectSql = "SELECT password_hash FROM users WHERE user_id = $user_id";
+    $result = mysqli_query($conn, $selectSql);
+    if ($result && mysqli_num_rows($result) > 0) {
+        $row = mysqli_fetch_assoc($result);
+        $oldPasswordHash = $row['password_hash'];
+
+        // Verify the old password
+        if (password_verify($enteredOldPassword, $oldPasswordHash)) {
+            // Old password matches
+            // Check if the new password meets the requirements
+            $newPassword = $_POST['password'];
+            $confirmPassword = $_POST['passwordconfirm'];
+            if (
+                strlen($newPassword) >= 8 && preg_match('/[!@#$%^&*(),.?":{}|<>]/', $newPassword) &&
+                preg_match('/[0-9]/', $newPassword) && preg_match('/[A-Z]/', $newPassword)
+            ) {
+                if ($newPassword === $confirmPassword) {
+                    // Hash the new password
+                    $hashedPassword = password_hash($newPassword, PASSWORD_BCRYPT);
+
+                    // Update the user's password hash in the database
+                    $updateSql = "UPDATE users SET password_hash = '$hashedPassword' WHERE user_id = $user_id";
+                    if (mysqli_query($conn, $updateSql)) { // Show success SweetAlert and reload
+                        echo "<script>
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success',
+                        text: 'Password updated successfully!',
+                    }).then(function() {
+                        window.location.href = 'profile.php';
+                    });
+                  </script>";
+                    } else {
+                        // Show error SweetAlert
+                        echo "<script>
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: 'Error updating password: " . mysqli_error($conn) . "',
+                        }).then(function() {
+                            window.location.href = 'profile.php';
+                        });
+                      </script>";
+                    }
+                } else {
+                    // Show error SweetAlert
+                    echo "<script>
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Passwords do not match. Please try again.',
+                    }).then(function() {
+                            window.location.href = 'profile.php';
+                        });
+                  </script>";
+                }
+            } else {
+                // Show error SweetAlert
+                echo "<script>
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Password does not meet the requirements. Please try again.',
+                }).then(function() {
+                            window.location.href = 'profile.php';
+                        });
+              </script>";
+            }
+        } else {
+            // Show error SweetAlert
+            echo "<script>
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Old password is incorrect. Please try again.',
+            }).then(function() {
+                            window.location.href = 'profile.php';
+                        });
+          </script>";
+        }
+    } else {
+        // Show error SweetAlert
+        echo "<script>
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Old password is incorrect. Please try again.',
+        }).then(function() {
+                        window.location.href = 'profile.php';
+                    });
+      </script>";
+    }
+
+    exit;
+}
 ?>
