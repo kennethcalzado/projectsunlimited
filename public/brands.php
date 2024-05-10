@@ -13,17 +13,22 @@ ob_start();
             </div>
         </div>
     </div>
-    <div class="w-2/3 p-4 overflow-y-scroll max-h-screen">
-        <!-- Brand Details Container -->
-        <div class="mb-8">
-            <img id="brandLogo" src="" alt="Brand Logo" class="mx-auto d-block h-full w-[90%] mb-4">
-            <h2 id="brandName" class="text-center text-2xl font-bold mb-2">Brand Name</h2>
-            <p id="brandDescription" class="text-center text-lg mb-4">Brand Description</p>
-        </div>
-        <!-- Catalog Listing -->
-        <div class="mt-8 mb-8">
-            <h3 class="text-xl font-bold mb-4">Catalogs</h3>
-            <div id="catalogList" class="flex flex-wrap gap-4"></div>
+    <div id="brandDetails" class="w-2/3 p-4 overflow-y-scroll max-h-screen relative flex justify-center items-center">
+        <!-- Brand Logo will be set as background here -->
+        <div id="brandLogo" class="relative">
+            <div id="brandDetailsBackground" class="top-0 left-0 w-full h-full bg-cover bg-no-repeat">
+                <div class="absolute top-0 left-0 w-full h-full bg-white opacity-90"></div>
+                <!-- Content inside the brand details section -->
+                <div class="flex flex-col items-center relative z-10">
+                    <h2 id="brandName" class="text-center text-5xl font-extrabold mb-2 text-black">Brand Name</h2>
+                    <p id="brandDescription" class="text-center text-lg mb-4 text-black">Brand Description</p>
+                    <!-- Catalog Listing -->
+                    <div class="mt-8 mb-8">
+                        <h3 class="text-xl font-bold mb-4 text-black">Catalogs</h3>
+                        <div id="catalogList" class="flex flex-wrap gap-4"></div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -41,9 +46,9 @@ ob_start();
         {
             console.log( "Updating Brand Details for brand:", brand.brand_name );
             // Update brand details in Brand Details Container
-            $( '#brandLogo' ).attr( 'src', brand.logo_url );
+            $( '#brandDetailsBackground' ).css( 'background-image', `url(${ brand.logo_url })` );
             $( '#brandName' ).text( brand.brand_name );
-            $( '#brandDescription' ).text( brand.description ).addClass('text-justify');
+            $( '#brandDescription' ).text( brand.description ).addClass( 'text-justify' );
         }
 
         // Function to update catalog listing based on brand details
