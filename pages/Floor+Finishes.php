@@ -27,7 +27,7 @@
     </style>
     <div class="content">
         <div class="relative">
-            <img src="../assets/catheader/" class="w-full h-96 object-cover object-top">
+            <img src="../assets/catheader/Executive-Table.jpg" class="w-full h-96 object-cover object-top">
             <div class="absolute inset-0 bg-black opacity-50"></div>
             <div class="absolute inset-0 flex items-center justify-center text-center">
                 <p class="text-white font-extrabold text-4xl">FLOOR FINISHES<br></p>
