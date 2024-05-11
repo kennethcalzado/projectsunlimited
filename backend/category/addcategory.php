@@ -7,7 +7,7 @@ include '../../backend/conn.php';
 // Check if form data is submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Fetch form data
-    $categoryName = $_POST['productName'];
+    $categoryName = $_POST['categoryName'];
     $pageType = $_POST['pageType']; // Assuming this corresponds to the 'type' column
     $categoryType = $_POST['categoryType'];
     $status = 'active'; // Assuming default status is 'active'

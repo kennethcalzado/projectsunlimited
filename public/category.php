@@ -23,10 +23,8 @@ ob_start();
     .square-image:hover {
         transform: scale(1.1);
     }
-
-    /* Apply rainbow animation on hover */
     .category-name:hover {
-        color: #EAB308; /* Change the duration as needed */
+        color: #EAB308;
     }
 </style>
 
@@ -99,10 +97,10 @@ ob_start();
                 // Populate categories
                 if (data.length > 0) {
                     data.forEach(function(category) {
-                        var categoryCard = '<div class="w-1/5 px-2">' + // Changed width to 1/5 for 5 categories per row
+                        var categoryCard = '<div class="w-1/5 px-2">' +
                             '<a href="../pages' + category.page_path + '" class="block bg-white overflow-hidden transition duration-300">' +
-                            '<div class="square-image">' + // Added a wrapper div for squared images
-                            '<img src="../assets/category/' + category.imagecover + '" class="square-image-inner" alt="' + category.CategoryName + '">' + // Added square-image-inner class
+                            '<div class="square-image border border-slate-300">' + 
+                            '<img src="../assets/category/' + category.imagecover + '" class="square-image-inner" alt="' + category.CategoryName + '">' + 
                             '</div>' +
                             '<div class="p-4">' +
                             '<h2 class="text-2xl mt-0 font-semibold text-center category-name">' + category.CategoryName + '</h2>' +

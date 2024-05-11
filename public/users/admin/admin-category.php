@@ -114,6 +114,9 @@ ob_start();
                         Status
                     </th>
                     <th scope="col" class="px-6 py-3 w-1/12">
+                        Date Added
+                    </th>
+                    <th scope="col" class="px-6 py-3 w-1/12">
                         Action
                     </th>
                 </tr>
@@ -143,7 +146,7 @@ ob_start();
         <form id="addCategoryForm" method="POST" enctype="multipart/form-data" class="mt-4">
             <div class="mb-4 flex flex-col">
                 <label for="addcategoryName" class="text-sm font-medium text-gray-700 mb-1">Category Name</label>
-                <input type="text" id="addcategoryName" name="productName" placeholder="Enter Category Name"
+                <input type="text" id="addcategoryName" name="categoryName" placeholder="Enter Category Name"
                     class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent">
             </div>
             <div class="flex mb-4 justify-center">
@@ -420,7 +423,7 @@ ob_start();
             toggleMainCategoryDropdown();
         });
 
-        var itemsPerPage = 5;
+        var itemsPerPage = 10;
         var currentPage = 1;
 
         // Function to fetch and display categories based on filters, search, and pagination
@@ -494,6 +497,12 @@ ob_start();
                 row.append('<td class="px-4 py-2 border-b">' + category.CategoryName + '</td>');
                 row.append('<td class="px-4 py-2 border-b">' + category.type + '</td>');
                 row.append('<td class="px-4 py-2 border-b">' + category.status + '</td>');
+                row.append('<td class="px-4 py-2 border-b">\
+                                <div>\
+                                    <span>' + category.created_date + '</span><br>\
+                                    <span class="text-sm text-gray-500">' + category.created_time + '</span>\
+                                </div>\
+                            </td>');
                 row.append('<td class="px-4 py-2 border-b">' +
                     '<div class="flex justify-center">' +
                     '<button type="button" class="btn btn-view rounded-md text-center sm:mt-4 px-4 text-sm flex items-center mr-2 viewCategory" data-categoryid="' + category.CategoryID + '"><i class="fas fa-eye mr-2 fa-sm"></i><span class="hover:underline">View</span></button>' +
@@ -509,6 +518,17 @@ ob_start();
 
 
             generatePagination(Math.ceil(categories.length / itemsPerPage), categories.length);
+        }
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            const options = { year: 'numeric', month: 'short', day: 'numeric' };
+            return date.toLocaleDateString('en-US', options);
+        }
+
+        function formatTime(dateString) {
+            const date = new Date(dateString);
+            const options = { hour: 'numeric', minute: '2-digit', hour12: true };
+            return date.toLocaleTimeString('en-US', options);
         }
 
         // Function to generate pagination

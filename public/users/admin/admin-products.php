@@ -437,8 +437,8 @@ ob_start();
             paginationBar.empty();
 
             // Get the total number of products and the number of products per page
-            const totalProducts = totalPages * 5;
-            const productsPerPage = 5;
+            const totalProducts = totalPages * 10;
+            const productsPerPage = 10;
 
             // Calculate the starting and ending index of the current page
             const startIndex = ((currentPage - 1) * productsPerPage) + 1;
@@ -461,7 +461,7 @@ ob_start();
             paginationBar.find('.btn-pagination').click(function () {
                 const pageNumber = $(this).text();
                 console.log("Clicked page number: " + pageNumber); // Debug statement
-                fetchFilteredProducts(pageNumber, 5, categoryId, brandId, sortValue, searchQuery, statusFilter); // Include filter values in request data
+                fetchFilteredProducts(pageNumber, 10, categoryId, brandId, sortValue, searchQuery, statusFilter); // Include filter values in request data
             });
 
             // Add active class to current page button
@@ -472,32 +472,32 @@ ob_start();
         }
 
         // Fetch products on page load
-        fetchProducts(1, 5);
+        fetchProducts(1, 10);
 
         // Handle category filter change
         $('#categoryFilter').change(function () {
-            fetchFilteredProducts(1, 5, true);
+            fetchFilteredProducts(1, 10, true);
         });
 
         // Handle brand filter change
         $('#brandFilter').change(function () {
-            fetchFilteredProducts(1, 5, true);
+            fetchFilteredProducts(1, 10, true);
         });
 
         // Handle sort filter change
         $('#sortFilter').change(function () {
             sortValue = $(this).val();
-            fetchFilteredProducts(1, 5, true);
+            fetchFilteredProducts(1, 10, true);
         });
 
         // Handle search input change
         $('#statusFilter').on('input', function () {
-            fetchFilteredProducts(1, 5, true);
+            fetchFilteredProducts(1, 10, true);
         });
 
         // Handle search input change
         $('#searchInput').on('input', function () {
-            fetchFilteredProducts(1, 5, true);
+            fetchFilteredProducts(1, 10, true);
         });
 
         function fetchFilteredProducts(page, limit, categoryId, brandId, sortValue, searchQuery, statusFilter) {

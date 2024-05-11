@@ -16,7 +16,10 @@ $sortFilter = isset($_GET['sort']) ? $_GET['sort'] : '';
 $searchQuery = isset($_GET['searchQuery']) ? $_GET['searchQuery'] : ''; // Add search query parameter
 
 // Build SQL query with filters and search condition
-$sql = "SELECT CategoryID, CategoryName, type, status FROM productcategory WHERE 1 ";
+$sql = "SELECT CategoryID, CategoryName, type, status, 
+        DATE_FORMAT(created_at, '%b %d, %Y') AS created_date, 
+        TIME_FORMAT(created_at, '%h:%i %p') AS created_time 
+        FROM productcategory WHERE 1 ";
 
 // Add search condition
 if (!empty($searchQuery)) {
@@ -52,8 +55,10 @@ if ($result->num_rows > 0) {
         $categories[] = $row;
     }
 
-    // Fetch main categories
-    $mainCategoriesSql = "SELECT DISTINCT pc.CategoryID, pc.CategoryName, pc.type, pc.status 
+    // Fetch main categories with formatted created_at date
+    $mainCategoriesSql = "SELECT DISTINCT pc.CategoryID, pc.CategoryName, pc.type, pc.status, 
+    DATE_FORMAT(pc.created_at, '%b %d, %Y') AS created_date, 
+    TIME_FORMAT(pc.created_at, '%h:%i %p') AS created_time
     FROM productcategory pc 
     LEFT JOIN productcategory pcp ON pc.CategoryID = pcp.ParentCategoryID 
     WHERE (pcp.CategoryID IS NOT NULL OR (pc.imagecover IS NOT NULL AND pc.imageheader IS NOT NULL))";
@@ -61,6 +66,9 @@ if ($result->num_rows > 0) {
     $mainCategoriesResult = $conn->query($mainCategoriesSql);
     $mainCategories = array();
     while ($row = $mainCategoriesResult->fetch_assoc()) {
+        // Include created_date and created_time in each row
+        $row['created_date'] = $row['created_date'];
+        $row['created_time'] = $row['created_time'];
         $mainCategories[] = $row;
     }
 

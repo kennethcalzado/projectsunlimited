@@ -28,52 +28,71 @@
                 <div class="flex items-center ml-6 mt-2">
                     <p class="text-lg ml-8 mr-2">Follow Us:</p>
                     <div class="flex space-x-2">
-                        <a href="https://www.facebook.com/projectsunlimitedph" class="text-2xl hover:text-[#F6E381]"><i class="fab fa-facebook light"></i></a>
-                        <a href="https://www.instagram.com/projectsunlimitedph" class="text-2xl hover:text-[#F6E381]"><i class="fab fa-instagram light"></i></a>
-                        <a href="https://www.linkedin.com/company/projectsunlimited/" class="text-2xl hover:text-[#F6E381]"><i class="fab fa-linkedin light"></i></a>
-                        <a href="mailto:info@projectsunlimited.com.ph" class="text-2xl hover:text-[#F6E381]"><i class="fab fa-google"></i></a>
+                        <a href="https://www.facebook.com/projectsunlimitedph" class="text-2xl hover:text-[#F6E381]"><i
+                                class="fab fa-facebook light"></i></a>
+                        <a href="https://www.instagram.com/projectsunlimitedph" class="text-2xl hover:text-[#F6E381]"><i
+                                class="fab fa-instagram light"></i></a>
+                        <a href="https://www.linkedin.com/company/projectsunlimited/"
+                            class="text-2xl hover:text-[#F6E381]"><i class="fab fa-linkedin light"></i></a>
+                        <a href="mailto:info@projectsunlimited.com.ph" class="text-2xl hover:text-[#F6E381]"><i
+                                class="fab fa-google"></i></a>
                     </div>
                 </div>
             </div>
         </div>
+
+        <!-- Fetch categories dynamically -->
+        <?php
+        include '../backend/conn.php';
+        // Fetch main categories from the database
+        $query = "SELECT CategoryName, page_path FROM productcategory WHERE ParentCategoryID IS NULL AND status = 'active'";
+        $result = mysqli_query($conn, $query);
+
+        if (mysqli_num_rows($result) > 0) {
+            echo '<div class="md:w-1/4 p-2">';
+            echo '<div class="mb-4 my-2 mx-2 ml-12">';
+            echo '<p class="text-xl font-bold text-center">Category</p>';
+            while ($row = mysqli_fetch_assoc($result)) {
+                $categoryName = $row['CategoryName'];
+                $pagePath = '../pages' . $row['page_path'];
+                ?>
+                <p class="text-sm mt-1 font-semibold text-center hover:text-[#F6E381]"><a
+                        href="<?php echo $pagePath; ?>"><?php echo $categoryName; ?></a></p>
+                <?php
+            }
+            echo '</div>';
+            echo '</div>';
+        }
+        ?>
+        <!-- End of dynamically fetched categories -->
+
         <div class="md:w-1/6 p-2">
-            <div class="mb-4 my-2 mx-2">
-                <p class="text-xl font-bold text-center justify-center">Category</p>
-                <p class="text-sm mt-1 font-semibold text-center justify-center  hover:text-[#F6E381]">Blinds</p>
-                <p class="text-sm mt-1 font-semibold text-center justify-center  hover:text-[#F6E381]">Floorings</p>
-                <p class="text-sm mt-1 font-semibold text-center justify-center  hover:text-[#F6E381]">Wallcovering</p>
-                <p class="text-sm mt-1 font-semibold text-center justify-center  hover:text-[#F6E381]">Office</p>
-                <p class="text-sm mt-1 font-semibold text-center justify-center  hover:text-[#F6E381]">Modular Cabinets</p>
+            <div class="mb-4 my-2 mx-1">
+                <p class="text-xl font-bold text-center">Company</p>
+                <a href="/public/about.php" class="block text-sm mt-1 font-semibold text-center hover:text-[#F6E381]">About Us</a>
+                <a href="/public/blogs.php" class="block text-sm mt-1 font-semibold text-center hover:text-[#F6E381]">Updates</a>
+                <a href="/public/contact.php" class="block text-sm mt-1 font-semibold text-center hover:text-[#F6E381]">Contact Us</a>
             </div>
         </div>
         <div class="md:w-1/6 p-2">
             <div class="mb-4 my-2 mx-2">
-                <p class="text-xl font-bold text-center justify-center">Company</p>
-                <p class="text-sm mt-1 font-semibold text-center justify-center  hover:text-[#F6E381]">About Us</p>
-                <p class="text-sm mt-1 font-semibold text-center justify-center  hover:text-[#F6E381]">Updates</p>
-                <p class="text-sm mt-1 font-semibold text-center justify-center  hover:text-[#F6E381]">Locations</p>
-                <p class="text-sm mt-1 font-semibold text-center justify-center  hover:text-[#F6E381]">Contact Us</p>
-            </div>
-        </div>
-        <div class="md:w-1/6 p-2">
-            <div class="mb-4 my-2 mx-2">
-                <p class="text-xl font-bold text-center justify-center">Services</p>
-                <p class="text-sm mt-1 font-semibold text-center justify-center  hover:text-[#F6E381]">Brands</p>
-                <p class="text-sm mt-1 font-semibold text-center justify-center  hover:text-[#F6E381]">Gallery</p>
-                <p class="text-sm mt-1 font-semibold text-center justify-center  hover:text-[#F6E381]">Products</p>
+                <p class="text-xl font-bold text-center">Services</p>
+                <a href="/public/brands.php" class="block text-sm mt-1 font-semibold text-center hover:text-[#F6E381]">Brands</a>
+                <a href="/public/category.php" class="block text-sm mt-1 font-semibold text-center hover:text-[#F6E381]">Products</a>
             </div>
         </div>
         <div class="md:w-1/4 p-2">
             <div class="mb-4 my-2 mx-2 ml-12">
-                <p class="text-xl font-bold text-left">Office Hours</p>
-                <p class="text-sm mt-1 font-semibold text-left  hover:text-[#F6E381]">Mondays - Fridays <u>8am - 5pm</u></p>
-                <!-- <p class="text-sm mt-1 font-semibold text-left  hover:text-[#F6E381]">Saturdays <u>8am - 5pm</u></p>-->
-                <p class="text-sm font-bold text-left">Sundays and Holidays <u>CLOSED</u></p>
+                <p class="text-xl font-bold ml-8">Office Hours</p>
+                <p class="block text-sm mt-1 font-semibold  hover:text-[#F6E381]">Mondays - Fridays <u>9am - 5pm</u>
+                </p>
+                <p class="block text-sm font-bold hover:text-[#F6E381]">Sundays and Holidays <u>CLOSED</u></p>
             </div>
         </div>
     </div>
     <div class="container mx-auto">
-        <p class="text-center text-sm font-bold justify-center"><i>Copyright &copy; 2024 Projects Unlimited Powered by Projects Unlimited</i></p>
+        <p class="text-center text-sm font-bold justify-center"><i>Copyright &copy; 2024 Projects Unlimited Powered
+                by Projects Unlimited</i></p>
     </div>
 </footer>
 
