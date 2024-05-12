@@ -1,5 +1,5 @@
 <?php
-    $pageTitle = "Products - Floor Finishes";
+    $pageTitle = "Products - Projects Unlimited";
     ob_start();
     ?>
     <style>

@@ -33,7 +33,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Create page/file for the main category
         $pagePath = '../../pages/' . $categoryName . '.php'; // Relative path of the page
         $pageContent = '<?php
-$pageTitle = "Products - ' . $categoryName . '";
+$pageTitle = "Products - Projects Unlimited";
 ob_start();
 ?>
 <style>
