@@ -29,8 +29,35 @@ ob_start();
     }
 </style>
 
+<script>
+    // When the page is scrolled, show/hide the back-to-top button
+    window.addEventListener("scroll", function() {
+        var backToTopButton = document.querySelector('.back-to-top');
+        if (window.scrollY > 200) {
+            backToTopButton.style.display = 'block';
+        } else {
+            backToTopButton.style.display = 'none';
+        }
+    });
 
-<div class="content">
+    // Smooth scrolling when the button is clicked
+    document.querySelector('.back-to-top a').addEventListener('click', function(e) {
+        e.preventDefault();
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    });
+</script>
+
+<a href="#top" class="back-to-top">
+    <div>
+        <i class="fas fa-arrow-up"></i>
+    </div>
+</a>
+
+
+<div class="content fade-in-hidden">
     <div class="relative">
         <img src="../assets/image/stock.png" class="w-full h-96 object-cover">
         <div class="absolute inset-0 bg-black opacity-50"></div>
@@ -45,7 +72,7 @@ ob_start();
         </div>
     </div>
 </div>
-<div class="relative">
+<div class="relative fade-in-hidden">
     <img src="../assets/image/customizebanner.png" class="w-full h-96 object-cover">
     <div class="absolute inset-0 bg-black opacity-50"></div>
     <div class="absolute inset-0 flex items-center justify-center">
@@ -61,46 +88,42 @@ ob_start();
         </p>
     </div>
 </div>
-<div id="customcontainer">
+<div id="customcontainer fade-in-hidden">
     <div class="p-8">
-        <div class="flex items-center p-2 px-8">
-            <div
-                class="w-10 h-10 bg-gray-800 text-white flex items-center justify-center rounded-full text-xl font-bold mr-4">
+        <div class="flex items-center p-2 px-8 fade-in-hidden">
+            <div class="w-10 h-10 bg-gray-800 text-white flex items-center justify-center rounded-full text-xl font-bold mr-4">
                 1</div>
             <h3 class="text-gray-800 font-bold text-3xl ">INQUIRE</h3>
         </div>
-        <div class="flex items-center">
+        <div class="flex items-center fade-in-hidden">
             <p class="font-semibold text-2xl p-4 px-8 mx-12">Ask about the product and set an official appointment with
                 Projects Unlimited. We are willing to get in touch with you directly and know your ideas.</p>
         </div>
-        <div class="flex items-center justify-end p-2 px-8">
+        <div class="flex items-center justify-end p-2 px-8 fade-in-hidden">
             <h3 class="text-gray-800 text-right font-bold text-3xl mr-4">PLAN</h3>
-            <div
-                class="w-10 h-10 border-4 border-gray-800 text-gray-800 flex items-center justify-center rounded-full text-xl font-bold mr-4">
+            <div class="w-10 h-10 border-4 border-gray-800 text-gray-800 flex items-center justify-center rounded-full text-xl font-bold mr-4">
                 2</div>
         </div>
-        <div class="flex items-center">
+        <div class="flex items-center fade-in-hidden">
             <p class="text-right font-semibold text-2xl p-4 px-8 mx-12">Discuss your desired dimension, color, texture,
                 and materials for your customized products and we’ll do it for you. The budget and timeline will be
                 discussed as well.</p>
         </div>
-        <div class="flex items-center p-2 px-8">
-            <div
-                class="w-10 h-10 bg-gray-800 text-white flex items-center justify-center rounded-full text-xl font-bold mr-4">
+        <div class="flex items-center p-2 px-8 fade-in-hidden">
+            <div class="w-10 h-10 bg-gray-800 text-white flex items-center justify-center rounded-full text-xl font-bold mr-4">
                 3</div>
             <h3 class="text-gray-800 font-bold text-3xl">CREATE</h3>
         </div>
-        <div class="flex items-center">
+        <div class="flex items-center fade-in-hidden">
             <p class="font-semibold text-2xl p-4 px-8 mx-12">Our team will proceed to create your desired products and
                 we’ll give you an estimated time of completion and we’ll keep you updated at all time.</p>
         </div>
-        <div class="flex items-center justify-end p-2 px-8">
+        <div class="flex items-center justify-end p-2 px-8 fade-in-hidden">
             <h3 class="text-gray-800 text-right font-bold text-3xl mr-4">DELIVER & INSTALL</h3>
-            <div
-                class="w-10 h-10 border-4 border-gray-800 text-gray-800 flex items-center justify-center rounded-full text-xl font-bold mr-4">
+            <div class="w-10 h-10 border-4 border-gray-800 text-gray-800 flex items-center justify-center rounded-full text-xl font-bold mr-4">
                 4</div>
         </div>
-        <div class="flex items-center justify-end">
+        <div class="flex items-center justify-end fade-in-hidden">
             <p class=" text-right font-semibold text-2xl pb-2 px-8 pt-2 mx-12">Once the products are completed, we will
                 proceed to delivering and installing the products to your place.</p>
         </div>
@@ -108,16 +131,16 @@ ob_start();
 </div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
-    $(document).ready(function () {
+    $(document).ready(function() {
         // AJAX request to fetch categories
         $.ajax({
             url: "../../../backend/productdisplay/fetchcategorypage.php",
             type: "GET",
             dataType: "json",
-            success: function (data) {
+            success: function(data) {
                 // Populate categories
                 if (data.length > 0) {
-                    data.forEach(function (category) {
+                    data.forEach(function(category) {
                         var categoryCard = '<div class="w-1/5 px-2">' +
                             '<a href="../pages' + category.page_path + '" class="block bg-white overflow-hidden transition duration-300">' +
                             '<div class="square-image border border-slate-300">' +
@@ -134,7 +157,7 @@ ob_start();
                     $('#prodcat').html("<p>No categories found.</p>");
                 }
             },
-            error: function (xhr, status, error) {
+            error: function(xhr, status, error) {
                 console.error("Error fetching categories:", error);
                 $('#prodcat').html("<p>Error fetching categories.</p>");
             }
@@ -143,5 +166,5 @@ ob_start();
 </script>
 <?php
 $content = ob_get_clean();
-include ("../public/master.php");
+include("../public/master.php");
 ?>

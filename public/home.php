@@ -23,8 +23,34 @@ include("../backend/conn.php");
     </style>
 </head>
 
+<script>
+    // When the page is scrolled, show/hide the back-to-top button
+    window.addEventListener("scroll", function() {
+        var backToTopButton = document.querySelector('.back-to-top');
+        if (window.scrollY > 200) {
+            backToTopButton.style.display = 'block';
+        } else {
+            backToTopButton.style.display = 'none';
+        }
+    });
+
+    // Smooth scrolling when the button is clicked
+    document.querySelector('.back-to-top a').addEventListener('click', function(e) {
+        e.preventDefault();
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    });
+</script>
+
 <body>
-    <div class="animate-bounce" id="content">
+    <a href="#top" class="back-to-top">
+        <div>
+            <i class="fas fa-arrow-up"></i>
+        </div>
+    </a>
+    <div id="content" class="hidden">
         <div class="carousel relative">
             <div class="carousel-inner flex">
                 <?php
@@ -34,6 +60,7 @@ include("../backend/conn.php");
 
                 if ($result->num_rows > 0) {
                     // Output data of each row
+                    $index = 0; // Counter for delay calculation
                     while ($row = $result->fetch_assoc()) {
                         // Split the images string by commas
                         $images = $row['thumbnail'];
@@ -42,11 +69,12 @@ include("../backend/conn.php");
                         echo '<img src="../assets/blogs_img/' . $images . '" alt="Slide Image" style="object-fit: cover; width: 100%; height: 100%;">';
                         // Add translucent overlay
                         echo '<div class="absolute inset-0 bg-black opacity-50"></div>';
-                        // Add title text in the lower right corner
-                        echo '<h1 style="padding-right: 170px; padding-bottom: 140px;" class="absolute bottom-0 right-0 m-4 text-4xl font-bold">' . $row['title'] . '</h1>';
-                        // Add button with link from the page column
-                        echo '<a href="' . $row['page'] . '" style="margin-right: 185px; margin-bottom: 100px; border-radius: 5px;" class="absolute bottom-0 right-0 m-4 px-4 py-2 bg-yellow-400 text-black text-center rounded-md yellow-btn">Read More</a>';
+                        // Add title text in the lower right corner with fade-in animation
+                        echo '<h1 style="padding-right: 170px; padding-bottom: 140px;" class="absolute bottom-0 right-0 m-4 text-4xl font-bold opacity-0 animate-fade-in">' . $row['title'] . '</h1>';
+                        // Add button with link from the page column with fade-in animation
+                        echo '<a href="' . $row['page'] . '" style="margin-right: 185px; margin-bottom: 100px; border-radius: 5px;" class="absolute bottom-0 right-0 m-4 px-4 py-2 bg-yellow-400 text-black text-center rounded-md yellow-btn opacity-0 animate-fade-in">Read More</a>';
                         echo '</div>';
+                        $index++;
                     }
                 } else {
                     echo "0 results";
@@ -71,6 +99,21 @@ include("../backend/conn.php");
     </div>
 
     <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var content = document.getElementById('content');
+            content.classList.remove('hidden');
+            content.classList.add('animate-fade-in');
+
+            // After the slide-in animation completes, remove opacity-0 class to fade in the elements
+            content.addEventListener('animationend', function() {
+                var elements = document.querySelectorAll(".animate-fade-in-text, .animate-fade-in-btn");
+                elements.forEach(function(element) {
+                    element.classList.remove('opacity-0');
+                });
+            });
+        });
+
+
         let currentIndex = 0;
         const items = document.querySelectorAll(".carousel-item");
         const totalItems = items.length;
@@ -116,11 +159,11 @@ include("../backend/conn.php");
 
 
 
-    <section>
+    <section class="fade-in-hidden">
         <p class="text-2xl font-semibold text-black px-60 mt-8">Together, we provide the best quality interior products, and highest level of support at most reasonable price.</p>
     </section>
 
-    <section class="section">
+    <section class="section fade-in-hidden">
         <div class="column" align="center">
             <div class="about-us">
                 <h1 style="font-size: 31px; font-weight: 530;">ABOUT US</h1>
@@ -135,7 +178,8 @@ include("../backend/conn.php");
             </p>
         </div>
     </section>
-    <div>
+
+    <div class="fade-in-hidden">
         <p class="text-2xl font-semibold text-black px-16 mt-8" style="text-align: center;">
             For more information, download our Omnibus Brochure:
             <a href="../assets/PROJECTS_UNLIMITED-OMNIBUS_BROCHURE.pdf" download>
@@ -144,7 +188,7 @@ include("../backend/conn.php");
         </p>
     </div>
 
-    <section class="carousel-section relative">
+    <section class="carousel-section relative fade-in-hidden">
         <div class="carousel relative">
             <div class="carousel-inner flex">
                 <div class="carousel-item w-full text-black text-center">
@@ -175,7 +219,7 @@ include("../backend/conn.php");
         <button style="border-radius: 50px;" class="learn-more-btn absolute bottom-4 right-4 bg-gray-300 text-black py-2 px-6 rounded-full">Learn more ►</button>
     </section>
 
-    <section style="padding-top: 40px;">
+    <section class="fade-in-hidden" style="padding-top: 40px;">
         <h1 style="text-align: left; padding-left: 50px; font-size: 38px; font-weight: 800;">
             NEWS & UPDATES
         </h1>
@@ -214,7 +258,7 @@ include("../backend/conn.php");
     </section>
 
 
-    <section style="padding-top: 40px; padding-bottom: 20px; background: linear-gradient(to bottom, transparent, #F6E17A);">
+    <section class="fade-in-hidden" style="padding-top: 40px; padding-bottom: 20px; background: linear-gradient(to bottom, transparent, #F6E17A);">
         <h1 style="text-align: center; font-size: 38px; font-weight: 800;">LATEST PRODUCTS</h1>
         <div style="display: flex; justify-content: space-around; padding-top: 20px; padding-left: 40px; padding-right: 40px;">
             <?php
@@ -231,7 +275,7 @@ include("../backend/conn.php");
             ?>
                     <!-- Product column -->
                     <div style="flex: 1; padding: 20px; height: 400px;">
-                        <div style="background-image: url('../assets/products/<?php echo $image_url; ?>'); background-size: cover; background-position: center; padding: 20px; height: 100%;"></div>
+                        <div class="transition-opacity duration-1000 delay-1000 ease hover:scale-110" style="background-image: url('../assets/products/<?php echo $image_url; ?>'); background-size: cover; background-position: center; padding: 20px; height: 100%;"></div>
                         <p style="text-align: center; font-weight:600;"><?php echo $row['ProductName']; ?></p>
                         <p style="text-align: center;"><?php echo $row['Description']; ?></p>
                     </div>
@@ -250,14 +294,14 @@ include("../backend/conn.php");
         </div>
     </section>
 
-    <section style="padding-top: 40px; padding-bottom: 20px;">
+    <section class="fade-in-hidden" style="padding-top: 40px; padding-bottom: 20px;">
         <h1 style="text-align: center; font-size: 38px; font-weight: 800;">
             SOME OF OUR CUSTOMERS
         </h1>
         <img src="../assets/image/customers.png" style="display: block; margin: 0 auto; width: 65%; height: auto;">
     </section>
 
-    <section id="third-carousel-section" class="third-carousel-section relative">
+    <section id="third-carousel-section" class="third-carousel-section relative fade-in-hidden">
         <div class="third-carousel relative">
             <h1 style="text-align: right; padding-right: 80px; color: #F6E17A;" class="text-4xl font-bold">HEAR WHAT OUR FRIENDS HAVE TO SAY</h1>
 
@@ -410,6 +454,30 @@ include("../backend/conn.php");
 
         // Auto slide every 8 seconds
         setInterval(nextSlideThirdCarousel, 8000);
+
+        // Function to check if an element is in the viewport
+        function isInViewport(element) {
+            const rect = element.getBoundingClientRect();
+            return (
+                rect.top >= 0 &&
+                rect.left >= 0 &&
+                rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+                rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+            );
+        }
+
+        // Function to handle the scroll event
+        function handleScroll() {
+            const elements = document.querySelectorAll('.fade-in');
+            elements.forEach(element => {
+                if (isInViewport(element)) {
+                    element.classList.add('visible');
+                }
+            });
+        }
+
+        // Add event listener for scroll event
+        document.addEventListener('scroll', handleScroll);
     </script>
 
 </body>

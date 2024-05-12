@@ -3,8 +3,34 @@ $pageTitle = "HIstory";
 ob_start();
 ?>
 
+<script>
+    // When the page is scrolled, show/hide the back-to-top button
+    window.addEventListener("scroll", function() {
+        var backToTopButton = document.querySelector('.back-to-top');
+        if (window.scrollY > 200) {
+            backToTopButton.style.display = 'block';
+        } else {
+            backToTopButton.style.display = 'none';
+        }
+    });
+
+    // Smooth scrolling when the button is clicked
+    document.querySelector('.back-to-top a').addEventListener('click', function(e) {
+        e.preventDefault();
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    });
+</script>
+
 <body>
-    <section>
+    <a href="#top" class="back-to-top">
+        <div>
+            <i class="fas fa-arrow-up"></i>
+        </div>
+    </a>
+    <section class="fade-in-hidden">
         <div class="content">
             <div class="relative">
                 <img src="../assets/image/history.png" class="w-full h-96 object-cover">
@@ -15,10 +41,10 @@ ob_start();
             </div>
         </div>
     </section>
-    <div style="width: 100%; text-align: center; padding-bottom: 20px; padding-top: 20px;">
+    <div class="fade-in-hidden" style="width: 100%; text-align: center; padding-bottom: 20px; padding-top: 20px;">
         <h1 class="text-black" style=" font-size: 38px; font-weight: 800; margin: 0;">OUR PEOPLE</h1>
     </div>
-    <section style="position: relative; padding-bottom: 40px;">
+    <section class="fade-in-hidden" style="position: relative; padding-bottom: 40px;">
         <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: -1;">
             <img src="../assets/image/projectslogo.png" style="display: block; width: 100%; height: 100%;">
         </div>
@@ -46,7 +72,7 @@ ob_start();
             </div>
         </div>
     </section>
-    <div style="position: relative;">
+    <div class="fade-in-hidden" style="position: relative;">
         <div style=" background-color: #F6E17A; width: 100%; text-align: center; padding: 0px 190px; position: relative;">
             <p class="text-2xl font-semibold text-black" style="text-align: justify; padding: 20px 40px 40px 40px; margin: 0;">
                 Our people are our greatest assets. Every Projects Unlimited
@@ -61,7 +87,7 @@ ob_start();
         <div style="position: absolute; width: 100%; top: -20%; height: 20%; background: linear-gradient(to top, rgba(246, 225, 122, 1) 1%, transparent);"></div>
     </div>
 
-    <section style="padding-top: 40px; position: relative; text-align: center; display: flex; justify-content: center; align-items: center;">
+    <section class="fade-in-hidden" style="padding-top: 40px; position: relative; text-align: center; display: flex; justify-content: center; align-items: center;">
         <h1 style="text-align: center; font-size: 38px; font-weight: 800; position: absolute; top: 0; left: 50%; transform: translateX(-50%); padding-top: 30px;">PROJECTS UNLIMITED THROUGH THE YEARS</h1>
 
 
@@ -124,7 +150,7 @@ ob_start();
 
     </p>
     <br>
-    <div style="position: relative;">
+    <div class="fade-in-hidden" style="position: relative;">
         <div style=" background-color: #F6E17A; width: 100%; text-align: center; padding: 0px 190px; position: relative;">
             <p class="text-2xl font-semibold text-black" style="text-align: justify; padding: 20px 40px 40px 40px; margin: 0;">
                 It started as a leading provider of two major flooring products –
@@ -171,7 +197,7 @@ ob_start();
 
 
 
-    <section style="padding-top: 40px; padding-bottom: 20px; background: linear-gradient(to bottom, transparent, #F6E17A);">
+    <section class="fade-in-hidden" style="padding-top: 40px; padding-bottom: 20px; background: linear-gradient(to bottom, transparent, #F6E17A);">
         <h1 style="text-align: center; font-size: 38px; font-weight: 800;">ACHIEVEMENTS</h1>
         <div style="display: flex; justify-content: center; align-items: center; gap: 20px;">
             <div class="transition-opacity duration-1000 delay-1000 ease-in-out hover:scale-110 opacity-0">

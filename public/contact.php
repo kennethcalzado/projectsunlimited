@@ -54,9 +54,45 @@ function generateLocationHTML($location)
 }
 
 ?>
+<script>
+    // When the page is scrolled, show/hide the back-to-top button
+    window.addEventListener("scroll", function() {
+        var backToTopButton = document.querySelector('.back-to-top');
+        if (window.scrollY > 200) {
+            backToTopButton.style.display = 'block';
+        } else {
+            backToTopButton.style.display = 'none';
+        }
+    });
+
+    // Smooth scrolling when the button is clicked
+    document.querySelector('.back-to-top a').addEventListener('click', function(e) {
+        e.preventDefault();
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    });
+</script>
+
+<script>
+    function updateMap(mapURL, location) {
+        var iframe = document.getElementById('googleMap');
+        iframe.src = mapURL;
+
+        document.querySelectorAll('.address-item').forEach(item => item.classList.remove('selected'));
+        document.querySelector(`[onclick="updateMap('${mapURL}', '${location}')"]`).classList.add('selected');
+    }
+</script>
+
+<a href="#top" class="back-to-top">
+    <div>
+        <i class="fas fa-arrow-up"></i>
+    </div>
+</a>
 
 <div class="content">
-    <div class="relative">
+    <div class="relative fade-in-hidden">
         <img src="../assets/image/contact.jpg" class="w-full h-96 object-cover object-top">
         <div class="absolute inset-0 bg-black opacity-50"></div>
         <div class="absolute inset-0 flex items-center justify-center">
@@ -68,7 +104,7 @@ function generateLocationHTML($location)
     </div>
     <p class="text-2xl font-semibold text-black px-16 mt-8">For any inquiries about our products, you may contact or
         visit us through the details below.</p>
-    <div class="container mx-auto px-4 py-8">
+    <div class="container mx-auto px-4 py-8 fade-in-hidden">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
             <iframe id="googleMap" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3860.9708020807752!2d120.97184307591911!3d14.600739177071674!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3397ca102318b44d%3A0x6483de216eafa800!2sProjects%20Unlimited!5e0!3m2!1sen!2sph!4v1710422091205!5m2!1sen!2sph" width="100%" height="500" style="border:0" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
             <div class="address-container">
@@ -82,12 +118,12 @@ function generateLocationHTML($location)
         </div>
     </div>
 
-    <div class="flex items-center justify-center p-2 px-16">
+    <div class="flex items-center justify-center p-2 px-16 fade-in-hidden">
         <div class="border-b border-gray-800 flex-grow border-4 "></div>
         <h3 class="text-gray-800 text-right font-bold text-3xl mx-4">OR</h3>
         <div class="border-b border-gray-800 flex-grow border-4 "></div>
     </div>
-    <div class="formcontainer">
+    <div class="formcontainer fade-in-hidden">
         <p class="text-2xl font-semibold text-black px-16 mt-8">You can also fill out the form below and send us a
             message.</p>
         <div class="flex px-8">
@@ -135,14 +171,6 @@ include("../public/master.php");
 
 <!--SCRIPT-->
 <script>
-    function updateMap(mapURL, location) {
-        var iframe = document.getElementById('googleMap');
-        iframe.src = mapURL;
-
-        document.querySelectorAll('.address-item').forEach(item => item.classList.remove('selected'));
-        document.querySelector(`[onclick="updateMap('${mapURL}', '${location}')"]`).classList.add('selected');
-    }
-
     const phoneInput = document.getElementById('phone');
     const phoneError = document.getElementById('phone-error');
 

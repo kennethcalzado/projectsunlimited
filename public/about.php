@@ -3,8 +3,34 @@ $pageTitle = "About Us";
 ob_start();
 ?>
 
+<script>
+    // When the page is scrolled, show/hide the back-to-top button
+    window.addEventListener("scroll", function() {
+        var backToTopButton = document.querySelector('.back-to-top');
+        if (window.scrollY > 200) {
+            backToTopButton.style.display = 'block';
+        } else {
+            backToTopButton.style.display = 'none';
+        }
+    });
+
+    // Smooth scrolling when the button is clicked
+    document.querySelector('.back-to-top a').addEventListener('click', function(e) {
+        e.preventDefault();
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    });
+</script>
+
 <body>
-    <section>
+    <a href="#top" class="back-to-top">
+        <div>
+            <i class="fas fa-arrow-up"></i>
+        </div>
+    </a>
+    <section class="fade-in-hidden">
         <div class="content">
             <div class="relative">
                 <img src="../assets/image/about.png" class="w-full h-96 object-cover">
@@ -16,7 +42,7 @@ ob_start();
         </div>
     </section>
 
-    <section class="section">
+    <section class="section fade-in-hidden">
         <div class="content">
             <div class="grid grid-cols-1 md:grid-cols-[1fr,3fr] gap-0 md:gap-0">
                 <div class="flex items-center justify-center">
@@ -32,7 +58,7 @@ ob_start();
         </div>
     </section>
 
-    <section style="padding: 20px 190px; margin-top: -30px; display: flex; justify-content: space-between; align-items: center;">
+    <section class="fade-in-hidden" style="padding: 20px 190px; margin-top: -30px; display: flex; justify-content: space-between; align-items: center;">
         <div style="display: flex; flex-direction: column;">
             <p class="text-2xl font-semibold text-black" style="text-align: justify;">
                 Projects Unlimited Philippines Inc., is a leading provider of interior products, and a preferred supplier for many architects, interior designers, contractors and homeowners. Projects Unlimited has been offering graceful and practical interiors for our longstanding clients and has also created long lasting impact on the field of architecture and interior design due to its introduction of several timeless interior products into the market after being in the industry since 1958.
@@ -45,7 +71,7 @@ ob_start();
         </div>
     </section>
 
-    <section class="section" style="margin-top: -20px; display: flex; justify-content: center; align-items: center;">
+    <section class="section fade-in-hidden" style="margin-top: -20px; display: flex; justify-content: center; align-items: center;">
         <div class="column" style="flex-grow: 1; width: 50%; text-align: center;">
             <p style="padding-bottom: 10px; text-align:left; font-weight: 800;">MISSION</p>
             <p class="text-2xl text-black" style="text-align: justify;">
@@ -60,10 +86,10 @@ ob_start();
         </div>
     </section>
 
-    <div style="text-align: center;">
+    <div class="fade-in-hidden" style="text-align: center;">
         <h1 style="font-size: 38px; font-weight: 800; padding-bottom: 15px;">VALUES</h1>
     </div>
-    <section class="section" style="margin-top: -20px; padding-bottom: 40px; display: flex; justify-content: center;">
+    <section class="section fade-in-hidden" style="margin-top: -20px; padding-bottom: 40px; display: flex; justify-content: center;">
 
         <div class="column" style="flex-grow: 1; width: 25%; text-align: center; border-right: 2px solid #F6E17A;">
             <p class="text-2xl" style=" font-weight: bold;">Full Customer Support</p>
@@ -90,7 +116,7 @@ ob_start();
             </div>
 
 
-            <div style="text-align: justify; flex: 2; padding-left: 50px; display: flex; align-items: center;">
+            <div class="fade-in-hidden" style="text-align: justify; flex: 2; padding-left: 50px; display: flex; align-items: center;">
                 <div>
                     <p style="padding-bottom: 10px; text-align:left; font-weight: 800;">Designing and Planning</p>
                     <p class="text-2xl">
@@ -108,7 +134,7 @@ ob_start();
             <img src="../assets/image/element.png" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 150px; height: 150px; z-index: -1;">
 
 
-            <div style="margin-top: -70px; display: flex; padding-top: 20px;">
+            <div class="fade-in-hidden" style="margin-top: -70px; display: flex; padding-top: 20px;">
                 <div style="text-align: justify; flex: 2;  display: flex; align-items: center;">
                     <div>
                         <p style="padding-right: 50px; padding-bottom: 10px; text-align:right; font-weight: 800;">Customize Order</p>
@@ -124,7 +150,7 @@ ob_start();
                 </div>
             </div>
 
-            <div style=" display: flex; padding-top: 20px;">
+            <div class="fade-in-hidden" style=" display: flex; padding-top: 20px;">
                 <div style="flex: 1;  display: flex; align-items: center; position: relative;">
                     <img src="../assets/image/install.png" style="width: 100%;">
                     <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5);"></div>
@@ -144,7 +170,7 @@ ob_start();
 
     <section style="margin-top: -40px; padding-top: 40px; padding-bottom: 50px; background: linear-gradient(to top, #F6E17A, transparent); padding-left: 190px; padding-right: 190px;">
         <div style="margin-top: -40px; display: flex; padding-top: 20px;">
-            <div style="text-align: justify; flex: 2;  display: flex; align-items: center;">
+            <div class="fade-in-hidden" style="text-align: justify; flex: 2;  display: flex; align-items: center;">
                 <div>
                     <p style="padding-right: 50px; padding-bottom: 10px; text-align:right; font-weight: 800;">After Sales Support</p>
                     <p class="text-2xl" style="padding-right: 50px;">

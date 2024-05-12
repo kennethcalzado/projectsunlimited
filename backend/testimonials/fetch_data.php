@@ -6,7 +6,7 @@ if (isset($_POST['sortOption'])) {
     $searchTerm = isset($_POST['query']) ? $_POST['query'] : '';
     $page = isset($_POST['page']) ? $_POST['page'] : 1; // New: Get the current page
 
-    $limit = 5; // Number of records per page
+    $limit = 10; // Number of records per page
     $offset = ($page - 1) * $limit; // Calculate the offset
 
     // Start building the SQL query

@@ -170,7 +170,7 @@ ob_start();
 
             // Function to fetch data based on category, sort option, and search query
             function fetchData(sortOption, query = '', page = 1) {
-                var limit = 5; // Number of records per page
+                var limit = 10; // Number of records per page
                 $.ajax({
                     url: '../../../backend/testimonials/fetch_data.php',
                     method: 'POST',

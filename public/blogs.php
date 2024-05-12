@@ -102,6 +102,27 @@ $result = mysqli_query($conn, $sql);
         }
     </style>
 
+    <script>
+        // When the page is scrolled, show/hide the back-to-top button
+        window.addEventListener("scroll", function() {
+            var backToTopButton = document.querySelector('.back-to-top');
+            if (window.scrollY > 200) {
+                backToTopButton.style.display = 'block';
+            } else {
+                backToTopButton.style.display = 'none';
+            }
+        });
+
+        // Smooth scrolling when the button is clicked
+        document.querySelector('.back-to-top a').addEventListener('click', function(e) {
+            e.preventDefault();
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+    </script>
+
     <!-- Your existing head content -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
@@ -256,7 +277,12 @@ $result = mysqli_query($conn, $sql);
 </head>
 
 <body>
-    <section>
+    <a href="#top" class="back-to-top">
+        <div>
+            <i class="fas fa-arrow-up"></i>
+        </div>
+    </a>
+    <section class="fade-in-hidden">
         <div class="content">
             <div class="relative">
                 <img src="../assets/image/blogbanner.png" class="w-full h-96 object-cover">
@@ -268,7 +294,7 @@ $result = mysqli_query($conn, $sql);
         </div>
     </section>
 
-    <section>
+    <section class="fade-in-hidden">
         <div style="width: 100%; text-align: center;">
             <h1 style="padding-top: 25px; font-size: 38px; font-weight: 800; margin: 0;">NEWS & PROJECTS</h1>
 
@@ -295,7 +321,7 @@ $result = mysqli_query($conn, $sql);
                 </div>
             </div>
 
-            <section style="padding-top: 20px;">
+            <section class="fade-in-hidden" style="padding-top: 20px;">
                 <div class="container mx-auto">
                     <div id="card-groups-container" class="card-groups-container">
                         <?php
