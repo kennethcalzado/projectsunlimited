@@ -1,4 +1,5 @@
 <?php
+$is_public_page = true;
 $pageTitle = "Login";
 ob_start();
 ?>
@@ -335,7 +336,7 @@ ob_start();
         }
     } );
 
-</script>>
+</script>
 
 <?php
 $script = ob_get_clean();

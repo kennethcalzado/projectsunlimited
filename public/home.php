@@ -1,4 +1,5 @@
 <?php
+$is_public_page = true;
 $pageTitle = "Projects Unlimited ";
 ob_start();
 

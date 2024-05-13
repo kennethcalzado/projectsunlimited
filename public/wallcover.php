@@ -1,4 +1,5 @@
 <?php
+$is_public_page = true;
 $pageTitle = "Products - Wallpaper";
 ob_start();
 ?>

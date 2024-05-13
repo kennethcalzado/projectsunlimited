@@ -1,4 +1,5 @@
 <?php
+$is_public_page = true;
 $pageTitle = "News & Projects";
 ob_start();
 include("../backend/conn.php");

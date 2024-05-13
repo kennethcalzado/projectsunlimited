@@ -68,9 +68,7 @@
     </style>
 </head>
 
-<main>
-    <?php echo $content ?? "" ?>
-</main>
+
 
 <footer class="bg-black text-white py-4">
     <div class="flex flex-col md:flex-row mx-16">

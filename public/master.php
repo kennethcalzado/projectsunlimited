@@ -27,35 +27,35 @@
         <!-- Header -->
         <?php
         // Determine the user's role
-        // session_start();
-        $userRole = $_SESSION['user_role'] ?? "guest"; // Default to 'guest' if the role is not set
-        
+        $userRole = $_SESSION['user_role'] ?? "guest";
+
         // Include appropriate navigation component based on user role
         if ($userRole == "guest") {
-            include __DIR__ . "/include/navbar.php";
-            if ($pageTitle == "Login") {
+            if (isset($is_public_page) && $is_public_page) {
+                include __DIR__ . "/include/navbar.php";
+
                 echo "<main>";
                 echo $content ?? "";
+                
+                if (!($pageTitle === "Login")) {
+                    include __DIR__ . "/include/footer.php";
+                } 
                 echo "</main>";
-            } else {
-                if (!isset($_SESSION['user_role'])) {
-                    // Redirect to login page
-                    header('Location: /public/login.php');
-                    exit();
-                }
 
-                include __DIR__ . "/include/footer.php";
+            } else {
+                // Redirect to login page
+                header('Location: /public/login.php');
+                exit();
             }
         } elseif (strtolower($userRole) == 'admin' || strtolower($userRole) == 'marketing') {
             include __DIR__ . "/include/sidebar.php";
             echo "<main>";
             echo $content ?? "";
             echo "</main>";
-        } else {
-            include __DIR__ . "/include/footer.php";
         }
 
         ?>
     </body>
     <?php echo $script ?? "" ?>
+
 </html>

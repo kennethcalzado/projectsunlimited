@@ -1,4 +1,5 @@
 <?php
+$is_public_page = true;
 $pageTitle = "Products - Floorings";
 ob_start();
 ?>
