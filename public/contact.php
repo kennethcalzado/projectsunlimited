@@ -85,89 +85,164 @@ function generateLocationHTML($location)
     }
 </script>
 
-<a href="#top" class="back-to-top">
-    <div>
-        <i class="fas fa-arrow-up"></i>
-    </div>
-</a>
+<head>
+    <style>
+        @media only screen and (max-width: 768px) {
 
-<div class="content">
-    <div class="relative fade-in-hidden">
-        <img src="../assets/image/contact.jpg" class="w-full h-96 object-cover object-top">
-        <div class="absolute inset-0 bg-black opacity-50"></div>
-        <div class="absolute inset-0 flex items-center justify-center">
-            <p class="text-white font-extrabold text-3xl text-center">
-                GET IN TOUCH WITH <br>
-                <span class="text-[#F6E381]">PROJECTS UNLIMITED</span>
-            </p>
+            /* Adjust font sizes */
+            body {
+                font-size: 16px;
+                /* Example font size for body text on mobile */
+            }
+
+            /* Adjust padding and margins to fit smaller screens */
+            .container {
+                padding: 10px;
+                /* Example padding for container elements on mobile */
+            }
+
+            /* Adjust image sizes */
+            .logo-image {
+                width: 100px;
+                /* Example width for logo image on mobile */
+            }
+
+            /* Hide certain elements on mobile */
+            .hide-on-mobile {
+                display: none;
+                /* Example of hiding elements on mobile */
+            }
+
+            /* Adjust column layout for smaller screens */
+            .grid-cols-1 {
+                grid-template-columns: 1fr;
+                /* Example of adjusting column layout for mobile */
+            }
+
+            /* Stack elements on top of each other */
+            .formcontainer .flex {
+                flex-direction: column;
+            }
+
+            /* Maximize form width */
+            .formcontainer .p-8 {
+                width: 100%;
+                padding: 8px;
+            }
+
+            /* Center form horizontally */
+            .formcontainer .p-8 {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                flex-direction: column;
+                width: 100%;
+            }
+
+            /* Make input fields wider */
+            .formcontainer input[type="text"],
+            .formcontainer input[type="email"],
+            .formcontainer textarea {
+                width: calc(100% - 10px);
+                /* Adjust width as needed */
+                padding: 0px;
+                margin-bottom: 10px;
+            }
+
+            /* Adjust button width */
+            .formcontainer #submitButton {
+                width: calc(100% - 10px);
+                /* Adjust width as needed */
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <a href="#top" class="back-to-top">
+        <div>
+            <i class="fas fa-arrow-up"></i>
         </div>
-    </div>
-    <p class="text-2xl font-semibold text-black px-16 mt-8">For any inquiries about our products, you may contact or
-        visit us through the details below.</p>
-    <div class="container mx-auto px-4 py-8 fade-in-hidden">
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            <iframe id="googleMap" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3860.9708020807752!2d120.97184307591911!3d14.600739177071674!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3397ca102318b44d%3A0x6483de216eafa800!2sProjects%20Unlimited!5e0!3m2!1sen!2sph!4v1710422091205!5m2!1sen!2sph" width="100%" height="500" style="border:0" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-            <div class="address-container">
-                <h2 class="text-xl font-semibold mb-4">You can visit us at these locations:</h2>
-                <ul>
-                    <?php foreach ($locations as $location) : ?>
-                        <?= generateLocationHTML($location) ?>
-                    <?php endforeach; ?>
-                </ul>
+    </a>
+
+    <div class="content">
+        <div class="relative fade-in-hidden">
+            <img src="../assets/image/contact.jpg" class="w-full h-96 object-cover object-top">
+            <div class="absolute inset-0 bg-black opacity-50"></div>
+            <div class="absolute inset-0 flex items-center justify-center">
+                <p class="text-white font-extrabold text-3xl text-center">
+                    GET IN TOUCH WITH <br>
+                    <span class="text-[#F6E381]">PROJECTS UNLIMITED</span>
+                </p>
             </div>
         </div>
-    </div>
-
-    <div class="flex items-center justify-center p-2 px-16 fade-in-hidden">
-        <div class="border-b border-gray-800 flex-grow border-4 "></div>
-        <h3 class="text-gray-800 text-right font-bold text-3xl mx-4">OR</h3>
-        <div class="border-b border-gray-800 flex-grow border-4 "></div>
-    </div>
-    <div class="formcontainer fade-in-hidden">
-        <p class="text-2xl font-semibold text-black px-16 mt-8">You can also fill out the form below and send us a
-            message.</p>
-        <div class="flex px-8">
-            <div class="w-1/2 p-8">
-                <form id="contactForm" class="space-y-4">
-                    <div class="mb-4">
-                        <label for="name" class="block text-black font-bold text-xl">Name:</label>
-                        <input type="text" id="name" name="name" placeholder="Name" class="w-full p-2 border rounded-md" required>
-                    </div>
-                    <div class="mb-4">
-                        <label for="email" class="block text-black font-bold text-xl">E-mail:</label>
-                        <input type="email" id="email" name="email" placeholder="E-mail" class="w-full p-2 border rounded-md" required>
-                    </div>
-                    <div class="mb-4">
-                        <label for="phone" class="block text-black font-bold text-xl">Phone Number:</label>
-                        <input type="text" id="phone" name="phone" placeholder="Phone Number" class="w-full p-2 border rounded-md" required>
-                        <small class="text-red-500" id="phone-error"></small>
-                    </div>
-                    <div class="mb-4">
-                        <label for="subject" class="block text-black font-bold text-xl">Subject of Concern:</label>
-                        <input type="text" id="subject" name="subject" placeholder="Subject of Concern" class="w-full p-2 border rounded-md" required>
-                    </div>
-                    <div class="mb-4">
-                        <label for="message" class="block text-black font-bold text-xl">Message:</label>
-                        <textarea id="message" name="message" rows="4" placeholder="Enter Your Inquiry or Concern" class="w-full p-2 border resize-none rounded-md" required></textarea>
-                    </div>
-                    <div class="mb-4 flex justify-end">
-                        <button id="submitButton" style="border-radius: 10px;" class="yellow-btn text-xl w-50 h-12 font-semibold">Submit</button>
-                    </div>
-                </form>
+        <p class="text-2xl font-semibold text-black px-16 mt-8">For any inquiries about our products, you may contact or
+            visit us through the details below.</p>
+        <div class="container mx-auto px-4 py-8 fade-in-hidden">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <iframe id="googleMap" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3860.9708020807752!2d120.97184307591911!3d14.600739177071674!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3397ca102318b44d%3A0x6483de216eafa800!2sProjects%20Unlimited!5e0!3m2!1sen!2sph!4v1710422091205!5m2!1sen!2sph" width="100%" height="500" style="border:0" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                <div class="address-container">
+                    <h2 class="text-xl font-semibold mb-4">You can visit us at these locations:</h2>
+                    <ul>
+                        <?php foreach ($locations as $location) : ?>
+                            <?= generateLocationHTML($location) ?>
+                        <?php endforeach; ?>
+                    </ul>
+                </div>
             </div>
-            <div class="w-1/2 p-8">
-                <div class="relative h-100 w-full flex items-center justify-center my-4">
-                    <img src="../assets/image/contactusformimage.jpg" alt="Image Description" class="w-full h-100 object-cover">
-                    <div class="absolute inset-0 bg-black opacity-50"></div>
+        </div>
+
+        <div class="flex items-center justify-center p-2 px-16 fade-in-hidden">
+            <div class="border-b border-gray-800 flex-grow border-4 "></div>
+            <h3 class="text-gray-800 text-right font-bold text-3xl mx-4">OR</h3>
+            <div class="border-b border-gray-800 flex-grow border-4 "></div>
+        </div>
+        <div class="formcontainer fade-in-hidden">
+            <p class="text-2xl font-semibold text-black px-16 mt-8">You can also fill out the form below and send us a message.</p>
+            <div class="flex px-8">
+                <div class="w-1/2 p-8">
+                    <form id="contactForm" class="space-y-4">
+                        <div class="mb-4">
+                            <label for="name" class="block text-black font-bold text-xl">Name:</label>
+                            <input type="text" id="name" name="name" placeholder="Name" class="w-full p-2 border rounded-md" required>
+                        </div>
+                        <div class="mb-4">
+                            <label for="email" class="block text-black font-bold text-xl">E-mail:</label>
+                            <input type="email" id="email" name="email" placeholder="E-mail" class="w-full p-2 border rounded-md" required>
+                        </div>
+                        <div class="mb-4">
+                            <label for="phone" class="block text-black font-bold text-xl">Phone Number:</label>
+                            <input type="text" id="phone" name="phone" placeholder="Phone Number" class="w-full p-2 border rounded-md" required>
+                            <small class="text-red-500" id="phone-error"></small>
+                        </div>
+                        <div class="mb-4">
+                            <label for="subject" class="block text-black font-bold text-xl">Subject of Concern:</label>
+                            <input type="text" id="subject" name="subject" placeholder="Subject of Concern" class="w-full p-2 border rounded-md" required>
+                        </div>
+                        <div class="mb-4">
+                            <label for="message" class="block text-black font-bold text-xl">Message:</label>
+                            <textarea id="message" name="message" rows="4" placeholder="Enter Your Inquiry or Concern" class="w-full p-2 border resize-none rounded-md" required></textarea>
+                        </div>
+                        <div class="mb-4 flex justify-end">
+                            <button id="submitButton" style="border-radius: 10px;" class="yellow-btn text-xl w-50 h-12 font-semibold">Submit</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="w-1/2 p-8">
+                    <div class="relative h-100 w-full flex items-center justify-center my-4">
+                        <img src="../assets/image/contactusformimage.jpg" alt="Image Description" class="w-full h-100 object-cover">
+                        <div class="absolute inset-0 bg-black opacity-50"></div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
-<?php
-$content = ob_get_clean();
-include("../public/master.php");
-?>
+    <?php
+    $content = ob_get_clean();
+    include("../public/master.php");
+    ?>
+</body>
 
 <!--SCRIPT-->
 <script>

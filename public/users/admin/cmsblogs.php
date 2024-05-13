@@ -74,7 +74,7 @@ ob_start();
                     </div>
                     <div class="mb-4">
                         <label for="thumbnail" class="block font-semibold mb-2">Thumbnail</label>
-                        <input type="file" name="thumbnail" id="thumbnail" class="border rounded px-4 py-2 w-full" accept="image/*">
+                        <input type="file" name="thumbnail" id="thumbnail" class="border rounded px-4 py-2 w-full" accept="image/*" required>
                     </div>
                     <div class="mb-4">
                         <label for="images" class="block font-semibold mb-2">Images</label>
@@ -146,7 +146,11 @@ ob_start();
                     </div>
                     <div class="mb-4">
                         <label for="updateThumbnail" class="block font-semibold mb-2">Thumbnail</label>
-                        <input type="file" name="updateThumbnail" id="updateThumbnail" class="border rounded px-4 py-2 w-full" accept="image/*">
+                        <!-- Thumbnail preview container -->
+                        <div id="thumbnailPreview" class="mt-2 mb-2">
+                            <img id="thumbnailImg" src="#" alt="Thumbnail Preview" style="max-width: 100px; max-height: 100px;">
+                        </div>
+                        <input type="file" name="updateThumbnail" id="updateThumbnail" class="border rounded px-4 py-2 w-full" accept="image/*" required>
                     </div>
                     <div class="mb-4">
                         <label class="block font-semibold mb-2">Existing Images</label>
@@ -237,7 +241,7 @@ ob_start();
                         html += '<td>' + item.type + '</td>';
                         html += '<td class="action-btns">';
                         html += '<button onclick="viewPost(\'' + item.page + '\')" class="btn-view" target="_blank"><i class="fas fa-eye"></i> View</button>';
-                        html += '<button onclick="openUpdateModal(' + item.id + ', \'' + item.title.replace(/'/g, "\\'") + '\', \'' + encodeURIComponent(item.description) + '\', \'' + item.type + '\', \'' + item.date + '\', \'' + item.images + '\')" class="yellow-btn btn-primary" data-title="' + item.title.replace(/'/g, "\\'") + '" data-description="' + encodeURIComponent(item.description) + '" data-type="' + item.type + '" data-date="' + item.date + '" data-images="' + item.images + '"><i class="fas fa-edit"></i> Update</button>';
+                        html += '<button onclick="openUpdateModal(' + item.id + ', \'' + item.title.replace(/'/g, "\\'") + '\', \'' + encodeURIComponent(item.description) + '\', \'' + item.type + '\', \'' + item.date + '\', \'' + item.images + '\', \'' + item.thumbnail + '\')" class="yellow-btn btn-primary" data-title="' + item.title.replace(/'/g, "\\'") + '" data-description="' + encodeURIComponent(item.description) + '" data-type="' + item.type + '" data-date="' + item.date + '" data-images="' + item.images + '"><i class="fas fa-edit"></i> Update</button>';
                         html += '<button onclick="openDeleteModal(' + item.id + ')" class="btn btn-danger"><i class="fas fa-trash-alt"></i> Delete</button>';
                         // Add more action buttons if needed
                         html += '</td>';
@@ -351,7 +355,7 @@ ob_start();
 
         // Update modal functions //
         // Open the update modal with blog details //
-        function openUpdateModal(blogId, title, description, type, date, images) {
+        function openUpdateModal(blogId, title, description, type, date, images, thumbnail) {
             var modal = document.getElementById('updateModal');
             modal.classList.remove('hidden');
             modal.classList.remove('fade-out'); // Remove fade-out class if applied
@@ -408,6 +412,17 @@ ob_start();
 
                     imagesPreview.appendChild(imgContainer); // Append the container to the images preview
                 }
+            }
+
+            // Display thumbnail preview
+            if (thumbnail) {
+                var thumbnailPreview = document.getElementById('thumbnailPreview');
+                var thumbnailImg = document.getElementById('thumbnailImg');
+                thumbnailImg.src = '../../../assets/blogs_img/' + thumbnail;
+                thumbnailPreview.style.display = 'block'; // Show the thumbnail preview container
+            } else {
+                var thumbnailPreview = document.getElementById('thumbnailPreview');
+                thumbnailPreview.style.display = 'none'; // Hide the thumbnail preview container if no thumbnail
             }
         }
 

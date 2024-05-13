@@ -1,5 +1,5 @@
 <?php
-$pageTitle = "HIstory";
+$pageTitle = "History";
 ob_start();
 ?>
 
@@ -90,23 +90,23 @@ ob_start();
     <section class="fade-in-hidden" style="padding-top: 40px; position: relative; text-align: center; display: flex; justify-content: center; align-items: center;">
         <h1 style="text-align: center; font-size: 38px; font-weight: 800; position: absolute; top: 0; left: 50%; transform: translateX(-50%); padding-top: 30px;">PROJECTS UNLIMITED THROUGH THE YEARS</h1>
 
-
-        <div class="flex justify-center mt-10" style="padding-left: 190px; position: absolute; z-index: 2; top: 120px; left: 0;">
-            <div class="transition-opacity duration-1000 delay-1000 ease-in-out hover:scale-110 opacity-0">
-                <img src="../assets/image/company1.png" style="width: 450px !important; height: auto !important;">
+        <div class="flex justify-center" style="position: absolute; z-index: 2; top: 10%;">
+            <div class="transition-opacity duration-1000 delay-1000 ease-in-out hover:scale-110 opacity-0" style="margin-right: 20px; margin-bottom: 20px;">
+                <img src="../assets/image/company1.png" style="width: 420px !important; height: auto !important;">
             </div>
-        </div>
-        <div class="flex justify-center items-center" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
-            <div class="transition-opacity duration-1000 delay-1000 ease-in-out hover:scale-110 opacity-0">
-                <img src="../assets/image/company2.jpg" style="width: 450px !important; height: auto !important;">
-            </div>
-        </div>
-        <div class="flex justify-center mt-10" style="padding-right: 190px; position: absolute; bottom: 90px; right: 0;">
-            <div class="transition-opacity duration-1000 delay-1000 ease-in-out hover:scale-110 opacity-0">
-                <img src="../assets/image/company3.png" style="width: 450px !important; height: auto !important;">
+            <div class="transition-opacity duration-1000 delay-1000 ease-in-out hover:scale-110 opacity-0" style="margin-bottom: 20px;">
+                <img src="../assets/image/company2.jpg" style="width: 420px !important; height: auto !important;">
             </div>
         </div>
 
+        <div class="flex justify-center" style="position: absolute; z-index: 2; top: 50%;">
+            <div class="transition-opacity duration-1000 delay-1000 ease-in-out hover:scale-110 opacity-0" style="margin-right: 20px; margin-bottom: 20px;">
+                <img src="../assets/image/company3.png" style="width: 420px !important; height: auto !important;">
+            </div>
+            <div class="transition-opacity duration-1000 delay-1000 ease-in-out hover:scale-110 opacity-0" style="margin-bottom: 20px;">
+                <img src="../assets/image/company4.jpg" style="width: 420px !important; height: auto !important;">
+            </div>
+        </div>
 
         <div style="position: relative; display: flex; align-items: center; z-index: -1; height: 100vh;">
             <h1 id="years" style="color: #F6E17A; font-size: 800px; font-weight: font-black; margin: 0; letter-spacing: -0.13em; position: relative; z-index: 1; margin-left: -90px; margin-top: -120px;"></h1>
@@ -117,10 +117,10 @@ ob_start();
                 <p style="padding-left: 80px; color: #F6E17A; font-size: 98px; margin: 0; font-weight: font-black;">A</p>
                 <p style="padding-left: 80px; color: #F6E17A; font-size: 98px; margin: 0; font-weight: font-black;">R</p>
                 <p style="padding-left: 80px; color: #F6E17A; font-size: 98px; margin: 0; font-weight: font-black;">S</p>
-
             </div>
         </div>
     </section>
+
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {
@@ -142,17 +142,13 @@ ob_start();
         });
     </script>
 
-
-
-
-
     <p class="text-2xl font-semibold text-black" style=" text-align: justify;  padding: 0px 190px; margin: 0;">
 
     </p>
     <br>
     <div class="fade-in-hidden" style="position: relative;">
         <div style=" background-color: #F6E17A; width: 100%; text-align: center; padding: 0px 190px; position: relative;">
-            <p class="text-2xl font-semibold text-black" style="text-align: justify; padding: 20px 40px 40px 40px; margin: 0;">
+            <p class="text-2xl font-semibold text-black" style="text-align: justify; padding: 10px 40px 40px 40px; margin: 0;">
                 It started as a leading provider of two major flooring products –
                 vinyl tiles and ceramic tiles – working exclusively with the
                 biggest producers in USA (Amtico Vinyl and Tarkett Vinyl Floors),

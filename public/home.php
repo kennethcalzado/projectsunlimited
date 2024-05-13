@@ -23,27 +23,6 @@ include("../backend/conn.php");
     </style>
 </head>
 
-<script>
-    // When the page is scrolled, show/hide the back-to-top button
-    window.addEventListener("scroll", function() {
-        var backToTopButton = document.querySelector('.back-to-top');
-        if (window.scrollY > 200) {
-            backToTopButton.style.display = 'block';
-        } else {
-            backToTopButton.style.display = 'none';
-        }
-    });
-
-    // Smooth scrolling when the button is clicked
-    document.querySelector('.back-to-top a').addEventListener('click', function(e) {
-        e.preventDefault();
-        window.scrollTo({
-            top: 0,
-            behavior: 'smooth'
-        });
-    });
-</script>
-
 <body>
     <a href="#top" class="back-to-top">
         <div>
@@ -508,8 +487,8 @@ filecontent sa add blog ------
 insert real data (blogs) -----
 profile admin (sinimulan na) --------
 update history from gdrive (pics) digicam pic kulang sa through the eyars ----
+page animations---------
 audit logs
-page animations 
 mobile scaling
 connect db sa home display (brands nalang)
 finalize main page contents
