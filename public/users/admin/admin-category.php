@@ -663,112 +663,111 @@ ob_start();
         $(this).removeClass('border-red-500'); // Remove red border
         $(this).next('.error-message').hide(); // Hide error message
     });
- // ADD MODAL
-$('#addCategoryForm').submit(function(event) {
-    event.preventDefault();
+    // ADD MODAL
+    $('#addCategoryForm').submit(function (event) {
+        event.preventDefault();
 
-    // Reset previous error messages and styles
-    $('.error-message').text('').hide();
-    $('.border-red-500').removeClass('border-red-500');
+        // Reset previous error messages and styles
+        $('.error-message').text('').hide();
+        $('.border-red-500').removeClass('border-red-500');
 
-    var formData = new FormData($(this)[0]);
-    var categoryName = $('#addcategoryName').val();
-    var pageType = $('#addcategoryType').val();
-    var categoryType = $('#addcategoryCat').val();
-    var mainCategory = $('#mainCategoryDropdown').val();
-    var mainCategoryImageInput = $('#mainCategoryImageInput').val();
-    var mainCategoryCoverInput = $('#mainCategoryCoverInput').val();
+        var formData = new FormData($(this)[0]);
+        var categoryName = $('#addcategoryName').val();
+        var pageType = $('#addcategoryType').val();
+        var categoryType = $('#addcategoryCat').val();
+        var mainCategory = $('#mainCategoryDropdown').val();
+        var mainCategoryImageInput = $('#mainCategoryImageInput').val();
+        var mainCategoryCoverInput = $('#mainCategoryCoverInput').val();
 
-    // Validation: Check if fields are empty
-    if (categoryName === '') {
-        $('#categoryNameError').text('Please enter a category name.').show();
-        $('#addcategoryName').addClass('border-red-500');
-    }
-
-    if (pageType === '') {
-        $('#pageTypeError').text('Please Select a Page Type.').show();
-        $('#addcategoryType').addClass('border-red-500');
-    }
-
-    if (categoryType === '') {
-        $('#categoryTypeError').text('Please Select a Category Type.').show();
-        $('#addcategoryCat').addClass('border-red-500');
-    }
-
-    if (mainCategory === '') {
-        $('#mainCategoryError').text('Please select a Main Category.').show();
-        $('#mainCategory').addClass('border-red-500');
-    }
-
-    if (mainCategoryImageInput === '') {
-        $('#mainCategoryImageInputError').text('Please insert an Image Cover.').show();
-        $('#mainCategoryImageInput').addClass('border-red-500');
-    }
-
-    if (mainCategoryCoverInput === '') {
-        $('#mainCategoryCoverInputError').text('Please insert an Image Header.').show();
-        $('#mainCategoryCoverInput').addClass('border-red-500');
-    }
-    // Validation: Check for HTML or SQL injections
-    var regex = /(<([^>]+)>)/ig; // Regex to check for HTML tags
-    if (regex.test(categoryName)) {
-        $('#categoryNameError').text('Invalid input.').show();
-        $('#addcategoryName').addClass('border-red-500');
-    }
-
-    if (regex.test(pageType)) {
-        $('#pageTypeError').text('Invalid input.').show();
-        $('#addcategoryType').addClass('border-red-500');
-    }
-
-    if (regex.test(categoryType)) {
-        $('#categoryTypeError').text('Invalid input.').show();
-        $('#addcategoryCat').addClass('border-red-500');
-    }
-
-    // If any field has an error, prevent form submission
-    if ($('.error-message:visible').length > 0) {
-        return;
-    }
-
-    $.ajax({
-        type: 'POST',
-        url: '../../../backend/category/addcategory.php',
-        data: formData,
-        contentType: false,
-        processData: false,
-        success: function(response) {
-            console.log(response);
-
-            Swal.fire({
-                icon: 'success',
-                title: 'Success',
-                text: 'Category has been successfully added!',
-                showConfirmButton: false,
-                timer: 1000
-            }).then(function() {
-                $('#addProdCategoryModal').addClass("hidden");
-                setTimeout(function() {
-                    location.reload();
-                }, 1000);
-            });
-        },
-        error: function(xhr, status, error) {
-            console.error(error);
-            Swal.fire({
-                icon: 'error',
-                title: 'Error',
-                text: 'Failed to add category. Please try again.'
-            });
+        // Validation: Check if fields are empty
+        if (categoryName === '') {
+            $('#categoryNameError').text('Please enter a category name.').show();
+            $('#addcategoryName').addClass('border-red-500');
         }
-    });
-});
 
-$('#closeAddModal, #closeModal').click(function() {
-    $('#addCategoryForm')[0].reset(); // Reset the form to its default state
-    $('.error-message').empty();
-    $('.border-red-500').removeClass('border-red-500');
-});
+        if (pageType === '') {
+            $('#pageTypeError').text('Please Select a Page Type.').show();
+            $('#addcategoryType').addClass('border-red-500');
+        }
+
+        if (categoryType === '') {
+            $('#categoryTypeError').text('Please Select a Category Type.').show();
+            $('#addcategoryCat').addClass('border-red-500');
+        }
+
+        if (mainCategory === '') {
+            $('#mainCategoryError').text('Please select a Main Category.').show();
+            $('#mainCategory').addClass('border-red-500');
+        }
+
+        if (mainCategoryImageInput === '') {
+            $('#mainCategoryImageInputError').text('Please insert an Image Cover.').show();
+            $('#mainCategoryImageInput').addClass('border-red-500');
+        }
+
+        if (mainCategoryCoverInput === '') {
+            $('#mainCategoryCoverInputError').text('Please insert an Image Header.').show();
+            $('#mainCategoryCoverInput').addClass('border-red-500');
+        }
+        // Validation: Check for HTML or SQL injections
+        var regex = /(<([^>]+)>)/ig; // Regex to check for HTML tags
+        if (regex.test(categoryName)) {
+            $('#categoryNameError').text('Invalid input.').show();
+            $('#addcategoryName').addClass('border-red-500');
+        }
+
+        if (regex.test(pageType)) {
+            $('#pageTypeError').text('Invalid input.').show();
+            $('#addcategoryType').addClass('border-red-500');
+        }
+
+        if (regex.test(categoryType)) {
+            $('#categoryTypeError').text('Invalid input.').show();
+            $('#addcategoryCat').addClass('border-red-500');
+        }
+
+        // If any field has an error, prevent form submission
+        if ($('.error-message:visible').length > 0) {
+            return;
+        }
+
+        $.ajax({
+            type: 'POST',
+            url: '../../../backend/category/addcategory.php',
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function (response) {
+                console.log(response);
+                // Swal.fire({
+                //     icon: 'success',
+                //     title: 'Success',
+                //     text: 'Category has been successfully added!',
+                //     showConfirmButton: false,
+                //     timer: 1000
+                // }).then(function () {
+                //     $('#addProdCategoryModal').addClass("hidden");
+                //     setTimeout(function () {
+                //         location.reload();
+                //     }, 1000);
+                // });
+            },
+            error: function (xhr, status, error) {
+                console.error(error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Failed to add category. Please try again.'
+                });
+            }
+        });
+    });
+
+    $('#closeAddModal, #closeModal').click(function () {
+        $('#addCategoryForm')[0].reset(); // Reset the form to its default state
+        $('.error-message').empty();
+        $('.border-red-500').removeClass('border-red-500');
+    });
 
 
     // VIEW MODAL
@@ -1016,7 +1015,7 @@ $('#closeAddModal, #closeModal').click(function() {
         // Validate Main Category Image Input if visible
         if ($('#editMainCategoryImage').is(':visible')) {
             var mainCategoryImage = $('#editMainCategoryImageInput').val();
-            if (!mainCategoryImage) {
+            if (!mainCategoryImage && $('#editMainCategoryImagePreview img').length === 0) {
                 $('#editMainCategoryImageInput').addClass('border-red-500');
                 $('#editMainCategoryImageInputError').removeClass('hidden').text('Please insert an image cover');
             }
@@ -1024,11 +1023,12 @@ $('#closeAddModal, #closeModal').click(function() {
         // Validate Main Category Cover Input if visible
         if ($('#editMainCategoryCover').is(':visible')) {
             var mainCategoryCoverInput = $('#editMainCategoryCoverInput').val();
-            if (!mainCategoryCoverInput) {
+            if (!mainCategoryCoverInput && $('#editMainCategoryCoverPreview img').length === 0) {
                 $('#editMainCategoryCoverInput').addClass('border-red-500');
                 $('#editMainCategoryCoverInputError').removeClass('hidden').text('Please insert an image header');
             }
         }
+
 
         // Prevent form submission if any validation fails
         if ($('#editMainCategoryImageInputError').is(':visible') || $('#editMainCategoryCoverInputError').is(':visible')) {
