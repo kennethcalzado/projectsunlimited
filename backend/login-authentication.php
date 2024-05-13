@@ -42,7 +42,7 @@ if (isset($_SERVER['REQUEST_METHOD'])) {
                 $user = $result->fetch_assoc();
                 if (password_verify($password, $user['password_hash'])) {
                     // Password is correct, login successful
-
+                     
                     // Store user data in session variables
                     $_SESSION['user_id'] = $user['user_id'];
 
@@ -55,8 +55,13 @@ if (isset($_SERVER['REQUEST_METHOD'])) {
                         $_SESSION['user_role'] = $roleData['role_name'];
                     }
 
-                    // echo $_SESSION['user_role'];
-                    // exit;
+                    if (isset($_POST['remember'])) {
+                        // Generate a unique token
+                        $token = generate_token();
+                
+                        // Store the token in a cookie with a long expiration time
+                        setcookie('remember_token', $token, time() + (60 * 60 * 24 * 30), '/');
+                    }
 
                     // Redirect based on user's role
                     if ($_SESSION['user_role'] === 'admin' || $_SESSION['user_role'] === 'marketing') {
@@ -80,5 +85,10 @@ if (isset($_SERVER['REQUEST_METHOD'])) {
             }
         }
     }
+}
+
+function generate_token() {
+    // Generate a unique token using a secure method
+    return bin2hex(random_bytes(32));
 }
 ?>

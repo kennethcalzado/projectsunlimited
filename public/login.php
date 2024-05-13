@@ -2,7 +2,7 @@
 $pageTitle = "Login";
 ob_start();
 ?>
-<div class="container mx-auto my-2 mt-16">
+<div class="container mx-auto my-2 mt-6">
     <!-- Outer Row -->
     <div class="flex justify-center">
         <div class="w-full lg:w-10/12 md:w-9/12">
@@ -44,7 +44,7 @@ ob_start();
                                     </div>
                                     <div class="mb-4">
                                         <label class="inline-flex items-center">
-                                            <input type="checkbox" class="form-checkbox text-blue-500">
+                                            <input type="checkbox" class="form-checkbox text-blue-500" name="remember">
                                             <span class="ml-2 text-gray-700">Remember Me</span>
                                         </label>
                                     </div>
@@ -70,7 +70,6 @@ ob_start();
                     Unlimited Powered by Projects Unlimited</i></p>
         </div>
     </footer>
-
 </div>
 
 <div id="popup-handler"></div> <!-- Pop-up space -->
@@ -133,7 +132,7 @@ ob_start();
                 let formData = $( this ).serialize(); // Serialize form data
 
                 // Determine the URL based on whether it's an update or create action
-                let url = "../backend/login-authorization.php";
+                let url = "../backend/login-authentication.php";
 
                 $.ajax( {
                     url: url,
