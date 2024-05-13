@@ -169,16 +169,15 @@ ob_start();
         <div class="border-b border-black flex-grow border-2 mt-2 mb-3"></div>
         <!-- Add instruction -->
         <p class="text-black justify-center mb-4 text-lg"><b class="mr-2">Instruction:</b>To upload multiple or bulk
-            images into the table, select all product images.
-            Once
-            everything is uploaded, you may insert the product details such as name, brand, category, and description
-            via the edit button under the action column</p>
+            images into the table, select all product images. Once everything is uploaded, you may insert the product
+            details such as name, brand, category, and description via the edit button under the action column</p>
         <form id="uploadImageForm" enctype="multipart/form-data" class="mt-2">
-            <div class="mb-4 flex flex-col">
+            <div class="flex flex-col">
                 <label for="images" class="text-sm font-medium text-gray-700 mb-1">Select Images</label>
                 <input type="file" id="images" name="images[]" multiple accept=".jpg, .jpeg, .png"
                     class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent">
             </div>
+            <span id="errorMessages" class="text-red-500 text-sm"></span>
             <div class="flex justify-end">
                 <button type="submit" id="uploadImagesBtn"
                     class="btn btn-primary rounded-md text-center h-10 mt-3 sm:mt-4 !px-4 py-0 text-lg flex items-center mr-2">Upload
@@ -208,19 +207,24 @@ ob_start();
                 <label for="addproductName" class="text-sm font-medium text-gray-700 mb-1">Product Name</label>
                 <input type="text" id="addproductName" name="productName" placeholder="Enter Product Name"
                     class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent">
+                <div id="productNameError" class="text-red-500 text-sm hidden">Please enter a product name.</div>
             </div>
             <div class="mb-4 flex flex-col">
-                <label for="addproductImage" class="text-sm font-medium text-gray-700 mb-1">Insert Product Image</label>
+                <label for="addproductImage" class="text-sm font-medium text-gray-700 mb-1">Please Insert a Product
+                    Image</label>
                 <input type="file" id="addproductImage" name="productImage" accept=".jpg, .jpeg, .png"
                     class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
                     onchange="previewImage(event)">
                 <div id="imagePreview"></div>
+                <div id="productImageError" class="text-red-500 text-sm hidden">Please select a product image.</div>
             </div>
             <div class="mb-4 flex flex-col">
                 <label for="addproductDescription" class="text-sm font-medium text-gray-700 mb-1">Description</label>
                 <textarea id="addproductDescription" name="productDescription" rows="4"
                     placeholder="Enter Product Description"
                     class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent"></textarea>
+                <div id="productDescriptionError" class="text-red-500 text-sm hidden">Please enter a product
+                    description.</div>
             </div>
             <div class="flex mb-4 justify-center">
                 <div class="flex flex-col mr-4" style="flex: 1;">
@@ -263,7 +267,6 @@ ob_start();
         </form>
     </div>
 </div>
-
 <!-- Edit Product Modal -->
 <div id="editProductModal" class="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 hidden">
     <div class="bg-white p-4 rounded-md shadow-md max-w-3xl w-full h-[90vh] overflow-auto">
@@ -282,6 +285,7 @@ ob_start();
             <div class="mb-4 flex flex-col">
                 <label class="text-sm font-medium text-gray-700 mb-1">Product Name</label>
                 <input id="editProductName" type="text" class="border rounded-md px-3 py-2 text-sm">
+                <span id="editProductNameError" class="text-red-500 text-sm hidden">Please enter a product name.</span>
             </div>
             <!-- Product Image -->
             <div class="mb-4 flex flex-col">
@@ -289,12 +293,16 @@ ob_start();
                 <input type="file" id="editProductImage" name="editedProductImage" accept=".jpg, .jpeg, .png">
                 <img id="previewProductImage" class="border rounded-md mt-2" src="#" alt="Product Image"
                     style="max-width: 100px; max-height: 100px; display: none;">
+                <span id="editProductImageError" class="text-red-500 text-sm hidden">Please Insert a Product
+                    Image</span>
             </div>
 
             <!-- Description -->
             <div class="mb-4 flex flex-col">
                 <label class="text-sm font-medium text-gray-700 mb-1">Description</label>
                 <textarea id="editProductDescription" class="border rounded-md px-3 py-2 text-sm"></textarea>
+                <span id="editProductDescriptionError" class="text-red-500 text-sm hidden">Please enter a product
+                    description.</span>
             </div>
             <!-- Brand and Category -->
             <div class="flex mb-4 justify-center">
@@ -303,12 +311,15 @@ ob_start();
                     <select id="editProductBrand" class="border rounded-md px-3 py-2 text-sm">
                         <!-- Options will be dynamically added here -->
                     </select>
+                    <span id="editProductBrandError" class="text-red-500 text-sm hidden">Please select a Brand</span>
                 </div>
                 <div class="flex flex-col" style="flex: 1;">
                     <label class="text-sm font-medium text-gray-700 mb-1">Category</label>
                     <select id="editProductCategory" class="border rounded-md px-3 py-2 text-sm">
                         <!-- Options will be dynamically added here -->
                     </select>
+                    <span id="editProductCategoryError" class="text-red-500 text-sm hidden">Please select a
+                        Category</span>
                 </div>
             </div>
             <!-- Variation Section -->
@@ -771,48 +782,6 @@ ob_start();
             productListing.html("<tr><td colspan='7' class='text-center justify-center font-bold text-red-800'>Failed to fetch products</td></tr>");
         }
     });
-    function validateForm() {
-        let isValid = true;
-
-        // Validate each input field in the main form
-        $('#addProductForm input[type="text"], #addProductForm textarea').each(function () {
-            // If the field is empty or contains potentially harmful input, add red border and show error message
-            const fieldValue = $(this).val().trim();
-            if (!fieldValue || containsHarmfulInput(fieldValue)) {
-                $(this).addClass('border-red-600');
-                $(this).siblings('.error-message').text('Please fill this field with valid input').show();
-                isValid = false;
-            } else {
-                $(this).removeClass('border-red-600'); // Remove red border when field is filled
-                $(this).siblings('.error-message').hide();
-            }
-        });
-        // Check if a file is selected
-        const fileInput = $('#addproductImage');
-        if (!fileInput.val()) {
-            fileInput.addClass('border-red-600');
-            fileInput.siblings('.error-message').text('Please choose an image').show();
-            isValid = false;
-        } else {
-            fileInput.removeClass('border-red-600');
-            fileInput.siblings('.error-message').hide();
-        }
-
-        return isValid;
-    }
-
-
-    // Function to check if input contains potentially harmful content
-    function containsHarmfulInput(input) {
-        // Define patterns for HTML and SQL injection
-        const htmlPattern = /<[^>]*>/;
-        const sqlPattern = /[\b]*(?:\|select|update|delete|insert|drop|truncate|create|grant|alter|execute|exec|union|order by|group by|column_name|table_name|information_schema)\b/i;
-
-        // Check if input matches any of the patterns
-        return htmlPattern.test(input) || sqlPattern.test(input);
-    }
-
-
 
     // Open modal when Add Product button is clicked
     $("#addProduct").click(function () {
@@ -858,12 +827,53 @@ ob_start();
     // Close upload image modal
     $("#closeUploadModal").click(function () {
         $("#uploadImageModal").addClass("hidden");
+        $("#images").val("");
+        $("#images").removeClass("border-red-500");
+        $("#errorMessages").empty();
+    });
+
+    // Handle change event for file input (images)
+    $("#images").change(function () {
+        // Remove red border and error message when an image is inserted
+        $("#images").removeClass("border-red-500");
+        $("#errorMessages").empty();
     });
 
     // Handle form submission to upload images
     $("#uploadImageForm").submit(function (event) {
         event.preventDefault();
+
+        // Reset previous error messages
+        $("#errorMessages").empty();
+
+        // Validate form inputs
+        var isValid = true;
+        if ($("#images").get(0).files.length === 0) {
+            $("#images").addClass("border-red-500");
+            $("#errorMessages").append("<p class='text-sm'>Please insert an image</p>");
+            isValid = false;
+        } else {
+            $("#images").removeClass("border-red-500");
+        }
+
+        // Check for HTML and SQL injection
         var formData = new FormData(this);
+        formData.forEach(function (value, key) {
+            if (/\<(.*?)\>/g.test(value)) {
+                $("#" + key.replace(/([!"#$%&'()*+,./:;<=>?@[\]^`{|}~])/g, '\\$1')).addClass("border-red-500");
+                $("#errorMessages").append("<p class='text-sm'>Invalid input in " + key + " field.</p>");
+                isValid = false;
+            } else {
+                $("#" + key.replace(/([!"#$%&'()*+,./:;<=>?@[\]^`{|}~])/g, '\\$1')).removeClass("border-red-500");
+            }
+        });
+
+        if (!isValid) {
+            return false;
+        }
+
+
+        // Proceed with form submission if all validations pass
         $.ajax({
             url: "../../../backend/product/bulkupload.php",
             type: "POST",
@@ -900,6 +910,7 @@ ob_start();
             }
         });
     });
+
 
     // Fetch and populate dropdowns for brand and category
     $.ajax({
@@ -974,63 +985,129 @@ ob_start();
         }
     });
 
+    function validateFields() {
+        let isValid = true;
+
+        const productName = document.getElementById('addproductName');
+        const productImage = document.getElementById('addproductImage');
+        const productDescription = document.getElementById('addproductDescription');
+
+        // Regular expression to check for HTML and SQL injections
+        const regex = /^[a-zA-Z0-9\s\.,_-]*$/;
+
+        // Function to check for HTML or SQL injections
+        function hasInjections(input) {
+            const regex = /<[^>]*>?|['"\\]/g;
+            return regex.test(input);
+        }
+
+        // Validate product name
+        if (productName.value.trim() === '' || !regex.test(productName.value) || hasInjections(productName.value)) {
+            productName.classList.add('border-red-500');
+            if (hasInjections(productName.value)) {
+                document.getElementById('productNameError').innerText = 'Invalid input';
+            } else {
+                document.getElementById('productNameError').innerText = 'Please enter a product name.';
+            }
+            document.getElementById('productNameError').classList.remove('hidden');
+            isValid = false;
+        } else {
+            productName.classList.remove('border-red-500');
+            document.getElementById('productNameError').classList.add('hidden');
+        }
+
+        // Validate product image (just checking for empty value)
+        if (productImage.value.trim() === '') {
+            productImage.classList.add('border-red-500');
+            document.getElementById('productImageError').classList.remove('hidden');
+            isValid = false;
+        } else {
+            productImage.classList.remove('border-red-500');
+            document.getElementById('productImageError').classList.add('hidden');
+        }
+
+        // Validate product description (just checking for empty value)
+        if (productDescription.value.trim() === '' || !regex.test(productDescription.value) || hasInjections(productDescription.value)) {
+            productDescription.classList.add('border-red-500');
+            if (hasInjections(productDescription.value)) {
+                document.getElementById('productDescriptionError').innerText = 'Invalid input';
+            } else {
+                document.getElementById('productDescriptionError').innerText = 'Please enter a product description.';
+            }
+            document.getElementById('productDescriptionError').classList.remove('hidden');
+            isValid = false;
+        } else {
+            productDescription.classList.remove('border-red-500');
+            document.getElementById('productDescriptionError').classList.add('hidden');
+        }
+
+        return isValid;
+    }
+
     // Handle form submission to add a new product
     $('#addProductForm').on('submit', function (event) {
         event.preventDefault();
-        // Validate form fields
-        if (validateForm()) {
-            var formData = new FormData(this);
-            $.ajax({
-                url: "../../../backend/product/addproduct.php",
-                type: "POST",
-                data: formData,
-                contentType: false,
-                processData: false,
-                // After successfully adding a product, show the success Swal alert
-                success: function (data) {
-                    var responseData = JSON.parse(data);
-                    if (responseData.success) {
-                        // Show success Swal alert
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Success',
-                            text: 'Product successfully added!',
-                            showConfirmButton: false,
-                            timer: 1500
-                        }).then(function () {
-                            // Show success modal
-                            $("#successPopup").removeClass("hidden");
-                            $("#successMessage").text("Product Successfully Added!");
-                            // Hide add product modal
-                            $("#addProductModal").addClass("hidden");
-                            // Refresh the table after a short delay
-                            setTimeout(function () {
-                                location.reload();
-                            }, 500);
-                        });
-                    } else {
-                        console.error("Error adding product:", responseData.error);
-                    }
-                },
-                error: function (xhr, status, error) {
-                    console.error("Error adding product:", error);
-                    // Show error Swal alert
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Error',
-                        text: 'Failed to add product. Please try again.'
-                    });
-                }
-            });
-        }
-    });
 
+        // Validate fields
+        if (!validateFields()) {
+            return;
+        }
+
+        var formData = new FormData(this);
+        $.ajax({
+            url: "../../../backend/product/addproduct.php",
+            type: "POST",
+            data: formData,
+            contentType: false,
+            processData: false,
+            // After successfully adding a product, show the success Swal alert
+            success: function (data) {
+                var responseData = JSON.parse(data);
+                if (responseData.success) {
+                    // Show success Swal alert
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success',
+                        text: 'Product successfully added!',
+                        showConfirmButton: false,
+                        timer: 1500
+                    }).then(function () {
+                        // Show success modal
+                        $("#successPopup").removeClass("hidden");
+                        $("#successMessage").text("Product Successfully Added!");
+                        // Hide add product modal
+                        $("#addProductModal").addClass("hidden");
+                        // Refresh the table after a short delay
+                        setTimeout(function () {
+                            location.reload();
+                        }, 500);
+                    });
+                } else {
+                    console.error("Error adding product:", responseData.error);
+                }
+            },
+            error: function (xhr, status, error) {
+                console.error("Error adding product:", error);
+                // Show error Swal alert
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Failed to add product. Please try again.'
+                });
+            }
+        });
+    });
+    // Function to add a new variation
     function addVariation() {
         const variationInputs = document.getElementById('variationInputs');
         const variationIndex = variationInputs.children.length + 1;
 
         const variationDiv = document.createElement('div');
         variationDiv.classList.add('mb-4', 'flex', 'flex-col');
+
+        // Regular expression to check for HTML and SQL injections
+        const regex = /^[a-zA-Z0-9\s\.,_-]*$/;
+
         variationDiv.innerHTML = `
         <div class="flex justify-between items-center">
             <h4 class="text-sm font-medium text-gray-700 mb-2">Variation ${variationIndex}</h4>
@@ -1042,7 +1119,9 @@ ob_start();
         </div>
         <label for="variationName${variationIndex}" class="text-sm font-medium text-gray-700 mb-1">Variation ${variationIndex} Name</label>
         <input type="text" id="variationName${variationIndex}" name="variationName${variationIndex}" placeholder="Enter Variation Name"
-            class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent">
+            class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
+            onchange="validateVariationFields(${variationIndex})">
+        <div id="variationNameError${variationIndex}" class="hidden text-red-500 text-sm">Invalid input</div>
         <label for="variationImage${variationIndex}" class="text-sm font-medium text-gray-700 mb-1">Insert Variation ${variationIndex} Image</label>
         <input type="file" id="variationImage${variationIndex}" name="variationImage${variationIndex}" accept=".jpg, .jpeg, .png"
             class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent"
@@ -1050,6 +1129,27 @@ ob_start();
         <div id="variationImagePreview${variationIndex}"></div>
     `;
         variationInputs.appendChild(variationDiv);
+    }
+
+    function validateVariationFields(variationIndex) {
+        const variationName = document.getElementById(`variationName${variationIndex}`);
+        const variationNameError = document.getElementById(`variationNameError${variationIndex}`);
+        const regex = /^[a-zA-Z0-9\s\.,_-]*$/;
+
+        if (!regex.test(variationName.value)) {
+            variationName.classList.add('border-red-500');
+            variationNameError.classList.remove('hidden');
+        } else {
+            variationName.classList.remove('border-red-500');
+            variationNameError.classList.add('hidden');
+        }
+
+        variationName.addEventListener('input', function () {
+            if (variationName.value.trim() !== '') {
+                variationName.classList.remove('border-red-500');
+                variationNameError.classList.add('hidden');
+            }
+        });
     }
 
     function removeVariation(element) {
@@ -1078,48 +1178,170 @@ ob_start();
             variationImagePreview.innerHTML = '';
         }
     }
+    function addEventListeners() {
+        const productName = document.getElementById('addproductName');
+        const productImage = document.getElementById('addproductImage');
+        const productDescription = document.getElementById('addproductDescription');
+
+        // Add event listener for product name
+        productName.addEventListener('input', function () {
+            if (productName.value.trim() !== '') {
+                productName.classList.remove('border-red-500');
+                document.getElementById('productNameError').classList.add('hidden');
+            }
+        });
+        productImage.addEventListener('change', function () {
+            if (productImage.value.trim() !== '') {
+                productImage.classList.remove('border-red-500');
+                document.getElementById('productImageError').classList.add('hidden');
+            }
+        });
+        productDescription.addEventListener('input', function () {
+            if (productDescription.value.trim() !== '') {
+                productDescription.classList.remove('border-red-500');
+                document.getElementById('productDescriptionError').classList.add('hidden');
+            }
+        });
+    }
+    addEventListeners();
+
+    function clearForm() {
+        const productName = document.getElementById('addproductName');
+        const productImage = document.getElementById('addproductImage');
+        const productDescription = document.getElementById('addproductDescription');
+        const productBrand = document.getElementById('addproductBrand');
+        const productCategory = document.getElementById('addproductCategory');
+        const variationInputs = document.getElementById('variationInputs');
+
+        // Clear form fields
+        productName.value = '';
+        productImage.value = '';
+        productDescription.value = '';
+        productBrand.value = 'Select a Brand';
+        productCategory.value = 'Select a Category';
+
+        // Clear variation fields
+        variationInputs.innerHTML = '';
+
+        // Hide error messages and remove red borders
+        document.getElementById('productNameError').classList.add('hidden');
+        document.getElementById('productImageError').classList.add('hidden');
+        document.getElementById('productDescriptionError').classList.add('hidden');
+        productName.classList.remove('border-red-500');
+        productImage.classList.remove('border-red-500');
+        productDescription.classList.remove('border-red-500');
+    }
+
+    $(document).on("click", "#closeAddModal, #closeModal", function () {
+        event.preventDefault();
+        $("#addProductModal").addClass("hidden");
+        clearForm();
+    });
+
+
 
     // EDIT MODAL
-    // Declare productId variable in a broader scope
+    function validateInputFields() {
+        let isValid = true;
+
+        const htmlSQLRegex = /<[^>]*>|['";:()|%&]/;
+
+        // Product Name
+        const productName = $("#editProductName").val().trim();
+        if (!productName) {
+            $("#editProductName").addClass("border-red-500");
+            $("#editProductNameError").text("Please enter a Product Name").removeClass("hidden");
+            isValid = false;
+        } else if (htmlSQLRegex.test(productName)) {
+            $("#editProductName").addClass("border-red-500");
+            $("#editProductNameError").text("Invalid input").removeClass("hidden");
+            isValid = false;
+        } else {
+            $("#editProductName").removeClass("border-red-500");
+            $("#editProductNameError").text("").addClass("hidden");
+        }
+
+        // Product Image
+        const productImage = $("#editProductImage").val().trim();
+        if ((!productImage && !$("#previewProductImage").attr("src")) || htmlSQLRegex.test(productImage)) {
+            $("#editProductImage").addClass("border-red-500");
+            $("#editProductImageError").text("Invalid input").removeClass("hidden");
+            isValid = false;
+        } else {
+            $("#editProductImage").removeClass("border-red-500");
+            $("#editProductImageError").text("").addClass("hidden");
+        }
+
+        // Description
+        const productDescription = $("#editProductDescription").val().trim();
+        if (!productDescription) {
+            $("#editProductDescription").addClass("border-red-500");
+            $("#editProductDescriptionError").text("Please enter a Description").removeClass("hidden");
+            isValid = false;
+        } else if (htmlSQLRegex.test(productDescription)) {
+            $("#editProductDescription").addClass("border-red-500");
+            $("#editProductDescriptionError").text("Invalid input").removeClass("hidden");
+            isValid = false;
+        } else {
+            $("#editProductDescription").removeClass("border-red-500");
+            $("#editProductDescriptionError").text("").addClass("hidden");
+        }
+
+        // Brand
+        const productBrand = $("#editProductBrand").val();
+        if (!productBrand) {
+            $("#editProductBrand").addClass("border-red-500");
+            $("#editProductBrandError").text("Please select a Brand").removeClass("hidden");
+            isValid = false;
+        } else if (htmlSQLRegex.test(productBrand)) {
+            $("#editProductBrand").addClass("border-red-500");
+            $("#editProductBrandError").text("Invalid input").removeClass("hidden");
+            isValid = false;
+        } else {
+            $("#editProductBrand").removeClass("border-red-500");
+            $("#editProductBrandError").text("").addClass("hidden");
+        }
+
+        // Category
+        const productCategory = $("#editProductCategory").val();
+        if (!productCategory) {
+            $("#editProductCategory").addClass("border-red-500");
+            $("#editProductCategoryError").text("Please select a Category").removeClass("hidden");
+            isValid = false;
+        } else if (htmlSQLRegex.test(productCategory)) {
+            $("#editProductCategory").addClass("border-red-500");
+            $("#editProductCategoryError").text("Invalid input").removeClass("hidden");
+            isValid = false;
+        } else {
+            $("#editProductCategory").removeClass("border-red-500");
+            $("#editProductCategoryError").text("").addClass("hidden");
+        }
+
+        return isValid;
+    }
+
     let productId;
-    // Add event listener to the "Edit" button
     $(document).on("click", ".editProduct", function () {
-        // Set the value of productId in the broader scope
         productId = $(this).data("productid");
-        // Fetch product details for the specified product ID
         fetchProductDetails(productId, function (productDetails) {
-            // Populate the edit modal with the retrieved product details
             populateEditModal(productDetails);
-            // Show the edit modal
             $("#editProductModal").removeClass("hidden");
         });
     });
-
-    // Inside the populateEditModal function
     function populateEditModal(productDetails) {
         $("#editProductName").val(productDetails.ProductName);
         $("#editProductDescription").val(productDetails.Description);
-
-        // Display product image
-        // Construct full URL for product image
-        const productImageURL = "../../../assets/products/" + productDetails.image_urls; // Assuming image_urls contains the file name
+        const productImageURL = "../../../assets/products/" + productDetails.image_urls;
         $("#previewProductImage").attr("src", productImageURL).show();
-
-        // Show file name in insert image input field
         $("#editProductImageInput").val(productImageURL);
-
-        // Add event listener to change event of product image input field
         $("#editProductImage").change(function () {
-            const file = this.files[0]; // Get the selected file
+            const file = this.files[0];
             if (file) {
-                const reader = new FileReader(); // Create a new FileReader object
+                const reader = new FileReader();
                 reader.onload = function (e) {
-                    // Set the source of the preview image to the data URL
                     $("#previewProductImage").attr("src", e.target.result).show();
                 };
-                reader.readAsDataURL(file); // Read the selected file as a data URL
             } else {
-                // If no file is selected, hide the preview image
                 $("#previewProductImage").hide();
             }
         });
@@ -1277,6 +1499,12 @@ ob_start();
     // Add event listener to save changes button in the edit modal
     $('#editProductForm').submit(function (event) {
         event.preventDefault();
+
+        // Validate input fields
+        if (!validateInputFields()) {
+            return; // Stop execution if validation fails
+        }
+
         // Gather edited product details
         const editedProductName = $("#editProductName").val();
         const editedProductDescription = $("#editProductDescription").val();
@@ -1308,25 +1536,18 @@ ob_start();
                 formData.append(`variations[${variationID}][status]`, status); // Append variation status
             }
         });
-        // Gather data for newly added variations
         $(".newVariation").each(function () {
             const variationName = $(this).find(".editVariationName").val();
             const variationImage = $(this).find(".editVariationImage")[0].files[0];
-
-            // Append variation details to FormData object if variation name is not empty
             if (variationName.trim() !== '') {
                 formData.append('newVariations[]', variationName);
                 formData.append('newVariationImages[]', variationImage);
             }
         });
-
-        // Mark variations for deletion and append their IDs to the form data
         $(".editVariationContainer.marked-for-deletion").each(function () {
             const variationID = $(this).data("variation-id");
             formData.append('deletedVariations[]', variationID);
         });
-
-        // Send the form data using AJAX
         $.ajax({
             url: "../../../backend/product/editproduct.php",
             method: "POST",
@@ -1334,7 +1555,6 @@ ob_start();
             contentType: false,
             processData: false,
             success: function (response) {
-                // Show success popup
                 Swal.fire({
                     icon: 'success',
                     title: 'Success',
@@ -1345,7 +1565,6 @@ ob_start();
                     $("#successMessage").text("Product details updated successfully.");
                     $("#successPopup").removeClass("hidden");
                     $("#editProductModal").addClass("hidden");
-                    // Close the success popup after a few seconds
                     setTimeout(function () {
                         $("#successPopup").addClass("hidden");
                         location.reload();
@@ -1390,47 +1609,45 @@ ob_start();
     `;
         editVariationInputs.appendChild(editVariationDiv);
     }
-
-    // Function to remove a variation
     function removeEditVariation(element) {
         const editVariationDiv = element.parentElement.parentElement;
         editVariationDiv.remove();
     }
-    // Add event listener to close the view modal when cancel button or close button is clicked
+
+    function resetFormFields() {
+        $('#editProductNameError').addClass('hidden');
+        $('#editProductImageError').addClass('hidden');
+        $('#editProductDescriptionError').addClass('hidden');
+        $('#editProductBrandError').addClass('hidden');
+        $('#editProductCategoryError').addClass('hidden');
+        $('.border-red-500').removeClass('border-red-500');
+        $('.error-message').text('').removeClass('hidden');
+    }
+
     $(document).on("click", "#closeEditModalButton, .cancelButton", function () {
         event.preventDefault();
-        // Hide the view modal
+        resetFormFields();
         $("#editProductModal").addClass("hidden");
     });
 
     // VIEW MODAL
-    // Add event listener to the "View" button
     $(document).on("click", ".viewProduct", function () {
-        const productId = $(this).data("productid"); // Get the product ID from the button data attribute
-
-        // Fetch product details for the specified product ID
+        const productId = $(this).data("productid");
         fetchProductDetails(productId, function (productDetails) {
-            // Populate the view modal with the retrieved product details
             populateViewModal(productDetails);
-
-            // Show the view modal
             $("#viewProductModal").removeClass("hidden");
         });
     });
 
-    // Function to fetch product details based on product ID
     function fetchProductDetails(productId, callback) {
-        // Make an AJAX request to fetch product details
         $.ajax({
-            url: "../../../backend/product/viewproduct.php", // Replace with the actual endpoint for fetching product details
+            url: "../../../backend/product/viewproduct.php",
             method: "GET",
             data: {
                 productId: productId
             },
             success: function (response) {
-                // Parse the JSON response
                 const productDetails = JSON.parse(response);
-                // Execute the callback function with the retrieved product details
                 callback(productDetails);
             },
             error: function (xhr, status, error) {
@@ -1445,11 +1662,7 @@ ob_start();
         $("#viewProductDescription").text(productDetails.Description);
         $("#viewProductBrand").text(productDetails.brand_name);
         $("#viewProductCategory").text(productDetails.CategoryName);
-
-        // Clear existing variation fields
         $("#viewVariations").empty();
-
-        // Populate variations if available
         if (productDetails.variations && productDetails.variations.length > 0) {
             const variationSection = $("#viewVariations");
             let variationRow = $("<div>").addClass("flex");
@@ -1459,30 +1672,22 @@ ob_start();
                 variationField.append($("<label>").addClass("text-sm font-medium text-gray-700 mb-1 justify-center").text(variation['VariationName']));
                 variationField.append($("<img>").addClass("border rounded-md").attr("src", variation['image_url']).attr("alt", "Variation Image").css("max-width", "100px").css("max-height", "100px"));
 
-                // Add variation to the current row
                 variationRow.append(variationField);
-
-                // Create a new row after every 4 variations
                 if ((index + 1) % 4 === 0) {
                     variationSection.append(variationRow);
                     variationRow = $("<div>").addClass("flex ");
                 }
             });
-
-            // Add any remaining variations to the last row
             if (productDetails.variations.length % 4 !== 0) {
                 variationSection.append(variationRow);
             }
         } else {
-            // If no variations available, display a message
             const noVariationMessage = $("<p>").addClass("text-sm font-medium text-red-700").text("No Variations Added");
             $("#viewVariations").append(noVariationMessage);
         }
     }
 
-    // Add event listener to close the view modal when cancel button or close button is clicked
     $(document).on("click", "#closeViewModalButton, #closeViewModal, .cancelButton", function () {
-        // Hide the view modal
         $("#viewProductModal").addClass("hidden");
     });
 </script>
