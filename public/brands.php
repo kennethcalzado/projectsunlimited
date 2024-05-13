@@ -1,5 +1,5 @@
 <?php
-
+$is_public_page = true;
 $pageTitle = "Brands";
 ob_start();
 ?>
@@ -33,10 +33,10 @@ ob_start();
     </div>
 </div>
 
-
 <?php $content = ob_get_clean();
 ob_start();
 ?>
+
 <!-- Your javascript here -->
 <script>
     $( document ).ready( function ()

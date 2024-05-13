@@ -134,9 +134,12 @@ ob_start();
         </div>
         <div class="border-b border-black flex-grow border-2 mt-2 mb-3"></div>
         <form id="addCategoryForm" method="POST" enctype="multipart/form-data" class="mt-4">
+            <!-- Error message for general form errors -->
+            <div class="form-error text-red-500 text-sm mb-2"></div>
             <div class="mb-4 flex flex-col">
                 <label for="addcategoryName" class="text-sm font-medium text-gray-700 mb-1">Category Name</label>
                 <input type="text" id="addcategoryName" name="categoryName" placeholder="Enter Category Name" class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent">
+                <span class="text-red-500 text-sm error-message" id="categoryNameError"></span>
             </div>
             <div class="flex mb-4 justify-center">
                 <div class="flex flex-col mr-4" style="flex: 1;">
@@ -144,6 +147,7 @@ ob_start();
                     <select id="addcategoryType" name="pageType" class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent">
                         <option value="" disabled selected></option>
                     </select>
+                    <span class="text-red-500 text-sm error-message" id="pageTypeError"></span>
                 </div>
                 <div class="flex flex-col mr-4" style="flex: 1;">
                     <label for="addcategoryCat" class="text-sm font-medium text-gray-700 mb-2">Type of Category</label>
@@ -152,6 +156,7 @@ ob_start();
                         <option value="main">Main Category</option>
                         <option value="sub">Sub Category</option>
                     </select>
+                    <span class="text-red-500 text-sm error-message" id="categoryTypeError"></span>
                 </div>
             </div>
             <!-- Main Category Dropdown -->
@@ -162,6 +167,7 @@ ob_start();
                         <option value="" disabled selected></option>
                         <!-- Populate options dynamically -->
                     </select>
+                    <span class="text-red-500 text-sm error-message" id="mainCategoryError"></span>
                 </div>
             </div>
             <!-- Main Category Image Insert -->
@@ -171,6 +177,7 @@ ob_start();
                 <p class="text-sm font-medium italic mb-2">The image will be used for the product category selection
                     page.</p>
                 <input type="file" id="mainCategoryImageInput" name="mainCategoryImageInput" accept="image/jpeg, image/jpg, image/png" class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent" onchange="previewAddMainCategoryImage(event)">
+                <span class="text-red-500 text-sm error-message" id="mainCategoryImageInputError"></span>
                 <!-- Image preview container -->
                 <div id="mainCategoryImagePreview" class="mt-2"></div>
             </div>
@@ -180,6 +187,7 @@ ob_start();
                     Header</label>
                 <p class="text-sm font-medium italic mb-2">The image will be used for the product header cover.</p>
                 <input type="file" id="mainCategoryCoverInput" name="mainCategoryCoverInput" accept="image/jpeg, image/jpg, image/png" class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent" onchange="previewAddMainCategoryCover(event)">
+                <span class="text-red-500 text-sm error-message" id="mainCategoryCoverInputError"></span>
                 <!-- Cover image preview container -->
                 <div id="mainCategoryCoverPreview" class="mt-2"></div>
             </div>
@@ -264,6 +272,7 @@ ob_start();
             <div class="mb-4 flex flex-col">
                 <label for="editCategoryName" class="text-sm font-medium text-gray-700 mb-1">Category Name</label>
                 <input type="text" id="editCategoryName" name="editCategoryName" placeholder="Enter Category Name" class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent">
+                <p id="editCategoryNameError" class="text-red-500 text-sm mt-1 hidden">Please enter a category name.</p>
             </div>
             <div class="flex mb-4 justify-center">
                 <div class="flex flex-col mr-4" style="flex: 1;">
@@ -271,6 +280,7 @@ ob_start();
                     <select id="editCategoryType" name="editCategoryType" class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent">
                         <option value="" disabled selected></option>
                     </select>
+                    <p id="editCategoryTypeError" class="text-red-500 text-sm mt-1 hidden">Please Select a Page Type</p>
                 </div>
                 <div class="flex flex-col" style="flex: 1;">
                     <label for="editCategoryCat" class="text-sm font-medium text-gray-700 mb-2">Type of Category</label>
@@ -279,6 +289,7 @@ ob_start();
                         <option value="main">Main Category</option>
                         <option value="sub">Sub Category</option>
                     </select>
+                    <p id="editCategoryCatError" class="text-red-500 text-sm mt-1 hidden">Please Select a Category Type</p>
                 </div>
             </div>
             <!-- Main Category Dropdown -->
@@ -289,6 +300,7 @@ ob_start();
                         <option value="" disabled selected></option>
                         <!-- Populate options dynamically -->
                     </select>
+                    <p id="editMainCategoryError" class="text-red-500 text-sm mt-1 hidden">Please enter a Main Category</p>
                 </div>
             </div>
             <!-- Main Category Image Insert -->
@@ -298,6 +310,7 @@ ob_start();
                 <p class="text-sm font-medium italic mb-2">The image will be used for the product category selection
                     page.</p>
                 <input type="file" id="editMainCategoryImageInput" name="editMainCategoryImageInput" accept="image/jpeg, image/jpg, image/png" class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent" onchange="previewMainCategoryImage(event)">
+                <p id="editMainCategoryImageInputError" class="text-red-500 text-sm mt-1 hidden">Please insert an image cover.</p>
                 <div id="editMainCategoryImagePreview"></div>
             </div>
             <!-- Main Category Image Insert -->
@@ -306,6 +319,7 @@ ob_start();
                     Header</label>
                 <p class="text-sm font-medium italic mb-2">The image will be used for the product header cover.</p>
                 <input type="file" id="editMainCategoryCoverInput" name="editMainCategoryCoverInput" accept="image/jpeg, image/jpg, image/png" class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent" onchange="previewMainCategoryCover(event)">
+                <p id="editMainCategoryCoverInputError" class="text-red-500 text-sm mt-1 hidden">Please insert an image header.</p>
                 <div id="editMainCategoryCoverPreview"></div>
             </div>
             <div class="flex justify-end">
@@ -605,7 +619,69 @@ ob_start();
     $('#addCategoryForm').submit(function(event) {
         event.preventDefault();
 
+        // Reset previous error messages and styles
+        $('.error-message').text('').hide();
+        $('.border-red-500').removeClass('border-red-500');
+
         var formData = new FormData($(this)[0]);
+        var categoryName = $('#addcategoryName').val();
+        var pageType = $('#addcategoryType').val();
+        var categoryType = $('#addcategoryCat').val();
+        var mainCategory = $('#mainCategoryDropdown').val();
+        var mainCategoryImageInput = $('#mainCategoryImageInput').val();
+        var mainCategoryCoverInput = $('#mainCategoryCoverInput').val();
+
+        // Validation: Check if fields are empty
+        if (categoryName === '') {
+            $('#categoryNameError').text('Please enter a category name.').show();
+            $('#addcategoryName').addClass('border-red-500');
+        }
+
+        if (pageType === '') {
+            $('#pageTypeError').text('Please Select a Page Type.').show();
+            $('#addcategoryType').addClass('border-red-500');
+        }
+
+        if (categoryType === '') {
+            $('#categoryTypeError').text('Please Select a Category Type.').show();
+            $('#addcategoryCat').addClass('border-red-500');
+        }
+
+        if (mainCategory === '') {
+            $('#mainCategoryError').text('Please select a Main Category.').show();
+            $('#mainCategoryDropdown').addClass('border-red-500');
+        }
+
+        if (mainCategoryImageInput === '') {
+            $('#mainCategoryImageInputError').text('Please insert an Image Cover.').show();
+            $('#mainCategoryImageInput').addClass('border-red-500');
+        }
+
+        if (mainCategoryCoverInput === '') {
+            $('#mainCategoryCoverInputError').text('Please insert an Image Header.').show();
+            $('#mainCategoryCoverInput').addClass('border-red-500');
+        }
+        // Validation: Check for HTML or SQL injections
+        var regex = /(<([^>]+)>)/ig; // Regex to check for HTML tags
+        if (regex.test(categoryName)) {
+            $('#categoryNameError').text('Invalid input.').show();
+            $('#addcategoryName').addClass('border-red-500');
+        }
+
+        if (regex.test(pageType)) {
+            $('#pageTypeError').text('Invalid input.').show();
+            $('#addcategoryType').addClass('border-red-500');
+        }
+
+        if (regex.test(categoryType)) {
+            $('#categoryTypeError').text('Invalid input.').show();
+            $('#addcategoryCat').addClass('border-red-500');
+        }
+
+        // If any field has an error, prevent form submission
+        if ($('.error-message:visible').length > 0) {
+            return;
+        }
 
         $.ajax({
             type: 'POST',
@@ -771,6 +847,8 @@ ob_start();
         $('#editMainCategoryCover').addClass('hidden');
         $('#editMainCategoryImagePreview').empty();
         $('#editMainCategoryCoverPreview').empty();
+        // Hide error messages
+        $('#editCategoryNameError').addClass('hidden');
     }
 
     // Function to toggle visibility of main category dropdown, image, and cover
@@ -830,17 +908,82 @@ ob_start();
     $('#editMainCategoryCoverInput').change(function(event) {
         previewMainCategoryCover(event);
     });
-
     // Handle form submission
     $('#editCategoryForm').submit(function(event) {
         event.preventDefault();
-        var formData = new FormData(this);
-        formData.append('editCategoryType', $('#editCategoryType').val());
-        formData.append('editCategoryCat', $('#editCategoryCat').val()); // Add this line to include editCategoryCat
+        // Reset error styles
+        $('.border-red-500').removeClass('border-red-500');
+        $('.error-message').addClass('hidden');
 
-        // Include the editParentCategoryID in the form data
-        var selectedMainCategoryId = $('#editMainCategory').val();
-        formData.append('editParentCategoryID', selectedMainCategoryId);
+        // Validate Category Name
+        var categoryName = $('#editCategoryName').val().trim();
+        if (categoryName === '') {
+            $('#editCategoryName').addClass('border-red-500');
+            $('#editCategoryNameError').removeClass('hidden').text('Please enter a category name.');
+            return; // Prevent form submission
+        } else if (!isValidInput(categoryName)) {
+            $('#editCategoryName').addClass('border-red-500');
+            $('#editCategoryNameError').removeClass('hidden').text('Invalid input');
+            return; // Prevent form submission
+        }
+
+        // Validate Page Type
+        var categoryType = $('#editCategoryType').val();
+        if (categoryType === '') {
+            $('#editCategoryType').addClass('border-red-500');
+            $('#editCategoryTypeError').removeClass('hidden').text('Please select a Page Type');
+            return; // Prevent form submission
+        }
+
+        // Validate Category Type
+        var categoryCat = $('#editCategoryCat').val();
+        if (categoryCat === '') {
+            $('#editCategoryCat').addClass('border-red-500');
+            $('#editCategoryCatError').removeClass('hidden').text('Please select a Category Type');
+            return; // Prevent form submission
+        }
+
+        // Validate Main Category Dropdown if visible
+        if ($('#editMainCategoryDropdown').is(':visible')) {
+            var mainCategory = $('#editMainCategory').val();
+            if (mainCategory === '') {
+                $('#editMainCategory').addClass('border-red-500');
+                $('#editMainCategoryError').removeClass('hidden').text('Please select a Main Category');
+                return; // Prevent form submission
+            }
+        }
+
+        // Validate Main Category Image Input if visible
+        if ($('#editMainCategoryImage').is(':visible')) {
+            var mainCategoryImage = $('#editMainCategoryImageInput').val();
+            if (!mainCategoryImage) {
+                $('#editMainCategoryImageInput').addClass('border-red-500');
+                $('#editMainCategoryImageInputError').removeClass('hidden').text('Please insert an image cover');
+                return; // Prevent form submission
+            }
+        }
+
+        // Validate Main Category Cover Input if visible
+        if ($('#editMainCategoryCover').is(':visible')) {
+            var mainCategoryCover = $('#editMainCategoryCoverInput').val();
+            if (!mainCategoryCover) {
+                $('#editMainCategoryCoverInput').addClass('border-red-500');
+                $('#editMainCategoryCoverInputError').removeClass('hidden').text('Please insert an image header');
+                return; // Prevent form submission
+            }
+        }
+
+        // All validations passed, proceed with form submission
+
+        var formData = new FormData(this);
+        formData.append('editCategoryType', categoryType);
+        formData.append('editCategoryCat', categoryCat);
+
+        // Include the editParentCategoryID in the form data if Main Category Dropdown is visible
+        if ($('#editMainCategoryDropdown').is(':visible')) {
+            var selectedMainCategoryId = $('#editMainCategory').val();
+            formData.append('editParentCategoryID', selectedMainCategoryId);
+        }
 
         $.ajax({
             url: '../../../backend/category/updatecategory.php?categoryId=' + categoryId,
@@ -852,15 +995,15 @@ ob_start();
                 // Handle success response
                 console.log('Category updated successfully:', response);
                 $('#editCategoryModal').addClass('hidden');
-                // Swal.fire({
-                //     icon: 'success',
-                //     title: 'Success',
-                //     text: 'Category updated successfully!',
-                //     showConfirmButton: false,
-                //     timer: 1000
-                // }).then(function() {
-                //     window.location.reload();
-                // });
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success',
+                    text: 'Category updated successfully!',
+                    showConfirmButton: false,
+                    timer: 1000
+                }).then(function() {
+                    window.location.reload();
+                });
             },
             error: function(xhr, status, error) {
                 // Handle error response
@@ -874,10 +1017,16 @@ ob_start();
         });
     });
 
+    function isValidInput(input) {
+        // Simple check for HTML and SQL injections
+        var pattern = /<[^>]*>|['";=:()]+|(--[^\r\n]*)|(\/\*[\w\W]*?(?=\*)\*\/)/gi;
+        return !pattern.test(input);
+    }
 
     $("#closeEditModalBtn, #closeEditModal").click(function() {
         $("#editCategoryModal").addClass("hidden");
     });
+
 
     $(document).on('click', '#btn-inactivate, #btn-reactivate', function() {
         var categoryId = $(this).data('categoryid');

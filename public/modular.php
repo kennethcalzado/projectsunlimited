@@ -1,4 +1,5 @@
 <?php
+$is_public_page = true;
 $pageTitle = "Products - Modular Cabinets";
 ob_start();
 ?>

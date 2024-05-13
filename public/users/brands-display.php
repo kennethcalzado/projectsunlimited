@@ -1,8 +1,9 @@
 <?php
 session_start();
-$pageTitle = "Brands";
+$pageTitle = "Brands Listings";
 ob_start();
 ?>
+
 <!-- Your page content goes here -->
 
 <div class="transition-all duration-300 page-content sm:ml-36 mr-4 sm:mr-20 mb-10">
