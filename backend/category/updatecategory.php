@@ -34,8 +34,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         // Update query based on category type and category change
         if ($editCategoryCat === "sub") {
+            // Ensure that a parent category is selected for subcategories
+            if (empty($parentCategoryId)) {
+                echo json_encode(array("success" => false, "message" => "Please select a Parent Category for subcategories"));
+                exit();
+            }
+            
             // Reset page path, imagecover, imageheader, and parent category ID
-            $sql = "UPDATE productcategory SET CategoryName = '$categoryName', type = '$categoryType', imagecover = NULL, imageheader = NULL WHERE CategoryID = $categoryId";
+            $sql = "UPDATE productcategory SET CategoryName = '$categoryName', type = '$categoryType', imagecover = NULL, imageheader = NULL, ParentCategoryID = $parentCategoryId WHERE CategoryID = $categoryId";
         } else {
             // Save image paths
             $imageCoverPath = '';
