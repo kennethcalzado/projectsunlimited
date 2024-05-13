@@ -22,7 +22,6 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/2.0.4/css/dataTables.dataTables.css" />
     <script src="https://cdn.datatables.net/2.0.4/js/dataTables.js"></script>
 
-<<<<<<< HEAD
     <script defer src="include/app.js"></script>
 
 <body class="bg-white">
@@ -30,62 +29,33 @@
     <?php
     // Determine the user's role
     // session_start();
-    $userRole = $_SESSION['user_role'] ?? "guest"; // Default to 'guest' if the role is not set
+    $userRole = $_SESSION['user_role'] ?? "guest";
 
-    // Include appropriate navigation component based on user role
     if ($userRole == "guest") {
-        include __DIR__ . "/include/navbar.php";
-        if ($pageTitle == "Login") {
-=======
-    <body class="bg-white">
-        <!-- Header -->
-        <?php
-        // Determine the user's role
-        $userRole = $_SESSION['user_role'] ?? "guest";
+        if (isset($is_public_page) && $is_public_page) {
+            include __DIR__ . "/include/navbar.php";
+            echo "<main>";
+            echo $content ?? "";
+            
+            if (!($pageTitle === "Login")) {
+                include __DIR__ . "/include/footer.php";
+            } 
+            echo "</main>";
 
-        // Include appropriate navigation component based on user role
-        if ($userRole == "guest") {
-            if (isset($is_public_page) && $is_public_page) {
-                include __DIR__ . "/include/navbar.php";
-
-                echo "<main>";
-                echo $content ?? "";
-                
-                if (!($pageTitle === "Login")) {
-                    include __DIR__ . "/include/footer.php";
-                } 
-                echo "</main>";
-
-            } else {
-                // Redirect to login page
-                header('Location: /public/login.php');
-                exit();
-            }
+        } else {
+             // Redirect to login page
+             header('Location: /public/login.php');
+             exit();
+         }
         } elseif (strtolower($userRole) == 'admin' || strtolower($userRole) == 'marketing') {
             include __DIR__ . "/include/sidebar.php";
->>>>>>> 4661dc7aca2329bb9f3afc4893590ae00373e1f6
             echo "<main>";
             echo $content ?? "";
             echo "</main>";
         }
-    } elseif (strtolower($userRole) == 'admin' || strtolower($userRole) == 'marketing') {
-        include __DIR__ . "/include/sidebar.php";
-        echo "<main>";
-        echo $content ?? "";
-        echo "</main>";
-    } else {
-        include __DIR__ . "/include/footer.php";
-    }
 
-    ?>
-</body>
-<?php echo $script ?? "" ?>
-
-<<<<<<< HEAD
-=======
         ?>
     </body>
     <?php echo $script ?? "" ?>
 
->>>>>>> 4661dc7aca2329bb9f3afc4893590ae00373e1f6
 </html>
