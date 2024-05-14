@@ -47,6 +47,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 exit();
             }
 
+
             // Reset page path, imagecover, imageheader, and parent category ID
             $sql = "UPDATE productcategory SET CategoryName = '$categoryName', type = '$categoryType', imagecover = NULL, imageheader = NULL, ParentCategoryID = $parentCategoryId WHERE CategoryID = $categoryId";
         } else {
@@ -69,21 +70,43 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $imageHeaderPath = $imageHeaderFilename; // Save only the file name
             }
 
-            // Save page content to file
-            $pageContent = '<?php
-    $pageTitle = "Products - ' . $categoryName . '";
-    ob_start();
-    ?>
+        // Create page/file for the main category
+        $pageContent = <<<'PHP'
+<?php
+$is_public_page = true;
+$pageTitle = 'Products - Projects Unlimited';
+ob_start();
+include("../backend/conn.php");
+
+// Extract the category ID from the filename
+$pagePath = basename(__FILE__); // Get the current filename
+$parts = explode('_', $pagePath);
+$categoryID = (int) end($parts); // Extract the numeric value before the file extension
+
+// Retrieve category data based on its ID
+$sql = "SELECT * FROM productcategory WHERE CategoryID = ?";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("i", $categoryID);
+$stmt->execute();
+$result = $stmt->get_result();
+
+if ($result->num_rows > 0) {
+    $categoryData = $result->fetch_assoc();
+    $categoryName = $categoryData['CategoryName'];
+    $imageHeader = $categoryData['imageheader'];
+?>
     <style>
         #productModal {
             width: 100%;
             height: 100%;
             z-index: 1000;
         }
+
         .modal-content {
             width: 90%;
             max-width: 800px;
         }
+
         .overlay {
             position: fixed;
             top: 0;
@@ -93,71 +116,62 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             background-color: rgba(0, 0, 0, 0.5);
             z-index: 999i;
         }
+
         body.modal-open {
             overflow: hidden;
         }
     </style>
     <div class="content">
         <div class="relative">
-            <img src="../assets/catheader/' . $imageHeader . '" class="w-full h-96 object-cover object-top">
+            <img src="../../assets/catheader/<?php echo $imageHeader; ?>" class="w-full h-96 object-cover object-top">
             <div class="absolute inset-0 bg-black opacity-50"></div>
             <div class="absolute inset-0 flex items-center justify-center text-center">
-                <p class="text-white font-extrabold text-4xl">' . strtoupper($categoryName) . '<br></p>
+                <p class="text-white font-extrabold text-4xl"><?php echo strtoupper($categoryName); ?><br></p>
             </div>
         </div>
         <header class="bg-[#F6E381]">
         </header>
     </div>
-    <?php
-    $content = ob_get_clean();
-    include ("../public/master.php");
-    ?>';
+<?php
+} else {
+    echo "Category not found.";
+}
+$content = ob_get_clean();
+include("../public/master.php");
+?>
+PHP;
 
-            // Replace old category name with new one in the page content
-            $pageContent = str_replace('Products - ' . $categoryName, 'Products - ' . $categoryName, $pageContent);
-
-            // Create directories if they don't exist
-            if (!file_exists('../../assets/category')) {
-                mkdir('../../assets/category', 0777, true); // recursively create the directory
-            }
-            if (!file_exists('../../assets/catheader')) {
-                mkdir('../../assets/catheader', 0777, true); // recursively create the directory
-            }
-            if (!file_exists('../../pages')) {
-                mkdir('../../pages', 0777, true); // recursively create the directory
-            }
-
+        // Create directories if they don't exist
+        if (!file_exists('../../assets/category')) {
+            mkdir('../../assets/category', 0777, true); // recursively create the directory
+        }
+        if (!file_exists('../../assets/catheader')) {
+            mkdir('../../assets/catheader', 0777, true); // recursively create the directory
+        }
+        if (!file_exists('../../pages')) {
+            mkdir('../../pages', 0777, true); // recursively create the directory
+        }
             // Check if page already exists for the category
             $existingPagePathQuery = mysqli_query($conn, "SELECT page_path FROM productcategory WHERE CategoryID = $categoryId");
             $existingPagePath = mysqli_fetch_assoc($existingPagePathQuery)['page_path'];
 
-            // If page path exists, update file name only, else create a new page
-            if (!empty($existingPagePath) && file_exists('../../pages/' . $existingPagePath)) {
+            // If page path exists and it's not empty, update page content, else create a new page
+            if (!empty($existingPagePath)) {
+                // Update existing page content
                 $filePath = '../../pages/' . $existingPagePath;
-                $newFilePath = '../../pages/' . urlencode($categoryName) . '.php';
-                if ($existingPagePath !== urlencode($categoryName) . '.php') {
-                    rename($filePath, $newFilePath);
-                    // Update the page path in the database
-                    $updatePagePathQuery = "UPDATE productcategory SET page_path = '/" . urlencode($categoryName) . ".php' WHERE CategoryID = $categoryId";
-                    mysqli_query($conn, $updatePagePathQuery);
-                }
-                $pagePath = "/$categoryName.php";
+                file_put_contents($filePath, $pageContent); // Update the content
+                $pagePath = "/{$existingPagePath}"; // Keep the existing page path
             } else {
                 // Save page content to file
-                $filePath = '../../pages/' . urlencode($categoryName) . '.php';
-                // Create the page/file
+                $filePath = "../../pages/{$categoryName}_{$categoryId}.php";
                 file_put_contents($filePath, $pageContent);
-                $pagePath = "/$categoryName.php";
-                // Update the page path in the database
-                $updatePagePathQuery = "UPDATE productcategory SET page_path = '/" . urlencode($categoryName) . ".php' WHERE CategoryID = $categoryId";
-                mysqli_query($conn, $updatePagePathQuery);
+                $pagePath = "/{$categoryName}_{$categoryId}.php";
             }
-
 
             // Update page path, imagecover, imageheader, and parent category ID
             $sql = "UPDATE productcategory SET CategoryName = '$categoryName', type = '$categoryType'";
             // Update page path
-            if (empty($pagePath)) {
+            if (!empty($pagePath)) {
                 $sql .= ", page_path = '$pagePath'";
             }
             // Update imagecover if provided
@@ -168,12 +182,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             if (!empty($imageHeader)) {
                 $sql .= ", imageheader = '$imageHeaderPath'";
             }
-            // Update parent category ID if provided
-            if (!empty($parentCategoryId)) {
-                $sql .= ", ParentCategoryID = '$parentCategoryId'";
-            }
-            $sql .= " WHERE CategoryID = $categoryId";
+           // Update parent category ID if provided
+           if (!empty($parentCategoryId)) {
+            $sql .= ", ParentCategoryID = '$parentCategoryId'";
+        } else {
+            // Set ParentCategoryID to NULL for main categories
+            $sql .= ", ParentCategoryID = NULL";
         }
+        $sql .= " WHERE CategoryID = $categoryId";
+    }
 
         if (mysqli_query($conn, $sql)) {
             echo json_encode(array("success" => true, "message" => "Category updated successfully"));
@@ -207,3 +224,4 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 } else {
     echo json_encode(array("success" => false, "message" => "Form not submitted"));
 }
+?>
