@@ -1,4 +1,6 @@
 <?php
+$is_public_page = true;
+
 $pageTitle = 'News & Projects';
 ob_start();
 include("../../backend/conn.php");
@@ -288,4 +290,3 @@ $formatted_date = date("F j, Y", $date);
 $content = ob_get_clean();
 include("../master.php");
 ?>
-

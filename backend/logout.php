@@ -1,6 +1,16 @@
 <?php
 session_start();
-session_destroy(); // Destroy all session data
-header("Location: ../public/login.php"); // Redirect to the login page after logout
+
+// Include necessary files
+include 'auditlog.php';
+include 'conn.php';
+
+// Log the logout action
+logAudit($user_id, $fname, $lname, $role_id, "Logout");
+
+// Destroy session data
+session_destroy();
+
+// Redirect to the login page after logout
+header("Location: ../public/login.php");
 exit;
-?>

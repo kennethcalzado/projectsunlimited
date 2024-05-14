@@ -150,7 +150,7 @@ ob_start();
                         <div id="thumbnailPreview" class="mt-2 mb-2">
                             <img id="thumbnailImg" src="#" alt="Thumbnail Preview" style="max-width: 100px; max-height: 100px;">
                         </div>
-                        <input type="file" name="updateThumbnail" id="updateThumbnail" class="border rounded px-4 py-2 w-full" accept="image/*" required>
+                        <input type="file" name="updateThumbnail" id="updateThumbnail" class="border rounded px-4 py-2 w-full" accept="image/*">
                     </div>
                     <div class="mb-4">
                         <label class="block font-semibold mb-2">Existing Images</label>
