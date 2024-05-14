@@ -4,6 +4,8 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 
 include '../../backend/conn.php'; // Include the file that establishes the database connection
+// Include the auditlog.php file
+include("../../backend/auditlog.php");
 
 // Check if files were uploaded
 if (isset($_FILES['images'])) {
@@ -38,6 +40,27 @@ if (isset($_FILES['images'])) {
             $filename_only = $file_name; // Extract filename without path
             $stmt->bind_param("s", $filename_only);
             if ($stmt->execute()) {
+
+                // Fetch user information from session or database
+                if (isset($_SESSION['user_id'])) {
+                    $user_id = $_SESSION['user_id'];
+
+                    // Fetch user details from the database using user_id
+                    $sql = "SELECT fname, lname, role_id FROM users WHERE user_id = ?";
+                    $stmt = $conn->prepare($sql);
+                    $stmt->bind_param("i", $user_id);
+                    $stmt->execute();
+                    $result = $stmt->get_result();
+
+                    if ($row = $result->fetch_assoc()) {
+                        $fname = $row['fname'];
+                        $lname = $row['lname'];
+                        $role_id = $row['role_id'];
+
+                        // Log the action with user details
+                        logAudit($user_id, $fname, $lname, $role_id, "Added multiple products");
+                    }
+                }
                 // Insertion successful
                 echo "Image uploaded and inserted into database: " . $filename_only . "\n";
             } else {
@@ -58,4 +81,3 @@ if (isset($_FILES['images'])) {
 }
 // Close database connection
 $conn->close();
-?>

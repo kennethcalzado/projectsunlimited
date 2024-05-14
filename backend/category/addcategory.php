@@ -6,6 +6,8 @@ if (session_status() === PHP_SESSION_NONE) {
 
 // Include database connection
 include '../../backend/conn.php';
+// Include the auditlog.php file
+include("../../backend/auditlog.php");
 
 // Check if form data is submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -119,6 +121,29 @@ PHP;
         $stmt = $conn->prepare("INSERT INTO productcategory (CategoryName, ParentCategoryID, type, status, imagecover, imageheader, created_at) VALUES (?, ?, ?, ?, ?, ?, NOW())");
         $stmt->bind_param("sissss", $categoryName, $parentCategoryID, $pageType, $status, $imageCover, $imageHeader);
         if ($stmt->execute()) {
+
+
+            // Fetch user information from session or database
+            if (isset($_SESSION['user_id'])) {
+                $user_id = $_SESSION['user_id'];
+
+                // Fetch user details from the database using user_id
+                $sql = "SELECT fname, lname, role_id FROM users WHERE user_id = ?";
+                $stmt = $conn->prepare($sql);
+                $stmt->bind_param("i", $user_id);
+                $stmt->execute();
+                $result = $stmt->get_result();
+
+                if ($row = $result->fetch_assoc()) {
+                    $fname = $row['fname'];
+                    $lname = $row['lname'];
+                    $role_id = $row['role_id'];
+
+                    // Log the action with user details
+                    logAudit($user_id, $fname, $lname, $role_id, "Added category: '$categoryName'");
+                }
+            }
+
             // Get the ID of the newly inserted category
             $category_id = $stmt->insert_id;
 
@@ -162,4 +187,3 @@ PHP;
     $response['message'] = "Form data not submitted";
     echo json_encode($response);
 }
-?>

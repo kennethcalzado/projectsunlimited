@@ -5,6 +5,8 @@ if (session_status() === PHP_SESSION_NONE) {
 
 // Include your database connection code
 include '../../backend/conn.php';
+// Include the auditlog.php file
+include("../../backend/auditlog.php");
 
 // Check if productId and status are provided via POST request
 if (isset($_POST['productId']) && isset($_POST['status'])) {
@@ -19,6 +21,28 @@ if (isset($_POST['productId']) && isset($_POST['status'])) {
 
     // Execute the statement
     if ($statement->execute()) {
+
+        // Fetch user information from session or database
+        if (isset($_SESSION['user_id'])) {
+            $user_id = $_SESSION['user_id'];
+
+            // Fetch user details from the database using user_id
+            $sql = "SELECT fname, lname, role_id FROM users WHERE user_id = ?";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param("i", $user_id);
+            $stmt->execute();
+            $result = $stmt->get_result();
+
+            if ($row = $result->fetch_assoc()) {
+                $fname = $row['fname'];
+                $lname = $row['lname'];
+                $role_id = $row['role_id'];
+
+                // Log the action with user details
+                logAudit($user_id, $fname, $lname, $role_id, "Deleted product: '$productId'");
+            }
+        }
+
         // Return success response
         echo json_encode(["success" => true]);
     } else {
@@ -29,4 +53,3 @@ if (isset($_POST['productId']) && isset($_POST['status'])) {
     // Return error response if productId or status are not provided
     echo json_encode(["success" => false, "message" => "Missing parameters"]);
 }
-?>

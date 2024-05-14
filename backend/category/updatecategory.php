@@ -1,5 +1,12 @@
 <?php
+// Start session if not already started
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
 include '../../backend/conn.php';
+// Include the auditlog.php file
+include("../../backend/auditlog.php");
 
 // Check if the request method is POST
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -39,7 +46,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 echo json_encode(array("success" => false, "message" => "Please select a Parent Category for subcategories"));
                 exit();
             }
-            
+
             // Reset page path, imagecover, imageheader, and parent category ID
             $sql = "UPDATE productcategory SET CategoryName = '$categoryName', type = '$categoryType', imagecover = NULL, imageheader = NULL, ParentCategoryID = $parentCategoryId WHERE CategoryID = $categoryId";
         } else {
@@ -170,6 +177,27 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         if (mysqli_query($conn, $sql)) {
             echo json_encode(array("success" => true, "message" => "Category updated successfully"));
+
+            // Fetch user information from session or database
+            if (isset($_SESSION['user_id'])) {
+                $user_id = $_SESSION['user_id'];
+
+                // Fetch user details from the database using user_id
+                $sql = "SELECT fname, lname, role_id FROM users WHERE user_id = ?";
+                $stmt = $conn->prepare($sql);
+                $stmt->bind_param("i", $user_id);
+                $stmt->execute();
+                $result = $stmt->get_result();
+
+                if ($row = $result->fetch_assoc()) {
+                    $fname = $row['fname'];
+                    $lname = $row['lname'];
+                    $role_id = $row['role_id'];
+
+                    // Log the action with user details
+                    logAudit($user_id, $fname, $lname, $role_id, "Updated category: '$categoryName'");
+                }
+            }
         } else {
             echo json_encode(array("success" => false, "message" => "Error updating category: " . mysqli_error($conn)));
         }
@@ -179,4 +207,3 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 } else {
     echo json_encode(array("success" => false, "message" => "Form not submitted"));
 }
-?>
