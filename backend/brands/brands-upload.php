@@ -1,10 +1,17 @@
 <?php
-require '../../vendor/autoload.php'; 
+// Start session if not already started
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+require '../../vendor/autoload.php';
 
 use PhpOffice\PhpSpreadsheet\IOFactory;
 
 // Include database connection
 include '../../backend/conn.php';
+// Include the auditlog.php file
+include("../../backend/auditlog.php");
 
 // Function to handle Excel file upload and brand insertion
 function handleBrandUpload($file, $conn)
@@ -67,6 +74,28 @@ function handleBrandUpload($file, $conn)
             $stmt = $conn->prepare($query);
             $stmt->bind_param('sss', $brandName, $type, $description);
             if (!$stmt->execute()) {
+
+                // Fetch user information from session or database
+                if (isset($_SESSION['user_id'])) {
+                    $user_id = $_SESSION['user_id'];
+
+                    // Fetch user details from the database using user_id
+                    $sql = "SELECT fname, lname, role_id FROM users WHERE user_id = ?";
+                    $stmt = $conn->prepare($sql);
+                    $stmt->bind_param("i", $user_id);
+                    $stmt->execute();
+                    $result = $stmt->get_result();
+
+                    if ($row = $result->fetch_assoc()) {
+                        $fname = $row['fname'];
+                        $lname = $row['lname'];
+                        $role_id = $row['role_id'];
+
+                        // Log the action with user details
+                        logAudit($user_id, $fname, $lname, $role_id, "Uploaded brands: '$brandName'");
+                    }
+                }
+
                 $errors[] = "Failed to insert brand '$brandName'.";
             }
             $stmt->close();
@@ -102,4 +131,3 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     echo json_encode(['success' => false, 'message' => 'Invalid request method.']);
     exit;
 }
-?>

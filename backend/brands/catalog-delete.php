@@ -1,5 +1,12 @@
 <?php
-include '../../backend/conn.php'; 
+// Start session if not already started
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+include '../../backend/conn.php';
+// Include the auditlog.php file
+include("../../backend/auditlog.php");
 
 // Check if the request method is POST
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -31,6 +38,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         // Bind the catalogId parameter and execute the statement
                         $stmt_delete_catalog->bind_param("i", $catalogId);
                         if ($stmt_delete_catalog->execute()) {
+
+                            // Fetch user information from session or database
+                            if (isset($_SESSION['user_id'])) {
+                                $user_id = $_SESSION['user_id'];
+
+                                // Fetch user details from the database using user_id
+                                $sql = "SELECT fname, lname, role_id FROM users WHERE user_id = ?";
+                                $stmt = $conn->prepare($sql);
+                                $stmt->bind_param("i", $user_id);
+                                $stmt->execute();
+                                $result = $stmt->get_result();
+
+                                if ($row = $result->fetch_assoc()) {
+                                    $fname = $row['fname'];
+                                    $lname = $row['lname'];
+                                    $role_id = $row['role_id'];
+
+                                    // Log the action with user details
+                                    logAudit($user_id, $fname, $lname, $role_id, "Deleted catalog: '$catalogId'");
+                                }
+                            }
+
                             // Catalog deletion successful
                             echo json_encode(['success' => true]);
                             exit;
@@ -76,5 +105,3 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     echo json_encode(['success' => false, 'message' => 'Invalid request method.']);
     exit;
 }
-
-?>

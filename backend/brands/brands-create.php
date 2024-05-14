@@ -1,5 +1,12 @@
 <?php
+// Start session if not already started
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
 include '../../backend/conn.php'; // Include the database connection script
+// Include the auditlog.php file
+include("../../backend/auditlog.php");
 
 // Check if the request method is POST
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
@@ -71,6 +78,27 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $stmt->bind_param("sssss", $brandName, $description, $type, $status, $uploadPath);
 
         if ($stmt->execute()) {
+
+            // Fetch user information from session or database
+            if (isset($_SESSION['user_id'])) {
+                $user_id = $_SESSION['user_id'];
+
+                // Fetch user details from the database using user_id
+                $sql = "SELECT fname, lname, role_id FROM users WHERE user_id = ?";
+                $stmt = $conn->prepare($sql);
+                $stmt->bind_param("i", $user_id);
+                $stmt->execute();
+                $result = $stmt->get_result();
+
+                if ($row = $result->fetch_assoc()) {
+                    $fname = $row['fname'];
+                    $lname = $row['lname'];
+                    $role_id = $row['role_id'];
+
+                    // Log the action with user details
+                    logAudit($user_id, $fname, $lname, $role_id, "Created brand: '$brandName'");
+                }
+            }
             // Get the inserted brand ID
             $brandId = $stmt->insert_id;
 
@@ -163,4 +191,3 @@ function sanitizeFileName($fileName)
     $fileName = preg_replace("/[^a-zA-Z0-9_\-.]/", "", $fileName);
     return $fileName;
 }
-?>
