@@ -80,6 +80,28 @@ $image_path = $base_url . 'assets/image/projectslogo.png';
                 <!-- <span class="text-[15px] ml-4 text-center text-gray-200 font-bold">Home</span> -->
             </div>
         </a>
+
+        <a href="/public/users/admin/auditlogs.php" class="group">
+            <div class="nav-item mt-3 flex items-center rounded-l-md px-6 p-2
+            transition-opacity duration-300 cursor-pointer text-white group-hover:bg-yellow-600 group-hover:ease-in">
+                <!-- <div class="tooltip tooltip-right" data-tip="Home">
+                    <i class="bi bi-house-door-fill"></i>
+                </div> -->
+                <div class=" flex relative ">
+                    <i class="bi bi-card-list"></i>
+                    <span class="text-[15px] ml-4 text-gray-200 font-bold">Audit Logs</span>
+                    <span class="tootlips 
+                    group-hover:ease-in group-hover:opacity-100 group-hover:visible 
+                    transition-opacity duration-300 
+                    bg-yellow-600 rounded-r-md 
+                    pr-5 py-[8.9px] m-4 mx-auto w-40
+                    text-[15px] font-bold text-white 
+                    absolute  invisible
+                    left-1/2 translate-x-[19%] -translate-y-[59.5%] opacity-0">Audit Logs</span>
+                </div>
+                <!-- <span class="text-[15px] ml-4 text-center text-gray-200 font-bold">Home</span> -->
+            </div>
+        </a>
     <?php } ?>
 
     <a href="/public/users/admin/admin-products.php" class="group">
