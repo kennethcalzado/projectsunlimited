@@ -46,6 +46,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 continue;
             }
 
+            // Check if email already exists
+            $sql_check_email = "SELECT COUNT(*) AS count FROM users WHERE email = ?";
+            $stmt_check_email = $conn->prepare($sql_check_email);
+            $stmt_check_email->bind_param("s", $email);
+            $stmt_check_email->execute();
+            $result_check_email = $stmt_check_email->get_result();
+            $row_email = $result_check_email->fetch_assoc();
+
+            if ($row_email['count'] > 0) {
+                $errors[] = "Email address '$email' already exists.";
+                $errorCount++;
+                continue;
+            }
+
             // Check if role name exists
             $roleName = $rowData[3];
             $sql_get_role_id = "SELECT role_id FROM roles WHERE role_name = ?";
@@ -77,7 +91,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             } else {
                 $errors[] = "Error inserting user: " . $conn->error;
                 $errorCount++;
-            }
+            }            
         }
 
         // Close database connection

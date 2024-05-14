@@ -92,6 +92,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $filename = "../../public/blogs/{$type}_{$blog_id}.php";
         $file_content = <<<'PHP'
 <?php
+$is_public_page = true;
 $pageTitle = 'News & Projects';
 ob_start();
 include("../../backend/conn.php");

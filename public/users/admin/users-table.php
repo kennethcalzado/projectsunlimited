@@ -181,16 +181,10 @@ ob_start();
                 </select>
                 <div id="roleError" class="text-red-500 text-sm mt-1"></div> <!-- Error message space -->
             </div>
-            <div class="mb-4" id="resetPasswordContainer">
-                <button type="button" id="resetPasswordBtn"
-                    class="inline-flex items-center px-4 py-2 bg-blue-500 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-600 active:bg-blue-700 focus:outline-none focus:border-blue-700 focus:ring focus:ring-blue-200 disabled:opacity-25 transition">Reset
-                    Password</button>
-            </div>
             <div class="flex justify-end">
-                <button type="submit" id="submitUserBtn" class="inline-flex items-center px-4 py-2 bg-green-500 border border-transparent 
-                    rounded-md font-semibold text-xs text-white uppercase tracking-widest 
-                    hover:bg-green-600 active:bg-green-700 focus:outline-none focus:border-green-700 
-                    focus:ring focus:ring-green-200 disabled:opacity-25 transition">Submit</button>
+                <button type="submit" id="submitUserBtn" class="btn-primary inline-flex items-center px-4 py-2 border border-transparent 
+                    rounded-md font-semibold text-xs uppercase tracking-widest 
+                    disabled:opacity-25 transition">Submit</button>
                 <button type="button" id="cancelUserBtn"
                     class="close inline-flex items-center justify-center ml-4 px-4 py-2 border 
                     border-transparent rounded-md font-semibold text-xs text-gray-700 uppercase 
@@ -218,7 +212,7 @@ ob_start();
         </p>
         <form id="uploadUserForm" enctype="multipart/form-data" class="mt-2">
             <div class="mb-4 flex flex-col">
-                <label for="images" class="text-sm font-medium text-gray-700 mb-1">Select File</label>
+                <label for="dropzone-file" class="text-sm font-medium text-gray-700 mb-1">Select File</label>
                 <div id="dropzone-holder" class="flex items-center justify-center w-full">
                     <label for="dropzone-file" class="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-900 border-dashed 
                         rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 
@@ -422,7 +416,7 @@ ob_start();
                     // Render user row
                     const userRow = $( '<tr>' ).addClass( 'bg-white-200 border-b hover:bg-zinc-100 dark:hover:bg-zinc-100' );
                     const userInfoContainer = $( '<div>' ).addClass( 'flex flex-col justify-center' );
-                    userInfoContainer.append( $( '<h6>' ).addClass( 'text-left px-auto w-full' ).text( user.fname + ' ' + user.lname ) );
+                    userInfoContainer.append( $( '<h6>' ).addClass( 'text-left px-auto w-full' ).text( user.fname + ' ' + user.lname ).attr( 'id', 'fullname' ) );
                     userInfoContainer.append( $( '<p>' ).addClass( 'text-left text-xs leading-tight text-slate-400' ).text( user.email ) );
                     userRow.append( $( '<td>' ).addClass( 'px-6 py-4' ).append( userInfoContainer ) );
                     userRow.append( $( '<td>' ).addClass( 'px-6 py-4' ).text( user.role_name ) );
@@ -440,9 +434,6 @@ ob_start();
                     );
                     userRow.append( updateDateTd );
 
-                    const delBtnText = user.status === 'active' ? 'Deactivate' : 'Activate';
-                    const delBtnIconClass = user.status === 'active' ? 'fas fa-trash-alt pr-[3px]' : 'fas fa-check-circle pr-[3px]'; // Change the icon based on user status
-
                     const editButton = $( '<button>' ).addClass( 'editBtn yellow-btn btn-primary hover:underline text-[14px]' )
                         .attr( 'data-toggle', 'modal' )
                         .attr( 'data-target', '#userModal' )
@@ -454,17 +445,21 @@ ob_start();
                         $( '<span>' ).text( 'Update' )
                     );
 
+                    const delBtnText = user.status === 'active' ? 'Deactivate' : 'Activate';
+                    const delBtnIconClass = user.status === 'active' ? 'fas fa-trash-alt pr-[3px]' : 'fas fa-check-circle pr-[3px]';
                     const deleteButton = $( '<button>' ).addClass( 'delBtn btn-danger hover:underline text-[14px]' )
-                        .attr( 'data-toggle', 'modal' )
-                        .attr( 'data-target', '#userModal' )
+                        .attr( {
+                            'data-toggle': 'modal',
+                            'data-target': '#userModal'
+                        } )
                         .data( 'userId', user.user_id )
                         .data( 'userStatus', user.status )
-                        .data( 'user', user );
-
-                    deleteButton.append(
-                        $( '<i>' ).addClass( delBtnIconClass ), // Delete icon with dynamic class
-                        $( '<span>' ).text( delBtnText ) // "Delete" button with dynamic text
-                    );
+                        .data( 'user', user )
+                        .addClass( user.status === 'inactive' ? '!bg-emerald-500' : '' )
+                        .append(
+                            $( '<i>' ).addClass( delBtnIconClass ),
+                            $( '<span>' ).text( delBtnText )
+                        );
 
                     const actiontd = $( '<td>' ).addClass( 'py-6 w-auto px-auto flex justify-center space-x-2' )
                         .append( editButton, deleteButton );
@@ -576,173 +571,216 @@ ob_start();
 
         ////////////////// VALIDATION OF FORMS /////////////////////
 
-        // Function to validate the user form
-        function validateUserForm ()
+        // Function to validate the first name input field
+        function validateFirstName ()
         {
-            // Remove any existing error styling and messages
-            $( '.border-red-500' ).removeClass( 'border-red-500' );
-            $( '.text-red-500' ).removeClass( 'text-red-500' );
-            $( '.error-message' ).empty();
-
-            // Get form inputs
-            const firstName = $( '#firstName' ).val();
-            const lastName = $( '#lastName' ).val();
-            const email = $( '#email' ).val();
-            const role = $( '#role' ).val();
-
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-            // Initialize error message
-            let isValid = true;
-
-            // Check if any required field is empty and build error message
-            if ( !firstName || firstName.trim() === '' )
+            const firstName = $( '#firstName' ).val().trim();
+            const firstNameError = $( '#firstNameError' );
+            if ( !firstName )
             {
                 $( '#firstName' ).addClass( 'border-red-500' );
-                $( '#firstNameError' ).addClass( 'text-sm text-red-500 mt-1 error-message' ).text( 'First Name is required.' );
-                isValid = false;
+                firstNameError.addClass( 'text-sm text-red-500 mt-1 error-message' ).text( 'First Name is required.' );
+                return false;
+            } else
+            {
+                $( '#firstName' ).removeClass( 'border-red-500' );
+                firstNameError.empty();
+                return true;
             }
-            if ( !lastName || lastName.trim() === '' )
+        }
+
+        // Function to validate the last name input field
+        function validateLastName ()
+        {
+            const lastName = $( '#lastName' ).val().trim();
+            const lastNameError = $( '#lastNameError' );
+            if ( !lastName )
             {
                 $( '#lastName' ).addClass( 'border-red-500' );
-                $( '#lastNameError' ).addClass( 'text-sm text-red-500 mt-1 error-message' ).text( 'Last Name is required.' );
-                isValid = false;
+                lastNameError.addClass( 'text-sm text-red-500 mt-1 error-message' ).text( 'Last Name is required.' );
+                return false;
+            } else
+            {
+                $( '#lastName' ).removeClass( 'border-red-500' );
+                lastNameError.empty();
+                return true;
             }
-            if ( !email || email.trim() === '' )
+        }
+
+        // Function to validate the email input field
+        function validateEmail ()
+        {
+            const email = $( '#email' ).val().trim();
+            const emailError = $( '#emailError' );
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if ( !email )
             {
                 $( '#email' ).addClass( 'border-red-500' );
-                $( '#emailError' ).addClass( 'text-sm text-red-500 mt-1 error-message' ).text( 'Email is required.' );
-                isValid = false;
+                emailError.addClass( 'text-sm text-red-500 mt-1 error-message' ).text( 'Email is required.' );
+                return false;
             } else if ( !emailRegex.test( email ) )
             {
                 $( '#email' ).addClass( 'border-red-500' );
-                $( '#emailError' ).addClass( 'text-sm text-red-500 mt-1 error-message' ).text( 'Invalid email format.' );
-                isValid = false;
-            }
-
-            if ( !role || role.trim() === '' )
+                emailError.addClass( 'text-sm text-red-500 mt-1 error-message' ).text( 'Invalid email format.' );
+                return false;
+            } else
             {
-                $( '#role' ).addClass( 'border-red-500' );
-                $( '#roleError' ).addClass( 'text-sm text-red-500 mt-1 error-message' ).text( 'Role is required.' );
-                isValid = false;
+                $( '#email' ).removeClass( 'border-red-500' );
+                emailError.empty();
+                return true;
             }
-
-            return isValid;
         }
+
+        function validateRole ()
+        {
+            const role = $( '#role' );
+            const roleError = $( '#roleError' );
+            if ( role && role.val() && role.val().trim() )
+            {
+                role.removeClass( 'border-red-500' );
+                roleError.empty();
+                return true;
+            } else
+            {
+                role.addClass( 'border-red-500' );
+                roleError.addClass( 'text-sm text-red-500 mt-1 error-message' ).text( 'Role is required.' );
+                return false;
+            }
+        }
+
+        // Add event listener for input event on the first name field
+        $( '#firstName' ).on( 'input', function ()
+        {
+            validateFirstName();
+        } );
+
+        // Add event listener for input event on the last name field
+        $( '#lastName' ).on( 'input', function ()
+        {
+            validateLastName();
+        } );
+
+        // Add event listener for input event on the email field
+        $( '#email' ).on( 'input', function ()
+        {
+            validateEmail();
+        } );
+
+        // Add event listener for input event on the role field
+        $( '#role' ).on( 'input', function ()
+        {
+            validateRole();
+        } );
+
+        // Function to validate the user form
+        function validateUserForm ()
+        {
+            // Call each individual validation function
+            const isValidFirstName = validateFirstName();
+            const isValidLastName = validateLastName();
+            const isValidEmail = validateEmail();
+            const isValidRole = validateRole();
+
+            // Combine the results of individual validations
+            return isValidFirstName && isValidLastName && isValidEmail && isValidRole;
+        }
+
 
         ////////////////////// SUBMIT EVENT HANDLER (HANDLES BOTH UPDATE AND CREATE USER) ///////////////////////////
 
-        // Event listener for form submission
         $( '#userForm' ).submit( function ( event )
         {
-            // Prevent default form submission behavior
             event.preventDefault();
 
-            // Validate the form
             if ( validateUserForm() )
             {
-                let formData = $( this ).serialize(); // Serialize form data
-
-                // Determine the URL based on whether it's an update or create action
+                let formData = $( this ).serialize();
                 let url;
                 let actionType;
                 const userId = $( '#userModal' ).data( 'userId' );
-                console.log( userId );
 
                 if ( userId !== undefined )
                 {
-                    // Update user
                     actionType = 'update';
-                    showPopup( 'confirmation', 'Confirm Update', null, actionType ); // Pass null for message
                     url = '../../../backend/users/user-update.php';
                     formData += '&userId=' + userId;
                 } else
                 {
-                    // Create user
                     actionType = 'create';
-                    showPopup( 'confirmation', 'Confirm Create', null, actionType ); // Pass null for message
                     url = '../../../backend/users/user-create.php';
                 }
 
-                // Store form data and action type for later use
-                $( document ).data( 'formData', formData );
-                $( document ).data( 'actionType', actionType );
-                $( document ).data( 'url', url );
-            }
-        } );
+                let title = actionType === 'update' ? 'Confirm Update' : 'Confirm Create';
+                let text = actionType === 'update' ? `Are you sure you want to update this user?` : 'Are you sure you want to create this user?';
 
-        // Event listener for confirmation button click
-        $( document ).on( 'click', '#updateconfirmBtn, #createconfirmBtn', function ()
-        {
-            // Hide confirmation pop-up
-            $( '.confirmation-popup' ).addClass( 'hidden' );
-
-            // Retrieve stored form data and action type
-            let formData = $( document ).data( 'formData' );
-            const actionType = $( document ).data( 'actionType' );
-            const url = $( document ).data( 'url' );
-
-            // Submit the form using AJAX
-            $.ajax( {
-                url: url,
-                type: 'POST',
-                data: formData,
-                dataType: 'json',
-                success: function ( response )
+                // Fetch user name if available
+                let userName = '';
+                if ( actionType === 'update' )
                 {
-                    if ( response.success )
-                    {
-                        // Hide create user form
-                        $( '#userModal' ).addClass( 'hidden' );
-
-                        // Display success message using a pop-up
-                        if ( actionType === 'update' )
-                        {
-                            showPopup( 'success', 'Success', null, actionType ); // Pass null for message
-                        } else if ( actionType === 'create' )
-                        {
-                            showPopup( 'success', 'Success', null, actionType ); // Pass null for message
-                        }
-
-                        // Automatically close the success pop-up after 3 seconds
-                        setTimeout( function ()
-                        {
-                            $( '.success-popup' ).addClass( 'hidden' );
-                        }, 3000 );
-
-                        // Refresh user data 
-                        filterUserData( '', '', '', 1, 5 );
-                    } else
-                    {
-                        // Display error messages received from the backend
-                        if ( response.message )
-                        {
-                            Object.keys( response.message ).forEach( function ( fieldName )
-                            {
-                                $( '#' + fieldName + 'Error' ).addClass( 'text-sm text-red-500 mt-1 error-message' )
-                                    .text( response.message[fieldName] );
-                                $( '#' + fieldName ).addClass( 'border-red-500' );
-
-                                // Display error message using a pop-up
-                                showPopup( 'error', 'Error', response.message[fieldName] );
-                            } );
-                        }
-                    }
-                },
-                error: function ( xhr, status, error )
-                {
-                    console.error( 'Error:', error );
-                    // Display error message using a pop-up
-                    showPopup( 'error', 'Error', 'An error occurred. Please try again later.' );
+                    userName = $( '#firstName' ).val() + ' ' + $( '#lastName' ).val();
                 }
-            } );
 
-            // Clear stored formData, actionType, and URL
-            $( document ).data( 'formData', null );
-            $( document ).data( 'actionType', null );
-            $( document ).data( 'url', null );
-            $( '#userModal' ).removeData( 'userId' );
-            $( '#popup-handler' ).empty();
+                // Show SweetAlert confirmation
+                Swal.fire( {
+                    title: title,
+                    text: text,
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes'
+                } ).then( ( result ) => 
+                {
+                    if ( result.isConfirmed )
+                    {
+                        // Submit the form using AJAX
+                        $.ajax( {
+                            url: url,
+                            type: 'POST',
+                            data: formData,
+                            dataType: 'json',
+                            success: function ( response )
+                            {
+                                if ( response.success )
+                                {
+                                    $( '#userModal' ).addClass( 'hidden' );
+                                    // Show SweetAlert success message
+                                    Swal.fire( {
+                                        title: 'Success',
+                                        text: 'Operation successful!',
+                                        icon: 'success',
+                                        timer: 2000,
+                                        timerProgressBar: true,
+                                        showConfirmButton: true
+                                    } );
+                                    // Refresh user data
+                                    filterUserData( '', '', '', 1, 5 );
+                                } else
+                                {
+                                    if ( response.message )
+                                    {
+                                        Object.keys( response.message ).forEach( function ( fieldName )
+                                        {
+                                            $( `#${ fieldName }Error` ).addClass( 'text-sm text-red-500 mt-1 error-message' ).text( response.message[fieldName] );
+                                            $( `#${ fieldName }` ).addClass( 'border-red-500' );
+                                        } );
+                                    }
+                                }
+                            },
+                            error: function ( xhr, status, error )
+                            {
+                                console.error( 'Error:', error );
+                                // Show SweetAlert error message
+                                Swal.fire( {
+                                    title: 'Error',
+                                    text: 'An error occurred. Please try again later.',
+                                    icon: 'error'
+                                } );
+                            }
+                        } );
+                    }
+                } );
+            }
         } );
 
         //////////////////// ACTIVATE / DEACTIVATE ///////////////////////////
@@ -754,71 +792,74 @@ ob_start();
             const userId = $( this ).data( 'userId' );
             const userStatus = $( this ).data( 'userStatus' );
             console.log( userStatus );
-            const delBtnText = "Delete"; // Assuming delBtnText is defined somewhere
             const popupMessage = userStatus === 'active' ? 'Are you sure you want to deactivate this user?' : 'Are you sure you want to activate this user?';
             const header = userStatus === 'active' ? 'Confirm Deactivation' : 'Confirm Activation';
-            const popUpType = userStatus === 'active' ? 'deactivate' : 'activate';
-
-            // Call showPopup function with confirmation parameters
-            showPopup( 'delete', header, popupMessage, popUpType );
-
-            // Store user ID for later use
-            $( '#' + popUpType + 'confirmDeleteBtn' ).data( 'userId', userId );
-            $( '#' + popUpType + 'confirmDeleteBtn' ).data( 'userStatus', userStatus );
+            console.log( userId );
+            // Call Swal.fire with confirmation parameters
+            Swal.fire( {
+                title: header,
+                text: popupMessage,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: userStatus === 'active' ? 'Deactivate' : 'Activate',
+                cancelButtonText: 'Cancel'
+            } ).then( ( result ) =>
+            {
+                if ( result.isConfirmed )
+                {
+                    // Store user ID and status for later use
+                    const popUpType = userStatus === 'active' ? 'deactivate' : 'activate';
+                    confirmUserAction( userId );
+                }
+            } );
         } );
 
-        // Click event listener for confirmDeleteBtn
-        $( document ).on( 'click', '#deactivateconfirmDeleteBtn, #activateconfirmDeleteBtn', function () 
+        // Function to handle user action confirmation
+        function confirmUserAction ( userId )
         {
-            // Get user information
-            const userId = $( this ).data( 'userId' );
-            const userStatus = $( this ).data( 'userStatus' );
-
-            // Check if userId exists
-            if ( userId )
-            {
-                // AJAX request
-                $.ajax( {
-                    url: '../../../backend/users/user-delete.php',
-                    type: 'POST',
-                    data: { userId: userId },
-                    dataType: 'json',
-                    success: function ( response )
+            // AJAX request
+            $.ajax( {
+                url: '../../../backend/users/user-delete.php',
+                type: 'POST',
+                data: { userId: userId },
+                dataType: 'json',
+                success: function ( response )
+                {
+                    if ( response.success )
                     {
-                        if ( response.success )
-                        {
-                            // Display success message using a pop-up
-                            const successMessage = response.message || 'User operation successful.';
-                            showPopup( 'success', 'Success', null, userStatus === 'active' ? 'deactivate' : 'activate' );
+                        // Display success message using Swal.fire
+                        Swal.fire( {
+                            title: 'Success',
+                            text: response.message || 'User operation successful.',
+                            icon: 'success',
+                            timer: 2000,
+                            timerProgressBar: true,
+                            showConfirmButton: true
+                        } );
 
-                            // Automatically close the pop-up after 3 seconds
-                            setTimeout( function ()
-                            {
-                                $( '.success-popup' ).addClass( 'hidden' );
-                            }, 3000 );
-
-                            filterUserData( '', '', '', 1, 5 );
-                        } else
-                        {
-                            // Display error message using a pop-up
-                            const errorMessage = response.message || 'An error occurred. Please try again later.';
-                            showPopup( 'error', 'Error', errorMessage );
-                        }
-                    },
-                    error: function ( xhr, status, error )
+                        filterUserData( '', '', '', 1, 5 );
+                    } else
                     {
-                        // Display error message using a pop-up
-                        showPopup( 'error', 'Error', 'An error occurred. Please try again later.' );
-                        console.error( 'Error:', error );
+                        // Display error message using Swal.fire
+                        Swal.fire( {
+                            title: 'Error',
+                            text: response.message || 'An error occurred. Please try again later.',
+                            icon: 'error'
+                        } );
                     }
-                } );
-            } else
-            {
-                // If userId does not exist, show an error message
-                showPopup( 'error', 'Error', 'User ID not provided.' );
-            }
-            $( '#popup-handler' ).empty();
-        } );
+                },
+                error: function ( xhr, status, error )
+                {
+                    // Display error message using Swal.fire
+                    Swal.fire( {
+                        title: 'Error',
+                        text: 'An error occurred. Please try again later.',
+                        icon: 'error'
+                    } );
+                    console.error( 'Error:', error );
+                }
+            } );
+        }
 
         ////////////////////// PAGINATION //////////////////////////
 
@@ -852,171 +893,6 @@ ob_start();
             filterUserData( roleFilter, statusFilter, searchTerm, page, limit );
         } );
 
-        /////////////////// POP UP FUNCTION ////////////////////////////
-        function showPopup ( type, header, message, actionType )
-        {
-            const popupConfig = {
-                confirmation: {
-                    iconClass: 'bi-exclamation-circle',
-                    buttonClass: 'confirmBtn',
-                    buttonText: 'Confirm',
-                    buttonBgColor: 'bg-yellow-200',
-                    buttonTextColor: 'text-black',
-                    hoverBgColor: 'hover:bg-yellow-400',
-                    activeBgColor: 'active:bg-yellow-500',
-                    focusStyles: 'focus:outline-none focus:border-yellow-500 focus:ring focus:ring-yellow-200',
-                    transition: 'transition disabled:opacity-25',
-                    iconColor: 'text-black'
-                },
-                success: {
-                    iconClass: 'bi-check-circle',
-                    buttonClass: 'closeSuccessBtn',
-                    buttonText: 'Close',
-                    buttonBgColor: 'bg-gray-200',
-                    buttonTextColor: 'text-black',
-                    hoverBgColor: 'hover:bg-gray-300',
-                    activeBgColor: 'active:bg-gray-400',
-                    focusStyles: 'focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-300',
-                    transition: 'transition disabled:opacity-25',
-                    iconColor: 'text-green-400'
-                },
-                error: {
-                    iconClass: 'bi-exclamation-triangle',
-                    buttonClass: 'closeErrorBtn',
-                    buttonText: 'Close',
-                    buttonBgColor: 'bg-gray-200',
-                    buttonTextColor: 'text-black',
-                    hoverBgColor: 'hover:bg-gray-300',
-                    activeBgColor: 'active:bg-gray-400',
-                    focusStyles: 'focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-300',
-                    transition: 'transition disabled:opacity-25',
-                    iconColor: 'text-red-400'
-                },
-                delete: { // Configuration for delete action
-                    iconClass: 'bi-trash',
-                    buttonClass: 'confirmDeleteBtn',
-                    buttonText: 'Confirm',
-                    buttonBgColor: 'bg-red-500',
-                    buttonTextColor: 'text-white',
-                    hoverBgColor: 'hover:bg-red-600',
-                    activeBgColor: 'active:bg-red-700',
-                    focusStyles: 'focus:outline-none focus:border-red-600 focus:ring focus:ring-red-400',
-                    transition: 'transition disabled:opacity-25',
-                    iconColor: 'text-red-400'
-                }
-            };
-
-            const {
-                iconClass,
-                buttonClass,
-                buttonText,
-                buttonBgColor,
-                buttonTextColor,
-                hoverBgColor,
-                activeBgColor,
-                focusStyles,
-                transition,
-                iconColor
-            } = popupConfig[type];
-
-            // Adjust message based on actionType
-            if ( actionType === 'update' )
-            {
-                if ( type === 'confirmation' )
-                {
-                    message = 'Are you sure you want to update this user?';
-                } else if ( type === 'success' )
-                {
-                    message = 'User updated successfully.';
-                }
-            } else if ( actionType === 'create' )
-            {
-                if ( type === 'confirmation' )
-                {
-                    message = 'Are you sure you want to create this user?';
-                } else if ( type === 'success' )
-                {
-                    message = 'User created successfully.';
-                }
-            } else if ( actionType === 'delete' )
-            { // Adjust for delete action
-                if ( type === 'confirmation' )
-                {
-                    message = 'Are you sure you want to delete this user?';
-                } else if ( type === 'success' )
-                {
-                    message = 'User deleted successfully.';
-                }
-            } else if ( actionType === 'activate' )
-            { // Adjust for activate action
-                if ( type === 'confirmation' )
-                {
-                    message = 'Are you sure you want to activate this user?';
-                } else if ( type === 'success' )
-                {
-                    message = 'User activated successfully.';
-                }
-            } else if ( actionType === 'deactivate' )
-            { // Adjust for deactivate action
-                if ( type === 'confirmation' )
-                {
-                    message = 'Are you sure you want to deactivate this user?';
-                } else if ( type === 'success' )
-                {
-                    message = 'User deactivated successfully.';
-                }
-            } else if ( actionType === 'createBulk' )
-            {
-                if ( type === 'confirmation' )
-                {
-                    message = 'Are you sure you want to upload this file and create/update multiple users?';
-                } else if ( type === 'success' )
-                {
-                    message = 'Users created successfully.';
-                }
-            }
-
-            // Create the pop-up HTML using jQuery
-            const popupHtml = $( '<div>' ).addClass( `${ type }-popup hidden fixed inset-0 z-50 flex items-center justify-center` ).append(
-                $( '<div>' ).addClass( 'bg-black opacity-25 w-full h-full absolute inset-0' ),
-                $( '<div>' ).addClass( 'bg-white rounded-lg md:max-w-md md:mx-auto p-4 fixed inset-x-0 bottom-0 z-50 mb-4 mx-4 md:relative' ).append(
-                    $( '<div>' ).addClass( 'md:flex items-center' ).append(
-                        $( '<div>' ).addClass( 'rounded-full flex items-center justify-center w-16 h-16 flex-shrink-0 mx-auto' ).append(
-                            $( '<i>' ).addClass( `bi ${ iconClass } text-5xl ${ iconColor }` )
-                        ),
-                        $( '<div>' ).addClass( 'mt-4 md:mt-0 md:ml-6 text               -center md:text-left' ).append(
-                            $( '<p>' ).addClass( `font-bold ${ iconColor }` ).text( header ),
-                            $( '<p>' ).addClass( 'text-sm text-gray-700 mt-1' ).text( message )
-                        )
-                    ),
-                    $( '<div>' ).addClass( 'text-center md:text-right mt-4 md:flex md:justify-end' ).append(
-                        $( '<button>' ).attr( 'id', actionType + buttonClass ).addClass( `block w-full md:inline-block md:w-auto px-4 py-3 md:py-2 rounded-lg font-semibold text-sm md:ml-2 md:order-2 ${ buttonBgColor } ${ buttonTextColor } ${ hoverBgColor } ${ activeBgColor } ${ focusStyles } ${ transition }` ).text( buttonText ),
-                        type === 'confirmation' || type === 'delete' ? $( '<button>' ).addClass( 'cancel block w-full md:inline-block md:w-auto px-4 py-3 md:py-2 rounded-lg font-semibold text-sm mt-4 md:mt-0 md:order-1 bg-gray-200 hover:bg-gray-300 active:bg-gray-400 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-300 disabled:opacity-25 transition' ).text( 'Cancel' ) : null
-                    )
-                )
-            );
-
-            // Append the pop-up HTML to the specified div
-            $( '#popup-handler' ).append( popupHtml );
-
-            // Show the pop-up
-            $( `.${ type }-popup` ).removeClass( 'hidden' );
-
-            // Add event listener to close button using event delegation
-            $( '#popup-handler' ).on( 'click', `#${ actionType + buttonClass }`, function ()
-            {
-                $( `.${ type }-popup` ).hide();
-            } );
-
-            // Add event listener to cancel button if it exists
-            if ( type === 'confirmation' || type === 'delete' )
-            {
-                $( '.cancel' ).click( function ()
-                {
-                    $( `.${ type }-popup` ).hide();
-                } );
-            }
-        }
         //////////////////// FORMAT DATE AND TIME IN TABLE /////////////////////////
         // Function to format date
         function formatDate ( dateString )
@@ -1125,30 +1001,15 @@ ob_start();
                     }
                 } else
                 {
-                    if ( errors.length > 0 )
-                    {
-                        // Join the errors array elements into a single string with line breaks
-                        message = errors.join( '\n' );
-                        showPopup( 'error', 'Error', message, null );
-                    } else
-                    {
-                        showPopup( 'error', 'Error', errors, null );
-                    }
+                    // Display error message using SweetAlert
+                    Swal.fire( {
+                        title: 'Error',
+                        text: errors.join( '\n' ),
+                        icon: 'error',
+                    } );
                 }
             }
         }
-
-        // Upload form submission
-        $( '#uploadUserForm' ).submit( function ( e )
-        {
-            e.preventDefault();
-
-            if ( validateForm() )
-            {
-                // Show confirmation popup
-                showPopup( 'confirmation', 'Confirm Bulk Create', null, 'createBulk' );
-            }
-        } );
 
         function validateForm ()
         {
@@ -1180,83 +1041,142 @@ ob_start();
             // Display validation errors if any
             if ( errors.length > 0 )
             {
-                // Join the errors array elements into a single string with line breaks
-                message = errors.join( '\n' );
-                showPopup( 'error', 'Error', message, null );
-            } else
-            {
-                showPopup( 'error', 'Error', errors, null );
+                // Display error message using SweetAlert
+                Swal.fire( {
+                    title: 'Error',
+                    text: errors.join( '\n' ),
+                    icon: 'error',
+                } );
             }
 
             // Return true if no errors, false otherwise
             return errors.length === 0;
         }
 
-        $( document ).on( 'click', '#createBulkconfirmBtn', function ()
+        // Upload form submission
+        $( '#uploadUserForm' ).submit( function ( e )
         {
-            // Hide confirmation pop-up
-            $( '.confirmation-popup' ).addClass( 'hidden' );
+            e.preventDefault();
 
-            var formData = new FormData( $( '#uploadUserForm' )[0] );
+            if ( validateForm() )
+            {
+                // Submit the form using AJAX
+                var formData = new FormData( $( '#uploadUserForm' )[0] );
 
-            // Submit the form using AJAX
-            $.ajax( {
-                url: '/backend/users/users-upload.php',
-                type: 'POST',
-                data: formData,
-                dataType: 'json',
-                processData: false,
-                contentType: false,
-                success: function ( response )
+                Swal.fire( {
+                    title: 'Upload File',
+                    text: 'Are you sure you want to upload this file?',
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, upload it!'
+                } ).then( ( result ) =>
                 {
-                    if ( response.success )
+                    if ( result.isConfirmed )
                     {
-                        // Hide create user form
-                        // $( '#uploadUserModal' ).addClass( 'hidden' );
+                        // Show processing dialog
+                        var processingDialog = Swal.fire( {
+                            title: 'Processing',
+                            text: 'Please wait...',
+                            icon: 'info',
+                            allowOutsideClick: false,
+                            showConfirmButton: false
+                        } );
 
-                        showPopup( 'success', 'Success', null, 'createBulk' );
-
-                        // Automatically close the success pop-up after 3 seconds
-                        setTimeout( function ()
-                        {
-                            $( '.success-popup' ).addClass( 'hidden' );
-                        }, 3000 );
-
-                        // Refresh user data 
-                        filterUserData( '', '', '', 1, 5 );
-                    } else
-                    {
-                        // Display error messages received from the backend
-                        if ( response.message )
-                        {
-                            Object.keys( response.message ).forEach( function ( fieldName )
+                        // Perform file upload
+                        var formData = new FormData( this );
+                        $.ajax( {
+                            url: '/backend/users/users-upload.php',
+                            type: 'POST',
+                            data: formData,
+                            dataType: 'json',
+                            processData: false,
+                            contentType: false,
+                            success: function ( response )
                             {
-                                $( '#' + fieldName + 'Error' ).addClass( 'text-sm text-red-500 mt-1 error-message' )
-                                    .text( response.message[fieldName] );
-                                $( '#' + fieldName ).addClass( 'border-red-500' );
+                                processingDialog.close(); // Close the processing dialog
+                                if ( response.success )
+                                {
+                                    // Display success message using SweetAlert
+                                    Swal.fire( {
+                                        title: 'Success',
+                                        text: 'Upload successful!',
+                                        icon: 'success',
+                                    } ).then( ( result ) =>
+                                    {
+                                        // Show counts of success and failure in a popup
+                                        Swal.fire( {
+                                            title: 'Upload Summary',
+                                            html: 'Success: ' + response.successCount + '<br>' +
+                                                'Failures: ' + response.errorCount + '<br>' +
+                                                ( response.errorCount > 0 ? '<hr class="mt-1"><button id="viewErrorsBtn" class="btn btn-primary mt-2">View Errors</button>' : '' ),
+                                            icon: 'info'
+                                        } );
 
-                                // Display error message using a pop-up
-                                showPopup( 'error', 'Error', response.message[fieldName] );
-                            } );
-                        }
+                                        // Event listener for the "View Errors" button
+                                        $( document ).on( 'click', '#viewErrorsBtn', function ()
+                                        {
+                                            // Display detailed error messages
+                                            Swal.fire( {
+                                                title: 'Error Details',
+                                                html: response.errors.join( '<br>' ),
+                                                icon: 'error'
+                                            } );
+                                        } );
+
+                                        // Refresh user data
+                                        filterUserData( '', '', '', 1, 5 );
+                                    } );
+
+                                    $( '#uploadUserModal' ).closest( '.modal' ).toggleClass( 'hidden' );
+
+                                    // Reset form fields and icon
+                                    $( '#file-name' ).text( '' );
+                                    $( '#dropzone-file' ).val( null );
+                                    $( '#uploadModalIconHolder' ).empty();
+                                    $( '#uploadModalIconHolder' ).append( $( '<i>' ).addClass( 'text-3xl mb-3 fa-solid fa-file-arrow-up text-zinc-300' ) );
+                                } else
+                                {
+                                    // Display error messages received from the backend
+                                    if ( response.message )
+                                    {
+                                        Object.keys( response.message ).forEach( function ( fieldName )
+                                        {
+                                            $( '#' + fieldName + 'Error' ).addClass( 'text-sm text-red-500 mt-1 error-message' )
+                                                .text( response.message[fieldName] );
+                                            $( '#' + fieldName ).addClass( 'border-red-500' );
+
+                                            // Display error message using SweetAlert
+                                            Swal.fire( {
+                                                title: 'Error',
+                                                text: response.message[fieldName],
+                                                icon: 'error',
+                                            } );
+                                        } );
+                                    }
+                                }
+                            },
+                            error: function ( xhr, status, error )
+                            {
+                                processingDialog.close(); // Close the processing dialog
+                                console.error( 'Error:', error );
+                                // Display error message using SweetAlert
+                                Swal.fire( {
+                                    title: 'Error',
+                                    text: 'An error occurred. Please try again later.',
+                                    icon: 'error',
+                                } );
+                            },
+                        } );
                     }
-                },
-                error: function ( xhr, status, error )
-                {
-                    console.error( 'Error:', error );
-                    // Display error message using a pop-up
-                    showPopup( 'error', 'Error', 'An error occurred. Please try again later.' );
-                }
-            } );
-
-            $( '#file-name' ).text( '' );
-            $( '#dropzone-file' ).val( null );
-            $( '#uploadModalIconHolder' ).empty();
-            $( '#uploadModalIconHolder' ).append( $( '<i>' ).addClass( 'text-3xl mb-3 fa-solid fa-file-arrow-up text-zinc-300' ) );
+                } );
+            }
         } );
 
         filterUserData( '', '', '', 1, 5 );
     } );
+
 </script>
 
 <?php

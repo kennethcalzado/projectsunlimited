@@ -218,7 +218,7 @@ ob_start();
             </div>
 
             <div class="flex justify-end mt-4">
-                <button id="editBrandBtn" type="button" class="editBtn btn-primary mr-2">Edit</button>
+                <button id="editBrandBtn" type="button" class="btn-primary mr-2">Edit</button>
                 <button id="submitBrandBtn" type="submit" class="btn-primary mr-2 hidden">Submit</button>
                 <button id="hideBrandBtn" type="button" class="delBtn btn-danger mr-2">Hide</button>
                 <button id="closeBrandBtn" type="button" class="btn-secondary">Close</button>
@@ -296,16 +296,16 @@ ob_start();
                 {
                     data: null,
                     title: 'Brand',
-                    className: '!text-center',
+                    className: '!text-center max-w-[200px]',
                     render: function ( data )
                     {
                         return `
-                            <div class="flex flex-col items-center justify-center">
+                            <div class="flex flex-col items-center justify-center  ">
                                 <div class="w-[100px] h-[100px] rounded-full ring-1 ring-black overflow-hidden flex items-center justify-center">
                                     <img src="${ data.logo_url }" alt="${ data.brand_name }" class="block object-fill max-w-[100px] max-h-[100px]">
                                 </div>
                                 <span class="block mt-2">${ data.brand_name }</span>
-                                <span class="text-xs text-gray-500 block">${ data.description }</span>
+                        <span class="text-xs text-gray-500 truncate max-w-[200px]">${ data.description }</span>
                             </div>
                     `;
                     }
@@ -337,16 +337,17 @@ ob_start();
                         const hideButtonText = isHidden ? 'Unhide' : 'Hide';
 
                         return `
-                                <button class="viewBtn btn-view !m-0 hover:underline text-[14px]">
-                                    <i class="fas fa-eye pr-[3px]"></i>View
-                                </button>
-                                <button class="editBtn yellow-btn btn-primary !m-0 hover:underline text-[14px]">
-                                    <i class="fas fa-edit pr-[3px]"></i>Edit
-                                </button>
-                                <button class="delBtn btn-danger !m-0 hover:underline text-[14px]">
-                                    <i class="fas fa-trash pr-[3px]"></i>${ hideButtonText }
-                                </button>
-                            `;
+                            <button class="viewBtn btn-view !m-0 hover:underline text-[14px]">
+                                <i class="fas fa-eye pr-[3px]"></i>View
+                            </button>
+                            <button class="editBtn yellow-btn btn-primary !m-0 hover:underline text-[14px]">
+                                <i class="fas fa-edit pr-[3px]"></i>Edit
+                            </button>
+                            <button class="delBtn btn-danger !m-0 hover:underline text-[14px] ${ data.status === 'hidden' ? '!bg-emerald-500 hover:!bg-emerald-400' : '' }">
+                                <i class="fas fa-trash pr-[3px]"></i>${ hideButtonText }
+                            </button>
+                        `;
+
                     }
                 }
 
@@ -503,10 +504,6 @@ ob_start();
                 // Set hide button text based on status
                 const hideButtonText = rowData.status === 'hidden' ? 'Unhide' : 'Hide';
                 $( '#hideBrandBtn' ).text( hideButtonText );
-            } else if ( isCreate )
-            {
-                // Additional logic for creating brand and handling catalog uploads
-                // Show/hide elements, enable/disable fields, etc.
             }
 
             // Set modal elements visibility and behavior based on view or edit
@@ -619,6 +616,29 @@ ob_start();
             $( '#modal-container' ).toggleClass( 'hidden' );
         } );
 
+        $( document ).on( 'click', '#editBrandBtn', function ()
+        {
+            // Enable input fields for editing
+            $( '#brandName, #description, #type, #status' ).prop( 'disabled', false );
+
+            // Set buttons visibility
+            $( '#submitBrandBtn, #hideBrandBtn' ).show();
+            $( '#editBrandBtn' ).hide();
+            $( '#closeBrandBtn' ).text( 'Cancel' );
+
+            // Show label when hovering over the upload button
+            $( '#imageDropzone' ).hover( function ()
+            {
+                $( 'label[for="uploadBrandLogo"],#brandLogoOverlay' ).show();
+            } );
+
+            // Enable drag and drop for the brand logo
+            enableDragAndDrop();
+
+            // Set the form data to indicate it is for creating a new brand
+            $( '#brandForm' ).data( 'isEdit', true );
+        } );
+
         $( '#brandCatalogs' ).on( 'change', function ()
         {
             const files = $( this )[0].files; // Get uploaded files
@@ -642,7 +662,7 @@ ob_start();
         function createFileContainer ( fileName, fileSize, fileExtension, catalogId )
         {
             const container = $( '<div>' ).addClass( 'relative bg-gray-200 rounded-md p-2 flex flex-col items-center justify-center text-center' );
-            const deleteButton = $( '<button>' ).addClass( 'absolute top-0 right-0 w-6 h-6 text-center text-gray-500 bg-transparent border-none outline-none cursor-pointer rounded-full hover:text-red-700 hover:bg-gray-100' ).html( '&times;' ).attr( 'type', 'button' );
+            const deleteButton = $( '<button>' ).addClass( 'absolute top-0 right-0 bg-red-500 w-6 h-6 text-center text-white border-none outline-none cursor-pointer rounded-full flex items-center justify-center hover:bg-red-600' ).html( '&times' ).attr( 'type', 'button' );
             const icon = $( '<i>' ).addClass( getFileIconClass( fileExtension ) + ' text-3xl mb-1' );
             const name = $( '<p>' ).addClass( 'text-sm font-medium whitespace-normal break-all' ).text( fileName );
             const size = $( '<p>' ).addClass( 'text-xs text-gray-500' ).text( formatSize( fileSize ) );
@@ -910,6 +930,7 @@ ob_start();
             $( '#imageDropzone' ).off( 'dragover drop' );
         }
 
+        ///////////// DRAG AND DROP FOR UPLOAD BRNDS /////////////
         $( document ).on( 'click', '#addMultipleBrands', function ()
         {
             $( '#uploadBrandModal' ).toggleClass( 'hidden' );
@@ -929,7 +950,7 @@ ob_start();
         } );
 
         // Event handler for drop
-        $( '#dropzone-holder' ).on( 'drop', function ( e )
+        $( '#brand-dropzone-holder' ).on( 'drop', function ( e )
         {
             e.preventDefault();
             e.stopPropagation();
@@ -945,7 +966,7 @@ ob_start();
         } );
 
         // Event handler for drag over
-        $( '#dropzone-holder' ).on( 'dragover', function ( e )
+        $( '#brand-dropzone-holder' ).on( 'dragover', function ( e )
         {
             e.preventDefault();
             e.stopPropagation();
@@ -953,7 +974,7 @@ ob_start();
         } );
 
         // Event handler for drag leave
-        $( '#dropzone-holder' ).on( 'dragleave', function ( e )
+        $( '#brand-dropzone-holder' ).on( 'dragleave', function ( e )
         {
             e.preventDefault();
             e.stopPropagation();
@@ -1031,8 +1052,8 @@ ob_start();
             e.preventDefault();
             var files = $( '#dropzone-brand-file' )[0].files; // Corrected line
             if ( files && files.length > 0 )
-            { // Added check for files existence
-                var errors = handleFiles( files ); // Define errors here
+            {
+                var errors = handleFiles( files ); // Removed stray 'e'
 
                 if ( errors.length === 0 )
                 {
@@ -1048,30 +1069,87 @@ ob_start();
                     {
                         if ( result.isConfirmed )
                         {
+                            // Show processing dialog
+                            var processingDialog = Swal.fire( {
+                                title: 'Processing',
+                                text: 'Please wait...',
+                                icon: 'info',
+                                allowOutsideClick: false,
+                                showConfirmButton: false
+                            } );
+
                             // Perform file upload
                             var formData = new FormData( this );
+
                             $.ajax( {
                                 url: '/../../backend/brands/brands-upload.php',
                                 type: 'POST',
                                 data: formData,
+                                dataType: 'json',
                                 processData: false,
                                 contentType: false,
                                 success: function ( response )
                                 {
-                                    // Reload the DataTable to reflect the changes
-                                    table.ajax.reload();
+                                    processingDialog.close();
+                                    if ( response.success )
+                                    {
+                                        console.log( response.success );
+                                        // Display success message using SweetAlert
+                                        Swal.fire( {
+                                            title: 'Success',
+                                            text: 'Upload successful!',
+                                            icon: 'success',
+                                        } ).then( ( result ) =>
+                                        {
+                                            // Show counts of success and failure in a popup
+                                            Swal.fire( {
+                                                title: 'Upload Summary',
+                                                html: 'Success: ' + response.successCount + '<br>' +
+                                                    'Failures: ' + response.errorCount + '<br>' +
+                                                    ( response.errorCount > 0 ? '<hr class="mt-1"><button id="viewErrorsBtn" class="btn btn-primary mt-2">View Errors</button>' : '' ),
+                                                icon: 'info'
+                                            } );
 
-                                    // Handle success response
-                                    Swal.fire( {
-                                        icon: 'success',
-                                        title: 'Success!',
-                                        text: 'File uploaded successfully.'
-                                    } );
-                                    toggleUploadBrandModal(); // Hide the modal
+                                            // Event listener for the "View Errors" button
+                                            $( document ).on( 'click', '#viewErrorsBtn', function ()
+                                            {
+                                                // Display detailed error messages
+                                                Swal.fire( {
+                                                    title: 'Error Details',
+                                                    html: response.errors.join( '<br>' ),
+                                                    icon: 'error'
+                                                } );
+                                            } );
+
+                                            table.ajax.reload();
+
+                                            closeUploadBrandModal();
+                                        } );
+                                    } else
+                                    {
+                                        // Display error messages received from the backend
+                                        if ( response.message )
+                                        {
+                                            Object.keys( response.message ).forEach( function ( fieldName )
+                                            {
+                                                $( '#' + fieldName + 'Error' ).addClass( 'text-sm text-red-500 mt-1 error-message' )
+                                                    .text( response.message[fieldName] );
+                                                $( '#' + fieldName ).addClass( 'border-red-500' );
+
+                                                // Display error message using SweetAlert
+                                                Swal.fire( {
+                                                    title: 'Error',
+                                                    text: response.message[fieldName],
+                                                    icon: 'error',
+                                                } );
+                                            } );
+                                        }
+                                    }
                                 },
                                 error: function ( xhr, status, error )
                                 {
                                     // Handle error response
+                                    Swal.close(); // Close the processing dialog
                                     Swal.fire( {
                                         icon: 'error',
                                         title: 'Error!',
@@ -1092,6 +1170,7 @@ ob_start();
                 } );
             }
         } );
+
 
         // Click event handler for closing the modal
         $( '#closeUploadBrandModal, #cancelUploadBrandModal' ).on( 'click', function ()
