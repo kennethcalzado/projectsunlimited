@@ -4,7 +4,7 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 include '../../backend/conn.php';
 // Include the auditlog.php file
-include("../../backend/auditlog.php");
+include ("../../backend/auditlog.php");
 
 // Check if the connection is established successfully
 if ($conn) {
@@ -21,13 +21,14 @@ if ($conn) {
         if (isset($_SESSION['user_id'])) {
             $user_id = $_SESSION['user_id'];
 
-            // Fetch user details from the database using user_id
-            $sql = "SELECT fname, lname, role_id FROM users WHERE user_id = ?";
-            $stmt = $conn->prepare($sql);
+            // Construct SQL query to select user details
+            $select_sql = "SELECT fname, lname, role_id FROM users WHERE user_id = ?";
+            $stmt = $conn->prepare($select_sql);
             $stmt->bind_param("i", $user_id);
             $stmt->execute();
             $result = $stmt->get_result();
 
+            // Fetch user details from the result
             if ($row = $result->fetch_assoc()) {
                 $fname = $row['fname'];
                 $lname = $row['lname'];

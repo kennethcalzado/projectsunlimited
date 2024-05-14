@@ -118,11 +118,6 @@ if ($result->num_rows > 0) {
 
             .product-item {
                 cursor: pointer;
-                transition: transform 0.3s ease-in-out;
-            }
-
-            .product-item:hover {
-                transform: scale(1.05);
             }
 
             .product-image {
@@ -212,7 +207,7 @@ if ($result->num_rows > 0) {
 
                 // Add a label for variations
                 const variationsLabel = document.createElement('h6');
-                variationsLabel.innerHTML = "Variations:<br>";
+                variationsLabel.innerText = "Variations:";
                 variationsLabel.style.fontWeight = "bold"; // Make the label bold
                 variationsLabel.className = "text-sm"; // Add class for text-sm
                 variationsContainer.appendChild(variationsLabel);
