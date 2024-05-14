@@ -55,7 +55,7 @@ ob_start();
                                 </form>
                                 <hr class="my-4">
                                 <div class="text-center">
-                                    <a class="text-sm text-blue-500" href="forgot-password.html">Forgot Password?</a>
+                                    <a class="text-sm text-blue-500" href="public/forgotpassword-email.php">Forgot Password?</a>
                                 </div>
                             </div>
                         </div>
