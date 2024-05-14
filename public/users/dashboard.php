@@ -108,45 +108,45 @@ if ($result) {
                 <div class='bg-black h-2 w-8 rounded-b-md'></div> <!-- Change color to black -->
             </div>
             <div style="padding-right: 10px;" class='box-content relative h-36 w-full relative border-gray-600 border-8 slide-ltr sliding-ltr flex flex-row ease justify-center'>
-                <div class="bg-white rounded-lg shadow-md p-4">
+                <div class="rounded-lg shadow-md p-4">
                     <!-- Image -->
                     <img src="../../assets/image/PUlogo.png" alt="Dashboard Image" style="height: auto; width: 110px;">
                 </div>
-                <div class="bg-white rounded-lg shadow-md p-7">
+                <div class="rounded-lg shadow-md p-7">
                     <div class="text-lg mb-4">
                         <i class="bi bi-people-fill"></i> Total Users
                     </div>
-                    <p class="text-gray-400"><?php echo $total_users; ?> administrators</p>
+                    <p class="text-black"><?php echo $total_users; ?> administrators</p>
                 </div>
-                <div class="bg-white rounded-lg shadow-md p-7">
+                <div class="rounded-lg shadow-md p-7">
                     <div class="text-lg mb-4">
                         <i class="bi bi-box-seam"></i> Total Products
                     </div>
-                    <p class="text-gray-400"><?php echo $total_products; ?> products</p>
+                    <p class="text-black"><?php echo $total_products; ?> products</p>
                 </div>
-                <div class="bg-white rounded-lg shadow-md p-7">
+                <div class="rounded-lg shadow-md p-7">
                     <div class="text-lg mb-4">
                         <i class="bi bi-tag-fill"></i> Total Brands
                     </div>
-                    <p class="text-gray-400"><?php echo $total_brands; ?> brands</p>
+                    <p class="text-black"><?php echo $total_brands; ?> brands</p>
                 </div>
-                <div class="bg-white rounded-lg shadow-md p-7">
+                <div class="rounded-lg shadow-md p-7">
                     <div class="text-lg mb-4">
                         <i class="bi bi-folder-fill"></i> Total Categories
                     </div>
-                    <p class="text-gray-400"><?php echo $total_categories; ?> categories</p>
+                    <p class="text-black"><?php echo $total_categories; ?> categories</p>
                 </div>
-                <div class="bg-white rounded-lg shadow-md p-7">
+                <div class="rounded-lg shadow-md p-7">
                     <div class="text-lg mb-4">
                         <i class="bi bi-geo-alt-fill"></i> Total Branches
                     </div>
-                    <p class="text-gray-400"><?php echo $total_locations; ?> branches</p>
+                    <p class="text-black"><?php echo $total_locations; ?> branches</p>
                 </div>
-                <div class="bg-white rounded-lg shadow-md p-7">
+                <div class="rounded-lg shadow-md p-7">
                     <div class="text-lg mb-4">
                         <i class="bi bi-newspaper"></i> Total Blogs
                     </div>
-                    <p class="text-gray-400"><?php echo $total_blogs; ?> blogs</p>
+                    <p class="text-black"><?php echo $total_blogs; ?> blogs</p>
                 </div>
             </div>
         </div>

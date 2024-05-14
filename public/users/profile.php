@@ -175,7 +175,7 @@ include("../../backend/conn.php");
     </style>
 </head>
 
-<body class="bg-gray-100">
+<body>
     <div class="transition-all duration-300 page-content sm:ml-36 mr-4 sm:mr-20 mb-10 flex justify-center items-center h-screen">
         <div class="max-w-md w-full">
             <div class="bg-white shadow-md rounded-lg p-8">

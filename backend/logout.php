@@ -25,7 +25,7 @@ if (isset($_SESSION['user_id'])) {
         $role_id = $row['role_id'];
 
         // Log the action with user details
-        logAudit($user_id, $fname, $lname, $role_id, "Updated product: '$editedProductName'");
+        logAudit($user_id, $fname, $lname, $role_id, "Logout");
     }
 }
 
