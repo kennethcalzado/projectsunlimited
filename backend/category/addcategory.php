@@ -3,11 +3,8 @@
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
-
-// Include database connection
 include '../../backend/conn.php';
-// Include the auditlog.php file
-include("../../backend/auditlog.php");
+// include '../../backend/auditlog.php';
 
 // Check if form data is submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -16,9 +13,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $pageType = $_POST['pageType']; // Assuming this corresponds to the 'type' column
     $categoryType = $_POST['categoryType'];
     $status = 'active'; // Assuming default status is 'active'
-    $imageCover = ''; // Placeholder for image path
-    $imageHeader = ''; // Placeholder for image path
-    $parentCategoryID = NULL;
+    $imageCover = NULL; // Placeholder for image path, NULL by default
+    $imageHeader = NULL; // Placeholder for image path, NULL by default
+    $parentCategoryID = NULL; // NULL by default
 
     // Check if main category or subcategory
     if ($categoryType == 'main') {
@@ -121,29 +118,6 @@ PHP;
         $stmt = $conn->prepare("INSERT INTO productcategory (CategoryName, ParentCategoryID, type, status, imagecover, imageheader, created_at) VALUES (?, ?, ?, ?, ?, ?, NOW())");
         $stmt->bind_param("sissss", $categoryName, $parentCategoryID, $pageType, $status, $imageCover, $imageHeader);
         if ($stmt->execute()) {
-
-
-            // Fetch user information from session or database
-            if (isset($_SESSION['user_id'])) {
-                $user_id = $_SESSION['user_id'];
-
-                // Fetch user details from the database using user_id
-                $sql = "SELECT fname, lname, role_id FROM users WHERE user_id = ?";
-                $stmt = $conn->prepare($sql);
-                $stmt->bind_param("i", $user_id);
-                $stmt->execute();
-                $result = $stmt->get_result();
-
-                if ($row = $result->fetch_assoc()) {
-                    $fname = $row['fname'];
-                    $lname = $row['lname'];
-                    $role_id = $row['role_id'];
-
-                    // Log the action with user details
-                    logAudit($user_id, $fname, $lname, $role_id, "Added category: '$categoryName'");
-                }
-            }
-
             // Get the ID of the newly inserted category
             $category_id = $stmt->insert_id;
 
@@ -173,12 +147,44 @@ PHP;
     } else if ($categoryType == 'sub') {
         // Subcategory
         $parentCategoryID = $_POST['mainCategory']; // Assuming the main category ID is passed from the frontend
-        // Set imageCover and imageHeader to NULL for subcategories
+        // Set imageCover, imageHeader, and pagePathRelativeToRoot to NULL for subcategories
         $imageCover = NULL;
         $imageHeader = NULL;
-        $pagePathRelativeToRoot = NULL; // For subcategories, page path may not be applicable or different logic may apply
-    }
+        $pagePathRelativeToRoot = NULL;
 
+        // Insert the subcategory into the database
+        $stmt = $conn->prepare("INSERT INTO productcategory (CategoryName, ParentCategoryID, type, status, imagecover, imageheader, page_path, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, NOW())");
+        $stmt->bind_param("sisssss", $categoryName, $parentCategoryID, $pageType, $status, $imageCover, $imageHeader, $pagePathRelativeToRoot);
+        if ($stmt->execute()) {
+            $response['success'] = true;
+            $response['message'] = "Subcategory added successfully";
+        } else {
+            $response['success'] = false;
+            $response['message'] = "Error: " . $conn->error;
+        }
+        $stmt->close();
+        
+            // // Fetch user information from session or database
+            // if (isset($_SESSION['user_id'])) {
+            //     $user_id = $_SESSION['user_id'];
+
+            //     // Fetch user details from the database using user_id
+            //     $sql = "SELECT fname, lname, role_id FROM users WHERE user_id = ?";
+            //     $stmt = $conn->prepare($sql);
+            //     $stmt->bind_param("i", $user_id);
+            //     $stmt->execute();
+            //     $result = $stmt->get_result();
+
+            //     if ($row = $result->fetch_assoc()) {
+            //         $fname = $row['fname'];
+            //         $lname = $row['lname'];
+            //         $role_id = $row['role_id'];
+
+            //         // Log the action with user details
+            //         logAudit($user_id, $fname, $lname, $role_id, "Updated category: '$categoryName'");
+            //     }
+            // }
+    }
     // Send JSON response back to frontend
     echo json_encode($response);
 } else {
@@ -187,3 +193,4 @@ PHP;
     $response['message'] = "Form data not submitted";
     echo json_encode($response);
 }
+?>

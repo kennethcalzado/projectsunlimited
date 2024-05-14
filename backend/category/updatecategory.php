@@ -4,9 +4,8 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
+include '../../backend/auditlog.php';
 include '../../backend/conn.php';
-// Include the auditlog.php file
-include("../../backend/auditlog.php");
 
 // Check if the request method is POST
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -160,7 +159,7 @@ PHP;
                 // Update existing page content
                 $filePath = '../../pages/' . $existingPagePath;
                 file_put_contents($filePath, $pageContent); // Update the content
-                $pagePath = "/{$existingPagePath}"; // Keep the existing page path
+                $pagePath = "{$existingPagePath}"; // Keep the existing page path
             } else {
                 // Save page content to file
                 $filePath = "../../pages/{$categoryName}_{$categoryId}.php";
