@@ -1,12 +1,12 @@
 <?php
-require '../../vendor/autoload.php'; 
+require '../../vendor/autoload.php';
 
 use PhpOffice\PhpSpreadsheet\IOFactory;
 
 // Include the database connection script
 include '../../backend/conn.php';
 // Include the auditlog.php file
-include("../../backend/auditlog.php");
+include ("../../backend/auditlog.php");
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_FILES['upload_brand'])) {
@@ -24,14 +24,66 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         foreach ($worksheet->getRowIterator() as $key => $row) {
             if ($key === 1) {
-                continue; 
+                continue;
             }
 
             $rowData = $worksheet->rangeToArray('A' . $key . ':' . $worksheet->getHighestColumn() . $key, null, true, false)[0];
 
-            $brandName = $rowData[0];
-            $type = $rowData[1];
-            $description = $rowData[2];
+            $brandName = isset($rowData[0]) ? trim($rowData[0]) : '';
+            $type = isset($rowData[1]) ? trim($rowData[1]) : '';
+            $description = isset($rowData[2]) ? trim($rowData[2]) : '';
+
+            // Check for blank cells
+            if (empty($brandName) || empty($type)) {
+                $errors[] = "Row $key has blank cells. All fields are required.";
+                $errorCount++;
+                continue;
+            }
+
+            // Validate brand name
+            if (preg_match("/<[^>]*>/", $brandName)) { // Check if HTML tags are present
+                $errors[] = "Row $key: Brand Name '$brandName' cannot contain HTML elements.";
+                $errorCount++;
+                continue;
+            } elseif (preg_match("/\b(SELECT|INSERT INTO|UPDATE|DELETE FROM|DROP TABLE|CREATE TABLE|ALTER TABLE)\b/i", $brandName)) { // Check for SQL injection
+                $errors[] = "Row $key: Brand Name '$brandName' cannot contain SQL injection.";
+                $errorCount++;
+                continue;
+            } elseif (preg_match("/<\?(php)?[\s\S]*?\?>/i", $brandName)) { // Check for PHP tags
+                $errors[] = "Row $key: Brand Name '$brandName' cannot contain PHP tags.";
+                $errorCount++;
+                continue;
+            }
+
+            // Validate type
+            if (preg_match("/<[^>]*>/", $type)) { // Check if HTML tags are present
+                $errors[] = "Row $key: Type '$type' cannot contain HTML elements.";
+                $errorCount++;
+                continue;
+            } elseif (preg_match("/\b(SELECT|INSERT INTO|UPDATE|DELETE FROM|DROP TABLE|CREATE TABLE|ALTER TABLE)\b/i", $type)) { // Check for SQL injection
+                $errors[] = "Row $key: Type '$type' cannot contain SQL injection.";
+                $errorCount++;
+                continue;
+            } elseif (preg_match("/<\?(php)?[\s\S]*?\?>/i", $type)) { // Check for PHP tags
+                $errors[] = "Row $key: Type '$type' cannot contain PHP tags.";
+                $errorCount++;
+                continue;
+            }
+
+            // Validate description
+            if (preg_match("/<[^>]*>/", $description)) { // Check if HTML tags are present
+                $errors[] = "Row $key: Description '$description' cannot contain HTML elements.";
+                $errorCount++;
+                continue;
+            } elseif (preg_match("/\b(SELECT|INSERT INTO|UPDATE|DELETE FROM|DROP TABLE|CREATE TABLE|ALTER TABLE)\b/i", $description)) { // Check for SQL injection
+                $errors[] = "Row $key: Description '$description' cannot contain SQL injection.";
+                $errorCount++;
+                continue;
+            } elseif (preg_match("/<\?(php)?[\s\S]*?\?>/i", $description)) { // Check for PHP tags
+                $errors[] = "Row $key: Description '$description' cannot contain PHP tags.";
+                $errorCount++;
+                continue;
+            }
 
             // Check if brand already exists
             $sql_check_brand = "SELECT COUNT(*) AS count FROM brands WHERE brand_name = ?";
@@ -42,7 +94,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $row_brand = $result_check_brand->fetch_assoc();
 
             if ($row_brand['count'] > 0) {
-                $errors[] = "Brand '$brandName' already exists.";
+                $errors[] = "Row '$key': Brand '$brandName' already exists.";
                 $errorCount++;
                 continue;
             }

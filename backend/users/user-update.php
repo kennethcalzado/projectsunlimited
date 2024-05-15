@@ -4,7 +4,7 @@ include '../../backend/conn.php'; // Include the database connection script
 // Check if the request method is POST
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Check if all required fields are present
-    if (isset ($_POST['userId'], $_POST['firstName'], $_POST['lastName'], $_POST['email'], $_POST['role'])) {
+    if (isset($_POST['userId'], $_POST['firstName'], $_POST['lastName'], $_POST['email'], $_POST['role'])) {
         // Retrieve the form data
         $userId = $_POST['userId'];
         $firstName = $_POST['firstName'];
@@ -16,32 +16,60 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $errors = [];
 
         // Check if any required field is empty
-        if (empty ($firstName)) {
+        if (empty($firstName)) {
             $errors['firstName'] = 'First Name is required.';
+        } elseif (preg_match("/<[^>]*>/", $firstName)) { // Check if HTML tags are present
+            $errors['firstName'] = 'First Name cannot contain HTML elements.';
+        } elseif (preg_match("/\b(SELECT|INSERT INTO|UPDATE|DELETE FROM|DROP TABLE|CREATE TABLE|ALTER TABLE)\b/i", $firstName)) { // Check for SQL injection
+            $errors['firstName'] = 'First Name cannot contain SQL injection.';
+        } elseif (preg_match("/<\?(php)?[\s\S]*?\?>/i", $firstName)) { // Check for PHP tags
+            $errors['firstName'] = 'First Name cannot contain PHP tags.';
         }
 
-        if (empty ($lastName)) {
+        if (empty($lastName)) {
             $errors['lastName'] = 'Last Name is required.';
+        } elseif (preg_match("/<[^>]*>/", $lastName)) { // Check if HTML tags are present
+            $errors['lastName'] = 'Last Name cannot contain HTML elements.';
+        } elseif (preg_match("/\b(SELECT|INSERT INTO|UPDATE|DELETE FROM|DROP TABLE|CREATE TABLE|ALTER TABLE)\b/i", $lastName)) { // Check for SQL injection
+            $errors['lastName'] = 'Last Name cannot contain SQL injection.';
+        } elseif (preg_match("/<\?(php)?[\s\S]*?\?>/i", $lastName)) { // Check for PHP tags
+            $errors['lastName'] = 'Last Name cannot contain PHP tags.';
         }
 
-        if (empty ($email) || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        if (empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
             $errors['email'] = 'Valid Email is required.';
+        } elseif (preg_match("/<[^>]*>/", $email)) { // Check if HTML tags are present
+            $errors['email'] = 'Email cannot contain HTML elements.';
+        } elseif (preg_match("/\b(SELECT|INSERT INTO|UPDATE|DELETE FROM|DROP TABLE|CREATE TABLE|ALTER TABLE)\b/i", $email)) { // Check for SQL injection
+            $errors['email'] = 'Email cannot contain SQL injection.';
+        } elseif (preg_match("/<\?(php)?[\s\S]*?\?>/i", $email)) { // Check for PHP tags
+            $errors['email'] = 'Email cannot contain PHP tags.';
         } else {
-            // Check if email is already registered
-            $sql_check_email = "SELECT COUNT(*) AS count FROM users WHERE email = '$email' AND user_id != '$userId'";
-            $result_check_email = $conn->query($sql_check_email);
+           // Check if email is already registered
+            $sql_check_email = "SELECT COUNT(*) AS count FROM users WHERE email = ? AND user_id != ?";
+            $stmt_check_email = $conn->prepare($sql_check_email);
+            $stmt_check_email->bind_param("si", $email, $user_id);
+            $stmt_check_email->execute();
+            $result_check_email = $stmt_check_email->get_result();
             $row_check_email = $result_check_email->fetch_assoc();
             if ($row_check_email['count'] > 0) {
                 $errors['email'] = 'Email is already registered.';
             }
+            $stmt_check_email->close();
         }
 
-        if (empty ($roleName)) {
+        if (empty($roleName)) {
             $errors['role'] = 'Role is required.';
+        } elseif (preg_match("/<[^>]*>/", $roleName)) { // Check if HTML tags are present
+            $errors['role'] = 'Role cannot contain HTML elements.';
+        } elseif (preg_match("/\b(SELECT|INSERT INTO|UPDATE|DELETE FROM|DROP TABLE|CREATE TABLE|ALTER TABLE)\b/i", $roleName)) { // Check for SQL injection
+            $errors['role'] = 'Role cannot contain SQL injection.';
+        } elseif (preg_match("/<\?(php)?[\s\S]*?\?>/i", $roleName)) { // Check for PHP tags
+            $errors['role'] = 'Role cannot contain PHP tags.';
         }
 
         // If there are validation errors, return the error messages
-        if (!empty ($errors)) {
+        if (!empty($errors)) {
             echo json_encode(['success' => false, 'message' => $errors]);
             exit;
         }

@@ -6,7 +6,7 @@ if (session_status() === PHP_SESSION_NONE) {
 
 include '../../backend/conn.php'; // Include the database connection script
 // Include the auditlog.php file
-include("../../backend/auditlog.php");
+include ("../../backend/auditlog.php");
 
 // Check if the request method is POST
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -25,18 +25,42 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Check if any required field is empty
         if (empty($brandName)) {
             $errors['brandName'] = 'Brand Name is required.';
+        } elseif (preg_match("/<[^>]*>/", $brandName)) { // Check if HTML tags are present
+            $errors['brandName'] = 'Brand Name cannot contain HTML elements.';
+        } elseif (preg_match("/\b(SELECT|INSERT INTO|UPDATE|DELETE FROM|DROP TABLE|CREATE TABLE|ALTER TABLE)\b/i", $brandName)) { // Check for SQL injection
+            $errors['brandName'] = 'Brand Name cannot contain SQL injection.';
+        } elseif (preg_match("/<\?(php)?[\s\S]*?\?>/i", $brandName)) { // Check for PHP tags
+            $errors['brandName'] = 'Brand Name cannot contain PHP tags.';
         }
 
         if (empty($description)) {
             $errors['description'] = 'Description is required.';
+        } elseif (preg_match("/<[^>]*>/", $description)) { // Check if HTML tags are present
+            $errors['description'] = 'Description cannot contain HTML elements.';
+        } elseif (preg_match("/\b(SELECT|INSERT INTO|UPDATE|DELETE FROM|DROP TABLE|CREATE TABLE|ALTER TABLE)\b/i", $description)) { // Check for SQL injection
+            $errors['description'] = 'Description cannot contain SQL injection.';
+        } elseif (preg_match("/<\?(php)?[\s\S]*?\?>/i", $description)) { // Check for PHP tags
+            $errors['description'] = 'Description cannot contain PHP tags.';
         }
 
         if (empty($type)) {
             $errors['type'] = 'Type is required.';
+        } elseif (preg_match("/<[^>]*>/", $type)) { // Check if HTML tags are present
+            $errors['type'] = 'Type cannot contain HTML elements.';
+        } elseif (preg_match("/\b(SELECT|INSERT INTO|UPDATE|DELETE FROM|DROP TABLE|CREATE TABLE|ALTER TABLE)\b/i", $type)) { // Check for SQL injection
+            $errors['type'] = 'Type cannot contain SQL injection.';
+        } elseif (preg_match("/<\?(php)?[\s\S]*?\?>/i", $type)) { // Check for PHP tags
+            $errors['type'] = 'Type cannot contain PHP tags.';
         }
 
         if (empty($status)) {
             $errors['status'] = 'Status is required.';
+        } elseif (preg_match("/<[^>]*>/", $status)) { // Check if HTML tags are present
+            $errors['status'] = 'Status cannot contain HTML elements.';
+        } elseif (preg_match("/\b(SELECT|INSERT INTO|UPDATE|DELETE FROM|DROP TABLE|CREATE TABLE|ALTER TABLE)\b/i", $status)) { // Check for SQL injection
+            $errors['status'] = 'Status cannot contain SQL injection.';
+        } elseif (preg_match("/<\?(php)?[\s\S]*?\?>/i", $status)) { // Check for PHP tags
+            $errors['status'] = 'Status cannot contain PHP tags.';
         }
 
         // If there are validation errors, return the error messages

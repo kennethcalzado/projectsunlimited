@@ -59,7 +59,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $mail->Port = 587;
 
         // Set sender email and name
-        $mail->setFrom('kyle.m.roperez@gmail.com', 'Kyle'); // Replace with your email and name
+        $mail->setFrom('kyle.m.roperez@gmail.com', 'Do-Not-Reply - P.U.');
         $mail->addAddress($email);
 
         // Style the email body with inline CSS
@@ -96,7 +96,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $email = $_SESSION['email'];
 
         // Validate verification code
-        $sql_check_code = "SELECT created_at FROM verification_codes WHERE email = ? AND code = ? ORDER BY created_at DESC LIMIT 1";
+        $sql_check_code = "SELECT created_at FROM verification_codes WHERE email = ? AND code = ? AND status = 'unused' ORDER BY created_at DESC LIMIT 1";
         $stmt_check_code = $conn->prepare($sql_check_code);
         $stmt_check_code->bind_param("si", $email, $verificationCode);
         $stmt_check_code->execute();
@@ -110,12 +110,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $row_check_code = $result_check_code->fetch_assoc();
         $createdAt = new DateTime($row_check_code['created_at']);
         $currentTime = new DateTime();
-        $interval = $currentTime->diff($createdAt);
+        $interval = $currentTime->getTimestamp() - $createdAt->getTimestamp(); // Calculate interval in seconds
 
-        if ($interval->i > 15) {
+        if ($interval > 900) { // 900 seconds = 15 minutes
+            // Update verification code status to expired
+            $sql_update_status_expired = "UPDATE verification_codes SET status = 'expired' WHERE email = ? AND code = ?";
+            $stmt_update_status_expired = $conn->prepare($sql_update_status_expired);
+            $stmt_update_status_expired->bind_param("si", $email, $verificationCode);
+            $stmt_update_status_expired->execute();
+        
             echo json_encode(['success' => false, 'message' => 'Verification code expired']);
             exit;
-        }
+        }        
+
+        // Mark verification code as used
+        $sql_update_status = "UPDATE verification_codes SET status = 'used', entered_code = ? WHERE email = ? AND code = ?";
+        $stmt_update_status = $conn->prepare($sql_update_status);
+        $stmt_update_status->bind_param("isi", $verificationCode, $email, $verificationCode);
+        $stmt_update_status->execute();
 
         // Verification code is valid
         echo json_encode(['success' => true, 'message' => 'Verification code valid']);
@@ -131,16 +143,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         // Update password in the database
         $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
-        $sql_update_password = "UPDATE users SET password = ? WHERE email = ?";
+        $sql_update_password = "UPDATE users SET password_hash = ? WHERE email = ?";
         $stmt_update_password = $conn->prepare($sql_update_password);
         $stmt_update_password->bind_param("ss", $hashedPassword, $email);
         $stmt_update_password->execute();
 
+        // Update verification code status to expired for any remaining unused codes
+        $sql_update_status_expired = "UPDATE verification_codes SET status = 'expired' WHERE email = ? AND status = 'unused'";
+        $stmt_update_status_expired = $conn->prepare($sql_update_status_expired);
+        $stmt_update_status_expired->bind_param("s", $email);
+        $stmt_update_status_expired->execute();
+
         echo json_encode(['success' => true, 'message' => 'Password reset successfully']);
-    } else {
-        echo json_encode(['success' => false, 'message' => 'Invalid request']);
     }
 } else {
-    echo json_encode(['success' => false, 'message' => 'Invalid request method']);
+    echo json_encode(['success' => false, 'message' => 'Invalid request']);
 }
-?>

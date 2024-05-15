@@ -181,6 +181,15 @@ ob_start();
                 </select>
                 <div id="roleError" class="text-red-500 text-sm mt-1"></div> <!-- Error message space -->
             </div>
+            <button type="button" id="showPasswordBtn" class="btn-primary inline-flex items-center px-4 py-2 border border-transparent 
+                    rounded-md font-semibold text-xs uppercase tracking-widest 
+                    disabled:opacity-25 transition">Show Default Password Template</button>
+            <!-- Error message space for password verification -->
+            <div id="passwordError" class="text-red-500 text-sm mt-1"></div>
+            <!-- Password template container -->
+            <div id="passwordTemplate" class="hidden mt-4">
+                <!-- Password template content goes here -->
+            </div>
             <div class="flex justify-end">
                 <button type="submit" id="submitUserBtn" class="btn-primary inline-flex items-center px-4 py-2 border border-transparent 
                     rounded-md font-semibold text-xs uppercase tracking-widest 
@@ -550,6 +559,88 @@ ob_start();
             $( '#userModal' ).removeClass( 'hidden' );
         }
 
+        function showDefaultPasswordTemplate ()
+        {
+            // Show SweetAlert popup asking for password
+            Swal.fire( {
+                title: 'Enter Your Password',
+                input: 'password',
+                inputAttributes: {
+                    autocapitalize: 'off'
+                },
+                showCancelButton: true,
+                confirmButtonText: 'Submit',
+                preConfirm: ( password ) =>
+                {
+                    return new Promise( ( resolve, reject ) =>
+                    {
+                        // Make an AJAX request to validate the password
+                        $.ajax( {
+                            url: '../../../backend/users/users-showpassword.php',
+                            type: 'POST',
+                            data: {
+                                password: password
+                            },
+                            success: function ( response )
+                            {
+                                if ( response === 'valid' )
+                                {
+                                    // Password is correct, resolve the promise
+                                    Swal.fire( {
+                                        title: 'Default Password Template',
+                                        icon: 'info',
+                                        timer: 10000,
+                                        timerProgressBar: true,
+                                        html: `
+                                        <div class="bg-white rounded-lg shadow-2xl p-6 max-w-md mx-auto">
+                                            <div class="mt-4 text-justify">
+                                                <p class="text-base text-gray-700">
+                                                    <span class="font-semibold">First two uppercase letters</span> of the user's first name connected by a <span class="font-semibold">dot or a period</span>, then the <span class="font-semibold">first two uppercase letters</span> of the user's last name connected again by a <span class="font-semibold">dot or a period</span>, then the <span class="font-semibold">role id</span> of the user: for admin it is <span class="text-blue-600">001</span> and for marketing it's <span class="text-blue-600">002</span>.
+                                                </p>
+                                                <p class="text-base text-gray-700 mt-2">
+                                                    <span class="font-semibold">Example:</span> If the admin user is <span class="italic">Juan Dela Cruz</span>, the default password would be: <span class="bg-gray-200 p-1 rounded font-mono">JU.DE.001</span>
+                                                </p>
+                                            </div>
+                                        </div>
+                                        `
+                                    } );
+                                    resolve();
+                                } else
+                                {
+                                    // Error handling for AJAX request
+                                    Swal.getConfirmButton().removeAttribute( 'disabled' );
+                                    Swal.getCancelButton().removeAttribute( 'disabled' );
+                                    Swal.showValidationMessage( 'Error validating password. Please try again.' );
+                                    reject();
+                                }
+                            },
+                            error: function ()
+                            {
+                                Swal.getConfirmButton().removeAttribute( 'disabled' );
+                                Swal.getCancelButton().removeAttribute( 'disabled' );
+
+                                // Error handling for AJAX request
+                                reject( new Error( 'Error validating password. Please try again.' ) );
+                            }
+                        } );
+                    } );
+                },
+            } ).catch( ( error ) =>
+            {
+                // Password validation failed, display error message
+                if ( error !== 'cancel' )
+                {
+                    Swal.showValidationMessage( error.message );
+                }
+            } );
+        }
+
+        // Event listener for the button to show the default password template
+        $( '#showPasswordBtn' ).click( function ()
+        {
+            showDefaultPasswordTemplate();
+        } );
+
         /////////////////// CLOSE / CANCEL EVENTS ////////////////////////////
         // Function to handle modal closing
         $( document ).on( 'click', '#closeUserModal, #cancelUserBtn', function ()
@@ -576,10 +667,35 @@ ob_start();
         {
             const firstName = $( '#firstName' ).val().trim();
             const firstNameError = $( '#firstNameError' );
+
+            // Regular expression to check for HTML tags
+            const htmlRegex = /<\/?[\w\s="/.':;#-\/\?]+>/gi;
+
+            // Regular expression to check for SQL injection
+            const sqlRegex = /\b(SELECT|INSERT INTO|UPDATE|DELETE FROM|DROP TABLE|CREATE TABLE|ALTER TABLE)\b/ig;
+
+            // Regular expression to check for PHP tags
+            const phpRegex = /<\?(php)?[\s\S]*?\?>/ig;
+
             if ( !firstName )
             {
                 $( '#firstName' ).addClass( 'border-red-500' );
                 firstNameError.addClass( 'text-sm text-red-500 mt-1 error-message' ).text( 'First Name is required.' );
+                return false;
+            } else if ( htmlRegex.test( firstName ) )
+            { // Check if HTML tags are present
+                $( '#firstName' ).addClass( 'border-red-500' );
+                firstNameError.addClass( 'text-sm text-red-500 mt-1 error-message' ).text( 'First Name cannot contain HTML elements.' );
+                return false;
+            } else if ( sqlRegex.test( firstName ) )
+            { // Check for SQL injection
+                $( '#firstName' ).addClass( 'border-red-500' );
+                firstNameError.addClass( 'text-sm text-red-500 mt-1 error-message' ).text( 'First Name cannot contain SQL injection.' );
+                return false;
+            } else if ( phpRegex.test( firstName ) )
+            { // Check for PHP tags
+                $( '#firstName' ).addClass( 'border-red-500' );
+                firstNameError.addClass( 'text-sm text-red-500 mt-1 error-message' ).text( 'First Name cannot contain PHP tags.' );
                 return false;
             } else
             {
@@ -594,10 +710,35 @@ ob_start();
         {
             const lastName = $( '#lastName' ).val().trim();
             const lastNameError = $( '#lastNameError' );
+
+            // Regular expression to check for HTML tags
+            const htmlRegex = /<\/?[\w\s="/.':;#-\/\?]+>/gi;
+
+            // Regular expression to check for SQL injection
+            const sqlRegex = /\b(SELECT|INSERT INTO|UPDATE|DELETE FROM|DROP TABLE|CREATE TABLE|ALTER TABLE)\b/ig;
+
+            // Regular expression to check for PHP tags
+            const phpRegex = /<\?(php)?[\s\S]*?\?>/ig;
+
             if ( !lastName )
             {
                 $( '#lastName' ).addClass( 'border-red-500' );
                 lastNameError.addClass( 'text-sm text-red-500 mt-1 error-message' ).text( 'Last Name is required.' );
+                return false;
+            } else if ( htmlRegex.test( lastName ) )
+            { // Check if HTML tags are present
+                $( '#lastName' ).addClass( 'border-red-500' );
+                lastNameError.addClass( 'text-sm text-red-500 mt-1 error-message' ).text( 'Last Name cannot contain HTML elements.' );
+                return false;
+            } else if ( sqlRegex.test( lastName ) )
+            { // Check for SQL injection
+                $( '#lastName' ).addClass( 'border-red-500' );
+                lastNameError.addClass( 'text-sm text-red-500 mt-1 error-message' ).text( 'Last Name cannot contain SQL injection.' );
+                return false;
+            } else if ( phpRegex.test( lastName ) )
+            { // Check for PHP tags
+                $( '#lastName' ).addClass( 'border-red-500' );
+                lastNameError.addClass( 'text-sm text-red-500 mt-1 error-message' ).text( 'Last Name cannot contain PHP tags.' );
                 return false;
             } else
             {
@@ -613,6 +754,16 @@ ob_start();
             const email = $( '#email' ).val().trim();
             const emailError = $( '#emailError' );
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+            // Regular expression to check for HTML tags
+            const htmlRegex = /<\/?[\w\s="/.':;#-\/\?]+>/gi;
+
+            // Regular expression to check for SQL injection
+            const sqlRegex = /\b(SELECT|INSERT INTO|UPDATE|DELETE FROM|DROP TABLE|CREATE TABLE|ALTER TABLE)\b/ig;
+
+            // Regular expression to check for PHP tags
+            const phpRegex = /<\?(php)?[\s\S]*?\?>/ig;
+
             if ( !email )
             {
                 $( '#email' ).addClass( 'border-red-500' );
@@ -623,6 +774,21 @@ ob_start();
                 $( '#email' ).addClass( 'border-red-500' );
                 emailError.addClass( 'text-sm text-red-500 mt-1 error-message' ).text( 'Invalid email format.' );
                 return false;
+            } else if ( htmlRegex.test( email ) )
+            { // Check if HTML tags are present
+                $( '#email' ).addClass( 'border-red-500' );
+                emailError.addClass( 'text-sm text-red-500 mt-1 error-message' ).text( 'Email cannot contain HTML elements.' );
+                return false;
+            } else if ( sqlRegex.test( email ) )
+            { // Check for SQL injection
+                $( '#email' ).addClass( 'border-red-500' );
+                emailError.addClass( 'text-sm text-red-500 mt-1 error-message' ).text( 'Email cannot contain SQL injection.' );
+                return false;
+            } else if ( phpRegex.test( email ) )
+            { // Check for PHP tags
+                $( '#email' ).addClass( 'border-red-500' );
+                emailError.addClass( 'text-sm text-red-500 mt-1 error-message' ).text( 'Email cannot contain PHP tags.' );
+                return false;
             } else
             {
                 $( '#email' ).removeClass( 'border-red-500' );
@@ -631,15 +797,42 @@ ob_start();
             }
         }
 
+        // Function to validate the role input field
         function validateRole ()
         {
             const role = $( '#role' );
             const roleError = $( '#roleError' );
-            if ( role && role.val() && role.val().trim() )
+            const roleValue = role.val().trim();
+
+            // Regular expression to check for HTML tags
+            const htmlRegex = /<\/?[\w\s="/.':;#-\/\?]+>/gi;
+
+            // Regular expression to check for SQL injection
+            const sqlRegex = /\b(SELECT|INSERT INTO|UPDATE|DELETE FROM|DROP TABLE|CREATE TABLE|ALTER TABLE)\b/ig;
+
+            // Regular expression to check for PHP tags
+            const phpRegex = /<\?(php)?[\s\S]*?\?>/ig;
+
+            if ( roleValue )
             {
                 role.removeClass( 'border-red-500' );
                 roleError.empty();
                 return true;
+            } else if ( htmlRegex.test( roleValue ) )
+            { // Check if HTML tags are present
+                role.addClass( 'border-red-500' );
+                roleError.addClass( 'text-sm text-red-500 mt-1 error-message' ).text( 'Role cannot contain HTML elements.' );
+                return false;
+            } else if ( sqlRegex.test( roleValue ) )
+            { // Check for SQL injection
+                role.addClass( 'border-red-500' );
+                roleError.addClass( 'text-sm text-red-500 mt-1 error-message' ).text( 'Role cannot contain SQL injection.' );
+                return false;
+            } else if ( phpRegex.test( roleValue ) )
+            { // Check for PHP tags
+                role.addClass( 'border-red-500' );
+                roleError.addClass( 'text-sm text-red-500 mt-1 error-message' ).text( 'Role cannot contain PHP tags.' );
+                return false;
             } else
             {
                 role.addClass( 'border-red-500' );
@@ -1081,7 +1274,11 @@ ob_start();
                             text: 'Please wait...',
                             icon: 'info',
                             allowOutsideClick: false,
-                            showConfirmButton: false
+                            showConfirmButton: false,
+                            didOpen: () =>
+                            {
+                                Swal.showLoading();
+                            }
                         } );
 
                         // Perform file upload
@@ -1101,7 +1298,7 @@ ob_start();
                                     // Display success message using SweetAlert
                                     Swal.fire( {
                                         title: 'Success',
-                                        text: 'Upload successful!',
+                                        text: 'File processed successfully!',
                                         icon: 'success',
                                     } ).then( ( result ) =>
                                     {

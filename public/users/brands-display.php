@@ -192,7 +192,6 @@ ob_start();
                                 class="pl-2 mt-1 w-full rounded-md border border-gray-700 shadow-sm">
                                 <option value="" disabled selected>Select Status</option>
                                 <option value="active">Active</option>
-                                <option value="inactive">Inactive</option>
                                 <option value="hidden">Hidden</option>
                             </select>
                             <div id="statusError" class="text-sm text-red-500 mt-1 error-message"></div>
@@ -419,6 +418,7 @@ ob_start();
         $( '#resetFilters' ).on( 'click', function ()
         {
             // Uncheck checkboxes within the dropdown
+            .2222222
             $( '#combinedDropdown input[type="checkbox"]' ).prop( 'checked', false );
             table.columns().search( '' ).draw();
         } );
@@ -1075,7 +1075,11 @@ ob_start();
                                 text: 'Please wait...',
                                 icon: 'info',
                                 allowOutsideClick: false,
-                                showConfirmButton: false
+                                showConfirmButton: false,
+                                didOpen: () =>
+                                {
+                                    Swal.showLoading();
+                                }
                             } );
 
                             // Perform file upload
@@ -1097,7 +1101,7 @@ ob_start();
                                         // Display success message using SweetAlert
                                         Swal.fire( {
                                             title: 'Success',
-                                            text: 'Upload successful!',
+                                            text: 'File processed successfully!',
                                             icon: 'success',
                                         } ).then( ( result ) =>
                                         {
@@ -1171,7 +1175,6 @@ ob_start();
             }
         } );
 
-
         // Click event handler for closing the modal
         $( '#closeUploadBrandModal, #cancelUploadBrandModal' ).on( 'click', function ()
         {
@@ -1222,60 +1225,173 @@ ob_start();
             disableDragAndDrop();
         }
 
-        function validateForm ()
+        // Function to validate Brand Name
+        function validateBrandName ()
         {
             var brandName = $( '#brandName' ).val().trim();
-            var description = $( '#description' ).val().trim();
-            var type = $( '#type' ).val().trim();
-            var status = $( '#status' ).val().trim();
+            var brandNameError = $( '#brandNameError' );
+            var htmlRegex = /<\/?[\w\s="/.':;#-\/\?]+>/gi;
+            var sqlRegex = /\b(SELECT|INSERT INTO|UPDATE|DELETE FROM|DROP TABLE|CREATE TABLE|ALTER TABLE)\b/ig;
+            var phpRegex = /<\?(php)?[\s\S]*?\?>/ig;
 
-            // Validation rules
-            var isValid = true;
             if ( !brandName )
             {
                 $( '#brandName' ).addClass( 'border-red-500' );
-                $( '#brandNameError' ).text( 'Brand Name is required.' );
-                isValid = false;
+                brandNameError.text( 'Brand Name is required.' );
+                return false;
+            } else if ( htmlRegex.test( brandName ) )
+            {
+                $( '#brandName' ).addClass( 'border-red-500' );
+                brandNameError.text( 'Brand Name cannot contain HTML elements.' );
+                return false;
+            } else if ( sqlRegex.test( brandName ) )
+            {
+                $( '#brandName' ).addClass( 'border-red-500' );
+                brandNameError.text( 'Brand Name cannot contain SQL injection.' );
+                return false;
+            } else if ( phpRegex.test( brandName ) )
+            {
+                $( '#brandName' ).addClass( 'border-red-500' );
+                brandNameError.text( 'Brand Name cannot contain PHP tags.' );
+                return false;
             } else
             {
                 $( '#brandName' ).removeClass( 'border-red-500' );
-                $( '#brandNameError' ).empty();
+                brandNameError.empty();
+                return true;
             }
+        }
+
+        // Function to validate Description
+        function validateDescription ()
+        {
+            var description = $( '#description' ).val().trim();
+            var descriptionError = $( '#descriptionError' );
+            var htmlRegex = /<\/?[\w\s="/.':;#-\/\?]+>/gi;
+            var sqlRegex = /\b(SELECT|INSERT INTO|UPDATE|DELETE FROM|DROP TABLE|CREATE TABLE|ALTER TABLE)\b/ig;
+            var phpRegex = /<\?(php)?[\s\S]*?\?>/ig;
 
             if ( !description )
             {
                 $( '#description' ).addClass( 'border-red-500' );
-                $( '#descriptionError' ).text( 'Description is required.' );
-                isValid = false;
+                descriptionError.text( 'Description is required.' );
+                return false;
+            } else if ( htmlRegex.test( description ) )
+            {
+                $( '#description' ).addClass( 'border-red-500' );
+                descriptionError.text( 'Description cannot contain HTML elements.' );
+                return false;
+            } else if ( sqlRegex.test( description ) )
+            {
+                $( '#description' ).addClass( 'border-red-500' );
+                descriptionError.text( 'Description cannot contain SQL injection.' );
+                return false;
+            } else if ( phpRegex.test( description ) )
+            {
+                $( '#description' ).addClass( 'border-red-500' );
+                descriptionError.text( 'Description cannot contain PHP tags.' );
+                return false;
             } else
             {
                 $( '#description' ).removeClass( 'border-red-500' );
-                $( '#descriptionError' ).empty();
+                descriptionError.empty();
+                return true;
             }
+        }
+
+        // Function to validate Type
+        function validateType ()
+        {
+            var type = $( '#type' ).val().trim();
+            var typeError = $( '#typeError' );
+            var htmlRegex = /<\/?[\w\s="/.':;#-\/\?]+>/gi;
+            var sqlRegex = /\b(SELECT|INSERT INTO|UPDATE|DELETE FROM|DROP TABLE|CREATE TABLE|ALTER TABLE)\b/ig;
+            var phpRegex = /<\?(php)?[\s\S]*?\?>/ig;
 
             if ( !type )
             {
                 $( '#type' ).addClass( 'border-red-500' );
-                $( '#typeError' ).text( 'Type is required.' );
-                isValid = false;
+                typeError.text( 'Type is required.' );
+                return false;
+            } else if ( htmlRegex.test( type ) )
+            {
+                $( '#type' ).addClass( 'border-red-500' );
+                typeError.text( 'Type cannot contain HTML elements.' );
+                return false;
+            } else if ( sqlRegex.test( type ) )
+            {
+                $( '#type' ).addClass( 'border-red-500' );
+                typeError.text( 'Type cannot contain SQL injection.' );
+                return false;
+            } else if ( phpRegex.test( type ) )
+            {
+                $( '#type' ).addClass( 'border-red-500' );
+                typeError.text( 'Type cannot contain PHP tags.' );
+                return false;
             } else
             {
                 $( '#type' ).removeClass( 'border-red-500' );
-                $( '#typeError' ).empty();
+                typeError.empty();
+                return true;
             }
+        }
+
+        // Function to validate Status
+        function validateStatus ()
+        {
+            var status = $( '#status' ).val().trim();
+            var statusError = $( '#statusError' );
+            var htmlRegex = /<\/?[\w\s="/.':;#-\/\?]+>/gi;
+            var sqlRegex = /\b(SELECT|INSERT INTO|UPDATE|DELETE FROM|DROP TABLE|CREATE TABLE|ALTER TABLE)\b/ig;
+            var phpRegex = /<\?(php)?[\s\S]*?\?>/ig;
 
             if ( !status )
             {
                 $( '#status' ).addClass( 'border-red-500' );
-                $( '#statusError' ).text( 'Status is required.' );
-                isValid = false;
+                statusError.text( 'Status is required.' );
+                return false;
+            } else if ( htmlRegex.test( status ) )
+            {
+                $( '#status' ).addClass( 'border-red-500' );
+                statusError.text( 'Status cannot contain HTML elements.' );
+                return false;
+            } else if ( sqlRegex.test( status ) )
+            {
+                $( '#status' ).addClass( 'border-red-500' );
+                statusError.text( 'Status cannot contain SQL injection.' );
+                return false;
+            } else if ( phpRegex.test( status ) )
+            {
+                $( '#status' ).addClass( 'border-red-500' );
+                statusError.text( 'Status cannot contain PHP tags.' );
+                return false;
             } else
             {
                 $( '#status' ).removeClass( 'border-red-500' );
-                $( '#statusError' ).empty();
+                statusError.empty();
+                return true;
             }
-            return isValid;
         }
+
+        // Function to perform overall form validation
+        function validateForm ()
+        {
+            // Call each individual validation function
+            const isValidateBrandName = validateBrandName();
+            const isValidateDescription = validateDescription();
+            const isValidateType = validateType();
+            const isValidateStatus = validateStatus();
+
+            // Combine the results of individual validations
+            return isValidateBrandName && isValidateDescription && isValidateType && isValidateStatus;
+        }
+
+        // Bind input event listeners to trigger validation functions
+        $( '#brandName' ).on( 'input', validateBrandName );
+        $( '#description' ).on( 'input', validateDescription );
+        $( '#type' ).on( 'input', validateType );
+        $( '#status' ).on( 'input', validateStatus );
+
 
         $( '#brandForm' ).on( 'submit', function ( event )
         {

@@ -2,7 +2,7 @@
 use PhpOffice\PhpSpreadsheet\IOFactory;
 
 // Include the autoload file
-require '../../vendor/autoload.php'; 
+require '../../vendor/autoload.php';
 // Include the database connection script
 include '../../backend/conn.php';
 
@@ -46,7 +46,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             foreach ($worksheet->getRowIterator() as $key => $row) {
                 if ($key === 1) {
-                    continue; 
+                    continue;
                 }
 
                 $rowData = $worksheet->rangeToArray('A' . $key . ':' . $worksheet->getHighestColumn() . $key, null, true, false)[0];
@@ -60,6 +60,35 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 // Check for blank cells
                 if (empty($fname) || empty($lname) || empty($email) || empty($roleName)) {
                     $errors[] = "Row $key has blank cells. All fields are required.";
+                    $errorCount++;
+                    continue;
+                }
+
+                // Check for HTML elements
+                if (preg_match("/<[^>]*>/", $fname) || preg_match("/<[^>]*>/", $lname) || preg_match("/<[^>]*>/", $email) || preg_match("/<[^>]*>/", $roleName)) {
+                    $errors[] = "Row $key: Fields cannot contain HTML elements.";
+                    $errorCount++;
+                    continue;
+                }
+
+                // Check for SQL injection
+                if (
+                    preg_match("/\b(SELECT|INSERT INTO|UPDATE|DELETE FROM|DROP TABLE|CREATE TABLE|ALTER TABLE)\b/i", $fname) ||
+                    preg_match("/\b(SELECT|INSERT INTO|UPDATE|DELETE FROM|DROP TABLE|CREATE TABLE|ALTER TABLE)\b/i", $lname) ||
+                    preg_match("/\b(SELECT|INSERT INTO|UPDATE|DELETE FROM|DROP TABLE|CREATE TABLE|ALTER TABLE)\b/i", $email) ||
+                    preg_match("/\b(SELECT|INSERT INTO|UPDATE|DELETE FROM|DROP TABLE|CREATE TABLE|ALTER TABLE)\b/i", $roleName)
+                ) {
+                    $errors[] = "Row $key: Fields cannot contain SQL injection.";
+                    $errorCount++;
+                    continue;
+                }
+
+                // Check for PHP tags
+                if (
+                    preg_match("/<\?(php)?[\s\S]*?\?>/i", $fname) || preg_match("/<\?(php)?[\s\S]*?\?>/i", $lname) ||
+                    preg_match("/<\?(php)?[\s\S]*?\?>/i", $email) || preg_match("/<\?(php)?[\s\S]*?\?>/i", $roleName)
+                ) {
+                    $errors[] = "Row $key: Fields cannot contain PHP tags.";
                     $errorCount++;
                     continue;
                 }
@@ -115,7 +144,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 } else {
                     $errors[] = "Error inserting user in row $key: " . $conn->error;
                     $errorCount++;
-                }            
+                }
             }
 
             // Prepare response
