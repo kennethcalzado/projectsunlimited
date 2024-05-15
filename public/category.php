@@ -66,7 +66,7 @@ ob_start();
             <p class="text-white font-extrabold text-4xl">PRODUCTS</p>
         </div>
     </div>
-    <h1 class="text-4xl font-extrabold text-center text-black bg-white p-4">PRODUCT CATEGORY</h1>
+    <h1 class="text-4xl font-extrabold text-center text-black bg-white p-4">CATEGORIES</h1>
     <div id="categorycontainer">
         <div id="prodcat" class="flex flex-wrap justify-center">
             <!-- Categories will be loaded dynamically here -->

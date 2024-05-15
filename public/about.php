@@ -108,12 +108,16 @@ ob_start();
                 <p class="text-2xl font-semibold text-black" style="padding-top: 30px; text-align: justify;">
                     Projects Unlimited has been offering graceful and practical interiors for our longstanding clients and has also created long-lasting impact on the field of architecture and interior design due to its introduction of several timeless interior products into the market after being in the industry since 1958.
                 </p>
-                <span style="align-self: flex-end; text-align: right; margin-top: -30px;">
-                    <a href="history.php" style="text-decoration: none;">
-                        <button style="border-radius: 50px; font-weight: 400;" class="yellow-btn">Read more ►</button>
-                    </a>
-                </span>
             </div>
+
+            <span style="align-self: flex-end; text-align: right; margin-top: -30px;">
+                <p class="text-2xl font-semibold text-black px-16 mt-5" style="text-align: center;">
+                    To know more about Projects Unlimited,
+                    <a href="history.php" style="text-decoration: none;">
+                        <button style="border-radius: 50px; font-weight: 400;" class="yellow-btn">Click here ►</button>
+                    </a>
+                </p>
+            </span>
         </div>
     </section>
 

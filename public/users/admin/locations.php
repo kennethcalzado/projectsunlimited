@@ -67,29 +67,29 @@ ob_start();
                     <span class="cursor-pointer text-gray-500 hover:text-gray-700" onclick="closeModal()">X</span>
                 </div>
                 <form action="../../../backend/locations/add_location.php" method="POST" enctype="multipart/form-data">
-                    <div class="mb-4">
+                    <div class="mb-4 flex flex-col">
                         <label for="name" class="block font-semibold mb-2">Name</label>
-                        <textarea name="name" id="name" class="border rounded px-4 py-2 w-full" required></textarea>
+                        <textarea name="name" id="name" class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent" required></textarea>
                     </div>
-                    <div class="mb-4">
+                    <div class="mb-4 flex flex-col">
                         <label for="address" class="block font-semibold mb-2">Address</label>
-                        <input type="text" name="address" id="address" class="border rounded px-4 py-2 w-full" required>
+                        <input type="text" name="address" id="address" class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent" required>
                     </div>
-                    <div class="mb-4">
+                    <div class="mb-4 flex flex-col">
                         <label for="time" class="block font-semibold mb-2">Time</label>
-                        <input type="text" name="time" id="time" class="border rounded px-4 py-2 w-full" required>
+                        <input type="text" name="time" id="time" class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent" required>
                     </div>
-                    <div class="mb-4">
+                    <div class="mb-4 flex flex-col">
                         <label for="phone" class="block font-semibold mb-2">Phone</label>
-                        <input type="text" name="phone" id="phone" class="border rounded px-4 py-2 w-full">
+                        <input type="text" name="phone" id="phone" class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent">
                     </div>
-                    <div class="mb-4">
+                    <div class="mb-4 flex flex-col">
                         <label for="email" class="block font-semibold mb-2">Email</label>
-                        <input type="text" name="email" id="email" class="border rounded px-4 py-2 w-full">
+                        <input type="text" name="email" id="email" class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent">
                     </div>
-                    <div class="mb-4">
+                    <div class="mb-4 flex flex-col">
                         <label for="map" class="block font-semibold mb-2">Map</label>
-                        <input type="text" name="map" id="map" class="border rounded px-4 py-2 w-full" required>
+                        <input type="text" name="map" id="map" class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent" required>
                     </div>
                     <div class="text-right">
                         <button type="button" class="btn btn-primary" onclick="confirmAdd()">Add</button>
@@ -130,29 +130,29 @@ ob_start();
                 <!-- Form for updating the blog post -->
                 <form id="updateForm" action="../../../backend/locations/update_location.php" method="POST" enctype="multipart/form-data">
                     <input type="hidden" name="blogIdToUpdate" id="blogIdToUpdate">
-                    <div class="mb-4">
+                    <div class="mb-4 flex flex-col">
                         <label for="name" class="block font-semibold mb-2">Name</label>
-                        <textarea name="name" id="updateName" class="border rounded px-4 py-2 w-full" required></textarea>
+                        <textarea name="name" id="updateName" class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent" required></textarea>
                     </div>
-                    <div class="mb-4">
+                    <div class="mb-4 flex flex-col">
                         <label for="address" class="block font-semibold mb-2">Address</label>
-                        <input type="text" name="address" id="updateAddress" class="border rounded px-4 py-2 w-full" required>
+                        <input type="text" name="address" id="updateAddress" class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent" required>
                     </div>
-                    <div class="mb-4">
+                    <div class="mb-4 flex flex-col">
                         <label for="time" class="block font-semibold mb-2">Time</label>
-                        <input type="text" name="time" id="updateTime" class="border rounded px-4 py-2 w-full" required>
+                        <input type="text" name="time" id="updateTime" class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent" required>
                     </div>
-                    <div class="mb-4">
+                    <div class="mb-4 flex flex-col">
                         <label for="phone" class="block font-semibold mb-2">Phone</label>
-                        <input type="text" name="phone" id="updatePhone" class="border rounded px-4 py-2 w-full">
+                        <input type="text" name="phone" id="updatePhone" class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent">
                     </div>
-                    <div class="mb-4">
+                    <div class="mb-4 flex flex-col">
                         <label for="email" class="block font-semibold mb-2">Email</label>
-                        <input type="text" name="email" id="updateEmail" class="border rounded px-4 py-2 w-full">
+                        <input type="text" name="email" id="updateEmail" class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent">
                     </div>
-                    <div class="mb-4">
+                    <div class="mb-4 flex flex-col">
                         <label for="map" class="block font-semibold mb-2">Map</label>
-                        <input type="text" name="map" id="updateMap" class="border rounded px-4 py-2 w-full" required>
+                        <input type="text" name="map" id="updateMap" class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent" required>
                     </div>
                     <div class="text-right">
                         <button type="button" class="btn btn-primary" onclick="confirmUpdate()">Update</button>

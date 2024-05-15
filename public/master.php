@@ -37,7 +37,9 @@
             echo $content ?? "";
 
             if (!($pageTitle === "Login")) {
-                include __DIR__ . "/include/footer.php";
+                if (!isset($is_blog) || !$is_blog) {
+                    include __DIR__ . "/include/footer.php";
+                }
             }
 
             echo "</main>";
@@ -52,7 +54,6 @@
         echo $content ?? "";
         echo "</main>";
     }
-
     ?>
 </body>
 <?php echo $script ?? "" ?>

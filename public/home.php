@@ -21,6 +21,18 @@ include("../backend/conn.php");
             font-family: 'Karla', sans-serif;
             letter-spacing: -0.4px;
         }
+
+        /* Active dot style */
+        .carousel-dot.active {
+            background-color: #F6E17A;
+        }
+
+        .brand-logo {
+            max-height: 700px;
+            width: auto;
+            margin: 0 auto;
+            /* Add any additional styling here */
+        }
     </style>
 </head>
 
@@ -41,14 +53,24 @@ include("../backend/conn.php");
                 if ($result->num_rows > 0) {
                     // Output data of each row
                     $index = 0; // Counter for delay calculation
+                    $isProjectDisplayed = false; // Flag to check if a project is displayed
                     while ($row = $result->fetch_assoc()) {
                         // Split the images string by commas
                         $images = $row['thumbnail'];
+                        // Check if the blog type is Projects
+                        if ($row['type'] == 'Projects') {
+                            // Set flag to true
+                            $isProjectDisplayed = true;
+                        }
                         // Output the first image as a carousel item
                         echo '<div class="carousel-item relative w-full bg-red-500 text-white text-center">';
+                        // Add "FEATURED PROJECTS" heading
                         echo '<img src="../assets/blogs_img/' . $images . '" alt="Slide Image" style="object-fit: cover; width: 100%; height: 100%;">';
                         // Add translucent overlay
                         echo '<div class="absolute inset-0 bg-black opacity-50"></div>';
+                        if ($isProjectDisplayed) {
+                            echo '<h1 style="padding-right: 170px; padding-bottom: 210px;" class="absolute bottom-0 right-0 m-4 text-4xl font-bold opacity-0 animate-fade-in">FEATURED PROJECT</h1>';
+                        }
                         // Add title text in the lower right corner with fade-in animation
                         echo '<h1 style="padding-right: 170px; padding-bottom: 140px;" class="absolute bottom-0 right-0 m-4 text-4xl font-bold opacity-0 animate-fade-in">' . $row['title'] . '</h1>';
                         // Add button with link from the page column with fade-in animation
@@ -130,15 +152,6 @@ include("../backend/conn.php");
         setInterval(nextSlide, 4000);
     </script>
 
-    <style>
-        /* Active dot style */
-        .carousel-dot.active {
-            background-color: #F6E17A;
-        }
-    </style>
-
-
-
     <section class="fade-in-hidden">
         <p class="text-2xl font-semibold text-black px-60 mt-8">Together, we provide the best quality interior products, and highest level of support at most reasonable price.</p>
     </section>
@@ -169,42 +182,102 @@ include("../backend/conn.php");
     </div>
 
     <section class="carousel-section relative fade-in-hidden">
+        <h1 style="text-align: center; font-size: 38px; font-weight: 800;">BRANDS</h1>
         <div class="carousel relative">
-            <div class="carousel-inner flex">
-                <div class="carousel-item w-full text-black text-center">
-                    <h1 class="text-4xl font-bold">Slide 1</h1>
-                </div>
-                <div class="carousel-item w-full text-black text-center">
-                    <h1 class="text-4xl font-bold">Slide 2</h1>
-                </div>
-                <div class="carousel-item w-full text-black text-center">
-                    <h1 class="text-4xl font-bold">Slide 3</h1>
-                </div>
+            <div class="carousel-inner flex carousel-brands-inner">
+                <?php
+                // Fetch data from the brands table
+                $sql = "SELECT * FROM brands";
+                $result = $conn->query($sql);
+
+                if ($result->num_rows > 0) {
+                    // Output data of each row
+                    while ($row = $result->fetch_assoc()) {
+                        // Output carousel item for each brand
+                        echo '<div class="carousel-item w-full text-black text-center carousel-brands-item">';
+                        // Output brand logo
+                        echo '<img src="' . $row['logo_url'] . '" alt="' . $row['brand_name'] . '" class="brand-logo">';
+                        echo '</div>';
+                    }
+                } else {
+                    echo "0 results";
+                }
+                ?>
             </div>
 
-            <div class="carousel-arrow prev" onclick="prevSlide()" style="font-size: 99px; padding: 100px">
+            <div class="carousel-arrow prev" onclick="prevSlideSecondCarousel()" style="font-size: 99px; padding: 100px">
                 <i class="fas fa-chevron-left text-black"></i>
             </div>
-            <div class="carousel-arrow next" onclick="nextSlide()" style="font-size: 99px; padding: 100px">
+            <div class="carousel-arrow next" onclick="nextSlideSecondCarousel()" style="font-size: 99px; padding: 100px">
                 <i class="fas fa-chevron-right text-black"></i>
             </div>
 
-            <div class="carousel-dots absolute bottom-0 left-0 right-0 flex justify-center items-center w-full">
-                <span class="dot bg-black"></span>
-                <span class="dot bg-white"></span>
-                <span class="dot bg-white"></span>
+            <div class="carousel-dots absolute bottom-0 left-0 right-0 flex justify-center items-center w-full carousel-brands-dots">
+                <?php
+                // Reset the result pointer to the beginning
+                $result->data_seek(0);
+                $count = 0;
+                while ($count < $result->num_rows) {
+                    echo '<span class="dot bg-' . ($count == 0 ? 'black' : 'white') . '"></span>';
+                    $count++;
+                }
+                ?>
             </div>
         </div>
 
         <button style="border-radius: 50px;" class="learn-more-btn absolute bottom-4 right-4 bg-gray-300 text-black py-2 px-6 rounded-full">Learn more ►</button>
     </section>
 
+    <script>
+        let currentIndexSecondCarousel = 0;
+        // Adjust the selectors to be specific to this carousel
+        const itemsSecondCarousel = document.querySelectorAll(".carousel-brands-inner .carousel-brands-item");
+        const dotsSecondCarousel = document.querySelectorAll(".carousel-brands-dots .dot");
+        const totalItemsSecondCarousel = itemsSecondCarousel.length;
+
+        function nextSlideSecondCarousel() {
+            currentIndexSecondCarousel = (currentIndexSecondCarousel + 1) % totalItemsSecondCarousel;
+            updateCarouselSecondCarousel();
+        }
+
+        function prevSlideSecondCarousel() {
+            currentIndexSecondCarousel = (currentIndexSecondCarousel - 1 + totalItemsSecondCarousel) % totalItemsSecondCarousel;
+            updateCarouselSecondCarousel();
+        }
+
+        function updateCarouselSecondCarousel() {
+            const width = itemsSecondCarousel[currentIndexSecondCarousel].clientWidth;
+            document.querySelector(".carousel-brands-inner").style.transform = `translateX(-${width * currentIndexSecondCarousel}px)`;
+
+            // Update dots
+            dotsSecondCarousel.forEach((dot, index) => {
+                if (index === currentIndexSecondCarousel) {
+                    dot.classList.add("bg-black");
+                    dot.classList.remove("bg-white");
+                } else {
+                    dot.classList.remove("bg-black");
+                    dot.classList.add("bg-white");
+                }
+            });
+        }
+
+        // Function to move to the next slide automatically every 5 seconds
+        function autoMoveSlide() {
+            setInterval(() => {
+                nextSlideSecondCarousel();
+            }, 5000); // 5000 milliseconds = 5 seconds
+        }
+
+        // Call the autoMoveSlide function to start the automatic sliding
+        autoMoveSlide();
+    </script>
+
     <section class="fade-in-hidden" style="padding-top: 40px;">
         <h1 style="text-align: left; padding-left: 50px; font-size: 38px; font-weight: 800;">
             NEWS & UPDATES
         </h1>
         <div style="display: flex; padding-top: 20px;">
-            <div style="flex: 2; padding-left: 50px; background-color: #ccc; height: 500px; display: flex; align-items: center; background-image: url(' <?php $sql = "SELECT * FROM blogs ORDER BY date DESC LIMIT 1";
+            <div style="flex: 2; padding-left: 50px; background-color: #ccc; height: 500px; display: flex; align-items: center; background-image: url(' <?php $sql = "SELECT * FROM blogs WHERE type = 'News' ORDER BY date DESC LIMIT 1";
                                                                                                                                                         $result = $conn->query($sql);
                                                                                                                                                         if ($result->num_rows > 0) {
                                                                                                                                                             $row = $result->fetch_assoc();
@@ -328,59 +401,6 @@ include("../backend/conn.php");
     </section>
 
     <script>
-        let currentIndexSecondCarousel = 0;
-        const itemsSecondCarousel = document.querySelectorAll(".carousel-section .carousel-item");
-        const totalItemsSecondCarousel = itemsSecondCarousel.length;
-        const dotsSecondCarousel = document.querySelectorAll(".carousel-section .dot");
-
-        function nextSlideSecondCarousel() {
-            if (currentIndexSecondCarousel < totalItemsSecondCarousel - 1) {
-                currentIndexSecondCarousel++;
-            } else {
-                currentIndexSecondCarousel = 0;
-            }
-            updateCarouselSecondCarousel();
-        }
-
-        function prevSlideSecondCarousel() {
-            if (currentIndexSecondCarousel > 0) {
-                currentIndexSecondCarousel--;
-            } else {
-                currentIndexSecondCarousel = totalItemsSecondCarousel - 1;
-            }
-            updateCarouselSecondCarousel();
-        }
-
-        function updateCarouselSecondCarousel() {
-            const width = itemsSecondCarousel[currentIndexSecondCarousel].clientWidth;
-            document.querySelector(".carousel-section .carousel-inner").style.transform = `translateX(-${width * currentIndexSecondCarousel}px)`;
-
-            // Update dots
-            dotsSecondCarousel.forEach((dot, index) => {
-                if (index === currentIndexSecondCarousel) {
-                    dot.classList.add("bg-black");
-                    dot.classList.remove("bg-white");
-                } else {
-                    dot.classList.remove("bg-black");
-                    dot.classList.add("bg-white");
-                }
-            });
-        }
-
-        // Add event listeners to arrow buttons
-        document.querySelector(".carousel-section .carousel-arrow.prev").addEventListener("click", prevSlideSecondCarousel);
-        document.querySelector(".carousel-section .carousel-arrow.next").addEventListener("click", nextSlideSecondCarousel);
-
-        // Add event listeners to dots
-        dotsSecondCarousel.forEach((dot, index) => {
-            dot.addEventListener("click", () => {
-                currentIndexSecondCarousel = index;
-                updateCarouselSecondCarousel();
-            });
-        });
-    </script>
-
-    <script>
         let currentIndexThirdCarousel = 0;
         const itemsThirdCarousel = document.querySelectorAll(".third-carousel-section .third-carousel-item");
         const totalItemsThirdCarousel = itemsThirdCarousel.length;
@@ -489,8 +509,16 @@ insert real data (blogs) -----
 profile admin (sinimulan na) --------
 update history from gdrive (pics) digicam pic kulang sa through the eyars ----
 page animations---------
-audit logs
-mobile scaling
-connect db sa home display (brands nalang)
+audit logs ---------
+connect db sa home display (brands nalang) ---------
+add featured project text sa home carousel ------
+brands carousel sa home ---------
+to know more chuchu sa about  ----------
 finalize main page contents
+mobile view
+modal validations
+add banner image column sa blogs
+remove product category text sa products
+rearrange sidebar
+lagyan ng fade yung open and close ng modals
 -->

@@ -67,17 +67,17 @@ ob_start();
                     <span class="cursor-pointer text-gray-500 hover:text-gray-700" onclick="closeModal()">X</span>
                 </div>
                 <form action="../../../backend/testimonials/add_testimonial.php" method="POST" enctype="multipart/form-data">
-                    <div class="mb-4">
+                    <div class="mb-4 flex flex-col">
                         <label for="message" class="block font-semibold mb-2">Message</label>
-                        <textarea name="message" id="message" class="border rounded px-4 py-2 w-full" required></textarea>
+                        <textarea name="message" id="message" class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent" required></textarea>
                     </div>
-                    <div class="mb-4">
+                    <div class="mb-4 flex flex-col">
                         <label for="name" class="block font-semibold mb-2">Name</label>
-                        <input type="text" name="name" id="name" class="border rounded px-4 py-2 w-full" required>
+                        <input type="text" name="name" id="name" class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent" required>
                     </div>
-                    <div class="mb-4">
+                    <div class="mb-4 flex flex-col">
                         <label for="company" class="block font-semibold mb-2">Company</label>
-                        <input type="text" name="company" id="company" class="border rounded px-4 py-2 w-full" required>
+                        <input type="text" name="company" id="company" class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent" required>
                     </div>
                     <div class="text-right">
                         <button type="button" class="btn btn-primary" onclick="confirmAdd()">Add</button>
@@ -118,17 +118,17 @@ ob_start();
                 <!-- Form for updating the blog post -->
                 <form id="updateForm" action="../../../backend/testimonials/update_testimonial.php" method="POST" enctype="multipart/form-data">
                     <input type="hidden" name="blogIdToUpdate" id="blogIdToUpdate">
-                    <div class="mb-4">
+                    <div class="mb-4 flex flex-col">
                         <label for="message" class="block font-semibold mb-2">Message</label>
-                        <textarea name="message" id="updateMessage" class="border rounded px-4 py-2 w-full" required></textarea>
+                        <textarea name="message" id="updateMessage" class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent" required></textarea>
                     </div>
-                    <div class="mb-4">
+                    <div class="mb-4 flex flex-col">
                         <label for="name" class="block font-semibold mb-2">Name</label>
-                        <input type="text" name="name" id="updateName" class="border rounded px-4 py-2 w-full" required>
+                        <input type="text" name="name" id="updateName" class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent" required>
                     </div>
-                    <div class="mb-4">
+                    <div class="mb-4 flex flex-col">
                         <label for="company" class="block font-semibold mb-2">Company</label>
-                        <input type="text" name="company" id="updateCompany" class="border rounded px-4 py-2 w-full" required>
+                        <input type="text" name="company" id="updateCompany" class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent" required>
                     </div>
                     <div class="text-right">
                         <button type="button" class="btn btn-primary" onclick="confirmUpdate()">Update</button>

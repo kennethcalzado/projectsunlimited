@@ -64,30 +64,30 @@ ob_start();
                     <span class="cursor-pointer text-gray-500 hover:text-gray-700" onclick="closeModal()">X</span>
                 </div>
                 <form action="../../../backend/blogs/add_blog.php" method="POST" enctype="multipart/form-data">
-                    <div class="mb-4">
+                    <div class="mb-4 flex flex-col">
                         <label for="title" class="block font-semibold mb-2">Title</label>
-                        <input type="text" name="title" id="title" class="border rounded px-4 py-2 w-full" required>
+                        <input type="text" name="title" id="title" class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent" required>
                     </div>
-                    <div class="mb-4">
+                    <div class="mb-4 flex flex-col">
                         <label for="description" class="block font-semibold mb-2">Description</label>
-                        <textarea name="description" id="description" class="border rounded px-4 py-2 w-full" required></textarea>
+                        <textarea name="description" id="description" class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent" required></textarea>
                     </div>
-                    <div class="mb-4">
+                    <div class="mb-4 flex flex-col">
                         <label for="thumbnail" class="block font-semibold mb-2">Thumbnail</label>
-                        <input type="file" name="thumbnail" id="thumbnail" class="border rounded px-4 py-2 w-full" accept="image/*" required>
+                        <input type="file" name="thumbnail" id="thumbnail" class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent" accept="image/*" required>
                     </div>
-                    <div class="mb-4">
+                    <div class="mb-4 flex flex-col">
                         <label for="images" class="block font-semibold mb-2">Images</label>
-                        <input type="file" name="images[]" id="images" class="border rounded px-4 py-2 w-full" accept="image/*" multiple>
+                        <input type="file" name="images[]" id="images" class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent" accept="image/*" multiple>
                     </div>
-                    <div class="mb-4">
+                    <div class="mb-4 flex flex-col">
                         <label for="date" class="block font-semibold mb-2">Date</label>
                         <!-- Date picker input field -->
-                        <input type="date" name="date" id="date" class="border rounded px-4 py-2 w-full" required>
+                        <input type="date" name="date" id="date" class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent" required>
                     </div>
-                    <div class="mb-4">
+                    <div class="mb-4 flex flex-col">
                         <label for="type" class="block font-semibold mb-2">Type</label>
-                        <select name="type" id="type" class="border rounded px-4 py-2 w-full" required>
+                        <select name="type" id="type" class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent" required>
                             <option value="News">News</option>
                             <option value="Projects">Projects</option>
                         </select>
@@ -132,37 +132,37 @@ ob_start();
                 <form id="updateForm" action="../../../backend/blogs/update_blog.php" method="POST" enctype="multipart/form-data">
                     <input type="hidden" name="blogIdToUpdate" id="blogIdToUpdate">
                     <input type="hidden" name="removedImages" id="removedImages" value="">
-                    <div class="mb-4">
+                    <div class="mb-4 flex flex-col">
                         <label for="updateTitle" class="block font-semibold mb-2">Title</label>
-                        <input type="text" name="updateTitle" id="updateTitle" class="border rounded px-4 py-2 w-full" required>
+                        <input type="text" name="updateTitle" id="updateTitle" class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent" required>
                     </div>
-                    <div class="mb-4">
+                    <div class="mb-4 flex flex-col">
                         <label for="updateDescription" class="block font-semibold mb-2">Description</label>
-                        <textarea name="updateDescription" id="updateDescription" class="border rounded px-4 py-2 w-full" required></textarea>
+                        <textarea name="updateDescription" id="updateDescription" class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent" required></textarea>
                     </div>
-                    <div class="mb-4">
+                    <div class="mb-4 flex flex-col">
                         <label for="updateDate" class="block font-semibold mb-2">Date</label>
-                        <input type="date" name="updateDate" id="updateDate" class="border rounded px-4 py-2 w-full">
+                        <input type="date" name="updateDate" id="updateDate" class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent">
                     </div>
-                    <div class="mb-4">
+                    <div class="mb-4 flex flex-col">
                         <label for="updateThumbnail" class="block font-semibold mb-2">Thumbnail</label>
                         <!-- Thumbnail preview container -->
                         <div id="thumbnailPreview" class="mt-2 mb-2">
                             <img id="thumbnailImg" src="#" alt="Thumbnail Preview" style="max-width: 100px; max-height: 100px;">
                         </div>
-                        <input type="file" name="updateThumbnail" id="updateThumbnail" class="border rounded px-4 py-2 w-full" accept="image/*">
+                        <input type="file" name="updateThumbnail" id="updateThumbnail" class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent" accept="image/*">
                     </div>
-                    <div class="mb-4">
+                    <div class="mb-4 flex flex-col">
                         <label class="block font-semibold mb-2">Existing Images</label>
                         <div id="existingImages" class="mb-2 flex flex-wrap">
                             <!-- Existing images will be displayed here -->
                         </div>
-                        <input type="file" name="updateImages[]" id="updateImages" class="border rounded px-4 py-2 w-full" accept="image/*" multiple>
+                        <input type="file" name="updateImages[]" id="updateImages" class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent" accept="image/*" multiple>
                     </div>
 
-                    <div class="mb-4">
+                    <div class="mb-4 flex flex-col">
                         <label for="updateType" class="block font-semibold mb-2">Type</label>
-                        <select name="updateType" id="updateType" class="border rounded px-4 py-2 w-full" required>
+                        <select name="updateType" id="updateType" class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent" required>
                             <option value="News">News</option>
                             <option value="Projects">Projects</option>
                         </select>

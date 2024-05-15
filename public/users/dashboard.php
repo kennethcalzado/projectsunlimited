@@ -91,12 +91,114 @@ if ($result) {
 
 <head>
     <title><?php echo $pageTitle; ?></title>
+    <link rel="stylesheet" href="../../assets/input.css">
+
+    <style>
+        /* Table styling */
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            max-width: 100%;
+            border: 1px solid #dddddd;
+            /* Add border around the tables */
+            border-radius: 10px;
+            /* Add border radius */
+        }
+
+        th,
+        td {
+            text-align: center;
+            padding: 8px;
+        }
+
+        th {
+            background-color: #F6E17A;
+        }
+
+        /* Add border between rows */
+        tr {
+            border-bottom: 1px solid #dddddd;
+        }
+
+        .table-container {
+            width: 48%;
+            padding-right: 20px;
+        }
+
+        .table-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            background-color: black;
+            border-top-left-radius: 10px;
+            /* Add border radius */
+            border-top-right-radius: 10px;
+            /* Add border radius */
+        }
+
+        .table-header h2 {
+            margin: 0;
+            color: white;
+            font-weight: bold;
+            padding-left: 10px;
+        }
+
+        tr:hover {
+            background-color: #f5f4f4;
+            /* Gray */
+        }
+
+        tr.dark:hover {
+            background-color: #f5f4f4;
+            /* Off White */
+        }
+
+        p {
+            font-size: 27px !important;
+        }
+
+        .ease {
+            animation-timing-function: ease;
+        }
+
+        .slide-ltr {
+            clip-path: polygon(100% 0, 100% 100%, 100% 100%, 100% 0);
+        }
+
+        .sliding-ltr {
+            animation-name: sliding-ltr;
+            animation-duration: 1s;
+            animation-fill-mode: forwards;
+            animation-delay: 0.5s;
+        }
+
+        .description-column {
+            max-width: 200px;
+            /* Adjust the maximum width as needed */
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        @keyframes sliding-ltr {
+            0% {
+                transform: translateX(-100%);
+                clip-path: polygon(100% 0, 100% 100%, 100% 100%, 100% 0);
+            }
+
+            100% {
+                transform: translateX(-0.5%);
+                clip-path: polygon(100% 0, 100% 100%, 0% 100%, 0 0);
+            }
+        }
+    </style>
 </head>
 
 <body>
     <div class="page-content ml-[100px] transition-all duration-300">
         <br><br>
-        <h1 style="text-align: center;" class="text-3xl font-bold mb-2">
+        <h1 style="text-align: center;" class="text-4xl font-bold mb-2 ml-2 mt-8 text-black">
             <?php echo ucfirst($_SESSION['user_role']); ?> Dashboard
         </h1>
         <!-- component -->
@@ -285,7 +387,7 @@ if ($result) {
                         ?>
                                 <tr>
                                     <td><?php echo $row['brand_name']; ?></td>
-                                    <td><?php echo $row['description']; ?></td>
+                                    <td class="description-column"><?php echo $row['description']; ?></td>
                                     <td><?php echo $row['status']; ?></td>
                                 </tr>
                         <?php
@@ -298,99 +400,6 @@ if ($result) {
                 </table>
             </div>
         </div>
-
-        <style>
-            /* Table styling */
-            table {
-                border-collapse: collapse;
-                width: 100%;
-                max-width: 100%;
-                border: 1px solid #dddddd;
-                /* Add border around the tables */
-                border-radius: 10px;
-                /* Add border radius */
-            }
-
-            th,
-            td {
-                text-align: center;
-                padding: 8px;
-            }
-
-            th {
-                background-color: #F6E17A;
-            }
-
-            /* Add border between rows */
-            tr {
-                border-bottom: 1px solid #dddddd;
-            }
-
-            .table-container {
-                width: 48%;
-                padding-right: 20px;
-            }
-
-            .table-header {
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                padding: 10px;
-                background-color: black;
-                border-top-left-radius: 10px;
-                /* Add border radius */
-                border-top-right-radius: 10px;
-                /* Add border radius */
-            }
-
-            .table-header h2 {
-                margin: 0;
-                color: white;
-                font-weight: bold;
-                padding-left: 10px;
-            }
-
-            tr:hover {
-                background-color: #f5f4f4;
-                /* Gray */
-            }
-
-            tr.dark:hover {
-                background-color: #f5f4f4;
-                /* Off White */
-            }
-
-            p {
-                font-size: 27px !important;
-            }
-
-            .ease {
-                animation-timing-function: ease;
-            }
-
-            .slide-ltr {
-                clip-path: polygon(100% 0, 100% 100%, 100% 100%, 100% 0);
-            }
-
-            .sliding-ltr {
-                animation-name: sliding-ltr;
-                animation-duration: 1s;
-                animation-fill-mode: forwards;
-                animation-delay: 0.5s;
-            }
-
-            @keyframes sliding-ltr {
-                0% {
-                    transform: translateX(-100%);
-                    clip-path: polygon(100% 0, 100% 100%, 100% 100%, 100% 0);
-                }
-
-                100% {
-                    transform: translateX(-0.5%);
-                    clip-path: polygon(100% 0, 100% 100%, 0% 100%, 0 0);
-                }
-            }
-        </style>
     </div>
 </body>
 
