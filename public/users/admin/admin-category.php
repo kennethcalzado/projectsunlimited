@@ -511,7 +511,7 @@ ob_start();
 
             $('#categorylisting').empty();
             $.each(slicedCategories, function (index, category) {
-                var row = $('<tr>');
+                var row = $('<tr class = "hover:bg-zinc-100 border-b bg-white-200">');
                 row.append('<td class="px-4 py-2 border-b">' + category.CategoryName + '</td>');
                 row.append('<td class="px-4 py-2 border-b">' + category.type + '</td>');
                 row.append('<td class="px-4 py-2 border-b">' + category.status + '</td>');

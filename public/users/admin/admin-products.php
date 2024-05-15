@@ -1469,15 +1469,15 @@ ob_start();
         // Gather edited product image
         const editedProductImage = $("#editProductImage")[0].files[0];
 
-        // Check if a new image is selected
-        if (!editedProductImage) {
-            Swal.fire({
-                icon: 'error',
-                title: 'Error',
-                text: 'Please select a product image.'
-            });
-            return; // Stop submission if product image is not selected
-        }
+        // // Check if a new image is selected
+        // if (!editedProductImage) {
+        //     Swal.fire({
+        //         icon: 'error',
+        //         title: 'Error',
+        //         text: 'Please select a product image.'
+        //     });
+        //     return; // Stop submission if product image is not selected
+        // }
 
         // Send edited details to the server to update the database
         const formData = new FormData();

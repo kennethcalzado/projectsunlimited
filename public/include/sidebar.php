@@ -146,6 +146,26 @@ $image_path = $base_url . 'assets/image/projectslogo.png';
             <!-- <span class="text-[15px] ml-4 text-center text-gray-200 font-bold">Home</span> -->
         </div>
     </a>
+    <a href="/public/users/admin/admin-variation.php" class="group">
+        <div class="nav-item mt-3 flex items-center rounded-l-md px-6 p-2
+            transition-opacity duration-300 cursor-pointer text-white group-hover:bg-yellow-600 group-hover:ease-in">
+            <!-- <div class="tooltip tooltip-right" data-tip="Home">
+                    <i class="bi bi-house-door-fill"></i>
+                </div> -->
+            <div class=" flex relative ">
+            <i class="fa-solid fa-swatchbook py-1"></i>
+                <span class="text-[15px] ml-4 text-gray-200 font-bold">Variation</span>
+                <span class="tootlips 
+                    group-hover:ease-in group-hover:opacity-100 group-hover:visible 
+                    transition-opacity duration-300 
+                    bg-yellow-600 rounded-r-md 
+                    pr-5 pl-2 py-[8.9px] m-4 mx-auto w-24
+                    text-[15px] font-bold text-white 
+                    absolute  invisible
+                    left-1/2 translate-x-[20%] -translate-y-[60%] opacity-0">Variation</span>
+            </div>
+        </div>
+    </a>
 
     <div>
         <a href="/public/users/brands-display.php" class="group">
