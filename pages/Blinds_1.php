@@ -2,7 +2,7 @@
 $is_public_page = true;
 $pageTitle = 'Products - Projects Unlimited';
 ob_start();
-include ("../backend/conn.php");
+include("../backend/conn.php");
 
 // Extract the category ID from the filename
 $pagePath = basename(__FILE__); // Get the current filename
@@ -36,7 +36,7 @@ if ($result->num_rows > 0) {
         $stmt->bind_param("ii", $categoryID, $categoryID);
         $stmt->execute();
         $products = $stmt->get_result();
-        ?>
+?>
         <style>
             #productModal {
                 display: none;
@@ -123,6 +123,11 @@ if ($result->num_rows > 0) {
 
             .product-item:hover {
                 transform: scale(1.05);
+                background-color: #D1D5DB;
+            }
+
+            .product-item:hover h3 {
+                color: #A16207;
             }
 
             .product-image {
@@ -144,11 +149,11 @@ if ($result->num_rows > 0) {
                     <p class="text-white font-extrabold text-4xl"><?php echo strtoupper($categoryName); ?><br></p>
                 </div>
             </div>
-            <h1 class="text-black font-extrabold text-center my-4 text-4xl">PRODUCTS<br></h1>
+            <h1 class="text-black font-extrabold text-center my-4 text-4xl"><?php echo strtoupper($categoryName); ?> PRODUCTS<br></h1>
             <div class="prodcontent">
-                <?php if ($products->num_rows > 0): ?>
+                <?php if ($products->num_rows > 0) : ?>
                     <div class="grid m-4">
-                        <?php while ($product = $products->fetch_assoc()): ?>
+                        <?php while ($product = $products->fetch_assoc()) : ?>
                             <?php
                             // Fetch product variations
                             $productID = $product['ProductID'];
@@ -159,22 +164,20 @@ if ($result->num_rows > 0) {
                             $variations = $variationStmt->get_result();
                             $product['variations'] = $variations->fetch_all(MYSQLI_ASSOC);
                             ?>
-                            <div class="product-item border p-4"
-                                onclick='openModal(<?php echo htmlspecialchars(json_encode($product)); ?>)'>
-                                <img src="../../assets/products/<?php echo $product['image_urls']; ?>"
-                                    alt="<?php echo htmlspecialchars($product['ProductName']); ?>"
-                                    class="product-image object-cover object-center mb-2">
+                            <div class="product-item border p-4" onclick='openModal(<?php echo htmlspecialchars(json_encode($product)); ?>)'>
+                                <img src="../../assets/products/<?php echo $product['image_urls']; ?>" alt="<?php echo htmlspecialchars($product['ProductName']); ?>" class="product-image object-cover object-center mb-2">
                                 <h3 class="text-lg font-bold text-center"><?php echo htmlspecialchars($product['ProductName']); ?></h3>
+                                <h3 class="text-sm font-semibold text-gray-800 text-center">Category: <?php echo htmlspecialchars($product['ProdCategoryName']); ?></h3>
                             </div>
                         <?php endwhile; ?>
                     </div>
-                <?php else: ?>
+                <?php else : ?>
                     <p class="text-center text-lg font-bold text-red-800">No products found in this category.</p>
                 <?php endif; ?>
             </div>
         </div>
 
-        <div id="productModal" class="flex">
+        <div id="productModal" class="flex  fade-in">
             <div class="modal-content">
                 <div class="modal-header">
                     <h3 id="modalProductName" class="text-lg font-semibold"></h3>
@@ -241,7 +244,7 @@ if ($result->num_rows > 0) {
                 document.getElementById('productModal').classList.remove('modal-fixed');
             }
 
-            document.getElementById('productModal').onclick = function (event) {
+            document.getElementById('productModal').onclick = function(event) {
                 if (event.target === this) {
                     closeModal();
                 }
@@ -260,7 +263,7 @@ if ($result->num_rows > 0) {
             // Display customizable content for each subcategory
             while ($customizableCategory = $customizableCategories->fetch_assoc()) {
                 // Display customizable content for each subcategory
-                ?>
+        ?>
                 <div class="content">
                     <div class="relative">
                         <img src="../../assets/catheader/<?php echo $imageHeader; ?>" class="w-full h-96 object-cover">
@@ -282,8 +285,7 @@ if ($result->num_rows > 0) {
                     <div id="customcontainer">
                         <div class="p-8">
                             <div class="flex items-center p-2 px-8">
-                                <div
-                                    class="w-10 h-10 bg-gray-800 text-white flex items-center justify-center rounded-full text-xl font-bold mr-4">
+                                <div class="w-10 h-10 bg-gray-800 text-white flex items-center justify-center rounded-full text-xl font-bold mr-4">
                                     1</div>
                                 <h3 class="text-gray-800 font-bold text-3xl ">INQUIRE</h3>
                             </div>
@@ -294,8 +296,7 @@ if ($result->num_rows > 0) {
                             </div>
                             <div class="flex items-center justify-end p-2 px-8">
                                 <h3 class="text-gray-800 text-right font-bold text-3xl mr-4">PLAN</h3>
-                                <div
-                                    class="w-10 h-10 border-4 border-gray-800 text-gray-800 flex items-center justify-center rounded-full text-xl font-bold mr-4">
+                                <div class="w-10 h-10 border-4 border-gray-800 text-gray-800 flex items-center justify-center rounded-full text-xl font-bold mr-4">
                                     2</div>
                             </div>
                             <div class="flex items-centern">
@@ -305,8 +306,7 @@ if ($result->num_rows > 0) {
                                     discussed as well.</p>
                             </div>
                             <div class="flex items-center p-2 px-8">
-                                <div
-                                    class="w-10 h-10 bg-gray-800 text-white flex items-center justify-center rounded-full text-xl font-bold mr-4">
+                                <div class="w-10 h-10 bg-gray-800 text-white flex items-center justify-center rounded-full text-xl font-bold mr-4">
                                     3</div>
                                 <h3 class="text-gray-800 font-bold text-3xl">CREATE</h3>
                             </div>
@@ -317,8 +317,7 @@ if ($result->num_rows > 0) {
                             </div>
                             <div class="flex items-center justify-end p-2 px-8">
                                 <h3 class="text-gray-800 text-right font-bold text-3xl mr-4">DELIVER & INSTALL</h3>
-                                <div
-                                    class="w-10 h-10 border-4 border-gray-800 text-gray-800 flex items-center justify-center rounded-full text-xl font-bold mr-4">
+                                <div class="w-10 h-10 border-4 border-gray-800 text-gray-800 flex items-center justify-center rounded-full text-xl font-bold mr-4">
                                     4</div>
                             </div>
                             <div class="flex items-center justify-endn">
@@ -329,7 +328,7 @@ if ($result->num_rows > 0) {
                         </div>
                     </div>
                 </div>
-                <?php
+        <?php
             }
         }
     } elseif ($categoryType === 'customizable') {
@@ -355,8 +354,7 @@ if ($result->num_rows > 0) {
             <div id="customcontainer">
                 <div class="p-8">
                     <div class="flex items-center p-2 px-8">
-                        <div
-                            class="w-10 h-10 bg-gray-800 text-white flex items-center justify-center rounded-full text-xl font-bold mr-4">
+                        <div class="w-10 h-10 bg-gray-800 text-white flex items-center justify-center rounded-full text-xl font-bold mr-4">
                             1</div>
                         <h3 class="text-gray-800 font-bold text-3xl ">INQUIRE</h3>
                     </div>
@@ -367,8 +365,7 @@ if ($result->num_rows > 0) {
                     </div>
                     <div class="flex items-center justify-end p-2 px-8">
                         <h3 class="text-gray-800 text-right font-bold text-3xl mr-4">PLAN</h3>
-                        <div
-                            class="w-10 h-10 border-4 border-gray-800 text-gray-800 flex items-center justify-center rounded-full text-xl font-bold mr-4">
+                        <div class="w-10 h-10 border-4 border-gray-800 text-gray-800 flex items-center justify-center rounded-full text-xl font-bold mr-4">
                             2</div>
                     </div>
                     <div class="flex items-centern">
@@ -378,8 +375,7 @@ if ($result->num_rows > 0) {
                             discussed as well.</p>
                     </div>
                     <div class="flex items-center p-2 px-8">
-                        <div
-                            class="w-10 h-10 bg-gray-800 text-white flex items-center justify-center rounded-full text-xl font-bold mr-4">
+                        <div class="w-10 h-10 bg-gray-800 text-white flex items-center justify-center rounded-full text-xl font-bold mr-4">
                             3</div>
                         <h3 class="text-gray-800 font-bold text-3xl">CREATE</h3>
                     </div>
@@ -390,8 +386,7 @@ if ($result->num_rows > 0) {
                     </div>
                     <div class="flex items-center justify-end p-2 px-8">
                         <h3 class="text-gray-800 text-right font-bold text-3xl mr-4">DELIVER & INSTALL</h3>
-                        <div
-                            class="w-10 h-10 border-4 border-gray-800 text-gray-800 flex items-center justify-center rounded-full text-xl font-bold mr-4">
+                        <div class="w-10 h-10 border-4 border-gray-800 text-gray-800 flex items-center justify-center rounded-full text-xl font-bold mr-4">
                             4</div>
                     </div>
                     <div class="flex items-center justify-endn">
@@ -401,7 +396,7 @@ if ($result->num_rows > 0) {
                     </div>
                 </div>
             </div>
-            <?php
+    <?php
     } else {
         echo "Unknown category type.";
     }
@@ -409,5 +404,5 @@ if ($result->num_rows > 0) {
     echo "Category not found.";
 }
 $content = ob_get_clean();
-include ("../public/master.php");
-?>
+include("../public/master.php");
+    ?>

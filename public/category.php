@@ -66,7 +66,7 @@ ob_start();
             <p class="text-white font-extrabold text-4xl">PRODUCTS</p>
         </div>
     </div>
-    <h1 class="text-4xl font-extrabold text-center text-black bg-white p-4">CATEGORIES</h1>
+    <h1 class="text-4xl font-extrabold text-center text-black p-4">CATEGORIES</h1>
     <div id="categorycontainer">
         <div id="prodcat" class="flex flex-wrap justify-center">
             <!-- Categories will be loaded dynamically here -->
@@ -143,7 +143,7 @@ ob_start();
                 if (data.length > 0) {
                     data.forEach(function(category) {
                         var categoryCard = '<div class="w-1/5 px-2">' +
-                            '<a href="../pages' + category.page_path + '" class="block bg-white overflow-hidden transition duration-300">' +
+                            '<a href="../pages' + category.page_path + '" class="block overflow-hidden transition duration-300">' +
                             '<div class="square-image border border-slate-300">' +
                             '<img src="../assets/category/' + category.imagecover + '" class="square-image-inner" alt="' + category.CategoryName + '">' +
                             '</div>' +

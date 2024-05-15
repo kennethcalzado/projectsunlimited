@@ -1,6 +1,7 @@
 <?php
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
+use PHPMailer\PHPMailer\SMTP;
 
 // Include PHPMailer classes manually
 require 'PHPMailer/src/PHPMailer.php';
@@ -22,6 +23,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $mail->isSMTP();
         $mail->Host = 'smtp.gmail.com'; // Gmail SMTP server
         $mail->SMTPAuth = true;
+        // $mail->SMTPDebug = SMTP::DEBUG_SERVER;
         $mail->Username = 'itsangelyne14@gmail.com'; // Your Gmail address
         $mail->Password = 'exspqwmbgyiqfvds'; // Your Gmail password
         $mail->SMTPSecure = 'tls';
@@ -29,16 +31,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         // Recipients
         $mail->setFrom($email, $name); // Sender's email and name
-        $mail->addAddress('itsangelyne14@gmail.com', 'Angelyne'); // Recipient's email and name
+        $mail->addAddress('info@projectsunlimited.com.ph', 'Do_Not_Reply'); // Recipient's email and name
+        $mail->addReplyTo($email, $name); // Reply-to address
 
         // Content
         $mail->isHTML(true); // Set email format to HTML
         $mail->Subject = "New Inquiry from the website: $subject";
         $mail->Body = "
-            <p><strong style='font-weight: 600;'>Inquirer:</strong> $name</p>
-            <p><strong style='font-weight: 600;'>Email:</strong> $email</p>
-            <p><strong style='font-weight: 600;'>Contact Number:</strong> $phone</p>
-            <p><strong style='font-weight: 600;'>Concern/Inquiry:</strong> $message</p>
+            <p>Good Day!</p>
+            <p>$message</p>
+            <p>I am hoping to receive feedback at your earliest convenience. You may contact me through my <b>Phone Number:$phone</b> or through my <b>Email: $email</b>.</p>
+            <p>Thank You!</p>
+            <p></p>
+            <p>Best Regards,</p>
+            <p>$name <br> $email</p>
         ";
 
         $mail->send();

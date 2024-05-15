@@ -206,24 +206,27 @@ function generateLocationHTML($location)
                     <form id="contactForm" class="space-y-4">
                         <div class="mb-4">
                             <label for="name" class="block text-black font-bold text-xl">Name:</label>
-                            <input type="text" id="name" name="name" placeholder="Name" class="w-full p-2 border rounded-md" required>
+                            <input type="text" id="name" name="name" placeholder="Name" class="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent" required>
+                            <small class="text-red-500" id="name-error"></small>
                         </div>
                         <div class="mb-4">
                             <label for="email" class="block text-black font-bold text-xl">E-mail:</label>
-                            <input type="email" id="email" name="email" placeholder="E-mail" class="w-full p-2 border rounded-md" required>
+                            <input type="email" id="email" name="email" placeholder="E-mail (e.g example@gmail.com)" class="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent" required>
+                            <small class="text-red-500" id="email-error"></small>
                         </div>
                         <div class="mb-4">
                             <label for="phone" class="block text-black font-bold text-xl">Phone Number:</label>
-                            <input type="text" id="phone" name="phone" placeholder="Phone Number" class="w-full p-2 border rounded-md" required>
+                            <input type="text" id="phone" name="phone" placeholder="Phone Number (e.g. 09xxxxxxxxx)" class="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent" required>
                             <small class="text-red-500" id="phone-error"></small>
                         </div>
                         <div class="mb-4">
                             <label for="subject" class="block text-black font-bold text-xl">Subject of Concern:</label>
-                            <input type="text" id="subject" name="subject" placeholder="Subject of Concern" class="w-full p-2 border rounded-md" required>
+                            <input type="text" id="subject" name="subject" placeholder="Subject of Concern" class="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent">
                         </div>
                         <div class="mb-4">
                             <label for="message" class="block text-black font-bold text-xl">Message:</label>
-                            <textarea id="message" name="message" rows="4" placeholder="Enter Your Inquiry or Concern" class="w-full p-2 border resize-none rounded-md" required></textarea>
+                            <textarea id="message" name="message" rows="4" placeholder="Enter Your Inquiry or Concern" class="w-full p-2 border resize-none rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent" required></textarea>
+                            <small class="text-red-500" id="message-error"></small>
                         </div>
                         <div class="mb-4 flex justify-end">
                             <button id="submitButton" style="border-radius: 10px;" class="yellow-btn text-xl w-50 h-12 font-semibold">Submit</button>
@@ -231,7 +234,7 @@ function generateLocationHTML($location)
                     </form>
                 </div>
                 <div class="w-1/2 p-8">
-                    <div class="relative h-100 w-full flex items-center justify-center my-4">
+                    <div class="relative h-100 w-full flex items-center justify-center my-4 mt-9">
                         <img src="../assets/image/contactusformimage.jpg" alt="Image Description" class="w-full h-100 object-cover">
                         <div class="absolute inset-0 bg-black opacity-50"></div>
                     </div>
@@ -265,28 +268,110 @@ function generateLocationHTML($location)
     });
 
     $(document).ready(function() {
+        function sanitizeInput(input) {
+            return $('<div/>').text(input).html();
+        }
+
+        function isValidInput(input) {
+            // Regular expressions to detect HTML tags and SQL injection patterns
+            var htmlPattern = /<[^>]*>/g;
+            var sqlPattern = /('|"|--|;|\/\*|\*\/|\\)/g;
+
+            if (htmlPattern.test(input) || sqlPattern.test(input)) {
+                return false;
+            }
+            return true;
+        }
+
         $('#submitButton').click(function(e) {
             e.preventDefault(); // Prevent form submission
 
-            // Get form data
-            var formData = $('#contactForm').serialize();
+            var isValid = true;
 
-            // Send AJAX request to server-side script
-            $.ajax({
-                type: 'POST',
-                url: '../backend/contact/contact.php', // Path to your server-side script
-                data: formData,
-                success: function(response) {
-                    $('#contactForm').html('<p class="text-3xl font-extrabold text-black px-16 mt-8">Thank You for Contacting Projects Unlimited! We will get back to you in a while.</p>');
-                    setTimeout(function() {
-                        location.reload();
-                    }, 2000);
-                },
-                error: function(xhr, status, error) {
-                    console.error(xhr.responseText); // Log error message
-                    alert('An error occurred while sending the email. Please try again later.');
+            // Validation
+            $('#contactForm input, #contactForm textarea').each(function() {
+                var element = $(this);
+                var value = element.val().trim();
+                var id = element.attr('id');
+                var errorElement = $('#' + id + '-error');
+
+                // Reset previous error messages and border colors
+                errorElement.text('');
+                element.css('border-color', '');
+
+                // Check if field is empty (except subject) or contains invalid input
+                if ((id !== 'subject' && !value) || !isValidInput(value)) {
+                    if (!value) {
+                        errorElement.text('Please enter ' + id.replace(/-/g, ' ') + '.');
+                    } else {
+                        errorElement.text('Input Invalid.');
+                    }
+                    element.css('border-color', 'red');
+                    isValid = false;
+                } else {
+                    // Additional validations for email and phone fields
+                    if (id === 'email' && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
+                        errorElement.text('Please enter a valid email address.');
+                        element.css('border-color', 'red');
+                        isValid = false;
+                    }
+                    if (id === 'phone' && (!/^\d{11}$/.test(value) || /\D/.test(value))) {
+                        errorElement.text('Phone number must be exactly 11 digits.');
+                        element.css('border-color', 'red');
+                        isValid = false;
+                    }
+                }
+
+                // Sanitize input if valid
+                if (isValid) {
+                    element.val(sanitizeInput(value));
                 }
             });
+
+            if (isValid) {
+                // Show loading alert
+                Swal.fire({
+                    title: 'Processing...',
+                    text: 'Please wait while we send your message.',
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+                    }
+                });
+
+                // Get form data
+                var formData = $('#contactForm').serialize();
+
+                // Send AJAX request to server-side script
+                $.ajax({
+                    type: 'POST',
+                    url: '../backend/contact/contact.php', // Path to your server-side script
+                    data: formData,
+                    success: function(response) {
+                        // Clear form fields
+                        $('#contactForm')[0].reset();
+
+                        // Show success alert
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Message Sent',
+                            text: 'Thank you for contacting Projects Unlimited! We will get back to you in a while.',
+                            timer: 2000,
+                            showConfirmButton: false
+                        }).then(() => {
+                            $('#contactForm')[0].reset();
+                        });
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(xhr.responseText); // Log error message
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: 'An error occurred while sending the email. Please try again later.',
+                        });
+                    }
+                });
+            }
         });
     });
 </script>
