@@ -66,25 +66,25 @@ ob_start();
                     <h2 class="text-xl font-bold">Add Testimonial</h2>
                     <span class="cursor-pointer text-gray-500 hover:text-gray-700" onclick="closeModal()">X</span>
                 </div>
-                <form action="../../../backend/testimonials/add_testimonial.php" method="POST" enctype="multipart/form-data">
-                    <div class="mb-4 flex flex-col">
-                        <label for="message" class="block font-semibold mb-2">Message</label>
-                        <textarea name="message" id="message" class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent" required></textarea>
-                    </div>
-                    <div class="mb-4 flex flex-col">
-                        <label for="name" class="block font-semibold mb-2">Name</label>
-                        <input type="text" name="name" id="name" class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent" required>
-                    </div>
-                    <div class="mb-4 flex flex-col">
-                        <label for="company" class="block font-semibold mb-2">Company</label>
-                        <input type="text" name="company" id="company" class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent" required>
-                    </div>
-                    <div class="text-right">
-                        <button type="button" class="btn btn-primary" onclick="confirmAdd()">Add</button>
-                        <button type="submit" id="hiddenAddButton" class="btn btn-primary" hidden>Add</button>
-                        <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancel</button>
-                    </div>
-                </form>
+                <div class="mb-4 flex flex-col">
+                    <label for="message" class="block font-semibold mb-2">Message</label>
+                    <textarea name="message" id="message" class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent" required></textarea>
+                    <div id="messageError" class="error-message text-red-500"></div> <!-- Error message container -->
+                </div>
+                <div class="mb-4 flex flex-col">
+                    <label for="name" class="block font-semibold mb-2">Name</label>
+                    <input type="text" name="name" id="name" class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent" required>
+                    <div id="nameError" class="error-message text-red-500"></div> <!-- Error message container -->
+                </div>
+                <div class="mb-4 flex flex-col">
+                    <label for="company" class="block font-semibold mb-2">Company</label>
+                    <input type="text" name="company" id="company" class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent" required>
+                    <div id="companyError" class="error-message text-red-500"></div> <!-- Error message container -->
+                </div>
+                <div class="text-right">
+                    <button type="button" class="btn btn-primary" onclick="confirmAdd()">Add</button>
+                    <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+                </div>
             </div>
         </div>
     </div>
@@ -115,30 +115,34 @@ ob_start();
                     <h2 class="text-xl font-bold mb-4">Update Testimonial</h2>
                     <span class="cursor-pointer text-gray-500 hover:text-gray-700" onclick="closeUpdateModal()">X</span>
                 </div>
-                <!-- Form for updating the blog post -->
+                <!-- Form for updating the testimonial -->
                 <form id="updateForm" action="../../../backend/testimonials/update_testimonial.php" method="POST" enctype="multipart/form-data">
                     <input type="hidden" name="blogIdToUpdate" id="blogIdToUpdate">
                     <div class="mb-4 flex flex-col">
                         <label for="message" class="block font-semibold mb-2">Message</label>
                         <textarea name="message" id="updateMessage" class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent" required></textarea>
+                        <div id="updateMessageError" class="error-message text-red-500"></div> <!-- Error message container -->
                     </div>
                     <div class="mb-4 flex flex-col">
                         <label for="name" class="block font-semibold mb-2">Name</label>
                         <input type="text" name="name" id="updateName" class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent" required>
+                        <div id="updateNameError" class="error-message text-red-500"></div> <!-- Error message container -->
                     </div>
                     <div class="mb-4 flex flex-col">
                         <label for="company" class="block font-semibold mb-2">Company</label>
                         <input type="text" name="company" id="updateCompany" class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent" required>
+                        <div id="updateCompanyError" class="error-message text-red-500"></div> <!-- Error message container -->
                     </div>
                     <div class="text-right">
                         <button type="button" class="btn btn-primary" onclick="confirmUpdate()">Update</button>
-                        <button type="submit" id="hiddenSubmitButton" class="btn btn-primary" hidden></button>
+                        <button type="submit" id="hiddenUpdateButton" class="btn btn-primary" hidden></button>
                         <button type="button" onclick="closeUpdateModal()" class="btn btn-secondary">Cancel</button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
+
 
     <!-- FILTER SCRIPTS -->
     <script>
@@ -265,6 +269,12 @@ ob_start();
             window.open(url + '#' + sectionId, '_blank');
         }
 
+        function isValidInput(input) {
+            // Simple check for HTML and SQL injections
+            var pattern = /<[^>]*>|['";=:()]+|(--[^\r\n]*)|(\/\*[\w\W]*?(?=\*)\*\/)/gi;
+            return !pattern.test(input);
+        }
+
 
         // DELETE MODAL //
 
@@ -345,9 +355,37 @@ ob_start();
         }
 
         function confirmUpdate() {
+            // Reset previous error messages and styles
+            $('.error-message').text('').hide();
+            $('.border-red-500').removeClass('border-red-500');
+
+            var message = $('#updateMessage').val();
+            var name = $('#updateName').val();
+            var company = $('#updateCompany').val();
+
+            // Validation: Check if fields are empty
+            if (message === '' || !isValidInput(message)) {
+                $('#updateMessageError').text('Please enter a valid message.').show();
+                $('#updateMessage').addClass('border-red-500');
+            }
+            if (name === '' || !isValidInput(name)) {
+                $('#updateNameError').text('Please enter a valid name.').show();
+                $('#updateName').addClass('border-red-500');
+            }
+            if (company === '' || !isValidInput(company)) {
+                $('#updateCompanyError').text('Please enter a valid company name.').show();
+                $('#updateCompany').addClass('border-red-500');
+            }
+
+            // If any field has an error, prevent form submission
+            if ($('.error-message:visible').length > 0) {
+                return;
+            }
+
+            // If validation passes, show confirmation dialog
             Swal.fire({
                 title: 'Are you sure?',
-                text: 'You are about to update.',
+                text: 'You are about to update the testimonial.',
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#F9E89B', // Set confirm button color
@@ -357,19 +395,41 @@ ob_start();
                 reverseButtons: true
             }).then((result) => {
                 if (result.isConfirmed) {
-                    // Show success alert
-                    showSuccessAlert('Updated successfully!');
-                    // Add a small delay before clicking the hidden submit button
-                    setTimeout(function() {
-                        document.getElementById('hiddenSubmitButton').click();
-                    }, 700); // Adjust the delay time as needed
-                } else if (result.dismiss === Swal.DismissReason.cancel) {
-                    // Do nothing if cancelled
+                    // Submit the form
+                    document.getElementById('hiddenUpdateButton').click();
                 }
             });
         }
 
         function confirmAdd() {
+            // Reset previous error messages and styles
+            $('.error-message').text('').hide();
+            $('.border-red-500').removeClass('border-red-500');
+
+            var message = $('#message').val();
+            var name = $('#name').val();
+            var company = $('#company').val();
+
+            // Validation: Check if fields are empty
+            if (message === '' || !isValidInput(message)) {
+                $('#messageError').text('Please enter a valid message.').show();
+                $('#message').addClass('border-red-500');
+            }
+            if (name === '' || !isValidInput(name)) {
+                $('#nameError').text('Please enter a valid name.').show();
+                $('#name').addClass('border-red-500');
+            }
+            if (company === '' || !isValidInput(company)) {
+                $('#companyError').text('Please enter a valid company name.').show();
+                $('#company').addClass('border-red-500');
+            }
+
+            // If any field has an error, prevent form submission
+            if ($('.error-message:visible').length > 0) {
+                return;
+            }
+
+            // If validation passes, show confirmation dialog
             Swal.fire({
                 title: 'Are you sure?',
                 text: 'You are about to add a new testimonial.',
@@ -382,14 +442,30 @@ ob_start();
                 reverseButtons: true
             }).then((result) => {
                 if (result.isConfirmed) {
-                    // Show success alert
-                    showSuccessAlert('Added successfully!');
-                    // Add a small delay before clicking the hidden submit button
-                    setTimeout(function() {
-                        document.getElementById('hiddenAddButton').click();
-                    }, 700); // Adjust the delay time as needed
-                } else if (result.dismiss === Swal.DismissReason.cancel) {
-                    // Do nothing if cancelled
+                    // If confirmed, submit form via AJAX
+                    $.ajax({
+                        type: 'POST',
+                        url: '../../../backend/testimonials/add_testimonial.php',
+                        data: {
+                            message: message,
+                            name: name,
+                            company: company
+                        },
+                        success: function(response) {
+                            // Handle success response
+                            console.log(response);
+                            showSuccessAlert('Added successfully!');
+                            // Close modal
+                            closeModal();
+                            // Reload page after closing modal
+                            location.reload();
+                        },
+                        error: function(xhr, status, error) {
+                            // Handle error response
+                            console.error(error);
+                            showErrorAlert('Failed to add testimonial. Please try again.');
+                        }
+                    });
                 }
             });
         }

@@ -514,11 +514,11 @@ connect db sa home display (brands nalang) ---------
 add featured project text sa home carousel ------
 brands carousel sa home ---------
 to know more chuchu sa about  ----------
+rearrange sidebar -------
+remove product category text sa products -------
 finalize main page contents
 mobile view
 modal validations
 add banner image column sa blogs
-remove product category text sa products
-rearrange sidebar
 lagyan ng fade yung open and close ng modals
 -->
