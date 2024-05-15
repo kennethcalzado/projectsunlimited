@@ -148,6 +148,11 @@ if ($result->num_rows > 0) {
             #productModal.modal-fixed {
                 overflow: hidden;
             }
+
+            .container {
+                display: flex;
+                justify-content: space-between;
+            }
         </style>
 
         <div class="content">
@@ -200,7 +205,10 @@ if ($result->num_rows > 0) {
                 <div class="modal-body">
                     <div class="modal-left">
                         <img id="modalImage" src="" class="w-full h-auto object-cover mb-2">
-                        <div id="variationName" class="variation-name"></div>
+                        <div class="container">
+                            <div id="variationName" class="variation-name font-bold"></div>
+                            <div id="variationAvail" class="variation-avail font-bold"></div>
+                        </div>
                         <div id="variations" class="variations"></div>
                     </div>
                     <div class="modal-right">
@@ -238,10 +246,12 @@ if ($result->num_rows > 0) {
                     variationElement.className = "w-20 h-20 object-cover cursor-pointer variation-item";
                     variationElement.onclick = () => {
                         document.getElementById('variationName').innerText = variation.VariationName;
+                        document.getElementById('variationAvail').innerText = variation.availability;
                         document.getElementById('modalImage').src = variationElement.src;
                     };
                     variationsContainer.appendChild(variationElement);
                 });
+
 
                 const modal = document.getElementById('productModal');
                 modal.style.display = 'flex';
