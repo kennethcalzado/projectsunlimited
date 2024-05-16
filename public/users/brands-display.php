@@ -202,14 +202,18 @@ ob_start();
 
             <div class="mt-8 w-full">
                 <h3 class="text-lg font-medium mb-2">Brand Catalogs</h3>
-                <label for="brandCatalogs" class="block text-sm font-medium text-gray-700">Upload
-                    Catalogs:</label>
-                <input type="file" id="brandCatalogs" name="brandCatalogs[]" multiple
-                    class="pl-2 mt-1 mb-2 w-full rounded-md border border-gray-700 shadow-sm">
-                <div id="uploadedCatalogList" class="mt-2 grid grid-cols-2 gap-4 overflow-y-auto"></div>
-                <div id="brandCatalogsError" class="text-sm text-red-500 mt-1 error-message"></div>
+                <!-- Uploaded Catalog List Section -->
+                <div id="uploadCatalogWrapper">
+                    <label for="brandCatalogs" class="block text-sm font-medium text-gray-700">Upload
+                        Catalogs:</label>
+                    <input type="file" id="brandCatalogs" name="brandCatalogs[]" multiple
+                        class="pl-2 mt-1 mb-2 w-full rounded-md border border-gray-700 shadow-sm">
+                    <div id="uploadedCatalogList" class="mt-2 grid grid-cols-2 gap-4 overflow-y-auto"></div>
+                    <div id="brandCatalogsError" class="text-sm text-red-500 mt-1 error-message"></div>
+                </div>
+
                 <!-- Catalog List Section -->
-                <div class="mt-4">
+                <div id="catalogWrapper" class="mt-4">
                     <label for="catalogList" class="block text-sm font-medium text-gray-700">Catalog
                         List:</label>
                     <div id="catalogList" class="grid grid-cols-2 gap-4 overflow-y-auto"></div>
@@ -285,6 +289,7 @@ ob_start();
 <script>
     $( document ).ready( function ()
     {
+        ////////////////// DATA TABLE RENDERING /////////////
         var table = $( '#brandsTable' ).DataTable( {
             ajax: {
                 url: '/../../backend/brands/brands-get.php',
@@ -299,7 +304,7 @@ ob_start();
                     render: function ( data )
                     {
                         return `
-                            <div class="flex flex-col items-center justify-center  ">
+                            <div class="flex flex-col items-center justify-center">
                                 <div class="w-[100px] h-[100px] rounded-full ring-1 ring-black overflow-hidden flex items-center justify-center">
                                     <img src="${ data.logo_url }" alt="${ data.brand_name }" class="block object-fill max-w-[100px] max-h-[100px]">
                                 </div>
@@ -385,7 +390,7 @@ ob_start();
             return date.toLocaleTimeString( undefined, options );
         }
 
-        ////////////////// DROPDOWN /////////////////////
+        ////////////////// DROPDOWN FILTERS /////////////////////
         $( '#typeCheckboxCatalog, #typeCheckboxInquiry' ).on( 'change', function ()
         {
             var selectedValues = [];
@@ -418,7 +423,6 @@ ob_start();
         $( '#resetFilters' ).on( 'click', function ()
         {
             // Uncheck checkboxes within the dropdown
-            .2222222
             $( '#combinedDropdown input[type="checkbox"]' ).prop( 'checked', false );
             table.columns().search( '' ).draw();
         } );
@@ -453,7 +457,7 @@ ob_start();
             }
         } );
 
-        ////////////////// MODALS /////////////////////
+        ////////////////// CRUD DATA RENDERING ON MODAL  /////////////////////
         $( document ).on( 'click', '.viewBtn, .editBtn, .createSBtn', function ()
         {
             const rowData = table.row( $( this ).closest( 'tr' ) ).data();
@@ -512,6 +516,10 @@ ob_start();
                 // Disable input fields
                 $( '#brandName, #description, #type, #status' ).prop( 'disabled', true );
 
+                // Hide upload catalog fields
+                $( '#uploadCatalogWrapper' ).hide();
+                $( '#catalogWrapper' ).show();
+
                 // Set image source
                 $( '#brandImage' ).attr( 'src', rowData.logo_url );
 
@@ -544,6 +552,10 @@ ob_start();
 
                 // Enable input fields for editing
                 $( '#brandName, #description, #type, #status' ).prop( 'disabled', false );
+
+                // Show upload catalog fields
+                $( '#uploadCatalogWrapper' ).show();
+                $( '#catalogWrapper' ).show();
 
                 // Set image source
                 $( '#brandImage' ).attr( 'src', rowData.logo_url );
@@ -591,6 +603,10 @@ ob_start();
                 // Enable input fields for editing
                 $( '#brandName, #description, #type, #status' ).prop( 'disabled', false );
 
+                // Show upload catalog fields
+                $( '#uploadCatalogWrapper' ).show();
+                $( '#catalogWrapper' ).hide();
+
                 // Set buttons visibility
                 $( '#submitBrandBtn' ).show();
                 $( '#editBrandBtn, #hideBrandBtn' ).hide();
@@ -620,6 +636,8 @@ ob_start();
         {
             // Enable input fields for editing
             $( '#brandName, #description, #type, #status' ).prop( 'disabled', false );
+            // Show upload catalog fields
+            $( '#uploadCatalogWrapper' ).show();
 
             // Set buttons visibility
             $( '#submitBrandBtn, #hideBrandBtn' ).show();
@@ -639,27 +657,90 @@ ob_start();
             $( '#brandForm' ).data( 'isEdit', true );
         } );
 
+        ////////////////// CATALOG HANDLING ////////////////
         $( '#brandCatalogs' ).on( 'change', function ()
         {
             const files = $( this )[0].files; // Get uploaded files
             $( '#uploadedCatalogList' ).empty(); // Clear previous files
+            const invalidFiles = {}; // Object to store invalid files with their respective errors
 
             // Loop through uploaded files
             for ( let i = 0; i < files.length; i++ )
             {
-                const file = files[i];
-                const fileName = file.name;
-                const fileSize = file.size;
-                const fileExtension = fileName.split( '.' ).pop().toLowerCase();
+                let file = files[i];
+                let fileName = file.name;
+                let fileSize = file.size;
+                let fileExtension = fileName.split( '.' ).pop().toLowerCase();
+                let isValid = true;
+
+                // Validate file extension
+                if ( fileExtension !== 'pdf' )
+                {
+                    if ( !invalidFiles[fileName] )
+                    {
+                        invalidFiles[fileName] = [];
+                    }
+                    invalidFiles[fileName].push( fileName + ' is not a PDF file.' );
+                    isValid = false;
+
+                }
+
+                // Validate file size (in bytes)
+                const maxSize = 30 * 1024 * 1024; // 30 MB
+                if ( fileSize > maxSize )
+                {
+                    if ( !invalidFiles[fileName] )
+                    {
+                        invalidFiles[fileName] = [];
+                    }
+                    invalidFiles[fileName].push( fileName + ' exceeds the maximum size limit (30 MB).' );
+                    isValid = false;
+
+                }
 
                 // Create file container and append it to the catalog list
-                const fileContainer = createFileContainer( fileName, fileSize, fileExtension );
-                $( '#uploadedCatalogList' ).append( fileContainer );
+                if ( isValid )
+                {
+                    const fileContainer = createFileContainer( fileName, fileSize, fileExtension );
+                    $( '#uploadedCatalogList' ).append( fileContainer );
+                }
+            }
+
+            // Remove invalid files from the input field
+            for ( const fileName in invalidFiles )
+            {
+                deleteInvalidFile( fileName );
+            }
+
+            // Display error message for invalid files using Swal.fire
+            const errorMessages = Object.values( invalidFiles ).flat();
+            if ( errorMessages.length > 0 )
+            {
+                const errorMessage = 'The following files could not be uploaded:<br>' + errorMessages.join( '<br>' );
+                Swal.fire( {
+                    icon: 'error',
+                    title: 'Invalid Files',
+                    html: errorMessage
+                } );
             }
         } );
 
+        // Function to remove invalid files from the input field
+        function deleteInvalidFile ( fileName )
+        {
+            const files = $( '#brandCatalogs' )[0].files;
+            const newFiles = Array.from( files ).filter( file => file.name !== fileName );
+
+            // Create a new FileList object from the filtered files
+            const newFileList = new DataTransfer();
+            newFiles.forEach( file => newFileList.items.add( file ) );
+
+            // Assign the new FileList to the input field
+            $( '#brandCatalogs' )[0].files = newFileList.files;
+        }
+
         // Function to create file container
-        function createFileContainer ( fileName, fileSize, fileExtension, catalogId )
+        function createFileContainer ( fileName, fileSize, fileExtension, catalogId = null )
         {
             const container = $( '<div>' ).addClass( 'relative bg-gray-200 rounded-md p-2 flex flex-col items-center justify-center text-center' );
             const deleteButton = $( '<button>' ).addClass( 'absolute top-0 right-0 bg-red-500 w-6 h-6 text-center text-white border-none outline-none cursor-pointer rounded-full flex items-center justify-center hover:bg-red-600' ).html( '&times' ).attr( 'type', 'button' );
@@ -673,7 +754,34 @@ ob_start();
             // Add click event to delete button
             deleteButton.on( 'click', function ()
             {
-                deleteCatalog( catalogId, container );
+                if ( catalogId !== null )
+                {
+                    deleteCatalog( catalogId, container ); // Delete catalog with catalog ID
+                } else
+                {
+                    // Handle deletion for uploaded files without a catalog ID
+                    // Show confirmation dialog using SweetAlert
+                    Swal.fire( {
+                        title: 'Are you sure?',
+                        text: 'You are about to delete this catalog. This action cannot be undone.',
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#d33',
+                        cancelButtonColor: '#3085d6',
+                        confirmButtonText: 'Yes, delete it!'
+                    } ).then( ( result ) =>
+                    {
+                        container.remove(); // Remove the file container
+                        deleteInvalidFile( fileName );
+
+                        // Handle success response
+                        Swal.fire( {
+                            icon: 'success',
+                            title: 'Success!',
+                            text: 'Catalog deleted successfully.'
+                        } );
+                    } );
+                }
             } );
 
             // Append elements to the container
@@ -688,20 +796,6 @@ ob_start();
             {
                 case 'pdf':
                     return 'far fa-file-pdf';
-                case 'doc':
-                case 'docx':
-                    return 'far fa-file-word';
-                case 'xls':
-                case 'xlsx':
-                    return 'far fa-file-excel';
-                case 'ppt':
-                case 'pptx':
-                    return 'far fa-file-powerpoint';
-                case 'jpg':
-                case 'jpeg':
-                case 'png':
-                case 'gif':
-                    return 'far fa-file-image';
                 default:
                     return 'far fa-file';
             }
@@ -765,94 +859,7 @@ ob_start();
             } );
         }
 
-        // Function to delete the brands via AJAX with confirmation
-        function handleBrandDelete ( brandId, buttonText )
-        {
-            // Determine the appropriate confirmation message and success message based on button text
-            let confirmationMessage = '';
-            let successMessage = '';
-            if ( buttonText === 'Hide' )
-            {
-                confirmationMessage = 'You are about to hide this brand. Are you sure?';
-                successMessage = 'Brand hidden successfully.';
-            } else if ( buttonText === 'Unhide' )
-            {
-                confirmationMessage = 'You are about to unhide this brand. Are you sure?';
-                successMessage = 'Brand unhidden successfully.';
-            }
-
-            // Show confirmation dialog using SweetAlert
-            Swal.fire( {
-                title: 'Are you sure?',
-                text: confirmationMessage,
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#d33',
-                cancelButtonColor: '#3085d6',
-                confirmButtonText: 'Yes, ' + buttonText + ' it!'
-            } ).then( ( result ) =>
-            {
-                if ( result.isConfirmed )
-                {
-                    // If user confirms, proceed with brand deletion
-                    $.ajax( {
-                        url: '/../../backend/brands/brands-hide.php',
-                        type: 'POST',
-                        data: {
-                            brandId: brandId,
-                            status: buttonText
-                        },
-                        dataType: 'json',
-                        success: function ( response )
-                        {
-                            // Reload the DataTable to reflect the changes
-                            table.ajax.reload();
-
-                            Swal.fire( {
-                                icon: 'success',
-                                title: 'Success!',
-                                text: successMessage
-                            } );
-
-                            // Check if modal is currently shown
-                            if ( !( $( '#modal-container' ).hasClass( 'hidden' ) ) )
-                            {
-                                // If modal is shown, close it
-                                closeModal();
-                            }
-                        },
-                        error: function ( xhr, status, error )
-                        {
-                            // Handle error response
-                            Swal.fire( {
-                                icon: 'error',
-                                title: 'Error!',
-                                text: 'Failed to ' + buttonText.toLowerCase() + ' brand. Please try again later.'
-                            } );
-                            console.error( 'Error ' + buttonText.toLowerCase() + ' brand:', error );
-                        }
-                    } );
-                }
-            } );
-        }
-
-        // Event handler for brand deletion from the table's action column
-        $( document ).on( 'click', '.delBtn', function ()
-        {
-            const buttonText = $( this ).text().trim(); // Get the text of the button
-            const rowData = table.row( $( this ).closest( 'tr' ) ).data();
-            const brandId = rowData.brand_id;
-            handleBrandDelete( brandId, buttonText ); // Pass the button text to the function
-        } );
-
-        // Event handler for brand deletion from the modal form
-        $( '#hideBrandBtn' ).on( 'click', function ()
-        {
-            const buttonText = $( this ).text().trim(); // Get the text of the button
-            const brandId = $( '#brandForm' ).data( 'brandId' );
-            handleBrandDelete( brandId, buttonText ); // Pass the button text to the function
-        } );
-
+        //////////////////////// IMAGE DRAG AND DROP ON MODAL //////////////////////////////
         function enableDragAndDrop ()
         {
             var dropZone = $( '#imageDropzone' );
@@ -930,301 +937,7 @@ ob_start();
             $( '#imageDropzone' ).off( 'dragover drop' );
         }
 
-        ///////////// DRAG AND DROP FOR UPLOAD BRNDS /////////////
-        $( document ).on( 'click', '#addMultipleBrands', function ()
-        {
-            $( '#uploadBrandModal' ).toggleClass( 'hidden' );
-
-            $( "#addBrandsDropdown" ).toggleClass( "transition-opacity opacity-100 ease-in-out duration-100" );
-            $( "#addSingleBrand" ).toggleClass( "hidden" );
-            $( "#addMultipleBrands" ).toggleClass( "hidden" );
-        } );
-
-        // Event handler for file input change
-        $( '#dropzone-brand-file' ).on( 'change', function ( e )
-        {
-            e.preventDefault();
-            e.stopPropagation();
-            var files = e.target.files || e.originalEvent.dataTransfer.files;
-            handleFiles( files );
-        } );
-
-        // Event handler for drop
-        $( '#brand-dropzone-holder' ).on( 'drop', function ( e )
-        {
-            e.preventDefault();
-            e.stopPropagation();
-            if ( e.originalEvent.dataTransfer && e.originalEvent.dataTransfer.files )
-            {
-                var files = e.originalEvent.dataTransfer.files;
-                handleFiles( files );
-            } else
-            {
-                console.error( "Data transfer not found in drop event" );
-            }
-            $( this ).removeClass( 'dragover' );
-        } );
-
-        // Event handler for drag over
-        $( '#brand-dropzone-holder' ).on( 'dragover', function ( e )
-        {
-            e.preventDefault();
-            e.stopPropagation();
-            $( this ).addClass( 'dragover' );
-        } );
-
-        // Event handler for drag leave
-        $( '#brand-dropzone-holder' ).on( 'dragleave', function ( e )
-        {
-            e.preventDefault();
-            e.stopPropagation();
-            $( this ).removeClass( 'dragover' );
-        } );
-
-        function handleFiles ( files )
-        {
-            var errors = [];
-
-            if ( files.length > 0 )
-            {
-                var fileInput = files[0];
-                var fileSize = fileInput.size; // Size in bytes
-                var fileName = fileInput.name;
-                var fileExtension = fileName.split( '.' ).pop().toLowerCase();
-                var maxSizeInMb = 5;
-                var maxSizeInBytes = 1024 * 1024 * maxSizeInMb; // 5 MB
-
-                // Check file size
-                if ( fileSize > maxSizeInBytes )
-                {
-                    errors.push( 'File size exceeds ' + maxSizeInMb + 'MB limit.' );
-                }
-
-                // Check file extension
-                if ( fileExtension !== 'csv' && fileExtension !== 'xlsx' )
-                {
-                    errors.push( 'Please select a valid Excel file (.xlsx) or CSV file.' );
-                }
-
-                if ( errors.length === 0 )
-                {
-                    $( '#brand-file-name' ).text( 'File Name: ' + fileName ).addClass( 'underline underline-offset-4 font-bold' );
-                    $( '#brand-uploadModalIconHolder' ).empty();
-
-                    if ( fileExtension == 'csv' )
-                    {
-                        $( '#brand-uploadModalIconHolder' ).append( $( '<i>' ).addClass( 'text-3xl mb-3 fa-solid fa-file-csv text-green-500' ) );
-                    } else if ( fileExtension == 'xlsx' )
-                    {
-                        $( '#brand-uploadModalIconHolder' ).append( $( '<i>' ).addClass( 'text-3xl mb-3 fa-solid fa-file-excel text-green-500' ) );
-                    }
-                } else
-                {
-                    if ( errors.length > 0 )
-                    {
-                        // Join the errors array elements into a single string with line breaks
-                        var message = errors.join( '\n' );
-                        Swal.fire( {
-                            icon: 'error',
-                            title: 'Error',
-                            text: message
-                        } );
-                    } else
-                    {
-                        Swal.fire( {
-                            icon: 'error',
-                            title: 'Error',
-                            text: errors
-                        } );
-                    }
-                }
-            } else
-            {
-                errors.push( 'No file selected.' );
-            }
-
-            return errors;
-        }
-
-        // Event handler for form submission
-        $( '#uploadBrandForm' ).submit( function ( e )
-        {
-            e.preventDefault();
-            var files = $( '#dropzone-brand-file' )[0].files; // Corrected line
-            if ( files && files.length > 0 )
-            {
-                var errors = handleFiles( files ); // Removed stray 'e'
-
-                if ( errors.length === 0 )
-                {
-                    Swal.fire( {
-                        title: 'Upload File',
-                        text: 'Are you sure you want to upload this file?',
-                        icon: 'question',
-                        showCancelButton: true,
-                        confirmButtonColor: '#3085d6',
-                        cancelButtonColor: '#d33',
-                        confirmButtonText: 'Yes, upload it!'
-                    } ).then( ( result ) =>
-                    {
-                        if ( result.isConfirmed )
-                        {
-                            // Show processing dialog
-                            var processingDialog = Swal.fire( {
-                                title: 'Processing',
-                                text: 'Please wait...',
-                                icon: 'info',
-                                allowOutsideClick: false,
-                                showConfirmButton: false,
-                                didOpen: () =>
-                                {
-                                    Swal.showLoading();
-                                }
-                            } );
-
-                            // Perform file upload
-                            var formData = new FormData( this );
-
-                            $.ajax( {
-                                url: '/../../backend/brands/brands-upload.php',
-                                type: 'POST',
-                                data: formData,
-                                dataType: 'json',
-                                processData: false,
-                                contentType: false,
-                                success: function ( response )
-                                {
-                                    processingDialog.close();
-                                    if ( response.success )
-                                    {
-                                        console.log( response.success );
-                                        // Display success message using SweetAlert
-                                        Swal.fire( {
-                                            title: 'Success',
-                                            text: 'File processed successfully!',
-                                            icon: 'success',
-                                        } ).then( ( result ) =>
-                                        {
-                                            // Show counts of success and failure in a popup
-                                            Swal.fire( {
-                                                title: 'Upload Summary',
-                                                html: 'Success: ' + response.successCount + '<br>' +
-                                                    'Failures: ' + response.errorCount + '<br>' +
-                                                    ( response.errorCount > 0 ? '<hr class="mt-1"><button id="viewErrorsBtn" class="btn btn-primary mt-2">View Errors</button>' : '' ),
-                                                icon: 'info'
-                                            } );
-
-                                            // Event listener for the "View Errors" button
-                                            $( document ).on( 'click', '#viewErrorsBtn', function ()
-                                            {
-                                                // Display detailed error messages
-                                                Swal.fire( {
-                                                    title: 'Error Details',
-                                                    html: response.errors.join( '<br>' ),
-                                                    icon: 'error'
-                                                } );
-                                            } );
-
-                                            table.ajax.reload();
-
-                                            closeUploadBrandModal();
-                                        } );
-                                    } else
-                                    {
-                                        // Display error messages received from the backend
-                                        if ( response.message )
-                                        {
-                                            Object.keys( response.message ).forEach( function ( fieldName )
-                                            {
-                                                $( '#' + fieldName + 'Error' ).addClass( 'text-sm text-red-500 mt-1 error-message' )
-                                                    .text( response.message[fieldName] );
-                                                $( '#' + fieldName ).addClass( 'border-red-500' );
-
-                                                // Display error message using SweetAlert
-                                                Swal.fire( {
-                                                    title: 'Error',
-                                                    text: response.message[fieldName],
-                                                    icon: 'error',
-                                                } );
-                                            } );
-                                        }
-                                    }
-                                },
-                                error: function ( xhr, status, error )
-                                {
-                                    // Handle error response
-                                    Swal.close(); // Close the processing dialog
-                                    Swal.fire( {
-                                        icon: 'error',
-                                        title: 'Error!',
-                                        text: 'Failed to upload file. Please try again later.'
-                                    } );
-                                    console.error( 'Error uploading file:', error );
-                                }
-                            } );
-                        }
-                    } );
-                }
-            } else
-            {
-                Swal.fire( {
-                    icon: 'error',
-                    title: 'Error!',
-                    text: 'No file selected.'
-                } );
-            }
-        } );
-
-        // Click event handler for closing the modal
-        $( '#closeUploadBrandModal, #cancelUploadBrandModal' ).on( 'click', function ()
-        {
-            closeUploadBrandModal();
-        } );
-
-        function closeUploadBrandModal ()
-        {
-            // Reset the form by triggering a reset event
-            $( '#uploadBrandForm' )[0].reset();
-
-            // Clear the file name display
-            $( '#brand-file-name' ).text( '' );
-            $( '#brand-uploadModalIconHolder' ).empty();
-            $( '#brand-uploadModalIconHolder' ).append( $( '<i>' ).addClass( 'fa-solid fa-file-arrow-up text-3xl mb-3 text-zinc-300' ) );
-
-            $( '#uploadBrandModal' ).toggleClass( 'hidden' );
-        }
-
-        // Click event handler for closing the modal
-        $( '#closeBrandModal, #closeBrandBtn' ).on( 'click', function ()
-        {
-            closeModal();
-        } );
-
-        // Function to close the modal
-        function closeModal ()
-        {
-            // Reset image source
-            $( '#brandImage' ).attr( 'src', '' );
-
-            // Clear input field values
-            $( '#brandName, #description, #type, #status' ).val( '' );
-            $( '#createdAt, #updatedAt' ).text( '' );
-
-            // Disable input fields
-            $( '#brandName, #description, #type, #status' ).prop( 'disabled', true );
-
-            // Clear catalog lists and upload field
-            $( '#uploadedCatalogList' ).empty(); // Clear previous files
-            $( '#catalogList' ).empty(); // Clear previous files
-            $( '#brandCatalogs' ).val( '' );
-
-            // Hide the modal
-            $( '#modal-container' ).toggleClass( 'hidden' );
-
-            // Disable drag and drop for the brand logo
-            disableDragAndDrop();
-        }
-
+        //////////////////// FORM VALIDATION /////////////////////////
         // Function to validate Brand Name
         function validateBrandName ()
         {
@@ -1392,7 +1105,7 @@ ob_start();
         $( '#type' ).on( 'input', validateType );
         $( '#status' ).on( 'input', validateStatus );
 
-
+        //////////////////// FORM SUBMIT  /////////////////////////
         $( '#brandForm' ).on( 'submit', function ( event )
         {
             event.preventDefault(); // Prevent default form submission
@@ -1463,6 +1176,394 @@ ob_start();
             }
         } );
 
+        //////////////////// BRAND HIDE / UNHIDE OPERATIONS ///////////////////////
+        // Function to delete the brands via AJAX with confirmation
+        function handleBrandDelete ( brandId, buttonText )
+        {
+            // Determine the appropriate confirmation message and success message based on button text
+            let confirmationMessage = '';
+            let successMessage = '';
+            if ( buttonText === 'Hide' )
+            {
+                confirmationMessage = 'You are about to hide this brand. Are you sure?';
+                successMessage = 'Brand hidden successfully.';
+            } else if ( buttonText === 'Unhide' )
+            {
+                confirmationMessage = 'You are about to unhide this brand. Are you sure?';
+                successMessage = 'Brand unhidden successfully.';
+            }
+
+            // Show confirmation dialog using SweetAlert
+            Swal.fire( {
+                title: 'Are you sure?',
+                text: confirmationMessage,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Yes, ' + buttonText + ' it!'
+            } ).then( ( result ) =>
+            {
+                if ( result.isConfirmed )
+                {
+                    // If user confirms, proceed with brand deletion
+                    $.ajax( {
+                        url: '/../../backend/brands/brands-hide.php',
+                        type: 'POST',
+                        data: {
+                            brandId: brandId,
+                            status: buttonText
+                        },
+                        dataType: 'json',
+                        success: function ( response )
+                        {
+                            // Reload the DataTable to reflect the changes
+                            table.ajax.reload();
+
+                            Swal.fire( {
+                                icon: 'success',
+                                title: 'Success!',
+                                text: successMessage
+                            } );
+
+                            // Check if modal is currently shown
+                            if ( !( $( '#modal-container' ).hasClass( 'hidden' ) ) )
+                            {
+                                // If modal is shown, close it
+                                closeModal();
+                            }
+                        },
+                        error: function ( xhr, status, error )
+                        {
+                            // Handle error response
+                            Swal.fire( {
+                                icon: 'error',
+                                title: 'Error!',
+                                text: 'Failed to ' + buttonText.toLowerCase() + ' brand. Please try again later.'
+                            } );
+                            console.error( 'Error ' + buttonText.toLowerCase() + ' brand:', error );
+                        }
+                    } );
+                }
+            } );
+        }
+
+        // Event handler for brand deletion from the table's action column
+        $( document ).on( 'click', '.delBtn', function ()
+        {
+            const buttonText = $( this ).text().trim(); // Get the text of the button
+            const rowData = table.row( $( this ).closest( 'tr' ) ).data();
+            const brandId = rowData.brand_id;
+            handleBrandDelete( brandId, buttonText ); // Pass the button text to the function
+        } );
+
+        // Event handler for brand deletion from the modal form
+        $( '#hideBrandBtn' ).on( 'click', function ()
+        {
+            const buttonText = $( this ).text().trim(); // Get the text of the button
+            const brandId = $( '#brandForm' ).data( 'brandId' );
+            handleBrandDelete( brandId, buttonText ); // Pass the button text to the function
+        } );
+
+        ///////////// DRAG AND DROP FOR UPLOAD BRANDS /////////////
+        $( document ).on( 'click', '#addMultipleBrands', function ()
+        {
+            $( '#uploadBrandModal' ).toggleClass( 'hidden' );
+
+            $( "#addBrandsDropdown" ).toggleClass( "transition-opacity opacity-100 ease-in-out duration-100" );
+            $( "#addSingleBrand" ).toggleClass( "hidden" );
+            $( "#addMultipleBrands" ).toggleClass( "hidden" );
+        } );
+
+        // Event handler for file input change
+        $( '#dropzone-brand-file' ).on( 'change', function ( e )
+        {
+            e.preventDefault();
+            e.stopPropagation();
+            var files = e.target.files || e.originalEvent.dataTransfer.files;
+            handleFiles( files );
+        } );
+
+        // Event handler for drop
+        $( '#brand-dropzone-holder' ).on( 'drop', function ( e )
+        {
+            e.preventDefault();
+            e.stopPropagation();
+            if ( e.originalEvent.dataTransfer && e.originalEvent.dataTransfer.files )
+            {
+                var files = e.originalEvent.dataTransfer.files;
+                handleFiles( files );
+            } else
+            {
+                console.error( "Data transfer not found in drop event" );
+            }
+            $( this ).removeClass( 'dragover' );
+        } );
+
+        // Event handler for drag over
+        $( '#brand-dropzone-holder' ).on( 'dragover', function ( e )
+        {
+            e.preventDefault();
+            e.stopPropagation();
+            $( this ).addClass( 'dragover' );
+        } );
+
+        // Event handler for drag leave
+        $( '#brand-dropzone-holder' ).on( 'dragleave', function ( e )
+        {
+            e.preventDefault();
+            e.stopPropagation();
+            $( this ).removeClass( 'dragover' );
+        } );
+
+        function handleFiles ( files )
+        {
+            var errors = [];
+
+            if ( files.length > 0 )
+            {
+                var fileInput = files[0];
+                var fileSize = fileInput.size; // Size in bytes
+                var fileName = fileInput.name;
+                var fileExtension = fileName.split( '.' ).pop().toLowerCase();
+                var maxSizeInMb = 5;
+                var maxSizeInBytes = 1024 * 1024 * maxSizeInMb; // 5 MB
+
+                // Check file size
+                if ( fileSize > maxSizeInBytes )
+                {
+                    errors.push( 'File size exceeds ' + maxSizeInMb + 'MB limit.' );
+                }
+
+                // Check file extension
+                if ( fileExtension !== 'csv' && fileExtension !== 'xlsx' )
+                {
+                    errors.push( 'Please select a valid Excel file (.xlsx) or CSV file.' );
+                }
+
+                if ( errors.length === 0 )
+                {
+                    $( '#brand-file-name' ).text( 'File Name: ' + fileName ).addClass( 'underline underline-offset-4 font-bold' );
+                    $( '#brand-uploadModalIconHolder' ).empty();
+
+                    if ( fileExtension == 'csv' )
+                    {
+                        $( '#brand-uploadModalIconHolder' ).append( $( '<i>' ).addClass( 'text-3xl mb-3 fa-solid fa-file-csv text-green-500' ) );
+                    } else if ( fileExtension == 'xlsx' )
+                    {
+                        $( '#brand-uploadModalIconHolder' ).append( $( '<i>' ).addClass( 'text-3xl mb-3 fa-solid fa-file-excel text-green-500' ) );
+                    }
+                } else
+                {
+                    if ( errors.length > 0 )
+                    {
+                        // Join the errors array elements into a single string with line breaks
+                        var message = errors.join( '\n' );
+                        Swal.fire( {
+                            icon: 'error',
+                            title: 'Error',
+                            text: message
+                        } );
+                    } else
+                    {
+                        Swal.fire( {
+                            icon: 'error',
+                            title: 'Error',
+                            text: errors
+                        } );
+                    }
+                }
+            } else
+            {
+                errors.push( 'No file selected.' );
+            }
+
+            return errors;
+        }
+
+        ////////////////// UPLOAD SUBMIT ///////////////////
+        // Event handler for form submission
+        $( '#uploadBrandForm' ).submit( function ( e )
+        {
+            e.preventDefault();
+            var files = $( '#dropzone-brand-file' )[0].files; // Corrected line
+            if ( files && files.length > 0 )
+            {
+                var errors = handleFiles( files ); // Removed stray 'e'
+
+                if ( errors.length === 0 )
+                {
+                    Swal.fire( {
+                        title: 'Upload File',
+                        text: 'Are you sure you want to upload this file?',
+                        icon: 'question',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Yes, upload it!'
+                    } ).then( ( result ) =>
+                    {
+                        if ( result.isConfirmed )
+                        {
+                            // Show processing dialog
+                            var processingDialog = Swal.fire( {
+                                title: 'Processing',
+                                text: 'Please wait...',
+                                icon: 'info',
+                                allowOutsideClick: false,
+                                showConfirmButton: false,
+                                didOpen: () =>
+                                {
+                                    Swal.showLoading();
+                                }
+                            } );
+
+                            // Perform file upload
+                            var formData = new FormData( this );
+
+                            $.ajax( {
+                                url: '/../../backend/brands/brands-upload.php',
+                                type: 'POST',
+                                data: formData,
+                                dataType: 'json',
+                                processData: false,
+                                contentType: false,
+                                success: function ( response )
+                                {
+                                    processingDialog.close();
+                                    if ( response.success )
+                                    {
+                                        console.log( response.success );
+                                        // Display success message using SweetAlert
+                                        Swal.fire( {
+                                            title: 'Success',
+                                            text: 'File processed successfully!',
+                                            icon: 'success',
+                                        } ).then( ( result ) =>
+                                        {
+                                            // Show counts of success and failure in a popup
+                                            Swal.fire( {
+                                                title: 'Upload Summary',
+                                                html: 'Success: ' + response.successCount + '<br>' +
+                                                    'Failures: ' + response.errorCount + '<br>' +
+                                                    ( response.errorCount > 0 ? '<hr class="mt-1"><button id="viewErrorsBtn" class="btn btn-primary mt-2">View Errors</button>' : '' ),
+                                                icon: 'info'
+                                            } );
+
+                                            // Event listener for the "View Errors" button
+                                            $( document ).on( 'click', '#viewErrorsBtn', function ()
+                                            {
+                                                // Display detailed error messages
+                                                Swal.fire( {
+                                                    title: 'Error Details',
+                                                    html: response.errors.join( '<br>' ),
+                                                    icon: 'error'
+                                                } );
+                                            } );
+
+                                            table.ajax.reload();
+
+                                            closeUploadBrandModal();
+                                        } );
+                                    } else
+                                    {
+                                        // Display error messages received from the backend
+                                        if ( response.message )
+                                        {
+                                            Object.keys( response.message ).forEach( function ( fieldName )
+                                            {
+                                                $( '#' + fieldName + 'Error' ).addClass( 'text-sm text-red-500 mt-1 error-message' )
+                                                    .text( response.message[fieldName] );
+                                                $( '#' + fieldName ).addClass( 'border-red-500' );
+
+                                                // Display error message using SweetAlert
+                                                Swal.fire( {
+                                                    title: 'Error',
+                                                    text: response.message[fieldName],
+                                                    icon: 'error',
+                                                } );
+                                            } );
+                                        }
+                                    }
+                                },
+                                error: function ( xhr, status, error )
+                                {
+                                    // Handle error response
+                                    Swal.close(); // Close the processing dialog
+                                    Swal.fire( {
+                                        icon: 'error',
+                                        title: 'Error!',
+                                        text: 'Failed to upload file. Please try again later.'
+                                    } );
+                                    console.error( 'Error uploading file:', error );
+                                }
+                            } );
+                        }
+                    } );
+                }
+            } else
+            {
+                Swal.fire( {
+                    icon: 'error',
+                    title: 'Error!',
+                    text: 'No file selected.'
+                } );
+            }
+        } );
+
+        ////////////////////// CLOSE MODAL /////////////////////////////
+
+        // Click event handler for closing the modal
+        $( '#closeUploadBrandModal, #cancelUploadBrandModal' ).on( 'click', function ()
+        {
+            closeUploadBrandModal();
+        } );
+
+        function closeUploadBrandModal ()
+        {
+            // Reset the form by triggering a reset event
+            $( '#uploadBrandForm' )[0].reset();
+
+            // Clear the file name display
+            $( '#brand-file-name' ).text( '' );
+            $( '#brand-uploadModalIconHolder' ).empty();
+            $( '#brand-uploadModalIconHolder' ).append( $( '<i>' ).addClass( 'fa-solid fa-file-arrow-up text-3xl mb-3 text-zinc-300' ) );
+
+            $( '#uploadBrandModal' ).toggleClass( 'hidden' );
+        }
+
+        // Click event handler for closing the modal
+        $( '#closeBrandModal, #closeBrandBtn' ).on( 'click', function ()
+        {
+            closeModal();
+        } );
+
+        // Function to close the modal
+        function closeModal ()
+        {
+            // Reset image source
+            $( '#brandImage' ).attr( 'src', '' );
+
+            // Clear input field values
+            $( '#brandName, #description, #type, #status' ).val( '' );
+            $( '#createdAt, #updatedAt' ).text( '' );
+
+            // Disable input fields
+            $( '#brandName, #description, #type, #status' ).prop( 'disabled', true );
+
+            // Clear catalog lists and upload field
+            $( '#uploadedCatalogList' ).empty(); // Clear previous files
+            $( '#catalogList' ).empty(); // Clear previous files
+            $( '#brandCatalogs' ).val( '' );
+
+            // Hide the modal
+            $( '#modal-container' ).toggleClass( 'hidden' );
+
+            // Disable drag and drop for the brand logo
+            disableDragAndDrop();
+        }
+
+        ////////////////// USER CREATION DROPDOWN ///////////////
         $( document ).on( 'click', '#addBrandsDropdownBtn', function ()
         {
             $( "#addBrandsDropdown" ).toggleClass( " transition-opacity opacity-100 ease-in-out duration-100" );

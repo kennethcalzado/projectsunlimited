@@ -6,44 +6,48 @@ ob_start();
 <!-- Your page content goes here -->
 <div class="flex">
     <!-- Vertical Slider of Brand Logos -->
-    <div class="w-1/3 p-0 fade-in-hidden">
-        <div class="flex justify-center items-center h-screen bg-gray-300">
+    <div class="w-1/4 p-0 fade-in-hidden">
+        <div class="flex justify-center items-center h-screen bg-gray-100">
             <div id="verticalCarousel" class="h-full w-full overflow-y-scroll snap-y snap-mandatory overflow-x-hidden">
                 <!-- Repeat this section for each card in the cards array -->
             </div>
         </div>
     </div>
     <div id="brandDetails"
-        class="w-2/3 overflow-y-scroll max-h-screen relative flex justify-center items-center fade-in-hidden">
+        class="w-3/4 overflow-y-scroll max-h-screen relative flex justify-center items-center fade-in-hidden">
         <!-- Brand Logo will be set as background here -->
-        <div id="brandLogo" class="relative h-full w-fit">
-            <div id="brandDetailsBackground" class="top-0 left-0 w-full h-full bg-contain bg-center bg-no-repeat">
+        <div id="brandLogo" class="relative h-full w-full">
+            <div id="brandDetailsBackground" class="top-0 left-0 w-full w-fit bg-contain bg-center bg-no-repeat">
                 <div class="absolute top-0 left-0 w-full h-full bg-white opacity-90"></div>
                 <!-- Content inside the brand details section -->
                 <div class="flex flex-col items-center relative z-10 mx-4 ">
                     <h2 id="brandName" class="text-center text-5xl font-extrabold mb-2 mt-24 text-black ">Brand Name
                     </h2>
-                    <p id="brandDescription" class="text-center text-lg mb-4 text-black ">Brand Description</p>
+                    <p id="brandDescription" class="text-center text-lg text-black mb-4">Brand Description</p>
+                    <hr id="separatorLine" class=" border-1 border-zinc-900 w-full">
                     <!-- Catalog Listing -->
-                    <div class="mt-8 mb-8">
-                        <h3 class="text-xl font-bold mb-4 text-black">Catalogs</h3>
-                        <div id="catalogList" class="flex flex-wrap gap-4 "></div>
+                    <div class="mt-5 mb-8">
+                        <h3 id="catalogListHeader" class="text-xl font-bold mb-4 text-black">Catalogs</h3>
+                        <div id="catalogList" class="flex flex-wrap gap-4 mb-8"></div>
 
-                        <div id="inquirySection" class="relative fade-in-hidden hidden">
-                            <img src="../assets/image/customizebanner.png" class="w-full h-96 object-cover">
+                        <div id="inquirySection" class="relative mt-4">
+                            <img src="../assets/image/customizebanner.png" class="w-full h-60 object-cover">
                             <div class="absolute inset-0 bg-black opacity-50"></div>
 
                             <div class="absolute inset-0 flex items-center justify-center">
-                                <p class="text-[#F6E381] font-extrabold text-4xl text-center">CUSTOMIZE PRODUCTS <br>
-                                    <span class="text-white text-2xl font-semibold">Many of our products can be
+                                <p class="text-[#F6E381] font-extrabold text-3xl text-center">CUSTOMIZE PRODUCTS <br>
+                                    <span class="text-white text-lg font-normal">Many of our products can be
                                         customized to the
                                         requirements
                                         of our clients.<br> These may include the dimensions, colors, textures, and
                                         materials used in the
                                         item.</span><br>
-                                    <span class="text-white text-2xl font-semibold block mt-12">Send us an email at:
-                                        <a href="mailto:info@projectsunlimited.com.ph" class="text-2xl hover:underline">
-                                            <i class="fa-solid fa-envelope"></i> info@projectsunlimited.com.ph
+                                    <span class="text-white text-xl font-semibold block mt-6"> For Inquiries:
+                                        <a href="/public/contact.php"
+                                            class="group bg-gray-50 text-black py-2 px-6 rounded-full hover:bg-gray-200 inline-flex items-center transition-all ease-in-out duration-300">
+                                            Contact us here!
+                                            <span
+                                                class="inline-block ml-2 transition-transform ease-in-out duration-300 group-hover:translate-x-2">►</span>
                                         </a>
                                     </span>
                                 </p>
@@ -55,7 +59,6 @@ ob_start();
         </div>
     </div>
 </div>
-
 
 <?php $content = ob_get_clean();
 ob_start();
@@ -79,21 +82,56 @@ ob_start();
         function updateCatalogListing ( brand )
         {
             console.log( "Updating catalog listing for brand:", brand.brand_name );
+
             // Clear previous catalog listing
             $( '#catalogList' ).empty();
+
+            // Create a container for the catalog buttons
+            var catalogContainer = $( '<div>', {
+                class: 'flex flex-wrap justify-center gap-4'
+            } );
 
             // Display catalogs for the selected brand
             brand.catalogs.forEach( function ( catalog )
             {
                 var catalogButton = $( '<a>', {
-                    class: 'bg-yellow-500 text-white px-4 py-2 rounded-full cursor-pointer hover:bg-yellow-600',
+                    class: 'bg-yellow-500 text-white px-4 py-2 rounded-full cursor-pointer hover:bg-yellow-600 transition-all duration-300 shadow-md hover:shadow-lg transform hover:scale-105',
                     text: catalog.catalog_title,
                     href: `../../backend/brands/catalog-download.php?catalogId=${ catalog.catalog_id }`,
-                    download: catalog.catalog_title + '.pdf'
+                    download: `${ catalog.catalog_title }.pdf`
                 } );
 
-                $( '#catalogList' ).append( catalogButton );
+                // Tooltip for additional information
+                var tooltip = $( '<span>', {
+                    class: 'tooltip-text bg-gray-800 text-white text-xs rounded-lg py-1 px-2 absolute z-10 hidden',
+                    text: `Download ${ catalog.catalog_title }`
+                } );
+
+                // Wrapper for the button and tooltip
+                var wrapper = $( '<div>', {
+                    class: 'relative group'
+                } );
+
+                wrapper.append( catalogButton );
+                wrapper.append( tooltip );
+
+                // Show tooltip on hover
+                wrapper.hover(
+                    function ()
+                    {
+                        $( this ).find( '.tooltip-text' ).removeClass( 'hidden' ).addClass( 'block' );
+                    },
+                    function ()
+                    {
+                        $( this ).find( '.tooltip-text' ).removeClass( 'block' ).addClass( 'hidden' );
+                    }
+                );
+
+                catalogContainer.append( wrapper );
             } );
+
+            // Append the catalog container to the catalog list
+            $( '#catalogList' ).append( catalogContainer );
         }
 
         // AJAX call to fetch brand data
@@ -119,7 +157,7 @@ ob_start();
                         // Create a section for each brand
                         var section = $( '<section>' )
                             .addClass( 'carousel-item h-[500px] max-w-[950px] snap-center overflow-hidden' +
-                                'flex flex-col items-center justify-center transition-transform transform hover:scale-105 hover:bg-gradient-to-t from-zinc-300 via-yellow-200 to-zinc-300' );
+                                'flex flex-col items-center justify-center transition-transform transform hover:scale-105 hover:bg-gradient-to-t from-zinc-100 via-yellow-200 to-zinc-100' );
 
                         // Add data attributes to store brand data
                         section.data( 'brandName', brandName );
@@ -167,28 +205,21 @@ ob_start();
                             catalogs: JSON.parse( $( `#verticalCarousel .carousel-item:eq(${ slideIndex })` ).data( 'catalogs' ) )
                         };
 
+                        // Show or hide catalog list and header based on brand type
+                        if ( brand.type === 'inquiry' )
+                        {
+                            $( '#catalogList' ).addClass( 'hidden' );
+                            $( '#catalogListHeader' ).addClass( 'hidden' );
+                        } else
+                        {
+                            $( '#catalogList' ).removeClass( 'hidden' );
+                            $( '#catalogListHeader' ).removeClass( 'hidden' );
+                        }
+
                         // Update Brand Details Container and Catalog Listing
                         updateBrandDetails( brand );
                         updateCatalogListing( brand );
                     }
-
-                    // // Listen for hover events on carousel items
-                    // $( '#verticalCarousel .carousel-item' ).hover( function ()
-                    // {
-                    //     // Get the index of the hovered slide
-                    //     const slideIndex = $( this ).index();
-                    //     // Update brand information when hovering over a slide
-                    //     updateBrandInformation( slideIndex );
-                    // } );
-
-                    // // Listen for click events on carousel items
-                    // $( '#verticalCarousel .carousel-item' ).click( function ()
-                    // {
-                    //     // Get the index of the clicked slide
-                    //     const slideIndex = $( this ).index();
-                    //     // Update brand information when clicking on a slide
-                    //     updateBrandInformation( slideIndex );
-                    // } );
 
                     // Function to handle scroll events and detect carousel snaps
                     function handleCarouselSnap ()
@@ -220,11 +251,10 @@ ob_start();
                             handleCarouselSnap();
                         }, 50 ) ); // Adjust this timeout value as needed for smooth snapping
                     } );
-
-
-                    // Update brand information for the initially visible slide
-                    updateBrandInformation();
                 }
+
+                // On load functions
+                handleCarouselSnap();
             },
             error: function ( xhr, status, error )
             {
@@ -232,7 +262,6 @@ ob_start();
             }
         } );
     } );
-
 </script>
 
 <?php

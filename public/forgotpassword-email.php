@@ -35,6 +35,16 @@ ob_start();
                         <input type="password" id="confirmPassword" name="confirmPassword"
                             class="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
                         <p id="passwordError" class="text-sm text-red-500 mt-1 error-message"></p>
+                        <!-- Password requirements -->
+                        <div class="passreq mb-4" id="passwordRequirementsContainer">
+                            <p class="password-requirements-title"><b>Password Requirements:</b></p>
+                            <ul id="passwordRequirements" class="listreq pl-4">
+                                <li id="length">Minimum of 8 characters</li>
+                                <li id="specialChar">At least one special character/symbol</li>
+                                <li id="number">At least one number</li>
+                                <li id="capital">At least one capital letter</li>
+                            </ul>
+                        </div>
                     </div>
                     <div class="flex items-center justify-between">
                         <button type="submit"
@@ -45,6 +55,7 @@ ob_start();
         </div>
     </div>
 </div>
+
 <?php $content = ob_get_clean();
 ob_start();
 ?>
@@ -104,20 +115,43 @@ ob_start();
             const confirmPassword = $( '#confirmPassword' ).val();
             let isValid = true;
 
-            if ( !newPassword || newPassword.trim() === '' )
+            // Regular expressions for password strength requirements
+            const lengthRegex = /.{8,}/; // At least 8 characters
+            const specialCharRegex = /[!@#$%^&*(),.?'":{}|<>]/; // At least one special character
+            const numberRegex = /[0-9]/; // At least one number
+            const capitalRegex = /[A-Z]/; // At least one capital letter
+
+            // Check if the password meets length requirement
+            if ( !lengthRegex.test( newPassword ) )
             {
                 $( '#newPassword' ).addClass( 'border-red-500' );
-                $( '#passwordError' ).addClass( 'text-sm text-red-500 mt-1 error-message' ).text( 'New password is required.' );
+                $( '#passwordError' ).addClass( 'text-sm text-red-500 mt-1 error-message' ).text( 'Password must be at least 8 characters long.' );
                 isValid = false;
             } else if ( newPassword !== confirmPassword )
             {
                 $( '#confirmPassword' ).addClass( 'border-red-500' );
                 $( '#passwordError' ).addClass( 'text-sm text-red-500 mt-1 error-message' ).text( 'Passwords do not match.' );
                 isValid = false;
+            } else if ( !specialCharRegex.test( newPassword ) )
+            {
+                $( '#newPassword' ).addClass( 'border-red-500' );
+                $( '#passwordError' ).addClass( 'text-sm text-red-500 mt-1 error-message' ).text( 'Password must contain at least one special character.' );
+                isValid = false;
+            } else if ( !numberRegex.test( newPassword ) )
+            {
+                $( '#newPassword' ).addClass( 'border-red-500' );
+                $( '#passwordError' ).addClass( 'text-sm text-red-500 mt-1 error-message' ).text( 'Password must contain at least one number.' );
+                isValid = false;
+            } else if ( !capitalRegex.test( newPassword ) )
+            {
+                // Finish the validatePasswords function
+                $( '#newPassword' ).addClass( 'border-red-500' );
+                $( '#passwordError' ).addClass( 'text-sm text-red-500 mt-1 error-message' ).text( 'Password must contain at least one capital letter.' );
+                isValid = false;
             } else
             {
-                $( '#newPassword' ).removeClass( 'border-red-500' );
-                $( '#confirmPassword' ).removeClass( 'border-red-500' );
+                // If all requirements are met, remove error classes and messages
+                $( '#newPassword, #confirmPassword' ).removeClass( 'border-red-500' );
                 $( '#passwordError' ).empty();
             }
 
@@ -160,6 +194,12 @@ ob_start();
             $( '#confirmPassword' ).addClass( 'border-red-500' );
             $( '#passwordError' ).addClass( 'text-sm text-red-500 mt-1 error-message' ).text( message );
         }
+
+        // Event listener for password field to check password strength
+        $( '#newPassword' ).on( 'input', function ()
+        {
+            checkPasswordStrength( $( this ).val() );
+        } );
 
         // Function to start the resend code timer
         function startResendCodeTimer ()
@@ -347,6 +387,18 @@ ob_start();
                 } );
             }
         } );
+
+        // Function to calculate password strength (customize this as needed)
+        function calculatePasswordStrength ( password )
+        {
+            let strength = 0;
+            // For simplicity, let's assume 1 point for each fulfilled requirement
+            if ( password.length >= 8 ) strength++;
+            if ( /[!@#$%^&*(),.?\':{}|<>]/.test( password ) ) strength++;
+            if ( /[0-9]/.test( password ) ) strength++;
+            if ( /[A-Z]/.test( password ) ) strength++;
+            return strength;
+        }
     } );
 </script>
 <?php

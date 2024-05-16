@@ -335,7 +335,6 @@ include("../../backend/conn.php");
         // Function to calculate password strength (customize this as needed)
         function calculatePasswordStrength(password) {
             let strength = 0;
-            // Add your own logic to calculate password strength
             // For simplicity, let's assume 1 point for each fulfilled requirement
             if (password.length >= 8) strength++;
             if (/[!@#$%^&*(),.?\':{}|<>]/.test(password)) strength++;
