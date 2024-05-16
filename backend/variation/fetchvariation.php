@@ -9,8 +9,9 @@ include '../../backend/conn.php';
 include "../../backend/auditlog.php";
 
 // Function to fetch total number of variations with optional filters
-function getTotalVariations($conn, $statusFilter = null, $availabilityFilter = null)
+function getTotalVariations($conn, $statusFilter = null, $availabilityFilter = null, $searchQuery = null)
 {
+    // Initialize the base query
     $query = "SELECT COUNT(*) as totalVariations FROM product_variation WHERE 1=1";
 
     // Add status filter if provided
@@ -23,9 +24,17 @@ function getTotalVariations($conn, $statusFilter = null, $availabilityFilter = n
         $query .= " AND availability = '$availabilityFilter'";
     }
 
+    // Add search filter if provided
+    if ($searchQuery) {
+        $query .= " AND (VariationName LIKE '%$searchQuery%' OR availability LIKE '%$searchQuery%' OR status LIKE '%$searchQuery%')";
+    }
+
+    // Execute the query
     $result = mysqli_query($conn, $query);
 
+    // Check if query was successful
     if ($result) {
+        // Fetch the total number of variations
         $row = mysqli_fetch_assoc($result);
         return $row['totalVariations'];
     } else {
@@ -34,7 +43,7 @@ function getTotalVariations($conn, $statusFilter = null, $availabilityFilter = n
 }
 
 // Function to fetch variation data with pagination and optional filters
-function fetchVariationData($conn, $page, $itemsPerPage, $statusFilter = null, $availabilityFilter = null)
+function fetchVariationData($conn, $page, $itemsPerPage, $statusFilter = null, $availabilityFilter = null, $searchQuery = null)
 {
     // Calculate the offset based on the page number and items per page
     $offset = ($page - 1) * $itemsPerPage;
@@ -52,9 +61,13 @@ function fetchVariationData($conn, $page, $itemsPerPage, $statusFilter = null, $
         $query .= " AND availability = '$availabilityFilter'";
     }
 
+    // Add search filter if provided
+    if ($searchQuery) {
+        $query .= " AND (VariationName LIKE '%$searchQuery%' OR availability LIKE '%$searchQuery%' OR status LIKE '%$searchQuery%')";
+    }
+
     // Order by status and VariationID, and apply pagination
     $query .= " ORDER BY CASE WHEN status = 'inactive' THEN 1 ELSE 0 END, VariationID DESC LIMIT $offset, $itemsPerPage";
-
     $result = mysqli_query($conn, $query);
 
     if ($result) {
@@ -63,7 +76,7 @@ function fetchVariationData($conn, $page, $itemsPerPage, $statusFilter = null, $
             $variations[] = $row;
         }
         // Get total variations count with filters
-        $totalVariations = getTotalVariations($conn, $statusFilter, $availabilityFilter);
+        $totalVariations = getTotalVariations($conn, $statusFilter, $availabilityFilter, $searchQuery);
         // Return variation data, total number of pages, and total number of items
         echo json_encode(array('status' => 'success', 'data' => $variations, 'totalPages' => ceil($totalVariations / $itemsPerPage), 'totalItems' => $totalVariations));
     } else {
@@ -86,14 +99,15 @@ function updateAvailability($conn, $variationId, $availability)
 
 // Check request method
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-    // Get pagination and filter parameters
+    // Get pagination, filter, and search parameters
     $page = isset($_GET['page']) ? $_GET['page'] : 1;
     $itemsPerPage = isset($_GET['itemsPerPage']) ? $_GET['itemsPerPage'] : 10;
     $statusFilter = isset($_GET['status']) && $_GET['status'] !== 'statusreset' ? $_GET['status'] : null;
     $availabilityFilter = isset($_GET['availability']) && $_GET['availability'] !== 'availreset' ? $_GET['availability'] : null;
+    $searchQuery = isset($_GET['searchQuery']) ? $_GET['searchQuery'] : null;
 
-    // Fetch variation data with pagination and filters
-    fetchVariationData($conn, $page, $itemsPerPage, $statusFilter, $availabilityFilter);
+    // Fetch variation data with pagination, filters, and search
+    fetchVariationData($conn, $page, $itemsPerPage, $statusFilter, $availabilityFilter, $searchQuery);
 } elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Update availability
     $variationId = $_POST['variationId'];

@@ -152,8 +152,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     }
         
                     .variation-item {
-                        width: 20px;
-                        height: 20px;
+                        width: 35px;
+                        height: 35px;
                     }
         
                     .grid {
@@ -184,11 +184,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     #productModal.modal-fixed {
                         overflow: hidden;
                     }
-        
-                    .container {
-                        display: flex;
-                        justify-content: space-between;
-                    }
                 </style>
         
                 <div class="content">
@@ -201,6 +196,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     </div>
                     <h1 class="text-black font-extrabold text-center my-4 text-4xl"><?php echo strtoupper($categoryName); ?>
                         PRODUCTS<br></h1>
+                    <div class="flex justify-center"> <!-- Added flex and justify-center -->
+                        <div class="relative mb-1 mt-2 sm:mb-0 sm:mr-2 flex items-center">
+                            <!-- Search input -->
+                            <div class="relative">
+                                <input
+                                    class="border-2 border-gray-300 bg-white h-10 w-96 px-2 pr-10 rounded-lg text-[16px] focus:outline-none"
+                                    type="text" name="search" placeholder="Search Product or Category" id="searchInput">
+                                <button type="submit" class="absolute right-0 top-0 mt-2 mr-4"> <!-- Adjusted margin-top -->
+                                    <svg class="text-gray-600 h-5 w-5 fill-current hover:text-gray-500 "
+                                        xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1"
+                                        id="Capa_1" x="0px" y="0px" viewBox="0 0 56.966 56.966"
+                                        style="enable-background:new 0 0 56.966 56.966;" xml:space="preserve" width="512px"
+                                        height="512px">
+                                        <path
+                                            d="M55.146,51.887L41.588,37.786c3.486-4.144,5.396-9.358,5.396-14.786c0-12.682-10.318-23-23-23s-23,10.318-23,23  s10.318,23,23,23c4.761,0,9.298-1.436,13.177-4.162l13.661,14.208c0.571,0.593,1.339,0.92,2.162,0.92  c0.779,0,1.518-0.297,2.079-0.837C56.255,54.982,56.293,53.08,55.146,51.887z M23.984,6c9.374,0,17,7.626,17,17s-7.626,17-17,17  s-17-7.626-17-17S14.61,6,23.984,6z" />
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
                     <div class="prodcontent">
                         <?php if ($products->num_rows > 0): ?>
                             <div class="grid m-4">
@@ -238,56 +253,56 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             <h3 id="modalProductName" class="text-lg font-semibold"></h3>
                             <button id="closeModalButton">&times;</button>
                         </div>
+                        <div class="border-b border-gray-800 flex-grow border my-2 mb-3"></div>
                         <div class="modal-body">
                             <div class="modal-left">
                                 <img id="modalImage" src="" class="w-full h-auto object-cover mb-2">
-                                <div class="container">
-                                    <div id="variationName" class="variation-name font-bold"></div>
-                                    <div id="variationAvail" class="variation-avail font-bold"></div>
-                                </div>
-                                <div id="variations" class="variations"></div>
+                                <div id="variationName" class="mr-2"></div>
+                                <div id="variationAvailability" class="mr-2"></div>
                             </div>
                             <div class="modal-right">
                                 <p id="modalDescription" class="text-sm text-gray-800 mb-2"></p>
                                 <p id="modalAvailability" class="text-sm text-gray-800 mb-2"></p>
                                 <p id="modalBrand" class="text-sm text-gray-800 mb-2"></p>
                                 <p id="modalCategory" class="text-sm text-gray-800 mb-2"></p>
+                                <p id="modalVariation" class="text-sm text-gray-800 mb-2"></p>
+                                <div id="variations" class="variations"></div>
                             </div>
                         </div>
                     </div>
                 </div>
                 <script>
                     function openModal(product) {
-                        document.getElementById('modalProductName').innerText = product.ProductName;
+                        document.getElementById('modalProductName').innerText = "Product:" + " " + product.ProductName;
+        
                         document.getElementById('modalImage').src = "../../assets/products/" + product.image_urls;
                         document.getElementById('modalDescription').innerHTML = "<strong>Description:</strong><br> " + product.Description;
                         document.getElementById('modalAvailability').innerHTML = "<strong>Availability: </strong><br>" + product.availability;
                         document.getElementById('modalBrand').innerHTML = "<strong>Brand: </strong><br>" + (product.brand_name || "N/A");
                         document.getElementById('modalCategory').innerHTML = "<strong>Category: </strong><br>" + (product.ProdCategoryName || "N/A");
-                        document.getElementById('productModal').classList.add('modal-fixed');
+                        document.getElementById('modalVariation').innerHTML = "<strong>Variation: </strong>";
         
                         const variations = product.variations || [];
                         const variationsContainer = document.getElementById('variations');
                         variationsContainer.innerHTML = "";
         
-                        const variationsLabel = document.createElement('h6');
-                        variationsLabel.innerHTML = "Variations:<br>";
-                        variationsLabel.style.fontWeight = "bold";
-                        variationsLabel.className = "text-sm";
-                        variationsContainer.appendChild(variationsLabel);
+                        // const variationsLabel = document.createElement('h6');
+                        // variationsLabel.innerHTML = "Variations:";
+                        // variationsLabel.style.fontWeight = "bold";
+                        // variationsLabel.className = "text-sm";
+                        // variationsContainer.appendChild(variationsLabel);
         
                         variations.forEach(variation => {
                             const variationElement = document.createElement('img');
                             variationElement.src = "../../assets/variations/" + variation.image_url;
                             variationElement.className = "w-20 h-20 object-cover cursor-pointer variation-item";
                             variationElement.onclick = () => {
-                                document.getElementById('variationName').innerText = variation.VariationName;
-                                document.getElementById('variationAvail').innerText = variation.availability;
+                                document.getElementById('variationName').innerHTML = "<strong>Variation Name:</strong><br>" + " " + variation.VariationName;
+                                document.getElementById('variationAvailability').innerHTML = "<strong>Availability:</strong><br>" + " " + variation.availability;
                                 document.getElementById('modalImage').src = variationElement.src;
                             };
                             variationsContainer.appendChild(variationElement);
                         });
-        
         
                         const modal = document.getElementById('productModal');
                         modal.style.display = 'flex';
@@ -319,6 +334,56 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     document.getElementById('closeModalButton').onclick = function () {
                         closeModal();
                     };
+                    function searchProducts() {
+                        var input, filter, grid, productItems, productName, categoryName, i, txtValue;
+                        input = document.getElementById('searchInput');
+                        filter = input.value.toUpperCase();
+                        grid = document.getElementsByClassName('grid')[0];
+                        productItems = grid.getElementsByClassName('product-item');
+        
+                        var matchedProducts = false; // Flag to check if any products were matched
+        
+                        for (i = 0; i < productItems.length; i++) {
+                            productName = productItems[i].getElementsByTagName('h3')[0];
+                            categoryName = productItems[i].getElementsByTagName('h3')[1]; // Add category name selection
+                            if (productName && categoryName) {
+                                var productText = productName.textContent || productName.innerText;
+                                var categoryText = categoryName.textContent || categoryName.innerText;
+                                var combinedText = productText + " " + categoryText; // Combine product and category names for search
+        
+                                if (combinedText.toUpperCase().indexOf(filter) > -1) {
+                                    productItems[i].style.display = "";
+                                    matchedProducts = true; // Set flag to true if any product is matched
+                                } else {
+                                    productItems[i].style.display = "none";
+                                }
+                            }
+                        }
+        
+                        // If no products were matched, display the message; otherwise, hide it
+                        var noMatchProductsElement = document.querySelector('.no-match-products');
+                        if (!matchedProducts) {
+                            if (!noMatchProductsElement) {
+                                // Create the message if it doesn't exist
+                                noMatchProductsElement = document.createElement('p');
+                                noMatchProductsElement.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> No Match Products Found';
+                                noMatchProductsElement.classList.add('no-match-products', 'text-center', 'mt-8', 'font-bold', 'text-red-800', 'text-lg'); // Add specified classes
+                                // Append the message below the search input
+                                input.parentNode.appendChild(noMatchProductsElement);
+                            } else {
+                                // If message already exists, ensure it's visible
+                                noMatchProductsElement.style.display = "block";
+                            }
+                        } else {
+                            // If there were matched products, hide the message if it exists
+                            if (noMatchProductsElement) {
+                                noMatchProductsElement.style.display = "none";
+                            }
+                        }
+                    }
+                    // Bind keyup event to search input
+                    document.getElementById('searchInput').addEventListener('keyup', searchProducts);
+        
                 </script>
                 <?php
         
