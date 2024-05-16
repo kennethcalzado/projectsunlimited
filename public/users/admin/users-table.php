@@ -181,15 +181,11 @@ ob_start();
                 </select>
                 <div id="roleError" class="text-red-500 text-sm mt-1"></div> <!-- Error message space -->
             </div>
-            <button type="button" id="showPasswordBtn" class="btn-primary inline-flex items-center px-4 py-2 border border-transparent 
-                    rounded-md font-semibold text-xs uppercase tracking-widest 
-                    disabled:opacity-25 transition">Show Default Password Template</button>
-            <!-- Error message space for password verification -->
-            <div id="passwordError" class="text-red-500 text-sm mt-1"></div>
-            <!-- Password template container -->
-            <div id="passwordTemplate" class="hidden mt-4">
-                <!-- Password template content goes here -->
-            </div>
+            <hr></form>
+            <button type="button" id="showPasswordBtn" class="btn-primary showpw-btn inline-flex items-center px-4 py-2 mb-2 border border-transparent 
+                    rounded-md font-medium text-xs uppercase tracking-widest 
+                    transition">Default Password Template</button>
+
             <div class="flex justify-end">
                 <button type="submit" id="submitUserBtn" class="btn-primary inline-flex items-center px-4 py-2 border border-transparent 
                     rounded-md font-semibold text-xs uppercase tracking-widest 
@@ -240,6 +236,11 @@ ob_start();
                     </label>
                 </div>
             </div>
+
+            <button type="button" id="showPasswordBtn" class="btn-primary showpw-btn inline-flex items-center px-4 py-2 mb-2 border border-transparent 
+                    rounded-md font-medium text-xs uppercase tracking-widest 
+                    transition">Default Password Template</button>
+
             <div class="flex justify-end">
                 <button type="submit" id="uploadSubmitBtn"
                     class="btn btn-primary rounded-md text-center h-10 mt-3 sm:mt-4 !px-4 py-0 text-lg flex items-center mr-2">Upload
@@ -636,7 +637,7 @@ ob_start();
         }
 
         // Event listener for the button to show the default password template
-        $( '#showPasswordBtn' ).click( function ()
+        $( '.showpw-btn' ).click( function ()
         {
             showDefaultPasswordTemplate();
         } );

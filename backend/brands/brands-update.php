@@ -135,6 +135,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                     // Check for errors
                     if ($fileError === UPLOAD_ERR_OK) {
+                        // Validate file extension
+                        $fileExtension = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
+                        if ($fileExtension !== 'pdf') {
+                            $errors['brandCatalogs'] = $fileName . ' is not a PDF file.';
+                            continue;
+                        }
+
+                        // Validate file size (in bytes)
+                        $maxSize = 30 * 1024 * 1024; // 30 MB
+                        if ($fileSize > $maxSize) {
+                            $errors['brandCatalogs'] = $fileName . ' exceeds the maximum size limit (30 MB).';
+                            continue;
+                        }
+
                         // Move the uploaded file to the desired location
                         if (move_uploaded_file($fileTmpPath, $uploadPath)) {
                             // Insert the catalog information into the database
@@ -142,12 +156,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             $stmtInsertCatalog = $conn->prepare($sqlInsertCatalog);
                             if ($stmtInsertCatalog) {
                                 $stmtInsertCatalog->bind_param("iss", $brandId, $fileName, $uploadPath);
-                                if ($stmtInsertCatalog->execute()) {
-                                    // Catalog insert successful
-                                } else {
+                                if (!$stmtInsertCatalog->execute()) {
                                     // Catalog insert failed
                                     $response = ["success" => false, "message" => "Failed to insert catalog"];
                                     http_response_code(500); // Set HTTP response code to indicate internal server error
+                                    echo json_encode($response);
+                                    exit;
                                 }
                                 $stmtInsertCatalog->close();
                             }
@@ -167,7 +181,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     }
                 }
             }
+
+            // Check for invalid files and display error message
+            if (!empty($invalidFiles)) {
+                $response = ["success" => false, "message" => "Invalid files:<br>" . implode("<br>", $invalidFiles)];
+                http_response_code(400); // Set HTTP response code to indicate bad request
+                echo json_encode($response);
+                exit;
+            }
         }
+
 
         // Perform the update query including the updated_at
         $sql = "UPDATE brands SET brand_name = ?, description = ?, type = ?, status = ?, updated_at = CURRENT_TIMESTAMP 

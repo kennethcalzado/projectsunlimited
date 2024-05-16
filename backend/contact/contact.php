@@ -24,14 +24,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $mail->Host = 'smtp.gmail.com'; // Gmail SMTP server
         $mail->SMTPAuth = true;
         // $mail->SMTPDebug = SMTP::DEBUG_SERVER;
-        $mail->Username = 'itsangelyne14@gmail.com'; // Your Gmail address
-        $mail->Password = 'exspqwmbgyiqfvds'; // Your Gmail password
+        $mail->Username = 'marketing.projectsunlimited@gmail.com'; // Your Gmail address
+        $mail->Password = 'vouargdiqfzxgite'; // Your Gmail password
         $mail->SMTPSecure = 'tls';
         $mail->Port = 587; // SMTP port
 
         // Recipients
         $mail->setFrom($email, $name); // Sender's email and name
-        $mail->addAddress('info@projectsunlimited.com.ph', 'Do_Not_Reply'); // Recipient's email and name
+        $mail->addAddress('info@projectsunlimited.com.ph'); // Recipient's email and name
         $mail->addReplyTo($email, $name); // Reply-to address
 
         // Content
