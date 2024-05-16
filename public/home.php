@@ -516,9 +516,9 @@ brands carousel sa home ---------
 to know more chuchu sa about  ----------
 rearrange sidebar -------
 remove product category text sa products -------
+modal validations (done) --------
 finalize main page contents
 mobile view
-modal validations
 add banner image column sa blogs
 lagyan ng fade yung open and close ng modals
 -->

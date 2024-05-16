@@ -116,8 +116,8 @@ if ($result->num_rows > 0) {
             }
 
             .variation-item {
-                width: 20px;
-                height: 20px;
+                width: 35px;
+                height: 35px;
             }
 
             .grid {
@@ -147,11 +147,6 @@ if ($result->num_rows > 0) {
 
             #productModal.modal-fixed {
                 overflow: hidden;
-            }
-
-            .container {
-                display: flex;
-                justify-content: space-between;
             }
         </style>
 
@@ -202,56 +197,56 @@ if ($result->num_rows > 0) {
                     <h3 id="modalProductName" class="text-lg font-semibold"></h3>
                     <button id="closeModalButton">&times;</button>
                 </div>
+                <div class="border-b border-gray-800 flex-grow border my-2 mb-3"></div>
                 <div class="modal-body">
                     <div class="modal-left">
                         <img id="modalImage" src="" class="w-full h-auto object-cover mb-2">
-                        <div class="container">
-                            <div id="variationName" class="variation-name font-bold"></div>
-                            <div id="variationAvail" class="variation-avail font-bold"></div>
-                        </div>
-                        <div id="variations" class="variations"></div>
+                        <div id="variationName" class="mr-2"></div>
+                        <div id="variationAvailability" class="mr-2"></div>
                     </div>
                     <div class="modal-right">
                         <p id="modalDescription" class="text-sm text-gray-800 mb-2"></p>
                         <p id="modalAvailability" class="text-sm text-gray-800 mb-2"></p>
                         <p id="modalBrand" class="text-sm text-gray-800 mb-2"></p>
                         <p id="modalCategory" class="text-sm text-gray-800 mb-2"></p>
+                        <p id="modalVariation" class="text-sm text-gray-800 mb-2"></p>
+                        <div id="variations" class="variations"></div>
                     </div>
                 </div>
             </div>
         </div>
         <script>
             function openModal(product) {
-                document.getElementById('modalProductName').innerText = product.ProductName;
+                document.getElementById('modalProductName').innerText ="Product:" + " " + product.ProductName;
+
                 document.getElementById('modalImage').src = "../../assets/products/" + product.image_urls;
                 document.getElementById('modalDescription').innerHTML = "<strong>Description:</strong><br> " + product.Description;
                 document.getElementById('modalAvailability').innerHTML = "<strong>Availability: </strong><br>" + product.availability;
                 document.getElementById('modalBrand').innerHTML = "<strong>Brand: </strong><br>" + (product.brand_name || "N/A");
                 document.getElementById('modalCategory').innerHTML = "<strong>Category: </strong><br>" + (product.ProdCategoryName || "N/A");
-                document.getElementById('productModal').classList.add('modal-fixed');
+                document.getElementById('modalVariation').innerHTML = "<strong>Variation: </strong>";
 
                 const variations = product.variations || [];
                 const variationsContainer = document.getElementById('variations');
                 variationsContainer.innerHTML = "";
 
-                const variationsLabel = document.createElement('h6');
-                variationsLabel.innerHTML = "Variations:<br>";
-                variationsLabel.style.fontWeight = "bold";
-                variationsLabel.className = "text-sm";
-                variationsContainer.appendChild(variationsLabel);
+                // const variationsLabel = document.createElement('h6');
+                // variationsLabel.innerHTML = "Variations:";
+                // variationsLabel.style.fontWeight = "bold";
+                // variationsLabel.className = "text-sm";
+                // variationsContainer.appendChild(variationsLabel);
 
                 variations.forEach(variation => {
                     const variationElement = document.createElement('img');
                     variationElement.src = "../../assets/variations/" + variation.image_url;
                     variationElement.className = "w-20 h-20 object-cover cursor-pointer variation-item";
                     variationElement.onclick = () => {
-                        document.getElementById('variationName').innerText = variation.VariationName;
-                        document.getElementById('variationAvail').innerText = variation.availability;
+                        document.getElementById('variationName').innerHTML ="<strong>Variation Name:</strong><br>" + " " + variation.VariationName;
+                        document.getElementById('variationAvailability').innerHTML ="<strong>Availability:</strong><br>" + " " + variation.availability;
                         document.getElementById('modalImage').src = variationElement.src;
                     };
                     variationsContainer.appendChild(variationElement);
                 });
-
 
                 const modal = document.getElementById('productModal');
                 modal.style.display = 'flex';

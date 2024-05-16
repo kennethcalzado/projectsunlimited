@@ -8,10 +8,21 @@ if (session_status() === PHP_SESSION_NONE) {
 include '../../backend/conn.php';
 include "../../backend/auditlog.php";
 
-// Function to fetch total number of variations
-function getTotalVariations($conn)
+// Function to fetch total number of variations with optional filters
+function getTotalVariations($conn, $statusFilter = null, $availabilityFilter = null)
 {
-    $query = "SELECT COUNT(*) as totalVariations FROM product_variation";
+    $query = "SELECT COUNT(*) as totalVariations FROM product_variation WHERE 1=1";
+
+    // Add status filter if provided
+    if ($statusFilter) {
+        $query .= " AND status = '$statusFilter'";
+    }
+
+    // Add availability filter if provided
+    if ($availabilityFilter) {
+        $query .= " AND availability = '$availabilityFilter'";
+    }
+
     $result = mysqli_query($conn, $query);
 
     if ($result) {
@@ -22,14 +33,27 @@ function getTotalVariations($conn)
     }
 }
 
-// Function to fetch variation data with pagination
-function fetchVariationData($conn, $page, $itemsPerPage)
+// Function to fetch variation data with pagination and optional filters
+function fetchVariationData($conn, $page, $itemsPerPage, $statusFilter = null, $availabilityFilter = null)
 {
     // Calculate the offset based on the page number and items per page
     $offset = ($page - 1) * $itemsPerPage;
 
-    // Query to fetch variations with pagination
-    $query = "SELECT * FROM product_variation ORDER BY CASE WHEN status = 'inactive' THEN 1 ELSE 0 END, VariationID DESC LIMIT $offset, $itemsPerPage";
+    // Query to fetch variations with pagination and filters
+    $query = "SELECT * FROM product_variation WHERE 1=1";
+
+    // Add status filter if provided
+    if ($statusFilter) {
+        $query .= " AND status = '$statusFilter'";
+    }
+
+    // Add availability filter if provided
+    if ($availabilityFilter) {
+        $query .= " AND availability = '$availabilityFilter'";
+    }
+
+    // Order by status and VariationID, and apply pagination
+    $query .= " ORDER BY CASE WHEN status = 'inactive' THEN 1 ELSE 0 END, VariationID DESC LIMIT $offset, $itemsPerPage";
 
     $result = mysqli_query($conn, $query);
 
@@ -38,8 +62,10 @@ function fetchVariationData($conn, $page, $itemsPerPage)
         while ($row = mysqli_fetch_assoc($result)) {
             $variations[] = $row;
         }
-        // Return variation data and total number of pages
-        echo json_encode(array('status' => 'success', 'data' => $variations, 'totalPages' => ceil(getTotalVariations($conn) / $itemsPerPage)));
+        // Get total variations count with filters
+        $totalVariations = getTotalVariations($conn, $statusFilter, $availabilityFilter);
+        // Return variation data, total number of pages, and total number of items
+        echo json_encode(array('status' => 'success', 'data' => $variations, 'totalPages' => ceil($totalVariations / $itemsPerPage), 'totalItems' => $totalVariations));
     } else {
         echo json_encode(array('status' => 'error', 'message' => 'Failed to fetch variation data'));
     }
@@ -60,12 +86,14 @@ function updateAvailability($conn, $variationId, $availability)
 
 // Check request method
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-    // Get pagination parameters
+    // Get pagination and filter parameters
     $page = isset($_GET['page']) ? $_GET['page'] : 1;
     $itemsPerPage = isset($_GET['itemsPerPage']) ? $_GET['itemsPerPage'] : 10;
+    $statusFilter = isset($_GET['status']) && $_GET['status'] !== 'statusreset' ? $_GET['status'] : null;
+    $availabilityFilter = isset($_GET['availability']) && $_GET['availability'] !== 'availreset' ? $_GET['availability'] : null;
 
-    // Fetch variation data with pagination
-    fetchVariationData($conn, $page, $itemsPerPage);
+    // Fetch variation data with pagination and filters
+    fetchVariationData($conn, $page, $itemsPerPage, $statusFilter, $availabilityFilter);
 } elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Update availability
     $variationId = $_POST['variationId'];

@@ -70,14 +70,17 @@ ob_start();
                     <div class="mb-4 flex flex-col">
                         <label for="name" class="block font-semibold mb-2">Name</label>
                         <textarea name="name" id="name" class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent" required></textarea>
+                        <div id="nameError" class="error-message text-red-500"></div>
                     </div>
                     <div class="mb-4 flex flex-col">
                         <label for="address" class="block font-semibold mb-2">Address</label>
                         <input type="text" name="address" id="address" class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent" required>
+                        <div id="addressError" class="error-message text-red-500"></div>
                     </div>
                     <div class="mb-4 flex flex-col">
                         <label for="time" class="block font-semibold mb-2">Time</label>
                         <input type="text" name="time" id="time" class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent" required>
+                        <div id="timeError" class="error-message text-red-500"></div>
                     </div>
                     <div class="mb-4 flex flex-col">
                         <label for="phone" class="block font-semibold mb-2">Phone</label>
@@ -88,8 +91,14 @@ ob_start();
                         <input type="text" name="email" id="email" class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent">
                     </div>
                     <div class="mb-4 flex flex-col">
-                        <label for="map" class="block font-semibold mb-2">Map</label>
+                        <label for="map" class="block font-semibold mb-2">Map
+                            <i class="fas fa-info-circle" style="color: #F6E17A; padding-left: 10px;" data-bs-toggle="tooltip" data-bs-placement="top" title="1. Go to Google Maps and search for the specific location you want to add
+        2. Click the share button
+        3. Click the 'Embed a map' tab
+        4. Lastly, click the 'Copy link' and paste it in this input field"></i>
+                        </label>
                         <input type="text" name="map" id="map" class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent" required>
+                        <div id="mapError" class="error-message text-red-500"></div>
                     </div>
                     <div class="text-right">
                         <button type="button" class="btn btn-primary" onclick="confirmAdd()">Add</button>
@@ -133,14 +142,17 @@ ob_start();
                     <div class="mb-4 flex flex-col">
                         <label for="name" class="block font-semibold mb-2">Name</label>
                         <textarea name="name" id="updateName" class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent" required></textarea>
+                        <div id="nameUpdateError" class="error-message text-red-500"></div>
                     </div>
                     <div class="mb-4 flex flex-col">
                         <label for="address" class="block font-semibold mb-2">Address</label>
                         <input type="text" name="address" id="updateAddress" class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent" required>
+                        <div id="addressUpdateError" class="error-message text-red-500"></div>
                     </div>
                     <div class="mb-4 flex flex-col">
                         <label for="time" class="block font-semibold mb-2">Time</label>
                         <input type="text" name="time" id="updateTime" class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent" required>
+                        <div id="timeUpdateError" class="error-message text-red-500"></div>
                     </div>
                     <div class="mb-4 flex flex-col">
                         <label for="phone" class="block font-semibold mb-2">Phone</label>
@@ -151,8 +163,12 @@ ob_start();
                         <input type="text" name="email" id="updateEmail" class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent">
                     </div>
                     <div class="mb-4 flex flex-col">
-                        <label for="map" class="block font-semibold mb-2">Map</label>
+                        <label for="map" class="block font-semibold mb-2">Map<i class="fas fa-info-circle" style="color: #F6E17A; padding-left: 10px;" data-bs-toggle="tooltip" data-bs-placement="top" title="1. Go to Google Maps and search for the specific location you want to add
+        2. Click the share button
+        3. Click the 'Embed a map' tab
+        4. Lastly, click the 'Copy link' and paste it in this input field"></i></label>
                         <input type="text" name="map" id="updateMap" class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent" required>
+                        <div id="mapUpdateError" class="error-message text-red-500"></div>
                     </div>
                     <div class="text-right">
                         <button type="button" class="btn btn-primary" onclick="confirmUpdate()">Update</button>
@@ -296,6 +312,11 @@ ob_start();
             window.open(url, '_blank');
         }
 
+        function isValidInput(input) {
+            // Simple check for HTML and SQL injections
+            var pattern = /<[^>]*>|[";=:]+|(--[^\r\n]*)|(\/\*[\w\W]*?(?=\*)\*\/)/gi;
+            return !pattern.test(input);
+        }
 
         // DELETE MODAL //
 
@@ -368,6 +389,8 @@ ob_start();
 
         // Close the update modal with fade-out animation
         function closeUpdateModal() {
+            $('.error-message').text('').hide();
+            $('.border-red-500').removeClass('border-red-500');
             var modal = document.getElementById('updateModal');
             modal.classList.remove('fade-in'); // Remove fade-in class if applied
             modal.classList.add('fade-out');
@@ -379,6 +402,39 @@ ob_start();
         }
 
         function confirmUpdate() {
+            // Reset previous error messages and styles
+            $('.error-message').text('').hide();
+            $('.border-red-500').removeClass('border-red-500');
+
+            var name = $('#updateName').val();
+            var address = $('#updateAddress').val();
+            var time = $('#updateTime').val();
+            var map = $('#updateMap').val();
+            // Add similar variables for other fields (if needed)
+
+            // Validation: Check if fields are empty or contain invalid input
+            if (name === '' || !isValidInput(name)) {
+                $('#nameUpdateError').text('Please enter a valid name.').show();
+                $('#updateName').addClass('border-red-500');
+            }
+            if (address === '' || !isValidInput(address)) {
+                $('#addressUpdateError').text('Please enter a valid address.').show();
+                $('#updateAddress').addClass('border-red-500');
+            }
+            if (time === '' || !isValidInput(time)) {
+                $('#timeUpdateError').text('Please enter a valid time.').show();
+                $('#updateTime').addClass('border-red-500');
+            }
+            if (map === '') {
+                $('#mapUpdateError').text('Please enter a valid map.').show();
+                $('#updateMap').addClass('border-red-500');
+            }
+
+            // If any field has an error, prevent form submission
+            if ($('.error-message:visible').length > 0) {
+                return;
+            }
+
             Swal.fire({
                 title: 'Are you sure?',
                 text: 'You are about to update.',
@@ -404,6 +460,39 @@ ob_start();
         }
 
         function confirmAdd() {
+            // Reset previous error messages and styles
+            $('.error-message').text('').hide();
+            $('.border-red-500').removeClass('border-red-500');
+
+            var name = $('#name').val();
+            var address = $('#address').val();
+            var time = $('#time').val();
+            var map = $('#map').val();
+            // Add similar variables for other fields (if needed)
+
+            // Validation: Check if fields are empty or contain invalid input
+            if (name === '' || !isValidInput(name)) {
+                $('#nameError').text('Please enter a valid name.').show();
+                $('#name').addClass('border-red-500');
+            }
+            if (address === '' || !isValidInput(address)) {
+                $('#addressError').text('Please enter a valid address.').show();
+                $('#address').addClass('border-red-500');
+            }
+            if (time === '' || !isValidInput(time)) {
+                $('#timeError').text('Please enter a valid time.').show();
+                $('#time').addClass('border-red-500');
+            }
+            if (map === '') {
+                $('#mapError').text('Please enter a valid map.').show();
+                $('#map').addClass('border-red-500');
+            }
+
+            // If any field has an error, prevent form submission
+            if ($('.error-message:visible').length > 0) {
+                return;
+            }
+
             Swal.fire({
                 title: 'Are you sure?',
                 text: 'You are about to add a new location.',
@@ -457,6 +546,8 @@ ob_start();
 
         // Close the modal with fade-out animation
         function closeModal() {
+            $('.error-message').text('').hide();
+            $('.border-red-500').removeClass('border-red-500');
             var modal = document.getElementById('modal');
             modal.classList.remove('fade-in'); // Remove fade-in class if applied
             modal.classList.add('fade-out');

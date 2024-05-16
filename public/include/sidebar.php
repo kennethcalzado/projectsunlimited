@@ -8,8 +8,7 @@ $image_path = $base_url . 'assets/image/projectslogo.png';
 ?>
 
 <!-- Logout Confirmation Modal -->
-<div id="logoutModal"
-    class="fixed inset-0 z-50 overflow-auto bg-black bg-opacity-50 flex justify-center items-center hidden">
+<div id="logoutModal" class="fixed inset-0 z-50 overflow-auto bg-black bg-opacity-50 flex justify-center items-center hidden">
     <div class="max-w-md w-full bg-white p-6 rounded-lg">
         <h2 class="text-xl font-bold mb-4">Are you sure you want to log out?</h2>
         <div class="flex justify-end">
@@ -23,8 +22,7 @@ $image_path = $base_url . 'assets/image/projectslogo.png';
      text-center bg-black text-white transition-all z-50">
 
     <div class="text-gray-100 text-xl flex justify-between">
-        <span id="toggle-sidebar" class="absolute text-white text-4xl top-4 !ml-2 mt-1 z-40 cursor-pointer burger"
-            onclick="toggleSidebar()">
+        <span id="toggle-sidebar" class="absolute text-white text-4xl top-4 !ml-2 mt-1 z-40 cursor-pointer burger" onclick="toggleSidebar()">
             <i class="bi bi-list px-2 text-3xl rounded-md hover:bg-yellow-600" title="Toggle Sidebar"></i>
         </span>
         <div class="p-3 mt-1 ml-32 flex items-center">
@@ -58,7 +56,7 @@ $image_path = $base_url . 'assets/image/projectslogo.png';
     <?php
     // Determine the user's role
     $userRole = $_SESSION['user_role'] ?? "guest"; // Default to 'guest' if the role is not set
-    
+
 
     if ($userRole == 'admin') { ?>
         <a href="/public/users/admin/users-table.php" class="group">
@@ -155,7 +153,7 @@ $image_path = $base_url . 'assets/image/projectslogo.png';
                     <i class="bi bi-house-door-fill"></i>
                 </div> -->
             <div class=" flex relative ">
-            <i class="fa-solid fa-swatchbook py-1"></i>
+                <i class="fa-solid fa-swatchbook py-1"></i>
                 <span class="text-[15px] ml-4 text-gray-200 font-bold">Variation</span>
                 <span class="tootlips 
                     group-hover:ease-in group-hover:opacity-100 group-hover:visible 
@@ -245,7 +243,7 @@ $image_path = $base_url . 'assets/image/projectslogo.png';
         </div>
     </a>
 
-    <a href="/public/home.php" class="group">
+    <a href="/public/home.php" target="_blank" class="group">
         <div class="nav-item mt-3 flex items-center rounded-l-md px-6 p-2
             transition-opacity duration-300 cursor-pointer text-white group-hover:bg-yellow-600 group-hover:ease-in">
             <div class=" flex relative ">
@@ -324,98 +322,83 @@ $image_path = $base_url . 'assets/image/projectslogo.png';
 </style>
 
 <script>
-    function openLogoutModal ()
-    {
-        var logoutModal = document.getElementById( 'logoutModal' );
-        logoutModal.classList.remove( 'hidden' );
-        logoutModal.classList.remove( 'fade-out' ); // Remove fade-out class if applied
-        logoutModal.classList.add( 'fade-in' );
+    function openLogoutModal() {
+        var logoutModal = document.getElementById('logoutModal');
+        logoutModal.classList.remove('hidden');
+        logoutModal.classList.remove('fade-out'); // Remove fade-out class if applied
+        logoutModal.classList.add('fade-in');
     }
 
-    function closeLogoutModal ()
-    {
-        var logoutModal = document.getElementById( 'logoutModal' );
-        logoutModal.classList.remove( 'fade-in' );
-        logoutModal.classList.add( 'fade-out' );
-        setTimeout( function ()
-        {
-            logoutModal.classList.add( 'hidden' );
-            logoutModal.classList.remove( 'fade-out' ); // Remove fade-out class after animation
-        }, 300 );
+    function closeLogoutModal() {
+        var logoutModal = document.getElementById('logoutModal');
+        logoutModal.classList.remove('fade-in');
+        logoutModal.classList.add('fade-out');
+        setTimeout(function() {
+            logoutModal.classList.add('hidden');
+            logoutModal.classList.remove('fade-out'); // Remove fade-out class after animation
+        }, 300);
     }
 
-    function logout ()
-    {
+    function logout() {
         // Perform logout action here
         window.location.href = '/backend/logout.php';
     }
 </script>
 
 <script>
-    function toggleSidebar ()
-    {
-        const sidebar = document.querySelector( '.sidebar' );
-        sidebar.classList.toggle( 'minimized' );
+    function toggleSidebar() {
+        const sidebar = document.querySelector('.sidebar');
+        sidebar.classList.toggle('minimized');
 
-        if ( sidebar.classList.contains( 'minimized' ) )
-        {
-            sidebar.classList.remove( '!w-80' );
-            document.querySelector( "#sidebar-container" ).classList.toggle( "overflow-y-auto" );
+        if (sidebar.classList.contains('minimized')) {
+            sidebar.classList.remove('!w-80');
+            document.querySelector("#sidebar-container").classList.toggle("overflow-y-auto");
             // Iterate over each element with class "nav-item" and apply the class toggle
-            document.querySelectorAll( ".nav-item" ).forEach( function ( navItem )
-            {
-                navItem.classList.toggle( "rounded-l-md" );
-                navItem.classList.toggle( "rounded-md" );
-            } );
+            document.querySelectorAll(".nav-item").forEach(function(navItem) {
+                navItem.classList.toggle("rounded-l-md");
+                navItem.classList.toggle("rounded-md");
+            });
             // Iterate over each element with class "tootlips" and apply the class toggle
-            document.querySelectorAll( ".tootlips" ).forEach( function ( tooltip )
-            {
-                tooltip.classList.toggle( "hidden" );
-            } );
-        } else
-        {
-            sidebar.classList.add( '!w-80' );
+            document.querySelectorAll(".tootlips").forEach(function(tooltip) {
+                tooltip.classList.toggle("hidden");
+            });
+        } else {
+            sidebar.classList.add('!w-80');
             // Iterate over each element with class "nav-item" and apply the class toggle
-            document.querySelectorAll( ".nav-item" ).forEach( function ( navItem )
-            {
-                navItem.classList.toggle( "rounded-l-md" );
-                navItem.classList.toggle( "rounded-md" );
-            } );
+            document.querySelectorAll(".nav-item").forEach(function(navItem) {
+                navItem.classList.toggle("rounded-l-md");
+                navItem.classList.toggle("rounded-md");
+            });
             // Iterate over each element with class "tootlips" and apply the class toggle
-            document.querySelectorAll( ".tootlips" ).forEach( function ( tooltip )
-            {
-                tooltip.classList.toggle( "hidden" );
-            } );
-            document.querySelector( "#sidebar-container" ).classList.toggle( "overflow-y-auto" );
+            document.querySelectorAll(".tootlips").forEach(function(tooltip) {
+                tooltip.classList.toggle("hidden");
+            });
+            document.querySelector("#sidebar-container").classList.toggle("overflow-y-auto");
         }
 
         // Adjust main content padding when sidebar is toggled
-        const mainContent = document.querySelector( ".page-content" );
-        mainContent.classList.toggle( "!ml-[400px]" );
+        const mainContent = document.querySelector(".page-content");
+        mainContent.classList.toggle("!ml-[400px]");
     }
 </script>
 
 <script>
-    $( document ).ready( function ()
-    {
-        $.ajax( {
+    $(document).ready(function() {
+        $.ajax({
             url: '../../../backend/brands/brands-get.php',
             type: 'GET',
             dataType: 'json',
-            success: function ( brands )
-            {
+            success: function(brands) {
                 // Render brand data
-                const submenu = $( '#submenu' );
+                const submenu = $('#submenu');
 
-                brands.forEach( function ( brand )
-                {
-                    submenu.append( $( '<h1>' ).text( brand.brand_name ).addClass( 'cursor-pointer p-2 hover:bg-yellow-600 rounded-md mt-1' ) );
-                } );
+                brands.forEach(function(brand) {
+                    submenu.append($('<h1>').text(brand.brand_name).addClass('cursor-pointer p-2 hover:bg-yellow-600 rounded-md mt-1'));
+                });
             },
-            error: function ( xhr, status, error )
-            {
-                console.error( 'Error:', error );
+            error: function(xhr, status, error) {
+                console.error('Error:', error);
             }
-        } );
-    } );
+        });
+    });
 </script>
