@@ -33,6 +33,39 @@ include("../backend/conn.php");
             margin: 0 auto;
             /* Add any additional styling here */
         }
+
+        /* Mobile Styles */
+        @media (max-width: 767px) {
+            .carousel-item {
+                height: 300px;
+                /* Adjust height for mobile view */
+            }
+
+            .carousel-item h1 {
+                font-size: 24px;
+                /* Adjust font size for title */
+                padding-right: 10px;
+                /* Adjust padding for title */
+                padding-bottom: 80px;
+                /* Adjust padding for title */
+            }
+
+            .carousel-item a {
+                margin-right: 10px;
+                /* Adjust margin for button */
+                margin-bottom: 20px;
+                /* Adjust margin for button */
+                font-size: 14px;
+                /* Adjust font size for button */
+                padding: 6px 12px;
+                /* Adjust padding for button */
+            }
+
+            .carousel-arrow {
+                font-size: 40px;
+                /* Adjust arrow size */
+            }
+        }
     </style>
 </head>
 

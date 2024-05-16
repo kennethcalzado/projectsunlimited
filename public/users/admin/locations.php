@@ -599,7 +599,7 @@ ob_start();
                     <th scope="col" class="px-6 py-3 w-1/12">Time</th>
                     <th scope="col" class="px-6 py-3 w-1/12">Phone</th>
                     <th scope="col" class="px-6 py-3 w-1/12">Email</th>
-                    <th scope="col" class="px-6 py-3 w-1/6">Actions</th>
+                    <th scope="col" class="px-6 py-3 w-1/4">Actions</th>
                 </thead>
 
                 <tbody>
