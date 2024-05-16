@@ -129,11 +129,22 @@ if ($result->num_rows > 0) {
             .product-item {
                 cursor: pointer;
                 transition: transform 0.3s ease-in-out;
+                position: relative;
+                z-index: 1;
+
             }
 
             .product-item:hover {
                 transform: scale(1.05);
                 background-color: #D1D5DB;
+                z-index: 2;
+
+            }
+
+            #dropdownMenu {
+                width: 150%;
+                z-index: 3;
+                font-size: 14px !important;
             }
 
             .product-item:hover h3 {
@@ -160,14 +171,13 @@ if ($result->num_rows > 0) {
             </div>
             <h1 class="text-black font-extrabold text-center my-4 text-4xl"><?php echo strtoupper($categoryName); ?>
                 PRODUCTS<br></h1>
-            <div class="flex justify-center"> <!-- Added flex and justify-center -->
+            <div class="flex justify-center">
                 <div class="relative mb-1 mt-2 sm:mb-0 sm:mr-2 flex items-center">
-                    <!-- Search input -->
                     <div class="relative">
                         <input
                             class="border-2 border-gray-300 bg-white h-10 w-96 px-2 pr-10 rounded-lg text-[16px] focus:outline-none"
                             type="text" name="search" placeholder="Search Product or Category" id="searchInput">
-                        <button type="submit" class="absolute right-0 top-0 mt-2 mr-4"> <!-- Adjusted margin-top -->
+                        <button type="submit" class="absolute right-0 top-0 mt-2 mr-4">
                             <svg class="text-gray-600 h-5 w-5 fill-current hover:text-gray-500 "
                                 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1"
                                 id="Capa_1" x="0px" y="0px" viewBox="0 0 56.966 56.966"
@@ -177,6 +187,59 @@ if ($result->num_rows > 0) {
                                     d="M55.146,51.887L41.588,37.786c3.486-4.144,5.396-9.358,5.396-14.786c0-12.682-10.318-23-23-23s-23,10.318-23,23  s10.318,23,23,23c4.761,0,9.298-1.436,13.177-4.162l13.661,14.208c0.571,0.593,1.339,0.92,2.162,0.92  c0.779,0,1.518-0.297,2.079-0.837C56.255,54.982,56.293,53.08,55.146,51.887z M23.984,6c9.374,0,17,7.626,17,17s-7.626,17-17,17  s-17-7.626-17-17S14.61,6,23.984,6z" />
                             </svg>
                         </button>
+                    </div>
+                    <div class="ml-2 relative">
+                        <div>
+                            <button onclick="toggleDropdown()" id="dropdownButton"
+                                class="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 focus:outline-none focus:border-blue-300 focus:ring focus:ring-blue-200 active:bg-gray-50 active:text-gray-800 transition ease-in-out duration-150">
+                                Filter by Category
+                                <svg class="-mr-1 ml-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
+                                    fill="currentColor">
+                                    <path fill-rule="evenodd" d="M10 14l6-6H4l6 6z" />
+                                </svg>
+                            </button>
+                        </div>
+                        <div id="dropdownMenu"
+                            class="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 hidden">
+                            <div class="py-1 px-4" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
+                                <?php
+                                // Retrieve main category and its subcategories
+                                $mainCategorySQL = "SELECT * FROM productcategory WHERE CategoryID = ?";
+                                $mainCategoryStmt = $conn->prepare($mainCategorySQL);
+                                $mainCategoryStmt->bind_param("i", $categoryID);
+                                $mainCategoryStmt->execute();
+                                $mainCategoryResult = $mainCategoryStmt->get_result();
+                                $mainCategory = $mainCategoryResult->fetch_assoc();
+
+                                // Display checkbox for main category
+                                ?>
+                                <label class="block text-sm leading-5 text-gray-700">
+                                    <input type="checkbox" class="form-checkbox h-5 w-5 text-blue-600"
+                                        value="<?php echo $mainCategory['CategoryID']; ?>">
+                                    <span class="ml-2"><?php echo $mainCategory['CategoryName']; ?></span>
+                                </label>
+
+                                <?php
+                                // Retrieve subcategories of the main category
+                                $subcategoriesSQL = "SELECT * FROM productcategory WHERE ParentCategoryID = ?";
+                                $subcategoriesStmt = $conn->prepare($subcategoriesSQL);
+                                $subcategoriesStmt->bind_param("i", $categoryID);
+                                $subcategoriesStmt->execute();
+                                $subcategoriesResult = $subcategoriesStmt->get_result();
+
+                                // Display checkboxes for each subcategory
+                                while ($subcategory = $subcategoriesResult->fetch_assoc()) {
+                                    ?>
+                                    <label class="block text-sm leading-5 text-gray-700">
+                                        <input type="checkbox" class="form-checkbox h-5 w-5 text-blue-600"
+                                            value="<?php echo $subcategory['CategoryID']; ?>">
+                                        <span class="ml-2"><?php echo $subcategory['CategoryName']; ?></span>
+                                    </label>
+                                    <?php
+                                }
+                                ?>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -194,12 +257,14 @@ if ($result->num_rows > 0) {
                             $product['variations'] = $variations->fetch_all(MYSQLI_ASSOC);
                             ?>
                             <div class="product-item border p-4"
+                                data-category-id="<?php echo htmlspecialchars($product['CategoryID']); ?>"
+                                data-category-name="<?php echo htmlspecialchars($product['ProdCategoryName']); ?>"
                                 onclick='openModal(<?php echo htmlspecialchars(json_encode($product)); ?>)'>
                                 <img src="../../assets/products/<?php echo $product['image_urls']; ?>"
                                     alt="<?php echo htmlspecialchars($product['ProductName']); ?>"
                                     class="product-image object-cover object-center mb-2">
                                 <h3 class="text-lg font-bold text-center"><?php echo htmlspecialchars($product['ProductName']); ?></h3>
-                                <h3 class="text-sm font-semibold text-gray-800 text-center">Category:
+                                <h3 class="text-sm font-semibold text-gray-800 text-center">
                                     <?php echo htmlspecialchars($product['ProdCategoryName']); ?>
                                 </h3>
                             </div>
@@ -209,6 +274,7 @@ if ($result->num_rows > 0) {
                     <p class="text-center text-lg font-bold text-red-800">No products found in this category.</p>
                 <?php endif; ?>
             </div>
+
         </div>
 
         <div id="productModal" class="flex">
@@ -298,56 +364,78 @@ if ($result->num_rows > 0) {
             document.getElementById('closeModalButton').onclick = function () {
                 closeModal();
             };
+            function toggleDropdown() {
+                document.getElementById('dropdownMenu').classList.toggle('hidden');
+            }
+
+            function filterProducts() {
+                var grid, productItems, i;
+                grid = document.querySelector('.grid');
+                productItems = grid.querySelectorAll('.product-item');
+
+                // Get the selected categories
+                var selectedCategories = [];
+                var checkboxes = document.querySelectorAll('#dropdownMenu input[type="checkbox"]:checked');
+                checkboxes.forEach(function (checkbox) {
+                    selectedCategories.push(checkbox.value);
+                });
+
+                console.log("Selected Categories:", selectedCategories);
+
+                // Filter products based on the selected categories
+                productItems.forEach(function (item) {
+                    var categoryId = item.dataset.categoryId; // Assuming you have a data attribute for CategoryID
+                    console.log("Product Category ID:", categoryId);
+                    var display = selectedCategories.length === 0 || selectedCategories.includes(categoryId) ? 'block' : 'none';
+                    item.style.display = display;
+                });
+            }
+
             function searchProducts() {
                 var input, filter, grid, productItems, productName, categoryName, i, txtValue;
                 input = document.getElementById('searchInput');
                 filter = input.value.toUpperCase();
-                grid = document.getElementsByClassName('grid')[0];
-                productItems = grid.getElementsByClassName('product-item');
+                grid = document.querySelector('.grid');
+                productItems = grid.querySelectorAll('.product-item');
 
                 var matchedProducts = false; // Flag to check if any products were matched
 
-                for (i = 0; i < productItems.length; i++) {
-                    productName = productItems[i].getElementsByTagName('h3')[0];
-                    categoryName = productItems[i].getElementsByTagName('h3')[1]; // Add category name selection
-                    if (productName && categoryName) {
-                        var productText = productName.textContent || productName.innerText;
-                        var categoryText = categoryName.textContent || categoryName.innerText;
-                        var combinedText = productText + " " + categoryText; // Combine product and category names for search
-
-                        if (combinedText.toUpperCase().indexOf(filter) > -1) {
-                            productItems[i].style.display = "";
-                            matchedProducts = true; // Set flag to true if any product is matched
-                        } else {
-                            productItems[i].style.display = "none";
-                        }
+                // Iterate through all product items
+                productItems.forEach(function (item) {
+                    productName = item.querySelector('h3').innerText.toUpperCase();
+                    // Check if the product name matches the search filter
+                    if (productName.indexOf(filter) > -1) {
+                        item.style.display = ''; // Show the product
+                        matchedProducts = true;
+                    } else {
+                        item.style.display = 'none'; // Hide the product
                     }
-                }
+                });
 
                 // If no products were matched, display the message; otherwise, hide it
                 var noMatchProductsElement = document.querySelector('.no-match-products');
                 if (!matchedProducts) {
                     if (!noMatchProductsElement) {
-                        // Create the message if it doesn't exist
                         noMatchProductsElement = document.createElement('p');
                         noMatchProductsElement.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> No Match Products Found';
-                        noMatchProductsElement.classList.add('no-match-products', 'text-center', 'mt-8', 'font-bold', 'text-red-800', 'text-lg'); // Add specified classes
-                        // Append the message below the search input
-                        input.parentNode.appendChild(noMatchProductsElement);
+                        noMatchProductsElement.classList.add('no-match-products', 'text-center', 'my-8', 'font-bold', 'text-red-800', 'text-lg'); // Add specified classes
+                        grid.parentNode.insertBefore(noMatchProductsElement, grid.nextSibling);
                     } else {
-                        // If message already exists, ensure it's visible
                         noMatchProductsElement.style.display = "block";
                     }
                 } else {
-                    // If there were matched products, hide the message if it exists
                     if (noMatchProductsElement) {
                         noMatchProductsElement.style.display = "none";
                     }
                 }
             }
-            // Bind keyup event to search input
+
             document.getElementById('searchInput').addEventListener('keyup', searchProducts);
 
+
+            document.querySelectorAll('#dropdownMenu input[type="checkbox"]').forEach(function (checkbox) {
+                checkbox.addEventListener('change', filterProducts);
+            });
         </script>
         <?php
 
@@ -372,7 +460,8 @@ if ($result->num_rows > 0) {
                                 CUSTOMIZE:<?php echo strtoupper($categoryName); ?><br>
                                 <span class="text-white text-2xl font-semibold">Many of our products can be customized to the
                                     requirements
-                                    of our clients.<br> These may include the dimensions, colors, textures, and materials used in the
+                                    of our clients.<br> These may include the dimensions, colors, textures, and materials used in
+                                    the
                                     item.</span><br>
                                 <span class="text-white text-2xl font-semibold block mt-12">Send us an email at:
                                     <a href="mailto:info@projectsunlimited.com.ph" class="text-2xl hover:underline">
@@ -391,7 +480,8 @@ if ($result->num_rows > 0) {
                                 <h3 class="text-gray-800 font-bold text-3xl ">INQUIRE</h3>
                             </div>
                             <div class="flex items-center">
-                                <p class="font-semibold text-2xl p-4 px-8 mx-12">Ask about the product and set an official appointment
+                                <p class="font-semibold text-2xl p-4 px-8 mx-12">Ask about the product and set an official
+                                    appointment
                                     with
                                     Projects Unlimited. We are willing to get in touch with you directly and know your ideas.</p>
                             </div>
@@ -404,7 +494,8 @@ if ($result->num_rows > 0) {
                             <div class="flex items-centern">
                                 <p class="text-right font-semibold text-2xl p-4 px-8 mx-12">Discuss your desired dimension, color,
                                     texture,
-                                    and materials for your customized products and we’ll do it for you. The budget and timeline will be
+                                    and materials for your customized products and we’ll do it for you. The budget and timeline will
+                                    be
                                     discussed as well.</p>
                             </div>
                             <div class="flex items-center p-2 px-8">
@@ -414,7 +505,8 @@ if ($result->num_rows > 0) {
                                 <h3 class="text-gray-800 font-bold text-3xl">CREATE</h3>
                             </div>
                             <div class="flex items-centern">
-                                <p class="font-semibold text-2xl p-4 px-8 mx-12">Our team will proceed to create your desired products
+                                <p class="font-semibold text-2xl p-4 px-8 mx-12">Our team will proceed to create your desired
+                                    products
                                     and
                                     we’ll give you an estimated time of completion and we’ll keep you updated at all time.</p>
                             </div>
@@ -425,7 +517,8 @@ if ($result->num_rows > 0) {
                                     4</div>
                             </div>
                             <div class="flex items-center justify-endn">
-                                <p class=" text-right font-semibold text-2xl pb-2 px-8 pt-2 mx-12">Once the products are completed, we
+                                <p class=" text-right font-semibold text-2xl pb-2 px-8 pt-2 mx-12">Once the products are completed,
+                                    we
                                     will
                                     proceed to delivering and installing the products to your place.</p>
                             </div>
@@ -446,7 +539,8 @@ if ($result->num_rows > 0) {
                         CUSTOMIZE:<?php echo strtoupper($categoryName); ?><br>
                         <span class="text-white text-2xl font-semibold">Many of our products can be customized to the
                             requirements
-                            of our clients.<br> These may include the dimensions, colors, textures, and materials used in the
+                            of our clients.<br> These may include the dimensions, colors, textures, and materials used in
+                            the
                             item.</span><br>
                         <span class="text-white text-2xl font-semibold block mt-12">Send us an email at:
                             <a href="mailto:info@projectsunlimited.com.ph" class="text-2xl hover:underline">
@@ -465,7 +559,8 @@ if ($result->num_rows > 0) {
                         <h3 class="text-gray-800 font-bold text-3xl ">INQUIRE</h3>
                     </div>
                     <div class="flex items-center">
-                        <p class="font-semibold text-2xl p-4 px-8 mx-12">Ask about the product and set an official appointment
+                        <p class="font-semibold text-2xl p-4 px-8 mx-12">Ask about the product and set an official
+                            appointment
                             with
                             Projects Unlimited. We are willing to get in touch with you directly and know your ideas.</p>
                     </div>
@@ -478,7 +573,8 @@ if ($result->num_rows > 0) {
                     <div class="flex items-centern">
                         <p class="text-right font-semibold text-2xl p-4 px-8 mx-12">Discuss your desired dimension, color,
                             texture,
-                            and materials for your customized products and we’ll do it for you. The budget and timeline will be
+                            and materials for your customized products and we’ll do it for you. The budget and timeline will
+                            be
                             discussed as well.</p>
                     </div>
                     <div class="flex items-center p-2 px-8">
@@ -488,7 +584,8 @@ if ($result->num_rows > 0) {
                         <h3 class="text-gray-800 font-bold text-3xl">CREATE</h3>
                     </div>
                     <div class="flex items-centern">
-                        <p class="font-semibold text-2xl p-4 px-8 mx-12">Our team will proceed to create your desired products
+                        <p class="font-semibold text-2xl p-4 px-8 mx-12">Our team will proceed to create your desired
+                            products
                             and
                             we’ll give you an estimated time of completion and we’ll keep you updated at all time.</p>
                     </div>
@@ -499,7 +596,8 @@ if ($result->num_rows > 0) {
                             4</div>
                     </div>
                     <div class="flex items-center justify-endn">
-                        <p class=" text-right font-semibold text-2xl pb-2 px-8 pt-2 mx-12">Once the products are completed, we
+                        <p class=" text-right font-semibold text-2xl pb-2 px-8 pt-2 mx-12">Once the products are completed,
+                            we
                             will
                             proceed to delivering and installing the products to your place.</p>
                     </div>
