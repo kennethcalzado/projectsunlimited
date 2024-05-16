@@ -271,10 +271,9 @@ ob_start();
 
         function isValidInput(input) {
             // Simple check for HTML and SQL injections
-            var pattern = /<[^>]*>|['";=:()]+|(--[^\r\n]*)|(\/\*[\w\W]*?(?=\*)\*\/)/gi;
+            var pattern = /<[^>]*>|[";=:()]+|(--[^\r\n]*)|(\/\*[\w\W]*?(?=\*)\*\/)/gi;
             return !pattern.test(input);
         }
-
 
         // DELETE MODAL //
 
@@ -344,6 +343,8 @@ ob_start();
 
         // Close the update modal with fade-out animation
         function closeUpdateModal() {
+            $('.error-message').text('').hide();
+            $('.border-red-500').removeClass('border-red-500');
             var modal = document.getElementById('updateModal');
             modal.classList.remove('fade-in'); // Remove fade-in class if applied
             modal.classList.add('fade-out');
@@ -499,6 +500,8 @@ ob_start();
 
         // Close the modal with fade-out animation
         function closeModal() {
+            $('.error-message').text('').hide();
+            $('.border-red-500').removeClass('border-red-500');
             var modal = document.getElementById('modal');
             modal.classList.remove('fade-in'); // Remove fade-in class if applied
             modal.classList.add('fade-out');

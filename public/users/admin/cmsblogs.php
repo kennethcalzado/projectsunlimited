@@ -67,23 +67,28 @@ ob_start();
                     <div class="mb-4 flex flex-col">
                         <label for="title" class="block font-semibold mb-2">Title</label>
                         <input type="text" name="title" id="title" class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent" required>
+                        <div id="titleError" class="error-message text-red-500"></div>
                     </div>
                     <div class="mb-4 flex flex-col">
                         <label for="description" class="block font-semibold mb-2">Description</label>
                         <textarea name="description" id="description" class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent" required></textarea>
+                        <div id="descriptionError" class="error-message text-red-500"></div>
                     </div>
                     <div class="mb-4 flex flex-col">
                         <label for="thumbnail" class="block font-semibold mb-2">Thumbnail</label>
                         <input type="file" name="thumbnail" id="thumbnail" class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent" accept="image/*" required>
+                        <div id="thumbnailError" class="error-message text-red-500"></div>
                     </div>
                     <div class="mb-4 flex flex-col">
                         <label for="images" class="block font-semibold mb-2">Images</label>
                         <input type="file" name="images[]" id="images" class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent" accept="image/*" multiple>
+                        <div id="imageError" class="error-message text-red-500"></div>
                     </div>
                     <div class="mb-4 flex flex-col">
                         <label for="date" class="block font-semibold mb-2">Date</label>
                         <!-- Date picker input field -->
                         <input type="date" name="date" id="date" class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent" required>
+                        <div id="dateError" class="error-message text-red-500"></div>
                     </div>
                     <div class="mb-4 flex flex-col">
                         <label for="type" class="block font-semibold mb-2">Type</label>
@@ -91,6 +96,7 @@ ob_start();
                             <option value="News">News</option>
                             <option value="Projects">Projects</option>
                         </select>
+                        <div id="typeError" class="error-message text-red-500"></div>
                     </div>
                     <div class="text-right">
                         <button type="button" class="btn btn-primary" onclick="confirmAdd()">Add Blog</button>
@@ -135,14 +141,17 @@ ob_start();
                     <div class="mb-4 flex flex-col">
                         <label for="updateTitle" class="block font-semibold mb-2">Title</label>
                         <input type="text" name="updateTitle" id="updateTitle" class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent" required>
+                        <div id="titleUpdateError" class="error-message text-red-500"></div>
                     </div>
                     <div class="mb-4 flex flex-col">
                         <label for="updateDescription" class="block font-semibold mb-2">Description</label>
                         <textarea name="updateDescription" id="updateDescription" class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent" required></textarea>
+                        <div id="descriptionUpdateError" class="error-message text-red-500"></div>
                     </div>
                     <div class="mb-4 flex flex-col">
                         <label for="updateDate" class="block font-semibold mb-2">Date</label>
                         <input type="date" name="updateDate" id="updateDate" class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent">
+                        <div id="dateUpdateError" class="error-message text-red-500"></div>
                     </div>
                     <div class="mb-4 flex flex-col">
                         <label for="updateThumbnail" class="block font-semibold mb-2">Thumbnail</label>
@@ -151,6 +160,7 @@ ob_start();
                             <img id="thumbnailImg" src="#" alt="Thumbnail Preview" style="max-width: 100px; max-height: 100px;">
                         </div>
                         <input type="file" name="updateThumbnail" id="updateThumbnail" class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent" accept="image/*">
+                        <div id="thumbnailUpdateError" class="error-message text-red-500"></div>
                     </div>
                     <div class="mb-4 flex flex-col">
                         <label class="block font-semibold mb-2">Existing Images</label>
@@ -158,6 +168,7 @@ ob_start();
                             <!-- Existing images will be displayed here -->
                         </div>
                         <input type="file" name="updateImages[]" id="updateImages" class="border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent" accept="image/*" multiple>
+                        <div id="imagesUpdateError" class="error-message text-red-500"></div>
                     </div>
 
                     <div class="mb-4 flex flex-col">
@@ -166,6 +177,7 @@ ob_start();
                             <option value="News">News</option>
                             <option value="Projects">Projects</option>
                         </select>
+                        <div id="typeUpdateError" class="error-message text-red-500"></div>
                     </div>
                     <div class="text-right">
                         <button type="button" class="btn btn-primary" onclick="confirmUpdate()">Update Blog</button>
@@ -299,7 +311,14 @@ ob_start();
         // MODAL SCRIPTS //
 
         function viewPost(page) {
-            window.open(page, '_blank');
+            window.open('../' + page, '_blank');
+        }
+
+
+        function isValidInput(input) {
+            // Simple check for HTML and SQL injections
+            var pattern = /<[^>]*>|[";=:()]+|(--[^\r\n]*)|(\/\*[\w\W]*?(?=\*)\*\/)/gi;
+            return !pattern.test(input);
         }
 
         // DELETE MODAL //
@@ -428,6 +447,8 @@ ob_start();
 
         // Close the update modal with fade-out animation
         function closeUpdateModal() {
+            $('.error-message').text('').hide();
+            $('.border-red-500').removeClass('border-red-500');
             var modal = document.getElementById('updateModal');
             modal.classList.remove('fade-in'); // Remove fade-in class if applied
             modal.classList.add('fade-out');
@@ -443,6 +464,50 @@ ob_start();
         }
 
         function confirmUpdate() {
+            // Reset previous error messages and styles
+            $('.error-message').text('').hide();
+            $('.border-red-500').removeClass('border-red-500');
+
+            var title = $('#updateTitle').val();
+            var description = $('#updateDescription').val();
+            var thumbnailSrc = $('#thumbnailImg').attr('src');
+            var imagesFiles = $('#updateImages')[0].files;
+            var date = $('#updateDate').val();
+            var type = $('#updateType').val();
+            // Add similar variables for other fields (if needed)
+
+            // Validation: Check if fields are empty or contain invalid input
+            if (title === '' || !isValidInput(title)) {
+                $('#titleUpdateError').text('Please enter a valid title.').show();
+                $('#updateTitle').addClass('border-red-500');
+            }
+            if (description === '' || !isValidInput(description)) {
+                $('#descriptionUpdateError').text('Please enter a valid description.').show();
+                $('#updateDescription').addClass('border-red-500');
+            }
+            // Validation: Check if file fields are empty
+            if (!thumbnail === 0) {
+                $('#thumbnailUpdateError').text('Please select a thumbnail.').show();
+                $('#updateThumbnail').addClass('border-red-500');
+            }
+            if (imagesFiles.length === 0 && $('#existingImages img').length === 0) {
+                $('#imagesUpdateError').text('Please select at least one image.').show();
+                $('#updateImages').addClass('border-red-500');
+            }
+            if (date === '' || !isValidInput(date)) {
+                $('#dateUpdateError').text('Please select a valid date.').show();
+                $('#updateDate').addClass('border-red-500');
+            }
+            if (type === '' || !isValidInput(type)) {
+                $('#typeUpdateError').text('Please select a valid type.').show();
+                $('#updateType').addClass('border-red-500');
+            }
+
+            // If any field has an error, prevent form submission
+            if ($('.error-message:visible').length > 0) {
+                return;
+            }
+
             Swal.fire({
                 title: 'Are you sure?',
                 text: 'You are about to update the blog.',
@@ -468,6 +533,50 @@ ob_start();
         }
 
         function confirmAdd() {
+            // Reset previous error messages and styles
+            $('.error-message').text('').hide();
+            $('.border-red-500').removeClass('border-red-500');
+
+            var title = $('#title').val();
+            var description = $('#description').val();
+            var thumbnail = $('#thumbnail')[0].files[0];
+            var images = $('#images')[0].files;
+            var date = $('#date').val();
+            var type = $('#type').val();
+            // Add similar variables for other fields (if needed)
+
+            // Validation: Check if fields are empty or contain invalid input
+            if (title === '' || !isValidInput(title)) {
+                $('#titleError').text('Please enter a valid title.').show();
+                $('#title').addClass('border-red-500');
+            }
+            if (description === '' || !isValidInput(description)) {
+                $('#descriptionError').text('Please enter a valid description.').show();
+                $('#description').addClass('border-red-500');
+            }
+            if (!thumbnail) {
+                $('#thumbnailError').text('Please select a thumbnail.').show();
+                $('#updateThumbnail').addClass('border-red-500');
+            }
+            if (images.length === 0) {
+                $('#imageError').text('Please select at least one image.').show();
+                $('#updateImages').addClass('border-red-500');
+            }
+            if (date === '' || !isValidInput(date)) {
+                $('#dateError').text('Please select a valid date.').show();
+                $('#date').addClass('border-red-500');
+            }
+            if (type === '' || !isValidInput(type)) {
+                $('#typeError').text('Please select a valid type.').show();
+                $('#type').addClass('border-red-500');
+            }
+
+            // If any field has an error, prevent form submission
+            if ($('.error-message:visible').length > 0) {
+                return;
+            }
+
+            // If validation passes, show confirmation dialog
             Swal.fire({
                 title: 'Are you sure?',
                 text: 'You are about to add a new blog.',
@@ -486,8 +595,6 @@ ob_start();
                     setTimeout(function() {
                         document.getElementById('hiddenAddButton').click();
                     }, 700); // Adjust the delay time as needed
-                } else if (result.dismiss === Swal.DismissReason.cancel) {
-                    // Do nothing if cancelled
                 }
             });
         }
@@ -521,6 +628,8 @@ ob_start();
 
         // Close the modal with fade-out animation
         function closeModal() {
+            $('.error-message').text('').hide();
+            $('.border-red-500').removeClass('border-red-500');
             var modal = document.getElementById('modal');
             modal.classList.remove('fade-in'); // Remove fade-in class if applied
             modal.classList.add('fade-out');
