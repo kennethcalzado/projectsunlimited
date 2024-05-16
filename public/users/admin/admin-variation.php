@@ -172,7 +172,6 @@ ob_start();
             tableBody.empty();
 
             if (variations.length === 0) {
-                // No variations found to display
                 tableBody.html('<tr><td colspan="5" class="text-center font-bold text-red-800">No Variations Found</td></tr>');
                 return;
             }

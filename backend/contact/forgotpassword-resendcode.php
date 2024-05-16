@@ -46,13 +46,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // $mail->SMTPDebug = SMTP::DEBUG_SERVER;
         $mail->Host = 'smtp.gmail.com';
         $mail->SMTPAuth = true;
-        $mail->Username = 'kyle.m.roperez@gmail.com';
-        $mail->Password = 'nlxx qdcd kaoq dzsd';
+        $mail->Username = 'marketing.projectsunlimited@gmail.com'; // Your Gmail address
+        $mail->Password = 'vouargdiqfzxgite'; // Your Gmail password
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
         $mail->Port = 587;
 
         // Set sender email and name
-        $mail->setFrom('kyle.m.roperez@gmail.com', 'Kyle'); // Replace with your email and name
+        $mail->setFrom('marketing.projectsunlimited@gmail.com', 'Do-Not-Reply - P.U.');
         $mail->addAddress($email);
 
         // Style the email body with inline CSS
