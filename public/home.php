@@ -272,48 +272,44 @@ include("../backend/conn.php");
         autoMoveSlide();
     </script>
 
-    <section class="fade-in-hidden" style="padding-top: 40px;">
-        <h1 style="text-align: left; padding-left: 50px; font-size: 38px; font-weight: 800;">
-            NEWS & UPDATES
-        </h1>
-        <div style="display: flex; padding-top: 20px;">
-            <div style="flex: 2; padding-left: 50px; background-color: #ccc; height: 500px; display: flex; align-items: center; background-image: url(' <?php $sql = "SELECT * FROM blogs WHERE type = 'News' ORDER BY date DESC LIMIT 1";
-                                                                                                                                                        $result = $conn->query($sql);
-                                                                                                                                                        if ($result->num_rows > 0) {
-                                                                                                                                                            $row = $result->fetch_assoc();
-                                                                                                                                                            $images = explode(",", $row['images']);
-                                                                                                                                                            echo '../assets/blogs_img/' . $images[0];
-                                                                                                                                                        } else {
-                                                                                                                                                            echo ''; // Default image path or no image available
-                                                                                                                                                        }    ?>'); background-size: cover; background-position: center;">
-            </div>
+    <section class="fade-in-hidden news-section">
 
-            <div class="newsflash" style="text-align: justify; flex: 1; padding-right: 100px; padding-left: 50px; display: flex; align-items: center;"> <!-- Right column for content -->
-                <div style="margin-left: auto;">
-                    <?php
-                    // Reuse the fetched data
-                    if ($result->num_rows > 0) {
-                        // Display limited text from the description column
-                        $description = substr($row['description'], 0, 200); // Display first 200 characters
-                        echo '<p class="text-2xl font-semibold text-black px-16 mt-8">' . $description . '...</p>';
-                    } else {
-                        echo "No news available";
-                    }
-                    ?>
-                    <div style="padding-top: 20px; text-align: center;">
-                        <a href="blogs.php">
-                            <button style="border-radius: 50px;" class="yellow-btn">For other updates ►</button>
-                        </a>
-                    </div>
-                </div>
+        <div class="news-content">
+            <div class="news-image">
+                <?php
+                $sql = "SELECT * FROM blogs WHERE type = 'News' ORDER BY date DESC LIMIT 1";
+                $result = $conn->query($sql);
+                if ($result->num_rows > 0) {
+                    $row = $result->fetch_assoc();
+                    $images = explode(",", $row['images']);
+                    echo '<div class="image" style="background-image: url(\'../assets/blogs_img/' . $images[0] . '\')"></div>';
+                } else {
+                    echo '<div class="image"></div>'; // Default image path or no image available
+                }
+                ?>
+            </div>
+            <div class="news-text">
+                <h1 class="section-title">NEWS & UPDATES</h1>
+                <?php
+                // Reuse the fetched data
+                if ($result->num_rows > 0) {
+                    // Display limited text from the description column
+                    $description = substr($row['description'], 0, 200); // Display first 200 characters
+                    echo '<p class="description">' . $description . '...</p>';
+                } else {
+                    echo '<p class="description">No news available</p>';
+                }
+                ?>
+                <a href="blogs.php">
+                    <button style="border-radius: 50px;" class="yellow-btn">For other updates ►</button>
+                </a>
             </div>
         </div>
     </section>
 
-
-    <section class="fade-in-hidden" style="padding-top: 40px; padding-bottom: 20px; background: linear-gradient(to bottom, transparent, #F6E17A);">
-        <h1 style="text-align: center; font-size: 38px; font-weight: 800;">LATEST PRODUCTS</h1>
-        <div style="display: flex; justify-content: space-around; padding-top: 20px; padding-left: 40px; padding-right: 40px;">
+    <section class="fade-in-hidden latest-products">
+        <h1 class="section-title">LATEST PRODUCTS</h1>
+        <div class="products-container">
             <?php
             // Fetch products from the database
             $sql = "SELECT * FROM product ORDER BY created_at DESC LIMIT 4";
@@ -327,10 +323,10 @@ include("../backend/conn.php");
                     $image_url = $image_urls[0];
             ?>
                     <!-- Product column -->
-                    <div style="flex: 1; padding: 20px; height: 400px;">
-                        <div class="transition-opacity duration-1000 delay-1000 ease hover:scale-110" style="background-image: url('../assets/products/<?php echo $image_url; ?>'); background-size: cover; background-position: center; padding: 20px; height: 100%;"></div>
-                        <p style="text-align: center; font-weight:600;"><?php echo $row['ProductName']; ?></p>
-                        <p style="text-align: center;"><?php echo $row['Description']; ?></p>
+                    <div class="product-column">
+                        <div class="product-image" style="background-image: url('../assets/products/<?php echo $image_url; ?>');"></div>
+                        <p class="product-name"><?php echo $row['ProductName']; ?></p>
+                        <p class="product-description"><?php echo $row['Description']; ?></p>
                     </div>
             <?php
                 }
@@ -340,14 +336,14 @@ include("../backend/conn.php");
             ?>
         </div>
 
-        <div style="padding-top: 100px; text-align: center;">
+        <div class="products-button-container">
             <a href="category.php">
-                <button style="padding: 10px 80px;" class="white-btn">See other products ►</button>
+                <button class="white-btn">See other products ►</button>
             </a>
         </div>
     </section>
 
-    <section class="fade-in-hidden" style="padding-top: 40px; padding-bottom: 20px;">
+    <section class="customers fade-in-hidden" style="padding-top: 40px; padding-bottom: 20px;">
         <h1 style="text-align: center; font-size: 38px; font-weight: 800;">
             SOME OF OUR CUSTOMERS
         </h1>
@@ -356,7 +352,7 @@ include("../backend/conn.php");
 
     <section id="third-carousel-section" class="third-carousel-section relative fade-in-hidden">
         <div class="third-carousel relative">
-            <h1 style="text-align: right; padding-right: 80px; color: #F6E17A;" class="text-4xl font-bold">HEAR WHAT OUR FRIENDS HAVE TO SAY</h1>
+            <h1 style="text-align: right; padding-right: 80px; color: #F6E17A;" class="hearr text-4xl font-bold">HEAR WHAT OUR FRIENDS HAVE TO SAY</h1>
 
             <div class="third-carousel-inner flex">
                 <?php
@@ -367,10 +363,10 @@ include("../backend/conn.php");
                 if ($result->num_rows > 0) {
                     while ($row = $result->fetch_assoc()) {
                         // Display carousel item for each testimonial
-                        echo '<div class="third-carousel-item w-full text-white text-center">';
-                        echo '<h1 style="text-align: justify; line-height: 1.5; padding-top: 50px;" class="text-3xl font-bold">"' . $row['message'] . '"</h1><br>';
-                        echo '<h1 style="padding-top: 50px;" class="text-3xl font-bold">' . $row['cname'] . '</h1>';
-                        echo '<h1 class="text-3xl font-bold">' . $row['company'] . '</h1>';
+                        echo '<div class="third-carousel-item text-white">';
+                        echo '<h1 class="testimonial-message text-3xl font-bold">"' . $row['message'] . '"</h1>';
+                        echo '<h1 class="cname text-3xl font-bold">' . $row['cname'] . '</h1>';
+                        echo '<h1 class="company text-3xl font-bold">' . $row['company'] . '</h1>';
                         echo '</div>';
                     }
                 } else {
