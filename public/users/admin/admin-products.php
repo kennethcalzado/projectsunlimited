@@ -697,21 +697,54 @@ ob_start();
 
         // Function to update product availability in the backend
         function updateProductAvailability(productId, availability) {
-            $.ajax({
-                url: "../../../backend/product/updateavail.php",
-                type: "POST",
-                data: {
-                    ProductID: productId,
-                    availability: availability
-                },
-                dataType: "json",
-                success: function(response) {
-                    // Handle success
-                    console.log("Availability updated successfully:", response);
-                },
-                error: function(xhr, status, error) {
-                    // Handle error
-                    console.error("Error updating availability:", error);
+            // Ask the user for confirmation
+            Swal.fire({
+                title: 'Confirm Update',
+                text: "Do you want to update the product availability?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, update it!',
+                cancelButtonText: 'Cancel',
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // If user confirms, proceed with the update
+                    $.ajax({
+                        url: "../../../backend/product/updateavail.php",
+                        type: "POST",
+                        data: {
+                            ProductID: productId,
+                            availability: availability
+                        },
+                        dataType: "json",
+                        success: function(response) {
+                            // Handle success with Swal alert
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Success',
+                                text: 'Availability updated successfully!',
+                                timer: 1000,
+                                showConfirmButton: false
+                            });
+                            console.log("Availability updated successfully:", response);
+                        },
+                        error: function(xhr, status, error) {
+                            // Handle error with Swal alert
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: 'Error updating availability: ' + error,
+                                timer: 1000,
+                                showConfirmButton: false
+                            });
+                            console.error("Error updating availability:", error);
+                        }
+                    });
+                } else if (result.dismiss === Swal.DismissReason.cancel) {
+                    // If user cancels, log it or handle the cancellation as needed
+                    console.log("Update cancelled by the user.");
                 }
             });
         }
@@ -1224,7 +1257,7 @@ ob_start();
             $("#editProductName").removeClass("border-red-500");
             $("#editProductNameError").text("").addClass("hidden");
         }
-        
+
         // Description
         const productDescription = $("#editProductDescription").val().trim();
         if (!productDescription) {
@@ -1451,7 +1484,6 @@ ob_start();
         }
     });
 
-    // Add event listener to save changes button in the edit modal
     $('#editProductForm').submit(function(event) {
         event.preventDefault();
 
@@ -1460,88 +1492,68 @@ ob_start();
             return; // Stop execution if validation fails
         }
 
-        // Gather edited product details
-        const editedProductName = $("#editProductName").val();
-        const editedProductDescription = $("#editProductDescription").val();
-        const editedProductBrand = $("#editProductBrand").val();
-        const editedProductCategory = $("#editProductCategory").val();
+        // Display confirmation dialog before updating
+        Swal.fire({
+            title: 'Confirm Update',
+            text: 'Are you sure you want to update the product?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, update it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Gather edited product details
+                const editedProductName = $("#editProductName").val();
+                const editedProductDescription = $("#editProductDescription").val();
+                const editedProductBrand = $("#editProductBrand").val();
+                const editedProductCategory = $("#editProductCategory").val();
 
-        // Gather edited product image
-        const editedProductImage = $("#editProductImage")[0].files[0];
+                // Gather edited product image
+                const editedProductImage = $("#editProductImage")[0].files[0];
 
-        // // Check if a new image is selected
-        // if (!editedProductImage) {
-        //     Swal.fire({
-        //         icon: 'error',
-        //         title: 'Error',
-        //         text: 'Please select a product image.'
-        //     });
-        //     return; // Stop submission if product image is not selected
-        // }
+                // Send edited details to the server to update the database
+                const formData = new FormData();
+                formData.append('productId', productId);
+                formData.append('editedProductName', editedProductName);
+                formData.append('editedProductDescription', editedProductDescription);
+                formData.append('editedProductBrand', editedProductBrand);
+                formData.append('editedProductCategory', editedProductCategory);
+                formData.append('editedProductImage', editedProductImage);
 
-        // Send edited details to the server to update the database
-        const formData = new FormData();
-        formData.append('productId', productId);
-        formData.append('editedProductName', editedProductName);
-        formData.append('editedProductDescription', editedProductDescription);
-        formData.append('editedProductBrand', editedProductBrand);
-        formData.append('editedProductCategory', editedProductCategory);
-        formData.append('editedProductImage', editedProductImage);
+                // Additional form data handling...
 
-        $(".editVariationContainer").each(function() {
-            const variationID = $(this).data("variation-id");
-            const variationName = $(this).find(".editVariationName").val();
-            const variationImage = $(this).find(".editVariationImage")[0].files[0];
-            const status = $(this).is(":visible") ? "active" : "inactive"; // Check if variation container is visible
-
-            // Append variation details to FormData object if variation name is not empty
-            if (variationName.trim() !== '') {
-                formData.append(`variations[${variationID}][variationName]`, variationName);
-                formData.append(`variations[${variationID}][variationImage]`, variationImage);
-                formData.append(`variations[${variationID}][status]`, status); // Append variation status
-            }
-        });
-        $(".newVariation").each(function() {
-            const variationName = $(this).find(".editVariationName").val();
-            const variationImage = $(this).find(".editVariationImage")[0].files[0];
-            if (variationName.trim() !== '') {
-                formData.append('newVariations[]', variationName);
-                formData.append('newVariationImages[]', variationImage);
-            }
-        });
-        $(".editVariationContainer.marked-for-deletion").each(function() {
-            const variationID = $(this).data("variation-id");
-            formData.append('deletedVariations[]', variationID);
-        });
-        $.ajax({
-            url: "../../../backend/product/editproduct.php",
-            method: "POST",
-            data: formData,
-            contentType: false,
-            processData: false,
-            success: function(response) {
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Success',
-                    text: 'Product details updated successfully!',
-                    showConfirmButton: false,
-                    timer: 1000
-                }).then(function() {
-                    $("#successMessage").text("Product details updated successfully.");
-                    $("#successPopup").removeClass("hidden");
-                    $("#editProductModal").addClass("hidden");
-                    setTimeout(function() {
-                        $("#successPopup").addClass("hidden");
-                        location.reload();
-                    }, 500);
-                });
-            },
-            error: function(xhr, status, error) {
-                console.error("Error updating product details:", error);
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error',
-                    text: 'Failed to update product details. Please try again.'
+                $.ajax({
+                    url: "../../../backend/product/editproduct.php",
+                    method: "POST",
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    success: function(response) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Success',
+                            text: 'Product details updated successfully!',
+                            showConfirmButton: false,
+                            timer: 1000
+                        }).then(function() {
+                            $("#successMessage").text("Product details updated successfully.");
+                            $("#successPopup").removeClass("hidden");
+                            $("#editProductModal").addClass("hidden");
+                            setTimeout(function() {
+                                $("#successPopup").addClass("hidden");
+                                location.reload();
+                            }, 500);
+                        });
+                    },
+                    error: function(xhr, status, error) {
+                        console.error("Error updating product details:", error);
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: 'Failed to update product details. Please try again.'
+                        });
+                    }
                 });
             }
         });

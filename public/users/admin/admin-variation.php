@@ -85,17 +85,10 @@ ob_start();
                 <div class="relative mb-1 mt-2 sm:mb-0 sm:mr-2">
                     <!-- Search input -->
                     <div class="relative">
-                        <input
-                            class="border-2 border-gray-300 bg-white h-10 w-64 px-2 pr-10 mt-4 sm:!mt-0 rounded-lg text-[16px] focus:outline-none"
-                            type="text" name="search" placeholder="Search" id="searchInput">
+                        <input class="border-2 border-gray-300 bg-white h-10 w-64 px-2 pr-10 mt-4 sm:!mt-0 rounded-lg text-[16px] focus:outline-none" type="text" name="search" placeholder="Search" id="searchInput">
                         <button type="submit" class="absolute right-0 top-0 mt-7 mr-4 sm:mt-3">
-                            <svg class="text-gray-600 h-5 w-5 fill-current hover:text-gray-500 "
-                                xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-                                version="1.1" id="Capa_1" x="0px" y="0px" viewBox="0 0 56.966 56.966"
-                                style="enable-background:new 0 0 56.966 56.966;" xml:space="preserve" width="512px"
-                                height="512px">
-                                <path
-                                    d="M55.146,51.887L41.588,37.786c3.486-4.144,5.396-9.358,5.396-14.786c0-12.682-10.318-23-23-23s-23,10.318-23,23  s10.318,23,23,23c4.761,0,9.298-1.436,13.177-4.162l13.661,14.208c0.571,0.593,1.339,0.92,2.162,0.92  c0.779,0,1.518-0.297,2.079-0.837C56.255,54.982,56.293,53.08,55.146,51.887z M23.984,6c9.374,0,17,7.626,17,17s-7.626,17-17,17  s-17-7.626-17-17S14.61,6,23.984,6z" />
+                            <svg class="text-gray-600 h-5 w-5 fill-current hover:text-gray-500 " xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="Capa_1" x="0px" y="0px" viewBox="0 0 56.966 56.966" style="enable-background:new 0 0 56.966 56.966;" xml:space="preserve" width="512px" height="512px">
+                                <path d="M55.146,51.887L41.588,37.786c3.486-4.144,5.396-9.358,5.396-14.786c0-12.682-10.318-23-23-23s-23,10.318-23,23  s10.318,23,23,23c4.761,0,9.298-1.436,13.177-4.162l13.661,14.208c0.571,0.593,1.339,0.92,2.162,0.92  c0.779,0,1.518-0.297,2.079-0.837C56.255,54.982,56.293,53.08,55.146,51.887z M23.984,6c9.374,0,17,7.626,17,17s-7.626,17-17,17  s-17-7.626-17-17S14.61,6,23.984,6z" />
                             </svg>
                         </button>
                     </div>
@@ -135,7 +128,7 @@ ob_start();
     </div>
 </div>
 <script>
-    $(document).ready(function () {
+    $(document).ready(function() {
         var itemsPerPage = 10;
         var currentPage = 1;
 
@@ -155,7 +148,7 @@ ob_start();
                     availability: selectedAvailability,
                     searchQuery: searchQuery // Include search query in the data object
                 },
-                success: function (response) {
+                success: function(response) {
                     if (response.status === 'success') {
                         if (response.data.length === 0) {
                             // No variations found for the selected filters
@@ -170,7 +163,7 @@ ob_start();
                         console.error('Error fetching data');
                     }
                 },
-                error: function (xhr, status, error) {
+                error: function(xhr, status, error) {
                     console.error('Error:', error);
                 }
             });
@@ -186,7 +179,7 @@ ob_start();
             }
 
             // Populate table with variations
-            $.each(variations, function (index, variation) {
+            $.each(variations, function(index, variation) {
                 var imageURL = '../../../assets/variations/' + variation.image_url;
                 var row = '<tr class="border-b hover:bg-zinc-100 border-b bg-white-200">' +
                     '<td class="px-4 py-2 w-1/12">' + variation.VariationName + '</td>' +
@@ -221,7 +214,7 @@ ob_start();
                 }
             }
 
-            paginationBar.find('.btn-pagination').click(function () {
+            paginationBar.find('.btn-pagination').click(function() {
                 const pageNumber = $(this).text();
                 currentPage = parseInt(pageNumber);
                 fetchVariationData();
@@ -235,34 +228,46 @@ ob_start();
         function generateAvailabilityDropdown(selectedAvailability, variationId) {
             var options = ['Available', 'Low Stocks', 'Unavailable'];
             var dropdown = '<select class="availability-dropdown border rounded-md px-2 py-1" data-variation-id="' + variationId + '">';
-            options.forEach(function (option) {
+            options.forEach(function(option) {
                 dropdown += '<option value="' + option + '" ' + (option === selectedAvailability ? 'selected' : '') + '>' + option + '</option>';
             });
             dropdown += '</select>';
             return dropdown;
         }
 
-        $('#variationlisting').on('change', '.availability-dropdown', function () {
+        $('#variationlisting').on('change', '.availability-dropdown', function() {
             var variationId = $(this).data('variation-id');
             var availability = $(this).val();
 
-            $.ajax({
-                url: '../../../backend/variation/fetchvariation.php',
-                method: 'POST',
-                dataType: 'json',
-                data: {
-                    variationId: variationId,
-                    availability: availability
-                },
-                success: function (response) {
-                    if (response.status === 'success') {
-                        console.log('Availability updated successfully');
-                    } else {
-                        console.error('Failed to update availability');
-                    }
-                },
-                error: function (xhr, status, error) {
-                    console.error('Error:', error);
+            Swal.fire({
+                title: 'Confirm Update',
+                text: 'Are you sure you want to update the availability of this variation?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, update it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: '../../../backend/variation/fetchvariation.php',
+                        method: 'POST',
+                        dataType: 'json',
+                        data: {
+                            variationId: variationId,
+                            availability: availability
+                        },
+                        success: function(response) {
+                            if (response.status === 'success') {
+                                console.log('Availability updated successfully');
+                            } else {
+                                console.error('Failed to update availability');
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            console.error('Error:', error);
+                        }
+                    });
                 }
             });
         });
@@ -271,15 +276,15 @@ ob_start();
             url: '../../../backend/variation/fetchavailability.php',
             method: 'GET',
             dataType: 'json',
-            success: function (response) {
+            success: function(response) {
                 var availFilterDropdown = $('#availFilter');
                 availFilterDropdown.empty();
                 availFilterDropdown.append('<option value="availreset">All Availability</option>');
-                response.forEach(function (option) {
+                response.forEach(function(option) {
                     availFilterDropdown.append('<option value="' + option + '">' + option + '</option>');
                 });
             },
-            error: function (xhr, status, error) {
+            error: function(xhr, status, error) {
                 console.error('Error fetching availability options:', error);
             }
         });
@@ -288,36 +293,36 @@ ob_start();
             url: '../../../backend/variation/fetchstatus.php',
             method: 'GET',
             dataType: 'json',
-            success: function (response) {
+            success: function(response) {
                 var statusFilterDropdown = $('#statusFilter');
                 statusFilterDropdown.empty();
                 statusFilterDropdown.append('<option value="statusreset">All Status</option>');
-                response.forEach(function (option) {
+                response.forEach(function(option) {
                     statusFilterDropdown.append('<option value="' + option + '">' + option.charAt(0).toUpperCase() + option.slice(1) + '</option>');
                 });
             },
-            error: function (xhr, status, error) {
+            error: function(xhr, status, error) {
                 console.error('Error fetching status options:', error);
             }
         });
 
-        $('#statusFilter').change(function () {
+        $('#statusFilter').change(function() {
             currentPage = 1; // Reset to the first page
             fetchVariationData();
         });
 
-        $('#availFilter').change(function () {
+        $('#availFilter').change(function() {
             currentPage = 1; // Reset to the first page
             fetchVariationData();
         });
 
-        $('#searchInput').on('input', function () {
+        $('#searchInput').on('input', function() {
             currentPage = 1; // Reset to the first page
             fetchVariationData(); // Trigger data fetch
         });
 
 
-        $('#variationlisting').on('click', '.deleteVariation', function () {
+        $('#variationlisting').on('click', '.deleteVariation', function() {
             var variationId = $(this).data('variationid');
             var action = $(this).attr('id') === 'btn-inactivate' ? 'inactive' : 'active';
 
@@ -340,14 +345,14 @@ ob_start();
                             variationId: variationId,
                             status: action
                         },
-                        success: function (response) {
+                        success: function(response) {
                             if (response.status === 'success') {
                                 Swal.fire({
                                     icon: 'success',
                                     title: 'Success',
                                     text: 'Variation status set to ' + action + ' successfully!',
                                     confirmButtonText: 'OK'
-                                }).then(function (result) {
+                                }).then(function(result) {
                                     if (result.isConfirmed) {
                                         fetchVariationData();
                                     }
@@ -361,7 +366,7 @@ ob_start();
                                 });
                             }
                         },
-                        error: function (xhr, status, error) {
+                        error: function(xhr, status, error) {
                             Swal.fire({
                                 icon: 'error',
                                 title: 'Error',
@@ -380,5 +385,5 @@ ob_start();
 </script>
 <?php
 $script = ob_get_clean();
-include ("../../../public/master.php");
+include("../../../public/master.php");
 ?>
