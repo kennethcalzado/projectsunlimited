@@ -33,39 +33,6 @@ include("../backend/conn.php");
             margin: 0 auto;
             /* Add any additional styling here */
         }
-
-        /* Mobile Styles */
-        @media (max-width: 767px) {
-            .carousel-item {
-                height: 300px;
-                /* Adjust height for mobile view */
-            }
-
-            .carousel-item h1 {
-                font-size: 24px;
-                /* Adjust font size for title */
-                padding-right: 10px;
-                /* Adjust padding for title */
-                padding-bottom: 80px;
-                /* Adjust padding for title */
-            }
-
-            .carousel-item a {
-                margin-right: 10px;
-                /* Adjust margin for button */
-                margin-bottom: 20px;
-                /* Adjust margin for button */
-                font-size: 14px;
-                /* Adjust font size for button */
-                padding: 6px 12px;
-                /* Adjust padding for button */
-            }
-
-            .carousel-arrow {
-                font-size: 40px;
-                /* Adjust arrow size */
-            }
-        }
     </style>
 </head>
 
@@ -102,12 +69,12 @@ include("../backend/conn.php");
                         // Add translucent overlay
                         echo '<div class="absolute inset-0 bg-black opacity-50"></div>';
                         if ($isProjectDisplayed) {
-                            echo '<h1 style="padding-right: 170px; padding-bottom: 210px;" class="absolute bottom-0 right-0 m-4 text-4xl font-bold opacity-0 animate-fade-in">FEATURED PROJECT</h1>';
+                            echo '<h1 class="feature absolute bottom-0 right-0 m-4 text-4xl font-bold opacity-0 animate-fade-in">FEATURED PROJECT</h1>';
                         }
                         // Add title text in the lower right corner with fade-in animation
-                        echo '<h1 style="padding-right: 170px; padding-bottom: 140px;" class="absolute bottom-0 right-0 m-4 text-4xl font-bold opacity-0 animate-fade-in">' . $row['title'] . '</h1>';
+                        echo '<h1 class="title absolute bottom-0 right-0 m-4 text-4xl font-bold opacity-0 animate-fade-in">' . $row['title'] . '</h1>';
                         // Add button with link from the page column with fade-in animation
-                        echo '<a href="' . $row['page'] . '" style="margin-right: 185px; margin-bottom: 100px; border-radius: 5px;" class="absolute bottom-0 right-0 m-4 px-4 py-2 bg-yellow-400 text-black text-center rounded-md yellow-btn opacity-0 animate-fade-in">Read More</a>';
+                        echo '<a href="' . $row['page'] . '" class="page-button absolute bottom-0 right-0 m-4 px-4 py-2 bg-yellow-400 text-black text-center rounded-md yellow-btn opacity-0 animate-fade-in">Read More</a>';
                         echo '</div>';
                         $index++;
                     }
@@ -186,12 +153,12 @@ include("../backend/conn.php");
     </script>
 
     <section class="fade-in-hidden">
-        <p class="text-2xl font-semibold text-black px-60 mt-8">Together, we provide the best quality interior products, and highest level of support at most reasonable price.</p>
+        <p class="section text-2xl font-semibold text-black mt-8">Together, we provide the best quality interior products, and highest level of support at most reasonable price.</p>
     </section>
 
     <section class="section fade-in-hidden">
         <div class="column" align="center">
-            <div class="about-us">
+            <div style="align-items: center;" class="about-us">
                 <h1 style="font-size: 31px; font-weight: 530;">ABOUT US</h1>
                 <a href="about.php">
                     <button style="border-radius: 50px;" class="yellow-btn">Read more ►</button>
@@ -321,7 +288,7 @@ include("../backend/conn.php");
                                                                                                                                                         }    ?>'); background-size: cover; background-position: center;">
             </div>
 
-            <div style="text-align: justify; flex: 1; padding-right: 100px; padding-left: 50px; display: flex; align-items: center;"> <!-- Right column for content -->
+            <div class="newsflash" style="text-align: justify; flex: 1; padding-right: 100px; padding-left: 50px; display: flex; align-items: center;"> <!-- Right column for content -->
                 <div style="margin-left: auto;">
                     <?php
                     // Reuse the fetched data

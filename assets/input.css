@@ -99,6 +99,143 @@ body {
 }
 
 /**banner home**/
+
+                /* Media query for smaller screen sizes (e.g., mobile devices) */
+                @media screen and (max-width: 767px) {
+                    .carousel {
+                        height: 300px !important;
+                        /* Adjust height for mobile view */
+                    }
+        
+                    .carousel-inner {
+                        height: 300px !important;
+                        /* Adjust height for mobile view */
+                    }
+        
+                    .carousel-item {
+                        height: 300px !important;
+                        /* Adjust height for mobile view */
+                    }
+        
+                    .carousel-arrow {
+                        font-size: 20px !important;
+                        /* Adjust arrow size */
+                        padding-left: 20px !important;
+                        padding-right: 20px !important;
+                    }
+
+                    .fas {
+                        padding-left: 10px !important;
+                        padding-right: 10px !important;
+                    }
+        
+                    .section,
+                    .text-2xl {
+                        padding: 0px 10px !important;
+                        font-size: 16px !important;
+                        text-align: center;
+                        margin-top: 10px !important;
+                        /* Adjusted padding for mobile view */
+                    }
+
+                    .h1 {
+                        font-size: 16px !important;
+                    }
+
+                    .carousel-dot {
+                        width: 8px !important;
+                        height: 8px !important;
+                        margin: 0px 4px !important;
+                    }
+
+                    /* CSS for title in mobile view */
+                    .title {
+                        font-size: 14px !important;
+                        /* Example font size for mobile view */
+                        padding-right: 40px !important;
+                        /* Adjust padding for mobile view */
+                        padding-bottom: 70px !important;
+                        /* Adjust padding for mobile view */
+                    }
+                    
+                    /* CSS for button in mobile view */
+                    .page-button {
+                        margin-right: 57px !important;
+                        /* Adjust margin for mobile view */
+                        margin-bottom: 60px !important;
+                        /* Adjust margin for mobile view */
+                    }
+
+                    .yellow-btn {
+                        padding: 5px 10px !important;
+                        font-size: 14px !important;
+                    }
+
+                    .feature {
+                        font-size: 14px !important;
+                        padding-right: 40px !important;
+                            /* Adjust padding for mobile view */
+                            padding-bottom: 88px !important;
+                            /* Adjust padding for mobile view */
+                    }
+
+                    .about-us {
+                        padding: 20px;
+                        align-items: center;
+                        font-size: 20px !important;
+                    }
+
+                    .about-us h1 {
+                        margin-bottom: 20px;
+                        font-size: 20px !important;
+                    }
+
+                    h1 {
+                        font-size: 20px !important;
+                    }
+
+                                                                                                                                        .learn-more-btn {
+                                                                                                                                            padding: 5px 10px !important;
+                                                                                                                                                font-size: 12px !important;
+                                                                                                                                                    bottom: 80px !important;
+                                                                                                                                                        right: 40px !important;
+                           }
+
+                    /* second carousel home*/
+                    .carousel-section {
+                        background: linear-gradient(to bottom, transparent, #F6E17A);
+                        /* Gradient background */
+                        padding: 30px 0 !important;
+                        /* Adjust padding as needed */
+                    }
+
+                    .carousel-section .carousel-dots .dot {
+                        width: 8px !important;
+                        height: 8px !important;
+                        margin: 0 5px;
+                        border-radius: 50%;
+                    }
+                    
+                }
+
+                                /* CSS for title */
+                                .title {
+                                    padding-right: 170px;
+                                    padding-bottom: 140px;
+                                }
+                
+                                /* CSS for button */
+                                .page-button {
+                                    margin-right: 185px;
+                                    margin-bottom: 100px;
+                                    border-radius: 5px;
+                                }
+
+                                .feature {
+                                    padding-right: 170px;
+                                    padding-bottom: 210px;
+                                }
+
 .carousel {
     position: relative;
     overflow: hidden;
@@ -163,6 +300,7 @@ p {
 
 .about-us {
     padding: 20px;
+    align-items: center;
 }
 
 .about-us h2 {

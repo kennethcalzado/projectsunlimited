@@ -9,6 +9,18 @@
         #menuBtn {
             display: block;
             /* Display the button for mobile */
+            z-index: 10001;
+            /* Ensure the button stays on top */
+            position: relative;
+        }
+
+        #menu li a {
+            display: block;
+            /* Ensure each link occupies its own line */
+            white-space: nowrap;
+            /* Prevent wrapping of text */
+            text-decoration: none;
+            font-weight: bold;
         }
 
         @media screen and (min-width: 768px) {
@@ -23,58 +35,61 @@
                 /* Hide the button on larger screens */
             }
         }
+
+        #mobileMenu {
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: black;
+            z-index: 10000;
+            /* Ensure it is on top of everything */
+            padding: 40px 16px 16px 16px;
+            /* Add padding for aesthetics */
+        }
+
+        #mobileMenu li {
+            list-style: none;
+            margin-bottom: 10px;
+            /* Add margin between menu items */
+        }
+
+        #mobileMenu a {
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            /* Add padding for aesthetics */
+        }
+
+        .logo-container img {
+            max-height: 80px;
+            /* Adjust the height of the logo as needed */
+        }
     </style>
-
-    <!-- Add this script before the closing </body> tag -->
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            var menuBtn = document.getElementById('menuBtn');
-            var menu = document.getElementById('menu');
-            var navLinks = document.querySelectorAll('#menu > li > a');
-
-            // Toggle the menu visibility when the button is clicked
-            menuBtn.addEventListener('click', function() {
-                if (menu.style.display === 'flex') {
-                    menu.style.display = 'none';
-                    // Hide the desktop navbar explicitly
-                    menu.classList.remove('show-desktop');
-                } else {
-                    menu.style.display = 'flex';
-                    // If menu is displayed, create a list for mobile view
-                    createMobileMenu();
-                }
-            });
-
-            // Create a list for mobile view
-            function createMobileMenu() {
-                // Check if the mobile menu list already exists
-                var mobileMenu = document.getElementById('mobileMenu');
-                if (!mobileMenu) {
-                    mobileMenu = document.createElement('ul');
-                    mobileMenu.id = 'mobileMenu';
-                    // Clone the navigation links from the original menu
-                    navLinks.forEach(function(link) {
-                        var listItem = document.createElement('li');
-                        listItem.appendChild(link.cloneNode(true));
-                        mobileMenu.appendChild(listItem);
-                    });
-                    // Append the mobile menu list to the navbar container
-                    menu.parentNode.appendChild(mobileMenu);
-                }
-            }
-        });
-    </script>
-
 </head>
 
 <!-- Header -->
-<header class="bg-black text-white p-4">
+<header class="bg-black text-white p-2">
     <div class="container mx-auto">
-        <nav class="p-2 flex items-center justify-between">
-            <div>
+        <nav class="p-2 flex justify-between">
+            <div class="logo-container w-full justify-between">
                 <a href="/public/home.php" class="logo-link flex items-center">
                     <img src="/assets/image/projectslogo.png" alt="Logo" class="logo-image">
                 </a>
+                <div class="md:hidden flex justify-end">
+                    <button id="menuBtn">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
+                        </svg>
+                    </button>
+                </div>
             </div>
             <div class="md:flex space-x-4 items-center">
                 <ul class="flex space-x-4 items-center" id="menu">
@@ -91,14 +106,39 @@
                     </li>
                 </ul>
             </div>
-            <!-- Mobile Menu Button -->
-            <div class="md:hidden">
-                <button class="text-white" id="menuBtn">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
-                    </svg>
-                </button>
-            </div>
         </nav>
+        <ul id="mobileMenu"></ul>
     </div>
 </header>
+
+<!-- Add this script before the closing </body> tag -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var menuBtn = document.getElementById('menuBtn');
+        var menu = document.getElementById('menu');
+        var mobileMenu = document.getElementById('mobileMenu');
+        var navLinks = document.querySelectorAll('#menu > li > a');
+
+        // Toggle the menu visibility when the button is clicked
+        menuBtn.addEventListener('click', function() {
+            if (mobileMenu.style.display === 'block') {
+                mobileMenu.style.display = 'none';
+            } else {
+                createMobileMenu();
+            }
+        });
+
+        // Create a list for mobile view
+        function createMobileMenu() {
+            // Check if the mobile menu list already exists
+            if (mobileMenu.children.length === 0) {
+                navLinks.forEach(function(link) {
+                    var listItem = document.createElement('li');
+                    listItem.appendChild(link.cloneNode(true));
+                    mobileMenu.appendChild(listItem);
+                });
+            }
+            mobileMenu.style.display = 'block';
+        }
+    });
+</script>
