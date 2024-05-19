@@ -3,7 +3,7 @@ include '../../backend/conn.php'; // Include the database connection script
 
 try {
     // Your SQL query to fetch brands data with associated catalogs
-    $sql = "SELECT b.brand_name, b.logo_url, b.description, b.type, c.catalog_id, c.catalog_title, c.catalog_path 
+    $sql = "SELECT b.brand_name, b.logo_url, b.description, b.type, b.images, c.catalog_id, c.catalog_title, c.catalog_path 
             FROM brands AS b 
             LEFT JOIN catalogs AS c ON b.brand_id = c.brand_id 
             WHERE b.status = 'active'";
@@ -21,11 +21,14 @@ try {
             // Check if the brand is already in the array
             if (!isset($brands[$brand_name])) {
                 // If not, add it to the array
+                $images = json_decode($row['images'], true);
+
                 $brands[$brand_name] = array(
                     'brand_name' => $brand_name,
                     'logo_url' => $row['logo_url'],
                     'description' => $row['description'],
                     'type' => $row['type'],
+                    'images' => $images,
                     'catalogs' => array()
                 );
             }

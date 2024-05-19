@@ -26,29 +26,39 @@ ob_start();
                             disabled>Resend Code</button>
                         <p id="resendCodeTimer" class="text-sm text-gray-600 mt-1"></p>
                     </div>
-                    <div id="passwordSection" class="mb-6 hidden">
+                    <div id="passwordSection" class="mb-2 hidden">
                         <label for="newPassword" class="block text-gray-700 text-sm font-bold mb-2">New Password</label>
                         <input type="password" id="newPassword" name="newPassword"
                             class="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                        <p id="passwordError" class="text-sm text-red-500 mt-1 error-message"></p>
                         <label for="confirmPassword" class="block text-gray-700 text-sm font-bold mb-2 mt-4">Confirm
                             Password</label>
                         <input type="password" id="confirmPassword" name="confirmPassword"
                             class="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
-                        <p id="passwordError" class="text-sm text-red-500 mt-1 error-message"></p>
+                        <p id="confirmPasswordError" class="text-sm text-red-500 mt-1 error-message"></p>
+
                         <!-- Password requirements -->
-                        <div class="passreq mb-4" id="passwordRequirementsContainer">
-                            <p class="password-requirements-title"><b>Password Requirements:</b></p>
-                            <ul id="passwordRequirements" class="listreq pl-4">
+                        <div class="mb-4" id="passwordRequirementsContainer">
+                            <p class="text-base"><b>Password Requirements:</b></p>
+                            <ul id="passwordRequirements" class="listreq pl-4 text-sm">
                                 <li id="length">Minimum of 8 characters</li>
                                 <li id="specialChar">At least one special character/symbol</li>
                                 <li id="number">At least one number</li>
                                 <li id="capital">At least one capital letter</li>
                             </ul>
                         </div>
+                        <div id="passwordStrengthIcon" class="password-strength-icon mb-1 flex space-x-1">
+                        <div class="strength-bar h-1 w-1/4 bg-gray-300 transition-colors duration-300"></div>
+                        <div class="strength-bar h-1 w-1/4 bg-gray-300 transition-colors duration-300"></div>
+                        <div class="strength-bar h-1 w-1/4 bg-gray-300 transition-colors duration-300"></div>
+                        <div class="strength-bar h-1 w-1/4 bg-gray-300 transition-colors duration-300"></div>
                     </div>
+                    <p id="passwordStrengthText" class="text-sm font-bold text-gray-700 mb-6"></p>
+                    </div>
+                   
                     <div class="flex items-center justify-between">
                         <button type="submit"
-                            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full md:w-auto">Submit</button>
+                            class="primary-btn yellow-btn font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full md:w-auto">Submit</button>
                     </div>
                 </form>
             </div>
@@ -62,6 +72,8 @@ ob_start();
 <script>
     $( document ).ready( function ()
     {
+        var firstMainElement = $('main').first();
+        firstMainElement.addClass('bg-gradient-to-t from-yellow-200  to-zinc-100');
         // Function to validate email
         function validateEmail ()
         {
@@ -108,11 +120,17 @@ ob_start();
             return isValid;
         }
 
-        // Function to validate passwords
         function validatePasswords ()
         {
             const newPassword = $( '#newPassword' ).val();
             const confirmPassword = $( '#confirmPassword' ).val();
+            const strengthBars = $( '#passwordStrengthIcon .strength-bar' );
+            const passwordStrengthText = $( '#passwordStrengthText' );
+
+            const lengthReq = $( '#length' );
+            const specialCharReq = $( '#specialChar' );
+            const numberReq = $( '#number' );
+            const capitalReq = $( '#capital' );
             let isValid = true;
 
             // Regular expressions for password strength requirements
@@ -126,36 +144,134 @@ ob_start();
             {
                 $( '#newPassword' ).addClass( 'border-red-500' );
                 $( '#passwordError' ).addClass( 'text-sm text-red-500 mt-1 error-message' ).text( 'Password must be at least 8 characters long.' );
-                isValid = false;
-            } else if ( newPassword !== confirmPassword )
-            {
-                $( '#confirmPassword' ).addClass( 'border-red-500' );
-                $( '#passwordError' ).addClass( 'text-sm text-red-500 mt-1 error-message' ).text( 'Passwords do not match.' );
-                isValid = false;
-            } else if ( !specialCharRegex.test( newPassword ) )
-            {
-                $( '#newPassword' ).addClass( 'border-red-500' );
-                $( '#passwordError' ).addClass( 'text-sm text-red-500 mt-1 error-message' ).text( 'Password must contain at least one special character.' );
-                isValid = false;
-            } else if ( !numberRegex.test( newPassword ) )
-            {
-                $( '#newPassword' ).addClass( 'border-red-500' );
-                $( '#passwordError' ).addClass( 'text-sm text-red-500 mt-1 error-message' ).text( 'Password must contain at least one number.' );
-                isValid = false;
-            } else if ( !capitalRegex.test( newPassword ) )
-            {
-                // Finish the validatePasswords function
-                $( '#newPassword' ).addClass( 'border-red-500' );
-                $( '#passwordError' ).addClass( 'text-sm text-red-500 mt-1 error-message' ).text( 'Password must contain at least one capital letter.' );
+                lengthReq.addClass( 'text-red-500' ); // Add error styling to length requirement
                 isValid = false;
             } else
             {
+                lengthReq.removeClass( 'text-red-500' ); // Remove error styling from length requirement
+            }
+
+            if ( newPassword !== confirmPassword )
+            {
+                $( '#confirmPassword' ).addClass( 'border-red-500' );
+                $( '#passwordError' ).addClass( 'text-sm text-red-500 mt-1 error-message' ).text( 'Passwords do not match.' );
+                $( '#confirmPasswordError' ).addClass( 'text-sm text-red-500 mt-1 error-message' ).text( 'Passwords do not match.' );
+                isValid = false;
+            } else
+            {
+                $( '#newPassword, #confirmPassword' ).removeClass( 'border-red-500' );
+                $( '#passwordError' ).removeClass( 'text-sm text-red-500 mt-1 error-message' ).text( '' );
+                $( '#confirmPasswordError' ).removeClass( 'text-sm text-red-500 mt-1 error-message' ).text( '' );
+            }
+
+            if ( !specialCharRegex.test( newPassword ) )
+            {
+                $( '#newPassword' ).addClass( 'border-red-500' );
+                $( '#passwordError' ).addClass( 'text-sm text-red-500 mt-1 error-message' ).text( 'Password must contain at least one special character.' );
+                specialCharReq.addClass( 'text-red-500' ); // Add error styling to special character requirement
+                isValid = false;
+            } else
+            {
+                specialCharReq.removeClass( 'text-red-500' ); // Remove error styling from special character requirement
+            }
+
+            if ( !numberRegex.test( newPassword ) )
+            {
+                $( '#newPassword' ).addClass( 'border-red-500' );
+                $( '#passwordError' ).addClass( 'text-sm text-red-500 mt-1 error-message' ).text( 'Password must contain at least one number.' );
+                numberReq.addClass( 'text-red-500' ); // Add error styling to number requirement
+                isValid = false;
+            } else
+            {
+                numberReq.removeClass( 'text-red-500' ); // Remove error styling from number requirement
+            }
+
+            if ( !capitalRegex.test( newPassword ) )
+            {
+                $( '#newPassword' ).addClass( 'border-red-500' );
+                $( '#passwordError' ).addClass( 'text-sm text-red-500 mt-1 error-message' ).text( 'Password must contain at least one capital letter.' );
+                capitalReq.addClass( 'text-red-500' ); // Add error styling to capital letter requirement
+                isValid = false;
+            } else
+            {
+                capitalReq.removeClass( 'text-red-500' ); // Remove error styling from capital letter requirement
+            }
+
+            if ( isValid == true )
+            {
                 // If all requirements are met, remove error classes and messages
                 $( '#newPassword, #confirmPassword' ).removeClass( 'border-red-500' );
-                $( '#passwordError' ).empty();
+                $( '#passwordError, #confirmPasswordError' ).empty();
+                $( '#passwordError, #confirmPasswordError' ).removeClass( 'text-sm text-red-500 mt-1 error-message' ).text( '' );
+
+                lengthReq.removeClass( 'text-red-500' ); // Remove error styling from length requirement
+                specialCharReq.removeClass( 'text-red-500' ); // Remove error styling from special character requirement
+                numberReq.removeClass( 'text-red-500' ); // Remove error styling from number requirement
+                capitalReq.removeClass( 'text-red-500' ); // Remove error styling from capital letter requirement
+            }
+
+            // Update the strength bars and text based on password strength
+            const passwordStrength = calculatePasswordStrength( newPassword );
+            strengthBars.each( function ( index )
+            {
+                if ( index < passwordStrength )
+                {
+                    $( this ).removeClass( 'bg-gray-300' ).addClass( 'bg-green-500' );
+                } else
+                {
+                    $( this ).removeClass( 'bg-green-500' ).addClass( 'bg-gray-300' );
+                }
+            } );
+
+            // Update the text indicator based on password strength
+            let strengthText;
+            switch ( passwordStrength )
+            {
+                case 1:
+                    strengthText = "Weak";
+                    break;
+                case 2:
+                    strengthText = "Moderate";
+                    break;
+                case 3:
+                    strengthText = "Strong";
+                    break;
+                case 4:
+                    strengthText = "Very Strong";
+                    break;
+                default:
+                    strengthText = "";
+            }
+            passwordStrengthText.text( strengthText ).removeClass( 'text-red-500 text-yellow-500 text-green-500 text-blue-500' );
+
+            // Add corresponding color to the text indicator
+            if ( passwordStrength === 1 )
+            {
+                passwordStrengthText.addClass( 'text-red-500' );
+            } else if ( passwordStrength === 2 )
+            {
+                passwordStrengthText.addClass( 'text-yellow-500' );
+            } else if ( passwordStrength === 3 )
+            {
+                passwordStrengthText.addClass( 'text-green-500' );
+            } else if ( passwordStrength === 4 )
+            {
+                passwordStrengthText.addClass( 'text-emerald-500' );
             }
 
             return isValid;
+        }
+
+        // Function to calculate password strength (customize this as needed)
+        function calculatePasswordStrength ( password )
+        {
+            let strength = 0;
+            // For simplicity, let's assume 1 point for each fulfilled requirement
+            if ( password.length >= 8 ) strength++;
+            if ( /[!@#$%^&*(),.?\':{}|<>]/.test( password ) ) strength++;
+            if ( /[0-9]/.test( password ) ) strength++;
+            if ( /[A-Z]/.test( password ) ) strength++;
+            return strength;
         }
 
         // Function to validate form based on current step
@@ -172,6 +288,32 @@ ob_start();
                 return validatePasswords();
             }
         }
+
+        // Bind input and keyup events to newPassword input to check password strength in real-time
+        $( '#newPassword' ).on( 'input keyup change', function ()
+        {
+            validatePasswords();
+        } );
+
+        // Bind input and keyup events to newPassword input to check password strength in real-time
+        $( '#confirmPassword' ).on( 'input keyup change', function ()
+        {
+            const newPassword = $( '#newPassword' ).val();
+            const confirmPassword = $( '#confirmPassword' ).val();
+
+            if ( newPassword !== confirmPassword )
+            {
+                $( '#confirmPassword' ).addClass( 'border-red-500' );
+                $( '#passwordError' ).addClass( 'text-sm text-red-500 mt-1 error-message' ).text( 'Passwords do not match.' );
+                $( '#confirmPasswordError' ).addClass( 'text-sm text-red-500 mt-1 error-message' ).text( 'Passwords do not match.' );
+                isValid = false;
+            } else
+            {
+                $( '#newPassword, #confirmPassword' ).removeClass( 'border-red-500' );
+                $( '#passwordError' ).removeClass( 'text-sm text-red-500 mt-1 error-message' ).text( '' );
+                $( '#confirmPasswordError' ).removeClass( 'text-sm text-red-500 mt-1 error-message' ).text( '' );
+            }
+        } );
 
         // Function to display email errors
         function displayEmailError ( message )
@@ -194,12 +336,6 @@ ob_start();
             $( '#confirmPassword' ).addClass( 'border-red-500' );
             $( '#passwordError' ).addClass( 'text-sm text-red-500 mt-1 error-message' ).text( message );
         }
-
-        // Event listener for password field to check password strength
-        $( '#newPassword' ).on( 'input', function ()
-        {
-            checkPasswordStrength( $( this ).val() );
-        } );
 
         // Function to start the resend code timer
         function startResendCodeTimer ()
@@ -387,18 +523,6 @@ ob_start();
                 } );
             }
         } );
-
-        // Function to calculate password strength (customize this as needed)
-        function calculatePasswordStrength ( password )
-        {
-            let strength = 0;
-            // For simplicity, let's assume 1 point for each fulfilled requirement
-            if ( password.length >= 8 ) strength++;
-            if ( /[!@#$%^&*(),.?\':{}|<>]/.test( password ) ) strength++;
-            if ( /[0-9]/.test( password ) ) strength++;
-            if ( /[A-Z]/.test( password ) ) strength++;
-            return strength;
-        }
     } );
 </script>
 <?php

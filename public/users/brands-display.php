@@ -144,7 +144,8 @@ ob_start();
                                 rounded-full cursor-pointer w-full text-center">
                                 Upload new brand logo
                             </label>
-                            <input type="file" id="uploadBrandLogo" class="hidden">
+                            <input type="file" id="uploadBrandLogo" accept=".jpg, .jpeg, .png" class="hidden"
+                                multiple="false">
                         </div>
                         <div class="mx-auto"> <!-- Container for the image -->
                             <img id="brandImage" src="" alt="" class="w-full h-auto object-cover">
@@ -163,24 +164,24 @@ ob_start();
                         <div class="mb-4">
                             <label for="brandName" class="block text-sm font-medium text-gray-700">Brand
                                 Name:</label>
-                            <input type="text" id="brandName" name="brandName" placeholder="Brand Name"
-                                class="pl-2 mt-1 w-full rounded-md border border-gray-700 shadow-sm">
+                            <input type="text" id="brandName" name="brandName" placeholder="Brand Name" class="pl-2 mt-1 w-full rounded-md border 
+                        focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent shadow-sm">
                             <div id="brandNameError" class="text-sm text-red-500 mt-1 error-message"></div>
                         </div>
                         <div class="mb-4">
                             <label for="description"
                                 class="block text-sm font-medium text-gray-700">Description:</label>
-                            <textarea id="description" name="description" placeholder="Description"
-                                class="pl-2 mt-1 w-full rounded-md border border-gray-700 shadow-sm"
+                            <textarea id="description" name="description" placeholder="Description" class="pl-2 mt-1 w-full rounded-md border 
+                        focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent shadow-sm"
                                 rows="5"></textarea>
                             <div id="descriptionError" class="text-sm text-red-500 mt-1 error-message"></div>
                         </div>
 
                         <div class="mb-4">
                             <label for="type" class="block text-sm font-medium text-gray-700">Type:</label>
-                            <select id="type" name="type"
-                                class="pl-2 mt-1 w-full rounded-md border border-gray-700 shadow-sm">
-                                <option value="" disabled selected>Select Type</option>
+                            <select id="type" name="type" class="pl-2 mt-1 w-full rounded-md border shadow-sm  
+                        focus:outline-none focus:ring-2 focus:ring-yellow-500 ">
+                                <option value=" " disabled selected>Select Type</option>
                                 <option value="catalog">Catalog</option>
                                 <option value="inquiry">Inquiry</option>
                             </select>
@@ -188,9 +189,9 @@ ob_start();
                         </div>
                         <div class="mb-4">
                             <label for="status" class="block text-sm font-medium text-gray-700">Status:</label>
-                            <select id="status" name="status"
-                                class="pl-2 mt-1 w-full rounded-md border border-gray-700 shadow-sm">
-                                <option value="" disabled selected>Select Status</option>
+                            <select id="status" name="status" class="pl-2 mt-1 w-full rounded-md border shadow-sm  
+                        focus:outline-none focus:ring-2 focus:ring-yellow-500 ">
+                                <option value=" " disabled selected>Select Status</option>
                                 <option value="active">Active</option>
                                 <option value="hidden">Hidden</option>
                             </select>
@@ -206,8 +207,8 @@ ob_start();
                 <div id="uploadCatalogWrapper">
                     <label for="brandCatalogs" class="block text-sm font-medium text-gray-700">Upload
                         Catalogs:</label>
-                    <input type="file" id="brandCatalogs" name="brandCatalogs[]" multiple
-                        class="pl-2 mt-1 mb-2 w-full rounded-md border border-gray-700 shadow-sm">
+                    <input type="file" id="brandCatalogs" name="brandCatalogs[]" accept=".pdf" multiple class="pl-2 px-3 py-2 mt-1 mb-2 w-full rounded-md border 
+                        focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent shadow-sm">
                     <div id="uploadedCatalogList" class="mt-2 grid grid-cols-2 gap-4 overflow-y-auto"></div>
                     <div id="brandCatalogsError" class="text-sm text-red-500 mt-1 error-message"></div>
                 </div>
@@ -217,6 +218,26 @@ ob_start();
                     <label for="catalogList" class="block text-sm font-medium text-gray-700">Catalog
                         List:</label>
                     <div id="catalogList" class="grid grid-cols-2 gap-4 overflow-y-auto"></div>
+                </div>
+            </div>
+
+            <div class="mt-8 w-full">
+                <h3 class="text-lg font-medium mb-2">Image Section</h3>
+                <!-- Upload Image List Section -->
+                <div id="uploadBrandImagesWrapper">
+                    <label for="brandImages" class="block text-sm font-medium text-gray-700">Upload Sample
+                        Images:</label>
+                    <input type="file" id="brandImages" name="brandImages[]" accept=".jpg, .jpeg, .png" multiple
+                        class="border rounded-md 
+        pl-2 px-3 py-2 mt-1 mb-2 w-full focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent shadow-sm">
+                    <div id="loadBrandImages" class="mt-2 grid grid-cols-2 gap-4 overflow-y-auto"></div>
+                    <div id="brandBrandImagesError" class="text-sm text-red-500 mt-1 error-message"></div>
+                </div>
+
+                <!-- Image List Section -->
+                <div id="brandImageWrapper" class="mt-4">
+                    <label for="brandImageList" class="block text-sm font-medium text-gray-700">Brand Images:</label>
+                    <div id="brandImageList" class="grid grid-cols-2 gap-4 overflow-y-auto"></div>
                 </div>
             </div>
 
@@ -457,7 +478,7 @@ ob_start();
             }
         } );
 
-        ////////////////// CRUD DATA RENDERING ON MODAL  /////////////////////
+        ////////////////// BRANDS CRUD DATA RENDERING ON MODAL  /////////////////////
         $( document ).on( 'click', '.viewBtn, .editBtn, .createSBtn', function ()
         {
             const rowData = table.row( $( this ).closest( 'tr' ) ).data();
@@ -505,6 +526,26 @@ ob_start();
                     $( '#catalogList' ).html( '<p class="text-sm text-red-700">No catalogs available.</p>' );
                 }
 
+                // Render brand images
+                if ( rowData.images && rowData.images.length > 0 )
+                {
+                    // Clear previous brand images
+                    $( '#brandImageList' ).empty();
+
+                    // Extract image names from paths and render images
+                    rowData.images.forEach( imagePath =>
+                    {
+                        const imageName = imagePath.split( '/' ).pop(); // Extract image name from path
+                        const file = {
+                            name: imageName
+                        };
+                        renderBrandImages( rowData.images, rowData.brand_id, true ); // Pass true to indicate images are from database
+                    } );
+                } else
+                {
+                    $( '#brandImageList' ).html( '<p class="text-sm text-red-700">No images available.</p>' );
+                }
+
                 // Set hide button text based on status
                 const hideButtonText = rowData.status === 'hidden' ? 'Unhide' : 'Hide';
                 $( '#hideBrandBtn' ).text( hideButtonText );
@@ -516,9 +557,22 @@ ob_start();
                 // Disable input fields
                 $( '#brandName, #description, #type, #status' ).prop( 'disabled', true );
 
+                // Check if the brand type is 'inquiry'
+                if ( rowData.type === 'inquiry' )
+                {
+                    // Hide upload catalog fields and catalog wrapper
+                    $( '#uploadCatalogWrapper' ).hide();
+                    $( '#catalogWrapper' ).hide();
+                } else
+                {
+                    // Show upload catalog fields and catalog wrapper for other types
+                    $( '#uploadCatalogWrapper' ).hide();
+                    $( '#catalogWrapper' ).show();
+                }
+
                 // Hide upload catalog fields
-                $( '#uploadCatalogWrapper' ).hide();
-                $( '#catalogWrapper' ).show();
+                $( '#uploadBrandImagesWrapper' ).hide();
+                $( '#brandImageWrapper' ).show();
 
                 // Set image source
                 $( '#brandImage' ).attr( 'src', rowData.logo_url );
@@ -553,9 +607,22 @@ ob_start();
                 // Enable input fields for editing
                 $( '#brandName, #description, #type, #status' ).prop( 'disabled', false );
 
-                // Show upload catalog fields
-                $( '#uploadCatalogWrapper' ).show();
-                $( '#catalogWrapper' ).show();
+                // Check if the brand type is 'inquiry'
+                if ( rowData.type === 'inquiry' )
+                {
+                    // Hide upload catalog fields and catalog wrapper
+                    $( '#uploadCatalogWrapper' ).hide();
+                    $( '#catalogWrapper' ).hide();
+                } else
+                {
+                    // Show upload catalog fields and catalog wrapper for other types
+                    $( '#uploadCatalogWrapper' ).show();
+                    $( '#catalogWrapper' ).show();
+                }
+
+                // Hide upload catalog fields
+                $( '#uploadBrandImagesWrapper' ).show();
+                $( '#brandImageWrapper' ).show();
 
                 // Set image source
                 $( '#brandImage' ).attr( 'src', rowData.logo_url );
@@ -603,9 +670,22 @@ ob_start();
                 // Enable input fields for editing
                 $( '#brandName, #description, #type, #status' ).prop( 'disabled', false );
 
+                // Check if the brand type is 'inquiry'
+                if ( rowData.type === 'inquiry' )
+                {
+                    // Hide upload catalog fields and catalog wrapper
+                    $( '#uploadCatalogWrapper' ).hide();
+                    $( '#catalogWrapper' ).hide();
+                } else
+                {
+                    // Show upload catalog fields and catalog wrapper for other types
+                    $( '#uploadCatalogWrapper' ).show();
+                    $( '#catalogWrapper' ).hide();
+                }
+
                 // Show upload catalog fields
-                $( '#uploadCatalogWrapper' ).show();
-                $( '#catalogWrapper' ).hide();
+                $( '#uploadBrandImagesWrapper' ).show();
+                $( '#brandImageWrapper' ).hide();
 
                 // Set buttons visibility
                 $( '#submitBrandBtn' ).show();
@@ -636,8 +716,14 @@ ob_start();
         {
             // Enable input fields for editing
             $( '#brandName, #description, #type, #status' ).prop( 'disabled', false );
+
             // Show upload catalog fields
             $( '#uploadCatalogWrapper' ).show();
+            $( '#catalogWrapper' ).show();
+
+            // Show upload brand images fields
+            $( '#uploadBrandImagesWrapper' ).show();
+            $( '#brandImageWrapper' ).show();
 
             // Set buttons visibility
             $( '#submitBrandBtn, #hideBrandBtn' ).show();
@@ -682,7 +768,6 @@ ob_start();
                     }
                     invalidFiles[fileName].push( fileName + ' is not a PDF file.' );
                     isValid = false;
-
                 }
 
                 // Validate file size (in bytes)
@@ -759,7 +844,6 @@ ob_start();
                     deleteCatalog( catalogId, container ); // Delete catalog with catalog ID
                 } else
                 {
-                    // Handle deletion for uploaded files without a catalog ID
                     // Show confirmation dialog using SweetAlert
                     Swal.fire( {
                         title: 'Are you sure?',
@@ -859,7 +943,7 @@ ob_start();
             } );
         }
 
-        //////////////////////// IMAGE DRAG AND DROP ON MODAL //////////////////////////////
+        //////////////////////// BRAND LOGO DRAG AND DROP ON MODAL //////////////////////////////
         function enableDragAndDrop ()
         {
             var dropZone = $( '#imageDropzone' );
@@ -871,21 +955,24 @@ ob_start();
                 event.preventDefault();
 
                 var files = event.originalEvent.dataTransfer.files; // FileList object.
+                var file = files[0]; // Only process the first file
 
-                // Process each dropped file
-                for ( var i = 0, file; file = files[i]; i++ )
+                // Only process image files.
+                if ( file && !file.type.match( 'image.*' ) )
                 {
-                    // Only process image files.
-                    if ( !file.type.match( 'image.*' ) )
-                    {
-                        continue;
-                    }
-
-                    // Set the selected file to the input type file
-                    $( '#uploadBrandLogo' ).prop( 'files', files );
-
-                    renderImage( file );
+                    // Show Swal error message
+                    Swal.fire( {
+                        icon: 'error',
+                        title: 'Invalid file type',
+                        text: 'Please upload an image file (jpg, jpeg, png).',
+                    } );
+                    return;
                 }
+
+                // Set the selected file to the input type file
+                $( '#uploadBrandLogo' ).prop( 'files', files );
+
+                renderBrandLogo( file );
             }
 
             // Function to handle drag over
@@ -902,7 +989,7 @@ ob_start();
         }
 
         // Function to render the selected image
-        function renderImage ( file )
+        function renderBrandLogo ( file )
         {
             var reader = new FileReader();
 
@@ -910,9 +997,6 @@ ob_start();
             reader.onload = function ( e )
             {
                 // Render thumbnail.
-                var span = $( '<span>' );
-                span.html( ['<img class="thumb" src="', e.target.result,
-                    '" title="', escape( file.name ), '"/>'].join( '' ) );
                 $( '#brandImage' ).attr( 'src', e.target.result ); // Update image preview
                 $( '#imageFileName' ).text( file.name );
             };
@@ -927,7 +1011,18 @@ ob_start();
             var file = e.target.files[0]; // Get the selected file
             if ( file )
             {
-                renderImage( file );
+                // Only process image files.
+                if ( !file.type.match( 'image.*' ) )
+                {
+                    // Show Swal error message
+                    Swal.fire( {
+                        icon: 'error',
+                        title: 'Invalid file type',
+                        text: 'Please upload an image file (jpg, jpeg, png).',
+                    } );
+                    return;
+                }
+                renderBrandLogo( file );
             }
         } );
 
@@ -935,6 +1030,232 @@ ob_start();
         function disableDragAndDrop ()
         {
             $( '#imageDropzone' ).off( 'dragover drop' );
+        }
+
+        //////////////////////// IMAGE SECTION ON MODAL //////////////////////////////
+        // Event listener for file input change
+        $( '#brandImages' ).on( 'change', function ( e )
+        {
+            const files = $( this )[0].files; // Get uploaded Images
+            $( '#loadBrandImages' ).empty(); // Clear previous files
+            const invalidFiles = []; // Object to store invalid files with their respective errors
+
+            if ( files.length > 4 )
+            {
+                Swal.fire( {
+                    icon: 'error',
+                    title: 'Too many files',
+                    text: 'You can only upload up to 4 images.',
+                } );
+                return;
+            }
+
+            for ( let i = 0; i < files.length; i++ )
+            {
+                let file = files[i];
+                let fileName = file.name;
+                let isValid = true;
+
+                if ( file && !file.type.match( 'image.*' ) )
+                {
+                    if ( !invalidFiles[fileName] )
+                    {
+                        invalidFiles[fileName] = [];
+                    }
+                    invalidFiles[fileName].push( fileName + ' is not a valid image.' );
+                    isValid = false;
+                }
+
+                // Create file container and append it to the catalog list
+                if ( isValid )
+                {
+                    renderBrandImages( file );
+                }
+            }
+
+            // Remove invalid files from the input field
+            for ( const fileName in invalidFiles )
+            {
+                removeInvalidImageFromInput( fileName );
+            }
+
+            // Display error message for invalid files using Swal.fire
+            if ( invalidFiles.length > 0 )
+            {
+                const errorMessage = 'The following files could not be uploaded:<br>' + invalidFiles.join( '<br>' );
+                Swal.fire( {
+                    icon: 'error',
+                    title: 'Invalid Files',
+                    html: errorMessage
+                } );
+            }
+        } );
+
+        function renderBrandImages ( imagesData, brandId = null, fromDatabase = false )
+        {
+            // Function to render an image
+            function renderImage ( imageSrc, container, fileName = null )
+            {
+                const imageContainer = $( '<div>' ).addClass( 'relative bg-gray-200 rounded-md p-2 flex flex-col items-center justify-center text-center' );
+                const image = $( '<img>' ).addClass( 'w-32 h-32 object-cover rounded-md' ).attr( 'src', imageSrc );
+                const deleteButton = $( '<button>' ).addClass( 'absolute top-0 right-0 bg-red-500 w-6 h-6 text-center text-white border-none outline-none cursor-pointer rounded-full flex items-center justify-center hover:bg-red-600' ).html( '&times;' ).attr( 'type', 'button' );
+                const zoomButton = $( '<button>' ).addClass( 'absolute bottom-0 left-0 bg-blue-500 w-6 h-6 text-center text-white border-none outline-none cursor-pointer rounded-full flex items-center justify-center hover:bg-blue-600' ).html( '🔍' ).attr( 'type', 'button' );
+
+                // Add click event to delete button
+                deleteButton.on( 'click', function ()
+                {
+                    // Show confirmation dialog using SweetAlert
+                    Swal.fire( {
+                        title: 'Are you sure?',
+                        text: 'You are about to delete this brand image. This action cannot be undone.',
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#d33',
+                        cancelButtonColor: '#3085d6',
+                        confirmButtonText: 'Yes, delete it!'
+                    } ).then( ( result ) =>
+                    {
+                        if ( result.isConfirmed )
+                        {
+                            deleteInvalidBrandImage( imageSrc, imageContainer, brandId, fromDatabase, fileName ); // Passing necessary parameters for deletion
+                        }
+                    } );
+                } );
+
+                // Add click event to zoom button
+                zoomButton.on( 'click', function ()
+                {
+                    Swal.fire( {
+                        title: 'Zoomed Image',
+                        imageUrl: imageSrc,
+                        imageAlt: 'Zoomed Image',
+                        showCloseButton: true,
+                        showConfirmButton: false,
+                        customClass: {
+                            image: 'object-contain'
+                        }
+                    } );
+                } );
+
+                // Append elements to the container
+                imageContainer.append( deleteButton, zoomButton, image );
+                container.append( imageContainer );
+            }
+
+            // Render images into the appropriate container based on the context
+            if ( fromDatabase )
+            {
+                // Rendering images fetched from the database
+                const container = $( '#brandImageList' );
+                container.empty(); // Clear previous images
+                if ( Array.isArray( imagesData ) )
+                {
+                    imagesData.forEach( imagePath => renderImage( imagePath, container ) );
+                } else if ( typeof imagesData === 'string' )
+                {
+                    try
+                    {
+                        const imagePaths = JSON.parse( imagesData );
+                        imagePaths.forEach( imagePath => renderImage( imagePath, container ) );
+                    } catch ( error )
+                    {
+                        console.error( 'Error parsing image data:', error );
+                    }
+                } else
+                {
+                    console.error( 'Invalid image data:', imagesData );
+                }
+            } else
+            {
+                // Rendering images from input file type
+                const container = $( '#loadBrandImages' );
+                container.empty(); // Clear previous images
+
+                // Ensure imagesData is an array
+                const filesArray = Array.isArray( imagesData ) ? imagesData : [imagesData];
+
+                // Loop through each file
+                for ( let i = 0; i < filesArray.length; i++ )
+                {
+                    const file = filesArray[i];
+                    const reader = new FileReader();
+                    reader.onload = function ( e )
+                    {
+                        renderImage( e.target.result, container, file.name );
+                    };
+                    reader.readAsDataURL( file );
+                }
+            }
+        }
+
+        function deleteInvalidBrandImage ( imageSrc, container, brandId = null, fromDatabase = false, fileName = null )
+        {
+
+            // Check if the image is from the database
+            if ( fromDatabase )
+            {
+                // Redirect to the appropriate endpoint for database images
+                $.ajax( {
+                    url: '/../../backend/brands/images-delete.php', // Update the URL as needed
+                    method: 'POST',
+                    data: { imageSrc: imageSrc, brandId: brandId }, // Pass brandId for deletion
+                    dataType: 'json',
+                    success: function ( response )
+                    {
+                        console.log( response );
+                        // Handle success response
+                        if ( response.success )
+                        {
+                            container.remove(); // Remove the file container from the DOM
+                            Swal.fire( {
+                                icon: 'success',
+                                title: 'Deleted!',
+                                text: 'Your image has been deleted.',
+                                timer: 2000,
+                                showConfirmButton: false
+                            } );
+                        } else
+                        {
+                            Swal.fire( {
+                                icon: 'error',
+                                title: 'Error!',
+                                text: 'There was a problem deleting your image.',
+                                timer: 2000,
+                                showConfirmButton: false
+                            } );
+                        }
+                    },
+                    error: function ()
+                    {
+                        // Handle error response
+                        Swal.fire( {
+                            icon: 'error',
+                            title: 'Error!',
+                            text: 'There was a problem deleting your image.',
+                            timer: 2000,
+                            showConfirmButton: false
+                        } );
+                    }
+                } );
+            } else
+            {
+                // For images from input file type, simply remove the container
+                container.remove();
+                removeInvalidImageFromInput( fileName );
+            }
+        }
+
+        function removeInvalidImageFromInput ( fileName )
+        {
+            const inputField = $( '#brandImages' )[0].files;
+            const newFiles = Array.from( inputField ).filter( file => file.name !== fileName );;
+
+            // Create a new FileList object from the filtered files
+            const newFileList = new DataTransfer();
+            newFiles.forEach( file => newFileList.items.add( file ) );
+
+            // Assign the new FileList to the input field
+            $( '#brandImages' )[0].files = newFileList.files;
         }
 
         //////////////////// FORM VALIDATION /////////////////////////
@@ -1015,13 +1336,14 @@ ob_start();
         // Function to validate Type
         function validateType ()
         {
-            var type = $( '#type' ).val().trim();
+            var type = $( '#type' ).val();
             var typeError = $( '#typeError' );
             var htmlRegex = /<\/?[\w\s="/.':;#-\/\?]+>/gi;
             var sqlRegex = /\b(SELECT|INSERT INTO|UPDATE|DELETE FROM|DROP TABLE|CREATE TABLE|ALTER TABLE)\b/ig;
             var phpRegex = /<\?(php)?[\s\S]*?\?>/ig;
+            console.log( type );
 
-            if ( !type )
+            if ( !type || type === '' )
             {
                 $( '#type' ).addClass( 'border-red-500' );
                 typeError.text( 'Type is required.' );
@@ -1052,13 +1374,14 @@ ob_start();
         // Function to validate Status
         function validateStatus ()
         {
-            var status = $( '#status' ).val().trim();
+            var status = $( '#status' ).val();
             var statusError = $( '#statusError' );
             var htmlRegex = /<\/?[\w\s="/.':;#-\/\?]+>/gi;
             var sqlRegex = /\b(SELECT|INSERT INTO|UPDATE|DELETE FROM|DROP TABLE|CREATE TABLE|ALTER TABLE)\b/ig;
             var phpRegex = /<\?(php)?[\s\S]*?\?>/ig;
+            console.log( status );
 
-            if ( !status )
+            if ( !status || status === '' )
             {
                 $( '#status' ).addClass( 'border-red-500' );
                 statusError.text( 'Status is required.' );
@@ -1555,6 +1878,11 @@ ob_start();
             $( '#uploadedCatalogList' ).empty(); // Clear previous files
             $( '#catalogList' ).empty(); // Clear previous files
             $( '#brandCatalogs' ).val( '' );
+
+            // Clear brands image lists and upload field
+            $( '#loadBrandImages' ).empty(); // Clear previous files
+            $( '#brandImageList' ).empty(); // Clear previous files
+            $( '#brandImages' ).val( '' );
 
             // Hide the modal
             $( '#modal-container' ).toggleClass( 'hidden' );

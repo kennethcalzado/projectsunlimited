@@ -1,6 +1,12 @@
 <?php
 session_start();
 $pageTitle = "Users Table";
+
+if (!isset($_SESSION['user_role']) || $_SESSION['user_role'] !== 'admin' || !isset($_SESSION['user_id'])) {
+    header('Location: /public/error/error-401.php');
+    exit;
+}
+
 ob_start();
 ?>
 <!-- Your page content goes here -->

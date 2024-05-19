@@ -80,9 +80,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
             // Check file extension
             if (!in_array($fileExtension, $allowedExtensions)) {
-                http_response_code(400); // Set HTTP response code to indicate bad request
-                echo json_encode(["success" => false, "message" => "Invalid file extension. Only JPG, JPEG, and PNG files are allowed."]);
-                exit;
+                $errors['brandLogo'] = "Invalid file extension for logo: $fileName. Only JPG, JPEG, and PNG files are allowed.";
             }
 
             // Move the uploaded file to the desired location
@@ -91,22 +89,55 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $uploadPath = $uploadDir . $fileName;
 
             if (!move_uploaded_file($fileTmpPath, $uploadPath)) {
-                http_response_code(500); // Set HTTP response code to indicate internal server error
-                echo json_encode(["success" => false, "message" => "Failed to move uploaded file"]);
-                exit;
+                $errors['brandLogo'] = "Failed to move uploaded logo file: $fileName";
             }
         }
 
-        // Prepare the insertion query
-        $inser_brand_sql = "INSERT INTO brands (brand_name, description, type, status, logo_url, updated_at, created_at) 
-        VALUES (?,?,?,?,?, NOW(), NOW())";  
+        // Handle brand images upload
+        $uploadImagePaths = [];
+        if (!empty($_FILES['brandImages'])) {
+            foreach ($_FILES['brandImages']['tmp_name'] as $key => $tmp_name) {
+                $fileName = $_FILES['brandImages']['name'][$key];
+                $fileTmpPath = $_FILES['brandImages']['tmp_name'][$key];
+                $fileSize = $_FILES['brandImages']['size'][$key];
+                $fileType = $_FILES['brandImages']['type'][$key];
+                $fileError = $_FILES['brandImages']['error'][$key];
+                $fileNameCmps = explode(".", $fileName);
+                $fileExtension = strtolower(end($fileNameCmps));
+
+                // Valid extensions
+                $allowedExtensions = ['jpg', 'jpeg', 'png'];
+
+                // Check file extension
+                if (!in_array($fileExtension, $allowedExtensions)) {
+                    $errors[] = "Invalid file extension for $fileName. Only JPG, JPEG, and PNG files are allowed.";
+                    continue; // Skip processing this file
+                }
+
+                // Move the uploaded file to the desired location
+                $uploadDir = '../../assets/brands_images/';
+                $uploadImagePath = $uploadDir . basename($fileName);
+
+                if (!move_uploaded_file($fileTmpPath, $uploadImagePath)) {
+                    $errors[] = "Failed to move uploaded file: $fileName";
+                } else {
+                    $uploadImagePaths[] = $uploadImagePath; // Append the path to the array
+                }
+            }
+        }
+
+        // Encode the upload image paths array to JSON
+        $encodedImagePaths = json_encode($uploadImagePaths);
+
+        // Prepare the insertion query with image paths
+        $inser_brand_sql = "INSERT INTO brands (brand_name, description, type, status, logo_url, images, updated_at, created_at) 
+        VALUES (?, ?, ?, ?, ?, ?, NOW(), NOW())";
 
         // Prepare and execute the query
         $inser_brand_stmt = $conn->prepare($inser_brand_sql);
-        $inser_brand_stmt->bind_param("sssss", $brandName, $description, $type, $status, $uploadPath);
+        $inser_brand_stmt->bind_param("ssssss", $brandName, $description, $type, $status, $uploadPath, $encodedImagePaths);
 
         if ($inser_brand_stmt->execute()) {
-
             // Fetch user information from session or database
             if (isset($_SESSION['user_id'])) {
                 $user_id = $_SESSION['user_id'];
@@ -131,7 +162,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $brandId = $inser_brand_stmt->insert_id;
 
             // Handle brand catalogs
-            if (isset($_FILES['brandCatalogs'])) {
+            if (!empty($_FILES['brandCatalogs']) && isset($_FILES['brandCatalogs'])) {
                 // Loop through each uploaded catalog file and handle it
                 foreach ($_FILES['brandCatalogs']['tmp_name'] as $key => $tmp_name) {
                     // Retrieve file information
@@ -155,30 +186,18 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                             $stmtInsertCatalog = $conn->prepare($sqlInsertCatalog);
                             if ($stmtInsertCatalog) {
                                 $stmtInsertCatalog->bind_param("iss", $brandId, $fileName, $uploadPath);
-                                if ($stmtInsertCatalog->execute()) {
-                                    // Catalog insert successful
-                                } else {
+                                if (!$stmtInsertCatalog->execute()) {
                                     // Catalog insert failed
-                                    $response = ["success" => false, "message" => "Failed to insert catalog"];
-                                    http_response_code(500); // Set HTTP response code to indicate internal server error
+                                    $errors['brandCatalogs'] = "Failed to insert catalog: $fileName";
                                 }
                                 $stmtInsertCatalog->close();
                             }
                         } else {
                             // Handle file upload errors
-                            $response = ["success" => false, "message" => "File upload error: $fileError"];
-                            http_response_code(400); // Set HTTP response code to indicate bad request
-                            echo json_encode($response);
-                            exit;
+                            $errors['brandCatalogs'] = "File upload error for catalog: $fileName - Error code: $fileError";
                         }
                     }
                 }
-            } else {
-                // Failed to move the uploaded file
-                $response = ["success" => false, "message" => "Failed to move uploaded file"];
-                http_response_code(500); // Set HTTP response code to indicate internal server error
-                echo json_encode($response);
-                exit;
             }
 
             // Fetch the inserted brand data from the database
@@ -190,6 +209,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
             if ($result->num_rows > 0) {
                 $updatedBrandData = $result->fetch_assoc();
+                $updatedBrandData['errors'] = $errors;
                 http_response_code(200);
                 header('Content-Type: application/json');
                 echo json_encode($updatedBrandData);
@@ -199,6 +219,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             }
         } else {
             http_response_code(500);
+            $errors[] = "Failed to insert brand: " . $inser_brand_stmt->error;
             echo json_encode(['success' => false, 'message' => 'Error: ' . $sql . '<br>' . $conn->error]);
         }
 
@@ -211,7 +232,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         echo json_encode(['success' => false, 'message' => 'Required fields are missing']);
     }
 }
-
 
 function sanitizeFileName($fileName)
 {
