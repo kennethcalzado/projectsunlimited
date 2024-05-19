@@ -14,6 +14,10 @@ $result = mysqli_query($conn, $sql);
     <title><?php echo $pageTitle; ?></title>
     <link rel="stylesheet" href="../assets/input.css">
     <style>
+        @media only screen and (max-width: 768px) {
+            .card-group {}
+        }
+
         .card-group {
             width: 250px;
             height: 330px;
@@ -91,14 +95,86 @@ $result = mysqli_query($conn, $sql);
         }
 
         @media (max-width: 768px) {
-            .card {
-                width: 48%;
-            }
-        }
 
-        @media (max-width: 480px) {
-            .card {
-                width: 100%;
+            .card-group {
+                width: 250px;
+                height: 330px;
+                margin: 1%;
+                display: inline-block;
+                background-color: #D9D9D9;
+                vertical-align: top;
+                box-sizing: border-box;
+                padding: 5px 15px 15px 15px;
+                text-align: center;
+                transition: background-color 0.3s ease;
+            }
+
+            .banner {
+                font-size: 24px !important;
+            }
+
+            .bannerimage {
+                height: 170px !important;
+            }
+
+            .text-xl {
+                font-size: 14px !important;
+            }
+
+            .card-group {
+                width: 160px;
+                height: 240px;
+            }
+
+            .placeholder {
+                width: 123px;
+                height: 140px;
+                background-color: black;
+                margin: auto;
+                margin-bottom: 10px;
+                position: relative;
+                z-index: 1;
+                overflow: hidden;
+            }
+
+            .date {
+                font-size: 12px;
+                color: black;
+                margin-bottom: 5px;
+            }
+
+            /* Title styling */
+            .title {
+                font-weight: bold;
+                color: black;
+                position: relative;
+                font-size: 12px;
+                text-align: left;
+            }
+
+            .title::after {
+                content: "";
+                background-image: url('../assets/image/arrowgold.png');
+                background-size: contain;
+                width: 20px;
+                height: 20px;
+                position: absolute;
+                top: 40px;
+                right: -10px;
+                transform: translateY(-50%);
+                background-repeat: no-repeat;
+                transition: background-image 0.3s ease;
+            }
+
+            .bgdiv {
+                display: none !important;
+                visibility: hidden !important;
+                height: 0 !important;
+                margin: 0 !important;
+            }
+
+            .filter {
+                font-size: 14px !important;
             }
         }
     </style>
@@ -172,8 +248,8 @@ $result = mysqli_query($conn, $sql);
 
                 if (totalItems > 0) {
                     // Generate the first background div
-                    html += '<div class="w-full flex justify-center"><div class="absolute h-[160px] m-[98px] w-3/5 bg-[#F6E381]" style="z-index: -1;"></div></div>';
-                    html += '<div class="flex flex-wrap justify-center items-center">'; // Start flex container and center items
+                    html += '<div class="bgdiv w-full flex justify-center"><div class="absolute h-[160px] m-[98px] w-3/5 bg-[#F6E381]" style="z-index: -1;"></div></div>';
+                    html += '<div style="padding-bottom: 15px;" class="flex flex-wrap justify-center items-center">'; // Start flex container and center items
 
                     // Loop through each item for the current page
                     for (var i = 0; i < data.length; i++) {
@@ -286,10 +362,10 @@ $result = mysqli_query($conn, $sql);
     <section class="fade-in-hidden">
         <div class="content">
             <div class="relative">
-                <img src="../assets/image/blogbanner.png" class="w-full h-96 object-cover">
+                <img src="../assets/image/blogbanner.png" class="bannerimage w-full h-96 object-cover">
                 <div class="absolute inset-0 bg-black opacity-50"></div>
                 <div class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50">
-                    <p class="text-white font-bold text-4xl text-center">STAY UPDATED WITH <br> <span class="text-[#F6E381]">PROJECTS UNLIMITED</span></p>
+                    <p class="banner text-white font-bold text-4xl text-center">STAY UPDATED WITH <br> <span class="text-[#F6E381]">PROJECTS UNLIMITED</span></p>
                 </div>
             </div>
         </div>
@@ -301,7 +377,7 @@ $result = mysqli_query($conn, $sql);
 
             <div class="flex flex-col sm:flex-row items-center justify-center">
                 <div class="relative mb-2 mt-2 sm:mb-0 sm:mr-8">
-                    <div class="relative mb-2 mt-2 sm:mb-0 sm:mr-8">
+                    <div class="filter relative mb-2 mt-2 sm:mb-0 sm:mr-8">
                         <label for="categoryFilter" class="mr-2">Filter by Category:</label>
                         <select id="categoryFilter" class="border rounded-md px-2 py-1">
                             <option value="">All Categories</option>
@@ -311,7 +387,7 @@ $result = mysqli_query($conn, $sql);
                     </div>
                 </div>
 
-                <div class="relative mb-2 mt-2 sm:mb-0 sm:mr-8">
+                <div class="filter relative mb-2 mt-2 sm:mb-0 sm:mr-8">
                     <label for="sortFilter" class="mr-2">Sort by:</label>
                     <select id="sortFilter" class="border rounded-md px-2 py-1">
                         <optgroup label="Sort By:">

@@ -4,6 +4,139 @@ $pageTitle = "History";
 ob_start();
 ?>
 
+<head>
+    <style>
+        /* Mobile-specific styles */
+        @media (max-width: 768px) {
+            .content {
+                padding: 0;
+            }
+
+            .fade-in-hidden img {
+                max-height: 200px;
+            }
+
+            .text-4xl {
+                font-size: 18px;
+                padding: 1px;
+            }
+
+            .p {
+                padding-left: 10px !important;
+                padding-right: 10px !important;
+                padding-bottom: 20px !important;
+                padding-top: 5px !important;
+                font-size: 12px !important;
+            }
+
+            .achievements {
+                padding-top: 10px !important;
+            }
+
+            .years,
+            #years {
+                display: none !important;
+                visibility: hidden !important;
+                height: 0 !important;
+                margin: 0 !important;
+            }
+
+            .flex.justify-center {
+                flex-direction: column;
+            }
+
+            .throughtheyrs {
+                width: 85% !important;
+            }
+
+            .companyimage {
+                width: auto !important;
+                height: auto !important;
+            }
+
+            .image-container {
+                flex-direction: column;
+                align-items: center;
+                top: auto !important;
+                position: relative !important;
+                padding-top: 10px !important;
+            }
+
+            .image-wrapper {
+                margin: 10px 0 !important;
+                width: 80% !important;
+            }
+
+            .image-wrapper img {
+                width: 100% !important;
+                height: auto;
+            }
+
+            .through {
+                height: 400px !important;
+            }
+        }
+
+        /* Modal styles */
+        .modal {
+            display: none;
+            /* Hidden by default */
+            position: fixed;
+            /* Position it relative to the viewport */
+            z-index: 999;
+            /* Ensure it's on top of other content */
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            /* Enable scrolling if needed */
+            background-color: rgba(0, 0, 0, 0.5);
+            /* Black background with opacity */
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: auto;
+            /* Center the modal horizontally */
+            padding: 30px;
+            border: 1px solid #888;
+            width: 90%;
+            /* Set the width */
+            max-width: 600px;
+            /* Max width of the modal */
+            position: relative;
+            /* Enable relative positioning */
+            top: 50%;
+            /* Move modal down by half its height */
+            transform: translateY(-50%);
+            /* Adjust vertically to center */
+        }
+
+        .close {
+            position: absolute;
+            top: 0;
+            right: 0;
+            color: #aaa;
+            font-size: 28px;
+            font-weight: bold;
+            padding: 10px;
+            cursor: pointer;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .p {
+            font-size: 24px;
+        }
+    </style>
+</head>
+
 <script>
     // When the page is scrolled, show/hide the back-to-top button
     window.addEventListener("scroll", function() {
@@ -46,36 +179,60 @@ ob_start();
         <h1 class="text-black" style=" font-size: 38px; font-weight: 800; margin: 0;">OUR PEOPLE</h1>
     </div>
     <section class="fade-in-hidden" style="position: relative; padding-bottom: 40px;">
-        <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: -1;">
+        <div class="projectslogo" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: -1;">
             <img src="../assets/image/projectslogo.png" style="display: block; width: 100%; height: 100%;">
         </div>
-        <div style="display: flex; justify-content: space-around; z-index: 2; padding: 0px 190px;">
-            <div class="transition-opacity duration-1000 delay-1000 ease-in-out hover:scale-110 opacity-0">
-                <img src="../assets/image/people1.png" style="width: 450px !important; height: auto !important;">
+        <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; z-index: 2; padding: 0px 10px;">
+            <div class="transition-opacity duration-1000 delay-1000 ease-in-out hover:scale-110 opacity-0" style="width: 25%;">
+                <img src="../assets/image/people1.png" style="width: 100%; height: 90%;" onclick="openModal('../assets/image/people1.png')">
             </div>
-            <div style="display: flex; justify-content: space-around; z-index: 2;" class="transition-opacity duration-1000 delay-2000 ease-in-out hover:scale-110 opacity-0">
-                <img src="../assets/image/people5.jpg" style="width: 450px !important; height: auto !important;">
+            <div class="transition-opacity duration-1000 delay-2000 ease-in-out hover:scale-110 opacity-0" style="width: 25%;">
+                <img src="../assets/image/people5.jpg" style="width: 100%; height: 90%;" onclick="openModal('../assets/image/people5.jpg')">
             </div>
-            <div class="transition-opacity duration-1000 delay-3000 ease-in-out hover:scale-110 opacity-0">
-                <img src="../assets/image/people3.jpg" style="width: 450px !important; height: auto !important;">
+            <div class="transition-opacity duration-1000 delay-3000 ease-in-out hover:scale-110 opacity-0" style="width: 25%;">
+                <img src="../assets/image/people3.jpg" style="width: 100%; height: 90%;" onclick="openModal('../assets/image/people3.jpg')">
             </div>
         </div>
-
-        <div style="display: flex; justify-content: space-around; z-index: 3; padding: 0px 190px;">
-            <div class="transition-opacity duration-1000 delay-1000 ease-in-out hover:scale-110 opacity-0">
-                <img src="../assets/image/people6.jpg" style="width: 450px !important; height: auto !important;">
+        <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; z-index: 2; padding: 0px 10px;">
+            <div class="transition-opacity duration-1000 delay-1000 ease-in-out hover:scale-110 opacity-0" style="width: 25%;">
+                <img src="../assets/image/people6.jpg" style="width: 100%; height: 90%;" onclick="openModal('../assets/image/people6.jpg')">
             </div>
-            <div class="transition-opacity duration-1000 delay-1000 ease-in-out hover:scale-110 opacity-0">
-                <img src="../assets/image/people4.jpg" style="width: 450px !important; height: auto !important;">
+            <div class="transition-opacity duration-1000 delay-1000 ease-in-out hover:scale-110 opacity-0" style="width: 25%;">
+                <img src="../assets/image/people4.jpg" style="width: 100%; height: 90%;" onclick="openModal('../assets/image/people4.jpg')">
             </div>
-            <div class="transition-opacity duration-1000 delay-1000 ease-in-out hover:scale-110 opacity-0">
-                <img src="../assets/image/people2.jpg" style="width: 450px !important; height: auto !important;">
+            <div class="transition-opacity duration-1000 delay-1000 ease-in-out hover:scale-110 opacity-0" style="width: 25%;">
+                <img src="../assets/image/people2.jpg" style="width: 100%; height: 90%;" onclick="openModal('../assets/image/people2.jpg')">
             </div>
         </div>
     </section>
+
+    <!-- The modal -->
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <div id="modalContainer"></div> <!-- Container for modal content -->
+        </div>
+    </div>
+
+    <script>
+        // Open the modal
+        function openModal(imgSrc) {
+            var modal = document.getElementById("myModal");
+            var modalContainer = document.getElementById("modalContainer");
+            modalContainer.innerHTML = '<img src="' + imgSrc + '" style="max-width: 100%; height: auto;">'; // Set image inside container
+            modal.style.display = "block";
+        }
+
+        // Close the modal
+        function closeModal() {
+            var modal = document.getElementById("myModal");
+            modal.style.display = "none";
+        }
+    </script>
+
     <div class="fade-in-hidden" style="position: relative;">
-        <div style=" background-color: #F6E17A; width: 100%; text-align: center; padding: 0px 190px; position: relative;">
-            <p class="text-2xl font-semibold text-black" style="text-align: justify; padding: 20px 40px 40px 40px; margin: 0;">
+        <div class="p" style="background-color: #F6E17A; width: 100%; text-align: center; padding: 0px 190px; position: relative;">
+            <p class="p font-semibold text-black" style="text-align: justify; padding: 20px 40px 40px 40px; margin: 0;">
                 Our people are our greatest assets. Every Projects Unlimited
                 employee is a dedicated individual working hand-in–hand with
                 management in the pursuit of excellence in quality and
@@ -88,31 +245,31 @@ ob_start();
         <div style="position: absolute; width: 100%; top: -20%; height: 20%; background: linear-gradient(to top, rgba(246, 225, 122, 1) 1%, transparent);"></div>
     </div>
 
-    <section class="fade-in-hidden" style="padding-top: 40px; position: relative; text-align: center; display: flex; justify-content: center; align-items: center;">
-        <h1 style="text-align: center; font-size: 38px; font-weight: 800; position: absolute; top: 0; left: 50%; transform: translateX(-50%); padding-top: 30px;">PROJECTS UNLIMITED THROUGH THE YEARS</h1>
+    <section class="through fade-in-hidden" style="padding-top: 40px; position: relative; text-align: center; display: flex; justify-content: center; align-items: center;">
+        <h1 class="throughtheyrs" style="text-align: center; font-size: 38px; font-weight: 800; position: absolute; top: 0; left: 50%; transform: translateX(-50%); padding-top: 30px;">PROJECTS UNLIMITED THROUGH THE YEARS</h1>
 
-        <div class="flex justify-center" style="position: absolute; z-index: 2; top: 10%;">
-            <div class="transition-opacity duration-1000 delay-1000 ease-in-out hover:scale-110 opacity-0" style="margin-right: 20px; margin-bottom: 20px;">
-                <img src="../assets/image/company1.png" style="width: 420px !important; height: auto !important;">
+        <div class="image-container flex justify-center" style="position: absolute; z-index: 2; top: 10%;">
+            <div class="image-wrapper transition-opacity duration-1000 delay-1000 ease-in-out hover:scale-110 opacity-0" style="margin-right: 20px; margin-bottom: 20px;">
+                <img class="companyimage" src="../assets/image/company1.png" style="width: 500px; height: auto;" onclick="openModal('../assets/image/company1.png')">
             </div>
-            <div class="transition-opacity duration-1000 delay-1000 ease-in-out hover:scale-110 opacity-0" style="margin-bottom: 20px;">
-                <img src="../assets/image/company2.jpg" style="width: 420px !important; height: auto !important;">
+            <div class="image-wrapper transition-opacity duration-1000 delay-1000 ease-in-out hover:scale-110 opacity-0" style="margin-bottom: 20px;">
+                <img class="companyimage" src="../assets/image/company2.jpg" style="width: 500px; height: auto;" onclick="openModal('../assets/image/company2.jpg')">
             </div>
         </div>
 
-        <div class="flex justify-center" style="position: absolute; z-index: 2; top: 50%;">
-            <div class="transition-opacity duration-1000 delay-1000 ease-in-out hover:scale-110 opacity-0" style="margin-right: 20px; margin-bottom: 20px;">
-                <img src="../assets/image/company3.png" style="width: 420px !important; height: auto !important;">
+        <div class="image-container flex justify-center" style="position: absolute; z-index: 2; top: 50%;">
+            <div class="image-wrapper transition-opacity duration-1000 delay-1000 ease-in-out hover:scale-110 opacity-0" style="margin-right: 20px; margin-bottom: 20px;">
+                <img class="companyimage" src="../assets/image/company3.png" style="width: 500px; height: auto;" onclick="openModal('../assets/image/company3.png')">
             </div>
-            <div class="transition-opacity duration-1000 delay-1000 ease-in-out hover:scale-110 opacity-0" style="margin-bottom: 20px;">
-                <img src="../assets/image/company4.jpg" style="width: 420px !important; height: auto !important;">
+            <div class="image-wrapper transition-opacity duration-1000 delay-1000 ease-in-out hover:scale-110 opacity-0" style="margin-bottom: 20px;">
+                <img class="companyimage" src="../assets/image/company4.jpg" style="width: 500px; height: auto;" onclick="openModal('../assets/image/company4.jpg')">
             </div>
         </div>
 
         <div style="position: relative; display: flex; align-items: center; z-index: -1; height: 100vh;">
             <h1 id="years" style="color: #F6E17A; font-size: 800px; font-weight: font-black; margin: 0; letter-spacing: -0.13em; position: relative; z-index: 1; margin-left: -90px; margin-top: -120px;"></h1>
 
-            <div style="display: flex; flex-direction: column; z-index: 1; margin-top: -100px;">
+            <div class="years" style="display: flex; flex-direction: column; z-index: 1; margin-top: -100px;">
                 <p style="padding-left: 80px; color: #F6E17A; font-size: 98px; margin: 0; font-weight: font-black;">Y</p>
                 <p style="padding-left: 80px; color: #F6E17A; font-size: 98px; margin: 0; font-weight: font-black;">E</p>
                 <p style="padding-left: 80px; color: #F6E17A; font-size: 98px; margin: 0; font-weight: font-black;">A</p>
@@ -143,13 +300,10 @@ ob_start();
         });
     </script>
 
-    <p class="text-2xl font-semibold text-black" style=" text-align: justify;  padding: 0px 190px; margin: 0;">
-
-    </p>
     <br>
-    <div class="fade-in-hidden" style="position: relative;">
-        <div style=" background-color: #F6E17A; width: 100%; text-align: center; padding: 0px 190px; position: relative;">
-            <p class="text-2xl font-semibold text-black" style="text-align: justify; padding: 10px 40px 40px 40px; margin: 0;">
+    <div class="fade-in-hidden" style="position: relative; margin-top: -60px;">
+        <div class="p" style=" background-color: #F6E17A; width: 100%; text-align: center; padding: 0px 190px; position: relative;">
+            <p class="p font-semibold text-black" style="text-align: justify; padding: 10px 40px 40px 40px; margin: 0;">
                 It started as a leading provider of two major flooring products –
                 vinyl tiles and ceramic tiles – working exclusively with the
                 biggest producers in USA (Amtico Vinyl and Tarkett Vinyl Floors),
@@ -193,8 +347,7 @@ ob_start();
     </script>
 
 
-
-    <section class="fade-in-hidden" style="padding-top: 40px; padding-bottom: 20px; background: linear-gradient(to bottom, transparent, #F6E17A);">
+    <section class="achievements fade-in-hidden" style="padding-top: 40px; padding-bottom: 20px; background: linear-gradient(to bottom, transparent, #F6E17A);">
         <h1 style="text-align: center; font-size: 38px; font-weight: 800;">ACHIEVEMENTS</h1>
         <div style="display: flex; justify-content: center; align-items: center; gap: 20px;">
             <div class="transition-opacity duration-1000 delay-1000 ease-in-out hover:scale-110 opacity-0">

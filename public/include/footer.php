@@ -14,10 +14,12 @@
     <style>
         /* Responsive Styles */
         @media only screen and (max-width: 768px) {
+
             /* Adjustments for smaller screens */
             .md\:w-1\/4 {
                 width: 100%;
             }
+
             .mx-16 {
                 margin-left: 0.5rem;
                 margin-right: 0.5rem;
@@ -25,44 +27,60 @@
         }
 
         @media only screen and (max-width: 640px) {
+
             /* Additional adjustments for even smaller screens */
             .w-56 {
                 width: 100%;
             }
+
             .md\:flex-col {
                 flex-direction: column;
             }
+
             .ml-7 {
                 margin-left: 0.5rem;
             }
+
             .text-lg {
                 font-size: 1rem;
             }
+
             .ml-8 {
                 margin-left: 0.5rem;
             }
+
             .mr-2 {
                 margin-right: 0.5rem;
             }
+
             .text-2xl {
                 font-size: 1.5rem;
             }
+
             .ml-12 {
                 margin-left: 0.75rem;
             }
+
             .text-xl {
                 font-size: 1.25rem;
             }
+
             .mx-1 {
                 margin-left: 0.25rem;
                 margin-right: 0.25rem;
             }
+
             .mx-2 {
                 margin-left: 0.5rem;
                 margin-right: 0.5rem;
             }
+
             .mt-2 {
                 margin-top: 0.5rem;
+            }
+
+            .footerimage {
+                width: 97%;
             }
         }
     </style>
@@ -74,7 +92,7 @@
     <div class="flex flex-col md:flex-row mx-16">
         <!-- Left Column -->
         <div class="md:w-1/4 p-2 my-2 mt-8 items-center justify-center">
-            <img src="/assets/image/projectslogo.png" alt="Projects Unlimited Logo" class="w-56 h-66 ml-7">
+            <img src="/assets/image/projectslogo.png" alt="Projects Unlimited Logo" class="footerimage w-56 h-66 ml-7">
             <p class="text-sm mt-2">620 Tytana St., Binondo, Manila, Philippines, 1006</p>
             <p class="block text-sm text-justify mt-2">Head Office Contact Number: +632 8243 8888-95</p>
             <div class="container mx-auto text-center">
@@ -83,8 +101,7 @@
                     <div class="flex space-x-2">
                         <a href="https://www.facebook.com/projectsunlimitedph" class="text-2xl hover:text-[#F6E381]"><i class="fa-brands fa-facebook"></i></a>
                         <a href="https://www.instagram.com/projectsunlimitedph" class="text-2xl hover:text-[#F6E381]"><i class="fa-brands fa-instagram"></i></a>
-                        <a href="https://www.linkedin.com/company/projectsunlimited/"
-                            class="text-2xl hover:text-[#F6E381]"><i class="fa-brands fa-linkedin"></i></a>
+                        <a href="https://www.linkedin.com/company/projectsunlimited/" class="text-2xl hover:text-[#F6E381]"><i class="fa-brands fa-linkedin"></i></a>
                         <a href="mailto:info@projectsunlimited.com.ph" class="text-2xl hover:text-[#F6E381]"><i class="fa-solid fa-envelope"></i></a>
                     </div>
                 </div>
@@ -105,10 +122,9 @@
             while ($row = mysqli_fetch_assoc($result)) {
                 $categoryName = $row['CategoryName'];
                 $pagePath = '../pages' . $row['page_path'];
-                ?>
-                <p class="text-sm mt-1 font-semibold text-center hover:text-[#F6E381]"><a
-                        href="<?php echo $pagePath; ?>"><?php echo $categoryName; ?></a></p>
-                <?php
+        ?>
+                <p class="text-sm mt-1 font-semibold text-center hover:text-[#F6E381]"><a href="<?php echo $pagePath; ?>"><?php echo $categoryName; ?></a></p>
+        <?php
             }
             echo '</div>';
             echo '</div>';

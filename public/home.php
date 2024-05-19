@@ -72,7 +72,7 @@ include("../backend/conn.php");
                             echo '<h1 class="feature absolute bottom-0 right-0 m-4 text-4xl font-bold opacity-0 animate-fade-in">FEATURED PROJECT</h1>';
                         }
                         // Add title text in the lower right corner with fade-in animation
-                        echo '<h1 class="title absolute bottom-0 right-0 m-4 text-4xl font-bold opacity-0 animate-fade-in">' . $row['title'] . '</h1>';
+                        echo '<h1 class="titlee absolute bottom-0 right-0 m-4 text-4xl font-bold opacity-0 animate-fade-in">' . $row['title'] . '</h1>';
                         // Add button with link from the page column with fade-in animation
                         echo '<a href="' . $row['page'] . '" class="page-button absolute bottom-0 right-0 m-4 px-4 py-2 bg-yellow-400 text-black text-center rounded-md yellow-btn opacity-0 animate-fade-in">Read More</a>';
                         echo '</div>';
@@ -354,7 +354,7 @@ include("../backend/conn.php");
         <div class="third-carousel relative">
             <h1 style="text-align: right; padding-right: 80px; color: #F6E17A;" class="hearr text-4xl font-bold">HEAR WHAT OUR FRIENDS HAVE TO SAY</h1>
 
-            <div class="third-carousel-inner flex">
+            <div class="third-carousel-inner">
                 <?php
                 // Fetch testimonials from the database
                 $sql = "SELECT * FROM testimonials";
@@ -365,8 +365,10 @@ include("../backend/conn.php");
                         // Display carousel item for each testimonial
                         echo '<div class="third-carousel-item text-white">';
                         echo '<h1 class="testimonial-message text-3xl font-bold">"' . $row['message'] . '"</h1>';
-                        echo '<h1 class="cname text-3xl font-bold">' . $row['cname'] . '</h1>';
-                        echo '<h1 class="company text-3xl font-bold">' . $row['company'] . '</h1>';
+                        echo '<div class="flex items-center flex-col">'; // Add flex-col to make them stack vertically
+                        echo '<div class="cname text-3xl font-bold">' . $row['cname'] . '</div>'; // Change h1 to div
+                        echo '<div class="company text-3xl font-bold">' . $row['company'] . '</div>'; // Change h1 to div
+                        echo '</div>';
                         echo '</div>';
                     }
                 } else {
@@ -382,7 +384,7 @@ include("../backend/conn.php");
                 <i class="fas fa-chevron-right" style="color: #F6E17A;"></i>
             </div>
 
-            <div class="third-carousel-dots absolute bottom-0 left-0 right-0 flex justify-center items-center w-full">
+            <div class="third-carousel-dots absolute flex justify-center items-center w-full">
                 <?php
                 // Reset result pointer
                 $result->data_seek(0);

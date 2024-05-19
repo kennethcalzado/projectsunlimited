@@ -91,7 +91,7 @@ $formatted_date = date("F j, Y", $date);
         }
 
         .card-group:hover .title::after {
-            background-image: url('../../assets/image/arrowgold.png');
+            background-image: url('../../assets/image/arrowblack.png');
         }
 
         .date {
@@ -126,29 +126,198 @@ $formatted_date = date("F j, Y", $date);
                 width: 100%;
             }
         }
+
+        @media (max-width: 768px) {
+
+            .card-group {
+                width: 250px;
+                height: 330px;
+                margin: 1%;
+                display: inline-block;
+                background-color: #D9D9D9;
+                vertical-align: top;
+                box-sizing: border-box;
+                padding: 5px 15px 15px 15px;
+                text-align: center;
+                transition: background-color 0.3s ease;
+            }
+
+            .banner {
+                font-size: 24px !important;
+            }
+
+            .bannerimage {
+                height: 170px !important;
+            }
+
+            .text-xl {
+                font-size: 14px !important;
+            }
+
+            .card-group {
+                width: 160px;
+                height: 240px;
+            }
+
+            .placeholder {
+                width: 123px;
+                height: 140px;
+                background-color: black;
+                margin: auto;
+                margin-bottom: 10px;
+                position: relative;
+                z-index: 1;
+                overflow: hidden;
+            }
+
+            .date {
+                font-size: 12px;
+                color: black;
+                margin-bottom: 5px;
+            }
+
+            /* Title styling */
+            .title {
+                font-weight: bold;
+                color: black;
+                position: relative;
+                font-size: 12px;
+                text-align: left;
+            }
+
+            .title::after {
+                content: "";
+                background-image: url('../../assets/image/arrowgold.png');
+                background-size: contain;
+                width: 20px;
+                height: 20px;
+                position: absolute;
+                top: 40px;
+                right: -10px;
+                transform: translateY(-50%);
+                background-repeat: no-repeat;
+                transition: background-image 0.3s ease;
+                z-index: 10;
+                /* Ensures the pseudo-element is on top */
+            }
+
+            .card-group:hover .title::after {
+                background-image: url('../../assets/image/arrowblack.png');
+            }
+
+            .bgdiv {
+                display: none !important;
+                visibility: hidden !important;
+                height: 0 !important;
+                margin: 0 !important;
+            }
+
+            .blog {
+                padding-left: 10px !important;
+                padding-right: 10px !important;
+            }
+
+            .flexx {
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+            .back-link {
+                flex: 0 0 auto;
+            }
+
+            .spacer {
+                display: none;
+            }
+
+            .title-date-container {
+                display: flex;
+                flex-direction: column;
+                align-items: flex-start;
+                text-align: right !important;
+            }
+
+            .blog-title,
+            .blog-date {
+                text-align: right !important;
+                padding-top: 0;
+            }
+
+            .blog-title {
+                font-size: 1.5rem;
+                /* Adjust as needed */
+            }
+
+            .blog-date {
+                font-size: 1rem;
+                /* Adjust as needed */
+            }
+
+            .description-column {
+                width: 100% !important;
+            }
+
+            .carousel-column {
+                width: 100% !important;
+                padding-top: 10px;
+            }
+
+            .container {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .other {
+                padding-left: 20px !important;
+                padding-right: 20px !important;
+            }
+
+            .br {
+                display: none;
+            }
+
+            .otherz {
+                align-items: center !important;
+                justify-content: center !important;
+            }
+        }
+
+        .spacer {
+            flex: 1;
+        }
+
+        .blog-title,
+        .blog-date {
+            display: inline-block;
+            padding-top: 25px;
+        }
     </style>
 </head>
 
 <body>
-    <section style="text-align: center; padding-left: 190px; padding-right: 190px; padding-bottom: 25px;">
-        <div class="flex justify-between items-center mb-3">
+    <section class="blog" style="text-align: center; padding-left: 190px; padding-right: 190px; padding-bottom: 25px;">
+        <div class="flexx flex justify-between items-center mb-3">
             <!-- "Back" link -->
-            <a href="../blogs.php" class="text-black font-semibold text-2xl flex items-center mt-8" style="transition: color 0.3s;" onmouseover="this.style.color='#F6E17A'" onmouseout="this.style.color='black'">
+            <a href="../blogs.php" class="text-black font-semibold text-2xl flex items-center mt-8 back-link" style="transition: color 0.3s;" onmouseover="this.style.color='#F6E17A'" onmouseout="this.style.color='black'">
                 <i class="fas fa-chevron-left mr-2"></i> Back
             </a>
             <!-- Spacer -->
-            <div></div> <!-- This empty div acts as a spacer to push the title to the center -->
-            <!-- Title -->
-            <h1 class="text-black font-bold text-4xl text-center" style="padding-top: 25px;"><?php echo $blog_data['title']; ?></h1>
-
-            <div></div>
-            <h1 class="text-black font-semibold text-2xl text-center" style="padding-top: 25px;"><?php echo $formatted_date; ?></h1>
+            <div class="spacer"></div>
+            <!-- Title and Date Container -->
+            <div style="text-align: right;" class="title-date-container">
+                <!-- Title -->
+                <h1 style="text-align: right;" class="text-black font-bold text-4xl blog-title"><?php echo $blog_data['title']; ?></h1><br class="br">
+                <!-- Date -->
+                <h1 style="text-align: right;" class="text-black font-semibold text-2xl blog-date"><?php echo $formatted_date; ?></h1>
+            </div>
         </div>
+
         <div class="border-b border-black flex-grow border-4 mt-2 mb-5"></div>
 
 
         <div class="container flex">
-            <div style="width: 60%;" class=" description-column flex items-center">
+            <div style="width: 60%;" class="description-column flex items-center">
                 <p class="text-2xl text-black" style="text-align: justify; padding-right: 20px;">
                     <?php
                     // Function to convert URLs into clickable links
@@ -230,7 +399,7 @@ $formatted_date = date("F j, Y", $date);
         </script>
     </section>
 
-    <section style="text-align: center; padding-left: 140px; padding-right: 140px; padding-bottom: 25px;">
+    <section class="other" style="text-align: center; padding-left: 140px; padding-right: 140px; padding-bottom: 25px;">
         <h1 class="text-black font-bold text-2xl text-center" style="padding-top: 25px;">Read more blogs:</h1>
 
         <div class="container mx-auto">
@@ -249,9 +418,9 @@ $formatted_date = date("F j, Y", $date);
                     $totalItems = $otherResult->num_rows; // Total number of items 
 
                     // Generate the first background div
-                    echo '<div class="w-full flex justify-center"><div class="absolute h-[160px] m-[98px] w-3/5 bg-[#F6E381]" style="z-index: -1;"></div></div>';
+                    echo '<div class="bgdiv w-full flex justify-center"><div class="absolute h-[160px] m-[98px] w-3/5 bg-[#F6E381]" style="z-index: -1;"></div></div>';
 
-                    echo '<div class="flex flex-wrap justify-center items-center">'; // Start flex container and center items
+                    echo '<div class="otherz flex flex-wrap justify-center items-center">'; // Start flex container and center items
                     while ($row = $otherResult->fetch_assoc()) {
                         $formattedDate = date("F j, Y", strtotime($row['date']));
                         echo '

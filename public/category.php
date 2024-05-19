@@ -105,15 +105,15 @@ ob_start();
 
         .customcontainer h3.text-3xl {
             font-size: 20px !important;
-            margin-left: 4px!important;
-            margin-right: 8px!important;
-            margin-bottom: 0%!important;
+            margin-left: 4px !important;
+            margin-right: 8px !important;
+            margin-bottom: 0% !important;
         }
 
         .customcontainer p.text-2xl {
             font-size: 14px !important;
-            margin-top: 0%!important;
-            text-align: justify!important;
+            margin-top: 0% !important;
+            text-align: justify !important;
         }
 
         .customcontainer .p-8 {
@@ -140,6 +140,10 @@ ob_start();
             font-size: 12px !important;
             line-height: 24px !important;
         }
+
+        .banner {
+            font-size: 24px !important;
+        }
     }
 </style>
 <a href="#top" class="back-to-top">
@@ -152,7 +156,7 @@ ob_start();
         <img src="../assets/image/stock.png" class="w-full h-96 object-cover">
         <div class="absolute inset-0 bg-black opacity-50"></div>
         <div class="absolute inset-0 flex items-center justify-center">
-            <p class="text-white font-extrabold text-4xl">PRODUCTS</p>
+            <p class="banner text-white font-bold text-4xl">PRODUCTS</p>
         </div>
     </div>
     <h1 class="text-4xl font-extrabold text-center text-black p-4">CATEGORIES</h1>
@@ -162,7 +166,7 @@ ob_start();
         </div>
     </div>
 </div>
-<div class="custombanner">
+<div class="custombanner mt-4">
     <div class="relative fade-in-hidden">
         <img src="../assets/image/customizebanner.png" class="w-full h-96 object-cover">
         <div class="absolute inset-0 bg-black opacity-50"></div>

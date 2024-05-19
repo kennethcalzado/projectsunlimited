@@ -174,7 +174,7 @@ body {
                     }
 
                     /* CSS for title in mobile view */
-                    .title {
+                    .titlee {
                         font-size: 14px !important;
                         /* Example font size for mobile view */
                         padding-right: 40px !important;
@@ -307,124 +307,125 @@ body {
                         font-size: 14px !important;
                     }
 
-                                        .products-button-container {
-                                            padding-top: 50px !important;
-                                            text-align: center;
-                                        }
+                    .products-button-container {
+                        padding-top: 50px !important;
+                        text-align: center;
+                    }
 
-                                .customers {
-                                    padding-top: 10px !important;
-                                    padding-bottom: 10px !important;
-                                }
+                    .customers {
+                        padding-top: 10px !important;
+                        padding-bottom: 10px !important;
+                    }
 
-                        .third-carousel-section  {
-                            position: relative;
-                            overflow: hidden;
-                            width: 100%;
-                            height: auto;
-                        }
+                    .third-carousel-section {
+                        position: relative;
+                        overflow: hidden;
+                        width: 100%;
+                        height: auto;
+                    }
 
-                        .third-carousel {
-                            background: url(../assets/image/testimonials.png) no-repeat center center;
-                            background-size: cover;
-                            padding: 10px 0 !important;
-                            /* Adjust padding as needed */
-                            height: auto !important;
-                        }
+                    .third-carousel {
+                        background: url(../assets/image/testimonials.png) no-repeat center center;
+                        background-size: cover;
+                        padding: 0px 0 !important;
+                        height: 320px !important;
+                    }
 
-                        .third-carousel-inner h1 {
-                            display: flex;
-                            transition: transform 0.5s ease;
-                            font-size: 12px !important;
-                          
-                        }
+                    .third-carousel-inner h1 {
+                        display: flex;
+                        transition: transform 0.5s ease;
+                        font-size: 12px !important;
+                    }
 
-                        .hear {
-                            text-align: center !important;
-                            padding-top: 10px !important;
-                        }
+                    .hear {
+                        text-align: center !important;
+                        padding-top: 10px !important;
+                    }
 
-                        .hearr {
-                            transition: transform 0.5s ease;
-                            font-size: 14px !important;
-                            padding-bottom: 40px !important;
-                            text-align: center !important;
-                            padding-right: 0px !important;
-                        }
+                    .hearr {
+                        transition: transform 0.5s ease;
+                        font-size: 14px !important;
+                        padding-bottom: 20px !important;
+                        text-align: center !important;
+                        padding-right: 0px !important;
+                        padding-top: 10px !important;
+                    }
 
-                        .text-3xl {
-                            display: flex;
-                            transition: transform 0.5s ease;
-                            font-size: 10px !important;
-                            padding-top: 0px !important;
-                            font-weight: normal !important;
-                            padding-bottom: 0px !important;
-                        }
+                    .text-3xl {
+                        display: flex;
+                        transition: transform 0.5s ease;
+                        font-size: 10px !important;
+                        padding-top: 0px !important;
+                        font-weight: normal !important;
+                        padding-bottom: 0px !important;
+                    }
 
-                        .third-carousel-inner {
-                            transition: transform 0.5s ease;
-                            font-size: 14px !important;
-                    
-                        }
+                    .third-carousel-inner {
+                        transition: transform 0.5s ease;
+                        font-size: 14px !important;
+                    }
 
-                        .third-carousel-item {
-                            min-width: 100%;
-                            height: 200px !important;
-                            padding: 0px 60px !important;
-                            color: white;
-                            text-align: center;
-                            /* Center text horizontally */
-                        }
+                    .third-carousel-item {
+                        min-width: 100%;
+                        height: 200px !important;
+                        padding: 0px 60px !important;
+                        color: white;
+                        text-align: center;
+                    }
 
-                        .third-carousel-arrow {
-                            position: absolute;
-                            top: 50%;
-                            transform: translateY(-50%);
-                            cursor: pointer;
-                            z-index: 1;
-                            /* Ensure arrows stay above carousel items */
-                            font-size: 20px !important;
-                                /* Adjust arrow size */
-                                padding-left: 0px !important;
-                                padding-right: 0px !important;
-                        }
+                    .third-carousel-arrow {
+                        position: absolute;
+                        top: 50%;
+                        transform: translateY(-50%);
+                        cursor: pointer;
+                        z-index: 1;
+                        font-size: 20px !important;
+                        padding-left: 0px !important;
+                        padding-right: 0px !important;
+                    }
 
-                                                third-carousel-arrow.next {
-                                                    right: 5px !important;
-                                                    padding: 10px !important;
-                                                }
+                    .third-carousel-arrow.next {
+                        right: 5px !important;
+                        padding: 10px !important;
+                    }
 
-                                                                                                third-carousel-arrow.previous {
-                                                                                                    left: 5px !important;
-                                                                                                }
+                    .third-carousel-arrow.previous {
+                        left: 5px !important;
+                    }
 
-                        .third-dot {
-                            width: 8px !important;
-                            /* Adjust dot size as needed */
-                            height: 8px !important;
-                            /* Adjust dot size as needed */
-                            border-radius: 50%;
-                            margin: 0 5px;
-                            /* Adjust margin between dots as needed */
-                            cursor: pointer;
-                            transition: background-color 0.3s ease;
-                            margin-bottom: 20px;
-                        }
+                    .third-dot {
+                        width: 8px !important;
+                        height: 8px !important;
+                        border-radius: 50%;
+                        margin: 0 5px;
+                        cursor: pointer;
+                        transition: background-color 0.3s ease;
+                        margin-bottom: 20px;
+                    }
 
-                                                        .testimonial-message {
-                                                            font-size: 12px !important;
-                                                            padding: 0 !important;
-                                                            margin: 0 !important;
-                                                            line-height: 1.5 !important;
-                                                            text-align: justify !important;
-                                                        }
-                            
-                                                        .cname,
-                                                        .company {
-                                                            font-size: 10px !important;
-                                                            padding: 0 !important;
-                                                            margin: 0 !important;
-                                                        }
+                    .testimonial-message {
+                        font-size: 12px !important;
+                        padding: 0 !important;
+                        margin: 0 !important;
+                        line-height: 1.5 !important;
+                        text-align: justify !important;
+                    }
+
+                    .cname {
+                        font-size: 10px !important;
+                        padding: 0 !important;
+                        margin: 0 !important;
+                    }
+
+                    .company {
+                        font-size: 10px !important;
+                        padding: 0 !important;
+                        margin-top: -20px !important;
+                    }
+
+                    .third-carousel-dots {
+                        padding-top: 20px !important;
+                    }
 }
 
 /* Latest Products Section */
@@ -508,7 +509,7 @@ body {
     background-position: center;
 }
 
-.title {
+.titlee {
     padding-right: 170px;
     padding-bottom: 140px;
 }
