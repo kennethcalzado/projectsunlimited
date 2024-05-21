@@ -2,8 +2,8 @@
 
 // Database credentials
 $servername = "localhost"; // Change this to your database server name
-$username = "root"; // Change this to your database username
-$password = ""; // Change this to your database password
+$username = "projectsadmin"; // Change this to your database username
+$password = "projectsunlimited1968"; // Change this to your database password
 $database = "projectsunlimited"; // Change this to your database name
 
 // Create connection
