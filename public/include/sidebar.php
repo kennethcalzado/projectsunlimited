@@ -243,7 +243,7 @@ $image_path = $base_url . 'assets/image/projectslogo.png';
         </div>
     </a>
 
-    <a href="/public/home.php" target="_blank" class="group">
+    <a href="/public/index.php" target="_blank" class="group">
         <div class="nav-item mt-3 flex items-center rounded-l-md px-6 p-2
             transition-opacity duration-300 cursor-pointer text-white group-hover:bg-yellow-600 group-hover:ease-in">
             <div class=" flex relative ">

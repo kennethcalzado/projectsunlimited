@@ -202,7 +202,7 @@ ob_start();
                         html += '<td>' + item.company + '</td>'; // Update with item.company
                         html += '<td class="message">' + item.message + '</td>'; // Update with item.message using text()
                         html += '<td class="action-btns" valign="middle">';
-                        html += '<button onclick="viewPost(\'../../home.php\', \'third-carousel-section\')" class="btn-view"><i class="fas fa-eye"></i> View</button>';
+                        html += '<button onclick="viewPost(\'../../index.php\', \'third-carousel-section\')" class="btn-view"><i class="fas fa-eye"></i> View</button>';
                         html += '<button onclick="openUpdateModal(\'' + item.id + '\', \'' + item.message.replace(/'/g, "\\'") + '\', \'' + item.cname + '\', \'' + item.company + '\')" type="button" class="btn btn-primary" data-message="' + item.message.replace(/'/g, "\\'") + '" data-name="' + item.cname + '" data-company="' + item.company + '"><i class="fas fa-edit"></i> Update</button>';
                         html += '<button onclick="openDeleteModal(\'' + item.id + '\')" type="button" class="btn btn-danger"><i class="fas fa-trash-alt"></i> Delete</button>';
                         html += '</td>';

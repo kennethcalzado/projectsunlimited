@@ -80,7 +80,7 @@
     <div class="container mx-auto">
         <nav class="p-2 flex justify-between">
             <div class="logo-container w-full justify-between">
-                <a href="/public/home.php" class="logo-link flex items-center">
+                <a href="/public/index.php" class="logo-link flex items-center">
                     <img src="/assets/image/projectslogo.png" alt="Logo" class="logo-image">
                 </a>
                 <div class="md:hidden flex justify-end">
@@ -93,7 +93,7 @@
             </div>
             <div class="md:flex space-x-4 items-center">
                 <ul class="flex space-x-4 items-center" id="menu">
-                    <li><a href="/public/home.php" class="text-white font-bold hover:text-[#F6E381]">Home</a></li>
+                    <li><a href="/public/index.php" class="text-white font-bold hover:text-[#F6E381]">Home</a></li>
                     <li><a href="/public/about.php" class="text-white font-bold hover:text-[#F6E381]">About Us</a></li>
                     <li><a href="/public/brands.php" class="text-white font-bold hover:text-[#F6E381]">Brands</a></li>
                     <li><a href="/public/category.php" class="text-white font-bold hover:text-[#F6E381]">Products</a></li>

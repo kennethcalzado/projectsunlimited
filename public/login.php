@@ -12,8 +12,7 @@ ob_start();
                     <!-- Nested Row within Card Body -->
                     <div class="flex flex-wrap  ">
                         <div class="lg:w-6/12 bg-login-image lg:block hidden items-center justify-center">
-                            <img class="w-full h-full object-cover"
-                                src="../assets/image/pexels-mentatdgt-1799790-1024x683.jpg" alt="Login Image">
+                            <img class="w-full h-full object-cover" src="../assets/image/pexels-mentatdgt-1799790-1024x683.jpg" alt="Login Image">
                         </div>
 
                         <div class="w-full lg:w-6/12 h-[440px]">
@@ -24,10 +23,7 @@ ob_start();
                                 <form class="user" id="loginForm">
                                     <div class="mb-4">
                                         <label>Email</label>
-                                        <input type="type"
-                                            class="w-full px-3 py-2 border rounded-md focus:outline-none focus:border-blue-500"
-                                            id="email" aria-describedby="emailHelp" placeholder="Enter Email Address..."
-                                            name="email">
+                                        <input type="type" class="w-full px-3 py-2 border rounded-md focus:outline-none focus:border-blue-500" id="email" aria-describedby="emailHelp" placeholder="Enter Email Address..." name="email">
                                         <div id="emailError" class="h-[20px] text-red-500 text-sm">
                                             <!-- Error message space -->
 
@@ -35,9 +31,7 @@ ob_start();
                                     </div>
                                     <div class="mb-2">
                                         <label>Password</label>
-                                        <input type="password"
-                                            class="w-full px-3 py-2 border rounded-md focus:outline-none focus:border-blue-500"
-                                            id="password" placeholder="Password" name="password">
+                                        <input type="password" class="w-full px-3 py-2 border rounded-md focus:outline-none focus:border-blue-500" id="password" placeholder="Password" name="password">
                                         <div id="passwordError" class="h-[20px] text-red-500 text-sm mt-1">
                                             <!-- Error message space -->
 
@@ -79,56 +73,46 @@ ob_start();
 ob_start();
 ?>
 <script>
-
-    $( document ).ready( function ()
-    {
-        function validateEmail ()
-        {
-            const email = $( '#email' ).val();
+    $(document).ready(function() {
+        function validateEmail() {
+            const email = $('#email').val();
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
             let isValid = true;
 
-            if ( !email || email.trim() === '' )
-            {
-                $( '#email' ).addClass( 'border-red-500' );
-                $( '#emailError' ).addClass( 'text-sm text-red-500 mt-1 error-message' ).text( 'Email is required.' );
+            if (!email || email.trim() === '') {
+                $('#email').addClass('border-red-500');
+                $('#emailError').addClass('text-sm text-red-500 mt-1 error-message').text('Email is required.');
                 isValid = false;
-            } else if ( !emailRegex.test( email ) )
-            {
-                $( '#email' ).addClass( 'border-red-500' );
-                $( '#emailError' ).addClass( 'text-sm text-red-500 mt-1 error-message' )
-                    .text( 'Invalid email format. Please enter a valid email address in the format example@example.com.' );
+            } else if (!emailRegex.test(email)) {
+                $('#email').addClass('border-red-500');
+                $('#emailError').addClass('text-sm text-red-500 mt-1 error-message')
+                    .text('Invalid email format. Please enter a valid email address in the format example@example.com.');
                 isValid = false;
-            } else
-            {
-                $( '#email' ).removeClass( 'border-red-500' );
-                $( '#emailError' ).empty();
+            } else {
+                $('#email').removeClass('border-red-500');
+                $('#emailError').empty();
             }
 
             return isValid;
         }
 
-        function validatePassword ()
-        {
-            const password = $( '#password' ).val();
+        function validatePassword() {
+            const password = $('#password').val();
             let isValid = true;
 
-            if ( !password || password.trim() === '' )
-            {
-                $( '#password' ).addClass( 'border-red-500' );
-                $( '#passwordError' ).addClass( 'text-sm text-red-500 mt-1 error-message' ).text( 'Password is required.' );
+            if (!password || password.trim() === '') {
+                $('#password').addClass('border-red-500');
+                $('#passwordError').addClass('text-sm text-red-500 mt-1 error-message').text('Password is required.');
                 isValid = false;
-            } else
-            {
-                $( '#password' ).removeClass( 'border-red-500' );
-                $( '#passwordError' ).empty();
+            } else {
+                $('#password').removeClass('border-red-500');
+                $('#passwordError').empty();
             }
 
             return isValid;
         }
 
-        function validateUserForm ()
-        {
+        function validateUserForm() {
             const isEmailValid = validateEmail();
             const isPasswordValid = validatePassword();
 
@@ -136,75 +120,64 @@ ob_start();
         }
 
         // Add event listener for input changes to validate the form
-        $( '#email' ).on( 'input', validateEmail );
-        $( '#password' ).on( 'input', validatePassword );
+        $('#email').on('input', validateEmail);
+        $('#password').on('input', validatePassword);
 
 
         // Event listener for form submission
-        $( '#loginForm' ).submit( function ( event )
-        {
+        $('#loginForm').submit(function(event) {
             // Prevent default form submission behavior
             event.preventDefault();
 
             // Validate the form
-            if ( validateUserForm() )
-            {
-                let formData = $( this ).serialize(); // Serialize form data
+            if (validateUserForm()) {
+                let formData = $(this).serialize(); // Serialize form data
 
                 // Determine the URL based on whether it's an update or create action
                 let url = "../backend/login-authentication.php";
 
-                $.ajax( {
+                $.ajax({
                     url: url,
                     type: 'POST',
                     data: formData,
                     dataType: 'json',
-                    success: function ( response )
-                    {
-                        if ( response.success )
-                        {
-                            console.log( response );
+                    success: function(response) {
+                        if (response.success) {
+                            console.log(response);
                             // Redirect user based on their role
-                            if ( response.role === 'admin' || response.role === 'marketing' )
-                            {
+                            if (response.role === 'admin' || response.role === 'marketing') {
                                 window.location.href = '../public/users/dashboard.php';
-                            } else
-                            {
-                                window.location.href = '../public/home.php';
+                            } else {
+                                window.location.href = '../public/index.php';
                             }
-                        } else
-                        {
+                        } else {
                             // Display error messages received from the backend
-                            if ( response.message )
-                            {
-                                Object.keys( response.message ).forEach( function ( fieldName )
-                                {
-                                    $( '#' + fieldName + 'Error' ).addClass( 'text-sm text-red-500 mt-1 error-message' )
-                                        .text( response.message[fieldName] );
+                            if (response.message) {
+                                Object.keys(response.message).forEach(function(fieldName) {
+                                    $('#' + fieldName + 'Error').addClass('text-sm text-red-500 mt-1 error-message')
+                                        .text(response.message[fieldName]);
 
-                                    $( '#' + fieldName ).addClass( 'border-red-500' );
-                                } );
+                                    $('#' + fieldName).addClass('border-red-500');
+                                });
                             }
                         }
                     },
-                    error: function ( xhr, status, error )
-                    {
+                    error: function(xhr, status, error) {
                         // Handle error response
-                        Swal.fire( {
+                        Swal.fire({
                             icon: 'error',
                             title: 'Error!',
                             text: 'An error occurred. Please try again later.'
-                        } );
-                        console.error( 'Error:', error );
+                        });
+                        console.error('Error:', error);
                     }
-                } );
+                });
             }
-        } );
-    } );
-
+        });
+    });
 </script>
 
 <?php
 $script = ob_get_clean();
-include ("master.php");
+include("master.php");
 ?>
