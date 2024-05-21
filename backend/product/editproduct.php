@@ -150,6 +150,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 // Return error response if updating variation details fails
                 $response = array('success' => false, 'message' => 'Error updating variation name.');
                 echo json_encode($response);
+               
                 exit(); // Terminate script execution
             }
             // Check if a file was uploaded for this variation
@@ -200,3 +201,4 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $response = array('success' => false, 'message' => 'Invalid request method.');
     echo json_encode($response);
 }
+?>
