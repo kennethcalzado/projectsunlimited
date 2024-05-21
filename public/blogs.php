@@ -166,7 +166,7 @@ $result = mysqli_query($conn, $sql);
                 transition: background-image 0.3s ease;
             }
 
-            #bgdiv {
+            .bgdiv {
                 display: none !important;
                 visibility: hidden !important;
                 height: 0 !important;
@@ -248,7 +248,7 @@ $result = mysqli_query($conn, $sql);
 
                 if (totalItems > 0) {
                     // Generate the first background div
-                    html += '<div id="bgdiv" class="w-full flex justify-center"><div class="absolute h-[160px] m-[98px] w-3/5 bg-[#F6E381]" style="z-index: -1;"></div></div>';
+                    html += '<div class="w-full flex justify-center"><div class="bgdiv absolute h-[160px] m-[98px] w-3/5 bg-[#F6E381]" style="z-index: -1;"></div></div>';
                     html += '<div style="padding-bottom: 15px;" class="flex flex-wrap justify-center items-center">'; // Start flex container and center items
 
                     // Loop through each item for the current page
