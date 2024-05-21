@@ -275,7 +275,7 @@ body {
                     }
 
                     .products-container {
-                        display: grid;
+                        display: grid !important;
                         grid-template-columns: 1fr 1fr;
                         gap: 10px;
                         padding-top: 0px !important;
