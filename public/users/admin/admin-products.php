@@ -1063,22 +1063,22 @@ ob_start();
                 if (responseData.success) {
                     // Show success Swal alert
                     // Swal.fire({
-                       //  icon: 'success',
-                        // title: 'Success',
-                        // text: 'Product successfully added!',
-                        // showConfirmButton: false,
-                        // timer: 1500
-                   //  }).then(function() {
-                        // Show success modal
-                      //   $("#successPopup").removeClass("hidden");
-                        // $("#successMessage").text("Product Successfully Added!");
-                        // Hide add product modal
-                        // $("#addProductModal").addClass("hidden");
-                        // Refresh the table after a short delay
-                        // setTimeout(function() {
-                           //  location.reload();
-                        // }, 500);
-                   //  });
+                    //  icon: 'success',
+                    // title: 'Success',
+                    // text: 'Product successfully added!',
+                    // showConfirmButton: false,
+                    // timer: 1500
+                    //  }).then(function() {
+                    // Show success modal
+                    //   $("#successPopup").removeClass("hidden");
+                    // $("#successMessage").text("Product Successfully Added!");
+                    // Hide add product modal
+                    // $("#addProductModal").addClass("hidden");
+                    // Refresh the table after a short delay
+                    // setTimeout(function() {
+                    //  location.reload();
+                    // }, 500);
+                    //  });
                 } else {
                     console.error("Error adding product:", responseData.error);
                 }
@@ -1510,7 +1510,11 @@ ob_start();
                 const editedProductCategory = $("#editProductCategory").val();
 
                 // Gather edited product image
+                // const editVariationInputs = document.getElementById('editVariations');
+                // const editVariationIndex = editVariationInputs.children.length + 1;
                 const editedProductImage = $("#editProductImage")[0].files[0];
+                // const editedVariationImage = $("#editVariationImage")[0].files[0];
+
 
                 // Send edited details to the server to update the database
                 const formData = new FormData();
@@ -1521,6 +1525,18 @@ ob_start();
                 formData.append('editedProductCategory', editedProductCategory);
                 formData.append('editedProductImage', editedProductImage);
 
+                function appendVariationImages() {
+                    const variationDivs = document.querySelectorAll('.newVariation');
+                    variationDivs.forEach((div, index) => {
+                        const variationImageInput = div.querySelector('.editVariationImage');
+                        if (variationImageInput && variationImageInput.files[0]) {
+                            formData.append(`editedVariationImage${index + 1}`, variationImageInput.files[0]);
+                        }
+                    });
+                }
+
+                // Call the function to append variation images
+                appendVariationImages();
                 // Additional form data handling...
 
                 $.ajax({
