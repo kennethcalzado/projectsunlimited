@@ -1525,27 +1525,31 @@ ob_start();
                 formData.append('editedProductCategory', editedProductCategory);
                 formData.append('editedProductImage', editedProductImage);
 
-                // Function to append each edited variation name and image to the form data
-                function appendVariationDetails() {
-                    const variationDivs = document.querySelectorAll('.newVariation');
-                    variationDivs.forEach((div, index) => {
-                        const variationNameInput = div.querySelector('.editVariationName');
-                        const variationImageInput = div.querySelector('.editVariationImage');
+                $(".editVariationContainer").each(function() {
+                    const variationID = $(this).data("variation-id");
+                    const variationName = $(this).find(".editVariationName").val();
+                    const variationImage = $(this).find(".editVariationImage")[0].files[0];
+                    const status = $(this).is(":visible") ? "active" : "inactive"; // Check if variation container is visible
 
-                        if (variationNameInput && variationNameInput.value) {
-                            formData.append(`editedVariationName${index + 1}`, variationNameInput.value);
-                        }
-
-                        if (variationImageInput && variationImageInput.files[0]) {
-                            formData.append(`editedVariationImage${index + 1}`, variationImageInput.files[0]);
-                        }
-                    });
-                }
-
-                // Call the function to append variation details
-                appendVariationDetails();
-                // Additional form data handling...
-
+                    // Append variation details to FormData object if variation name is not empty
+                    if (variationName.trim() !== '') {
+                        formData.append(`variations[${variationID}][variationName]`, variationName);
+                        formData.append(`variations[${variationID}][variationImage]`, variationImage);
+                        formData.append(`variations[${variationID}][status]`, status); // Append variation status
+                    }
+                });
+                $(".newVariation").each(function() {
+                    const variationName = $(this).find(".editVariationName").val();
+                    const variationImage = $(this).find(".editVariationImage")[0].files[0];
+                    if (variationName.trim() !== '') {
+                        formData.append('newVariations[]', variationName);
+                        formData.append('newVariationImages[]', variationImage);
+                    }
+                });
+                $(".editVariationContainer.marked-for-deletion").each(function() {
+                    const variationID = $(this).data("variation-id");
+                    formData.append('deletedVariations[]', variationID);
+                });
                 $.ajax({
                     url: "../../../backend/product/editproduct.php",
                     method: "POST",
