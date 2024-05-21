@@ -1062,23 +1062,23 @@ ob_start();
                 var responseData = JSON.parse(data);
                 if (responseData.success) {
                     // Show success Swal alert
-                    // Swal.fire({
-                    //  icon: 'success',
-                    // title: 'Success',
-                    // text: 'Product successfully added!',
-                    // showConfirmButton: false,
-                    // timer: 1500
-                    //  }).then(function() {
-                    // Show success modal
-                    //   $("#successPopup").removeClass("hidden");
-                    // $("#successMessage").text("Product Successfully Added!");
-                    // Hide add product modal
-                    // $("#addProductModal").addClass("hidden");
-                    // Refresh the table after a short delay
-                    // setTimeout(function() {
-                    //  location.reload();
-                    // }, 500);
-                    //  });
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success',
+                        text: 'Product successfully added!',
+                        showConfirmButton: false,
+                        timer: 1500
+                    }).then(function() {
+                        // Show success modal
+                        $("#successPopup").removeClass("hidden");
+                        $("#successMessage").text("Product Successfully Added!");
+                        // Hide add product modal
+                        $("#addProductModal").addClass("hidden");
+                        // Refresh the table after a short delay
+                        setTimeout(function() {
+                            location.reload();
+                        }, 500);
+                    });
                 } else {
                     console.error("Error adding product:", responseData.error);
                 }
@@ -1510,10 +1510,7 @@ ob_start();
                 const editedProductCategory = $("#editProductCategory").val();
 
                 // Gather edited product image
-                // const editVariationInputs = document.getElementById('editVariations');
-                // const editVariationIndex = editVariationInputs.children.length + 1;
                 const editedProductImage = $("#editProductImage")[0].files[0];
-                // const editedVariationImage = $("#editVariationImage")[0].files[0];
 
 
                 // Send edited details to the server to update the database
@@ -1557,21 +1554,21 @@ ob_start();
                     contentType: false,
                     processData: false,
                     success: function(response) {
-                        // Swal.fire({
-                        //     icon: 'success',
-                        //     title: 'Success',
-                        //     text: 'Product details updated successfully!',
-                        //     showConfirmButton: false,
-                        //     timer: 1000
-                        // }).then(function() {
-                        //     $("#successMessage").text("Product details updated successfully.");
-                        //     $("#successPopup").removeClass("hidden");
-                        //     $("#editProductModal").addClass("hidden");
-                        //     setTimeout(function() {
-                        //         $("#successPopup").addClass("hidden");
-                        //         location.reload();
-                        //     }, 500);
-                        // });
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Success',
+                            text: 'Product details updated successfully!',
+                            showConfirmButton: false,
+                            timer: 1000
+                        }).then(function() {
+                            $("#successMessage").text("Product details updated successfully.");
+                            $("#successPopup").removeClass("hidden");
+                            $("#editProductModal").addClass("hidden");
+                            setTimeout(function() {
+                                $("#successPopup").addClass("hidden");
+                                location.reload();
+                            }, 500);
+                        });
                     },
                     error: function(xhr, status, error) {
                         console.error("Error updating product details:", error);
