@@ -1525,18 +1525,25 @@ ob_start();
                 formData.append('editedProductCategory', editedProductCategory);
                 formData.append('editedProductImage', editedProductImage);
 
-                function appendVariationImages() {
+                // Function to append each edited variation name and image to the form data
+                function appendVariationDetails() {
                     const variationDivs = document.querySelectorAll('.newVariation');
                     variationDivs.forEach((div, index) => {
+                        const variationNameInput = div.querySelector('.editVariationName');
                         const variationImageInput = div.querySelector('.editVariationImage');
+
+                        if (variationNameInput && variationNameInput.value) {
+                            formData.append(`editedVariationName${index + 1}`, variationNameInput.value);
+                        }
+
                         if (variationImageInput && variationImageInput.files[0]) {
                             formData.append(`editedVariationImage${index + 1}`, variationImageInput.files[0]);
                         }
                     });
                 }
 
-                // Call the function to append variation images
-                appendVariationImages();
+                // Call the function to append variation details
+                appendVariationDetails();
                 // Additional form data handling...
 
                 $.ajax({
