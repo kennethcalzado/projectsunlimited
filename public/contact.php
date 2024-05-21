@@ -185,11 +185,7 @@ function generateLocationHTML($location)
             }
 
             .address-container {
-                margin-top: -23px !important;
-            }
-
-            .mb-4 {
-                margin-bottom: -19px !important;
+                margin-top: -18px !important;
             }
         }
     </style>
