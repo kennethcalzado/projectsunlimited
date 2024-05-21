@@ -1,6 +1,13 @@
 <?php
-include '../../backend/conn.php'; // Include the database connection script
+// Start session if not already started
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
+// Include the database connection script
+include '../../backend/conn.php';
+// Include the auditlog.php file
+include ("../../backend/auditlog.php");
 // Function to generate a password
 function generatePassword($fname, $lname, $roleId)
 {
@@ -120,6 +127,27 @@ try {
 
                     // Execute the query
                     if ($stmt_insert_user->execute()) {
+                        // Fetch user information from session or database
+                        if (isset($_SESSION['user_id'])) {
+                            $user_id = $_SESSION['user_id'];
+
+                            // Fetch user details from the database using user_id
+                            $sqlUser = "SELECT fname, lname, role_id FROM users WHERE user_id = ?";
+                            $stmtUser = $conn->prepare($sqlUser);
+                            $stmtUser->bind_param("i", $user_id);
+                            $stmtUser->execute();
+                            $result = $stmtUser->get_result();
+
+                            if ($row = $result->fetch_assoc()) {
+                                $fname = $row['fname'];
+                                $lname = $row['lname'];
+                                $role_id = $row['role_id'];
+
+                                // Log the action with user details
+                                logAudit($user_id, $fname, $lname, $role_id, "User created: '$firstName $lastName'");
+                            }
+                        }
+
                         // Successfully inserted the user
                         $response = ['success' => true, 'message' => 'User created successfully', 'password' => $password];
                     } else {

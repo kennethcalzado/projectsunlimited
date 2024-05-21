@@ -202,7 +202,7 @@ ob_start();
             </div>
 
             <div class="mt-8 w-full">
-                <h3 class="text-lg font-medium mb-2">Brand Catalogs</h3>
+                <h3 id="catalogHeader" class="text-lg font-medium mb-2">Brand Catalogs</h3>
                 <!-- Uploaded Catalog List Section -->
                 <div id="uploadCatalogWrapper">
                     <label for="brandCatalogs" class="block text-sm font-medium text-gray-700">Upload
@@ -222,7 +222,7 @@ ob_start();
             </div>
 
             <div class="mt-8 w-full">
-                <h3 class="text-lg font-medium mb-2">Image Section</h3>
+                <h3 id="brandImagesHeader" class="text-lg font-medium mb-2">Image Section</h3>
                 <!-- Upload Image List Section -->
                 <div id="uploadBrandImagesWrapper">
                     <label for="brandImages" class="block text-sm font-medium text-gray-700">Upload Sample
@@ -561,12 +561,14 @@ ob_start();
                 if ( rowData.type === 'inquiry' )
                 {
                     // Hide upload catalog fields and catalog wrapper
+                    $( '#catalogHeader' ).hide();
                     $( '#uploadCatalogWrapper' ).hide();
                     $( '#catalogWrapper' ).hide();
                 } else
                 {
                     // Show upload catalog fields and catalog wrapper for other types
                     $( '#uploadCatalogWrapper' ).hide();
+                    $( '#catalogHeader' ).show();
                     $( '#catalogWrapper' ).show();
                 }
 
@@ -613,10 +615,12 @@ ob_start();
                     // Hide upload catalog fields and catalog wrapper
                     $( '#uploadCatalogWrapper' ).hide();
                     $( '#catalogWrapper' ).hide();
+                    $( '#catalogHeader' ).hide();
                 } else
                 {
                     // Show upload catalog fields and catalog wrapper for other types
                     $( '#uploadCatalogWrapper' ).show();
+                    $( '#catalogHeader' ).show();
                     $( '#catalogWrapper' ).show();
                 }
 
@@ -670,18 +674,10 @@ ob_start();
                 // Enable input fields for editing
                 $( '#brandName, #description, #type, #status' ).prop( 'disabled', false );
 
-                // Check if the brand type is 'inquiry'
-                if ( rowData.type === 'inquiry' )
-                {
-                    // Hide upload catalog fields and catalog wrapper
-                    $( '#uploadCatalogWrapper' ).hide();
-                    $( '#catalogWrapper' ).hide();
-                } else
-                {
-                    // Show upload catalog fields and catalog wrapper for other types
-                    $( '#uploadCatalogWrapper' ).show();
-                    $( '#catalogWrapper' ).hide();
-                }
+                // Show upload catalog fields and catalog wrapper for other types
+                $( '#uploadCatalogWrapper' ).show();
+                $( '#catalogHeader' ).show();
+                $( '#catalogWrapper' ).hide();
 
                 // Show upload catalog fields
                 $( '#uploadBrandImagesWrapper' ).show();
@@ -717,9 +713,20 @@ ob_start();
             // Enable input fields for editing
             $( '#brandName, #description, #type, #status' ).prop( 'disabled', false );
 
-            // Show upload catalog fields
-            $( '#uploadCatalogWrapper' ).show();
-            $( '#catalogWrapper' ).show();
+            // Check if the brand type is 'inquiry'
+            if ( rowData.type === 'inquiry' )
+            {
+                // Hide upload catalog fields and catalog wrapper
+                $( '#uploadCatalogWrapper' ).hide();
+                $( '#catalogWrapper' ).hide();
+                $( '#catalogHeader' ).hide();
+            } else
+            {
+                // Show upload catalog fields and catalog wrapper for other types
+                $( '#uploadCatalogWrapper' ).show();
+                $( '#catalogHeader' ).show();
+                $( '#catalogWrapper' ).show();
+            }
 
             // Show upload brand images fields
             $( '#uploadBrandImagesWrapper' ).show();
@@ -771,7 +778,7 @@ ob_start();
                 }
 
                 // Validate file size (in bytes)
-                const maxSize = 30 * 1024 * 1024; // 30 MB
+                const maxSize = 50 * 1024 * 1024; // 50 MB
                 if ( fileSize > maxSize )
                 {
                     if ( !invalidFiles[fileName] )
@@ -1203,6 +1210,7 @@ ob_start();
                     success: function ( response )
                     {
                         console.log( response );
+                        table.ajax.reload();
                         // Handle success response
                         if ( response.success )
                         {
@@ -1456,6 +1464,19 @@ ob_start();
                     url = '/../../backend/brands/brands-create.php';
                 }
 
+                // Show processing dialog
+                var processingDialog = Swal.fire( {
+                    title: 'Processing',
+                    text: 'Please wait...',
+                    icon: 'info',
+                    allowOutsideClick: false,
+                    showConfirmButton: false,
+                    didOpen: () =>
+                    {
+                        Swal.showLoading();
+                    }
+                } );
+
                 // If form is valid, proceed with form submission or AJAX request
                 console.log( 'Form is valid. Proceed with submission.' );
 
@@ -1468,6 +1489,9 @@ ob_start();
                     processData: false,
                     success: function ( response )
                     {
+                        // Close the processing dialog
+                        Swal.close();
+
                         Swal.fire( {
                             icon: 'success',
                             title: 'Success',
@@ -1483,6 +1507,9 @@ ob_start();
                     },
                     error: function ( xhr, status, error )
                     {
+                        // Close the processing dialog
+                        Swal.close();
+
                         // Handle error response from the server
                         console.error( 'Error:', error );
                         Swal.fire( {

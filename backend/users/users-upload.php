@@ -140,6 +140,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $stmt_insert_user->bind_param("ssssi", $fname, $lname, $passwordHash, $email, $roleId);
 
                 if ($stmt_insert_user->execute()) {
+                    // Fetch user information from session or database
+                    if (isset($_SESSION['user_id'])) {
+                        $user_id = $_SESSION['user_id'];
+
+                        // Fetch user details from the database using user_id
+                        $sql = "SELECT fname, lname, role_id FROM users WHERE user_id = ?";
+                        $stmt = $conn->prepare($sql);
+                        $stmt->bind_param("i", $user_id);
+                        $stmt->execute();
+                        $result = $stmt->get_result();
+
+                        if ($row = $result->fetch_assoc()) {
+                            $firstname = $row['fname'];
+                            $lastname = $row['lname'];
+                            $roleId = $row['role_id'];
+
+                            // Log the action with user details
+                            logAudit($userId, $firstname, $lastname, $roleId, "User uploaded: '$fname $lname'");
+                        }
+                    }
+
                     $successCount++;
                 } else {
                     $errors[] = "Error inserting user in row $key: " . $conn->error;

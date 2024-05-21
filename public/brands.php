@@ -284,7 +284,7 @@ ob_start();
 </style>
 
 <!-- Your page content goes here -->
-<div class="flex border-4 border-red-200">
+<div class="flex">
     <!-- Vertical Slider of Brand Logos -->
     <div id="brandVerticalCarousel" class="w-1/4 p-0 fade-in-hidden">
         <div id="verticalCarouselContainer" class=" flex justify-center items-center h-screen bg-gray-100">
@@ -295,14 +295,14 @@ ob_start();
     </div>
 
     <div id="brandDetails"
-        class="border border-amber-200 w-3/4 overflow-y-scroll max-h-screen relative flex justify-center items-center fade-in-hidden">
+        class="w-3/4 overflow-y-scroll max-h-screen relative flex justify-center items-center fade-in-hidden">
         <!-- Brand Logo will be set as background here -->
-        <div class="border border-blue-400 relative h-full w-full">
+        <div class="relative h-full w-full">
             <div id="brandDetailsBackground"
-                class="border border-red-600 top-0 left-0 w-full w-full bg-contain bg-center bg-no-repeat">
+                class="top-0 left-0 w-full w-full bg-contain bg-center bg-no-repeat">
                 <!--Overlay-->
                 <div id="brandInfoOverlay"
-                    class="border border-red-900 absolute top-0 left-0 w-full h-full bg-[#f4f4fc] opacity-90"></div>
+                    class="absolute top-0 left-0 w-full h-full bg-[#f4f4fc] opacity-90"></div>
 
                 <!-- Content inside the brand details section -->
                 <div id="brandsInfo" class="flex flex-col items-center relative z-10 mx-4 ">
@@ -397,14 +397,18 @@ ob_start();
                 var catalogButton = $( '<a>', {
                     class: 'bg-yellow-500 text-white px-4 py-2 rounded-full cursor-pointer hover:bg-yellow-600 transition-all duration-300 shadow-md hover:shadow-lg transform hover:scale-105',
                     text: catalog.catalog_title,
-                    href: `../../backend/brands/catalog-download.php?catalogId=${ catalog.catalog_id }`,
-                    download: `${ catalog.catalog_title }.pdf`
                 } );
+
+                // Add click event listener to open catalog in new tab
+                catalogButton.on('click', function() {
+                    var url = `../../backend/brands/catalog-open.php?catalogId=${catalog.catalog_id}`;
+                    window.open(url, '_blank');
+                });
 
                 // Tooltip for additional information
                 var tooltip = $( '<span>', {
                     class: 'tooltip-text bg-gray-800 text-white text-xs rounded-lg py-1 px-2 absolute z-10 hidden',
-                    text: `Download ${ catalog.catalog_title }`
+                    text: `Open ${ catalog.catalog_title }`
                 } );
 
                 // Wrapper for the button and tooltip
@@ -555,7 +559,7 @@ ob_start();
 
                         // Add the brand name above the logo
                         var brandNameDiv = $( '<div>' )
-                            .addClass( 'carousel-item-title text-center text-2xl font-semibold !-mb-6' );
+                            .addClass( 'carousel-item-title text-center text-2xl font-semibold mb-1' );
                         brandNameDiv.text( brandName );
 
                         // Add the brand logo to the section

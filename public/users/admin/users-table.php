@@ -187,7 +187,7 @@ ob_start();
                 </select>
                 <div id="roleError" class="text-red-500 text-sm mt-1"></div> <!-- Error message space -->
             </div>
-            <hr></form>
+            <hr>
             <button type="button" id="showPasswordBtn" class="btn-primary showpw-btn inline-flex items-center px-4 py-2 mb-2 border border-transparent 
                     rounded-md font-medium text-xs uppercase tracking-widest 
                     transition">Default Password Template</button>
@@ -527,6 +527,7 @@ ob_start();
             $( "#addUserDropdown" ).toggleClass( "transition-opacity opacity-100 ease-in-out duration-100" );
             $( "#openCreateUserModal" ).toggleClass( "hidden" );
             $( "#openBulkUserModal" ).toggleClass( "hidden" );
+            $( '#userModal' ).data( 'userId', null );
 
             $( '#userModal' ).removeClass( 'hidden' );
         } );
@@ -809,7 +810,7 @@ ob_start();
         {
             const role = $( '#role' );
             const roleError = $( '#roleError' );
-            const roleValue = role.val().trim();
+            const roleValue = role.val();
 
             // Regular expression to check for HTML tags
             const htmlRegex = /<\/?[\w\s="/.':;#-\/\?]+>/gi;
@@ -885,7 +886,6 @@ ob_start();
             return isValidFirstName && isValidLastName && isValidEmail && isValidRole;
         }
 
-
         ////////////////////// SUBMIT EVENT HANDLER (HANDLES BOTH UPDATE AND CREATE USER) ///////////////////////////
 
         $( '#userForm' ).submit( function ( event )
@@ -898,8 +898,11 @@ ob_start();
                 let url;
                 let actionType;
                 const userId = $( '#userModal' ).data( 'userId' );
+                console.log(userId);
+                console.log(userId !== undefined);
+                console.log(userId !== null);
 
-                if ( userId !== undefined )
+                if ( userId !== null)
                 {
                     actionType = 'update';
                     url = '../../../backend/users/user-update.php';
@@ -1043,7 +1046,7 @@ ob_start();
                         // Display error message using Swal.fire
                         Swal.fire( {
                             title: 'Error',
-                            text: response.message || 'An error occurred. Please try again later.',
+                            text: response.message ,
                             icon: 'error'
                         } );
                     }

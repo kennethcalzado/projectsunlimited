@@ -6,7 +6,8 @@ try {
     $sql = "SELECT b.brand_name, b.logo_url, b.description, b.type, b.images, c.catalog_id, c.catalog_title, c.catalog_path 
             FROM brands AS b 
             LEFT JOIN catalogs AS c ON b.brand_id = c.brand_id 
-            WHERE b.status = 'active'";
+            WHERE b.status = 'active'
+            ORDER BY b.brand_name ASC";
 
     // Execute the query
     $result = $conn->query($sql);

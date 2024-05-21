@@ -1,4 +1,5 @@
 <?php
+
 // Start session if not already started
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
@@ -161,6 +162,59 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $stmtUser->close();
                 }
 
+                // Handle brand catalogs
+                if (!empty($_FILES['brandCatalogs']) && isset($_FILES['brandCatalogs'])) {
+                    // Loop through each uploaded catalog file and handle it
+                    foreach ($_FILES['brandCatalogs']['tmp_name'] as $key => $tmp_name) {
+                        // Retrieve file information
+                        $fileName = $_FILES['brandCatalogs']['name'][$key];
+                        $fileSize = $_FILES['brandCatalogs']['size'][$key];
+                        $fileType = $_FILES['brandCatalogs']['type'][$key];
+                        $fileError = $_FILES['brandCatalogs']['error'][$key];
+                        $fileTmpPath = $_FILES['brandCatalogs']['tmp_name'][$key];
+
+                        // Perform further validation and sanitization of file name and path
+                        $uploadDir = '../../assets/catalogs/';
+                        $uploadPath = $uploadDir . $fileName;
+
+                        // Check for errors
+                        if ($fileError === UPLOAD_ERR_OK) {
+                            // Move the uploaded file to the desired location
+                            if (move_uploaded_file($fileTmpPath, $uploadPath)) {
+                                // Check if the catalog already exists in the database
+                                $sqlCheckCatalog = "SELECT COUNT(*) as count FROM catalogs WHERE brand_id = ? AND catalog_title = ?";
+                                $stmtCheckCatalog = $conn->prepare($sqlCheckCatalog);
+                                if ($stmtCheckCatalog) {
+                                    $stmtCheckCatalog->bind_param("is", $brandId, $fileName);
+                                    $stmtCheckCatalog->execute();
+                                    $resultCheckCatalog = $stmtCheckCatalog->get_result();
+                                    $row = $resultCheckCatalog->fetch_assoc();
+                                    if ($row['count'] == 0) {
+                                        // Insert the catalog information into the database
+                                        $sqlInsertCatalog = "INSERT INTO catalogs (brand_id, catalog_title, catalog_path) VALUES (?, ?, ?)";
+                                        $stmtInsertCatalog = $conn->prepare($sqlInsertCatalog);
+                                        if ($stmtInsertCatalog) {
+                                            $stmtInsertCatalog->bind_param("iss", $brandId, $fileName, $uploadPath);
+                                            if (!$stmtInsertCatalog->execute()) {
+                                                // Catalog insert failed
+                                                $errors['brandCatalogs'] = "Failed to insert catalog: $fileName";
+                                            }
+                                            $stmtInsertCatalog->close();
+                                        }
+                                    } else {
+                                        // Catalog already exists
+                                        $errors['brandCatalogs'] = "Catalog already exists: $fileName";
+                                    }
+                                    $stmtCheckCatalog->close();
+                                }
+                            } else {
+                                // Handle file upload errors
+                                $errors['brandCatalogs'] = "File upload error for catalog: $fileName - Error code: $fileError";
+                            }
+                        }
+                    }
+                }
+
                 $sql_select_brand = "SELECT * FROM brands WHERE brand_id = ?";
                 $stmt_select_brand = $conn->prepare($sql_select_brand);
                 if ($stmt_select_brand) {
@@ -203,10 +257,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 } else {
     $response = ["success" => false, "message" => "Invalid request method"];
     http_response_code(405);
-}
-
-function sanitizeFileName($fileName)
-{
-    return preg_replace("/[^a-zA-Z0-9_\-.]/", "", $fileName);
 }
 ?>

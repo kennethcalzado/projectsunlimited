@@ -1,5 +1,13 @@
 <?php
-include '../../backend/conn.php'; // Include the database connection script
+// Start session if not already started
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+// Include the database connection script
+include '../../backend/conn.php';
+// Include the auditlog.php file
+include "../../backend/auditlog.php";
 
 // Check if the request method is POST
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -45,7 +53,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } elseif (preg_match("/<\?(php)?[\s\S]*?\?>/i", $email)) { // Check for PHP tags
             $errors['email'] = 'Email cannot contain PHP tags.';
         } else {
-           // Check if email is already registered
+            // Check if email is already registered
             $sql_check_email = "SELECT COUNT(*) AS count FROM users WHERE email = ? AND user_id != ?";
             $stmt_check_email = $conn->prepare($sql_check_email);
             $stmt_check_email->bind_param("si", $email, $user_id);
@@ -91,6 +99,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 // Bind parameters and execute the statement
                 $stmt->bind_param("sssii", $firstName, $lastName, $email, $roleId, $userId);
                 if ($stmt->execute()) {
+                    // Fetch user information from session or database
+                    if (isset($_SESSION['user_id'])) {
+                        $user_id = $_SESSION['user_id'];
+
+                        // Fetch user details from the database using user_id
+                        $sqlUser = "SELECT fname, lname, role_id FROM users WHERE user_id = ?";
+                        $stmtUser = $conn->prepare($sqlUser);
+                        $stmtUser->bind_param("i", $user_id);
+                        $stmtUser->execute();
+                        $result = $stmtUser->get_result();
+
+                        if ($row = $result->fetch_assoc()) {
+                            $fname = $row['fname'];
+                            $lname = $row['lname'];
+                            $role_id = $row['role_id'];
+
+                            // Log the action with user details
+                            logAudit($user_id, $fname, $lname, $role_id, "User updated: '$firstName $lastName'");
+                        }
+                        $stmtUser->close();
+                    }
                     // Update successful
                     $response = ["success" => true, "message" => "User updated successfully"];
                     http_response_code(200); // Set HTTP response code to indicate success

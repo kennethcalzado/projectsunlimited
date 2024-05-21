@@ -3,8 +3,8 @@
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
-
-include '../../backend/conn.php'; // Include the database connection script
+// Include the database connection script
+include '../../backend/conn.php'; 
 // Include the auditlog.php file
 include ("../../backend/auditlog.php");
 
@@ -158,6 +158,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     logAudit($user_id, $fname, $lname, $role_id, "Created brand: '$brandName'");
                 }
             }
+
             // Get the inserted brand ID
             $brandId = $inser_brand_stmt->insert_id;
 
@@ -181,16 +182,31 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     if ($fileError === UPLOAD_ERR_OK) {
                         // Move the uploaded file to the desired location
                         if (move_uploaded_file($fileTmpPath, $uploadPath)) {
-                            // Insert the catalog information into the database
-                            $sqlInsertCatalog = "INSERT INTO catalogs (brand_id, catalog_title, catalog_path) VALUES (?, ?, ?)";
-                            $stmtInsertCatalog = $conn->prepare($sqlInsertCatalog);
-                            if ($stmtInsertCatalog) {
-                                $stmtInsertCatalog->bind_param("iss", $brandId, $fileName, $uploadPath);
-                                if (!$stmtInsertCatalog->execute()) {
-                                    // Catalog insert failed
-                                    $errors['brandCatalogs'] = "Failed to insert catalog: $fileName";
+                            // Check if the catalog already exists in the database
+                            $sqlCheckCatalog = "SELECT COUNT(*) as count FROM catalogs WHERE brand_id = ? AND catalog_title = ?";
+                            $stmtCheckCatalog = $conn->prepare($sqlCheckCatalog);
+                            if ($stmtCheckCatalog) {
+                                $stmtCheckCatalog->bind_param("is", $brandId, $fileName);
+                                $stmtCheckCatalog->execute();
+                                $resultCheckCatalog = $stmtCheckCatalog->get_result();
+                                $row = $resultCheckCatalog->fetch_assoc();
+                                if ($row['count'] == 0) {
+                                    // Insert the catalog information into the database
+                                    $sqlInsertCatalog = "INSERT INTO catalogs (brand_id, catalog_title, catalog_path) VALUES (?, ?, ?)";
+                                    $stmtInsertCatalog = $conn->prepare($sqlInsertCatalog);
+                                    if ($stmtInsertCatalog) {
+                                        $stmtInsertCatalog->bind_param("iss", $brandId, $fileName, $uploadPath);
+                                        if (!$stmtInsertCatalog->execute()) {
+                                            // Catalog insert failed
+                                            $errors['brandCatalogs'] = "Failed to insert catalog: $fileName";
+                                        }
+                                        $stmtInsertCatalog->close();
+                                    }
+                                } else {
+                                    // Catalog already exists
+                                    $errors['brandCatalogs'] = "Catalog already exists: $fileName";
                                 }
-                                $stmtInsertCatalog->close();
+                                $stmtCheckCatalog->close();
                             }
                         } else {
                             // Handle file upload errors

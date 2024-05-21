@@ -1,5 +1,13 @@
 <?php
-include '../../backend/conn.php'; // Include the database connection script
+// Start session if not already started
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+// Include the database connection script
+include '../../backend/conn.php';
+// Include the auditlog.php file
+include "../../backend/auditlog.php";
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Check if user ID is provided via POST method
@@ -23,6 +31,36 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             // Attempt to execute the prepared statement
             if ($stmt->execute()) {
+                $user_id = $_SESSION['user_id'];
+
+                // Fetch deactivate/active user details from the database using user_id
+                $sql = "SELECT fname, lname, status FROM users WHERE user_id = ?";
+                $stmt = $conn->prepare($sql);
+                $stmt->bind_param("i", $userId);
+                $stmt->execute();
+                $result = $stmt->get_result();
+
+                if ($row = $result->fetch_assoc()) {
+                    $fname = $row['fname'];
+                    $lname = $row['lname'];
+                    $status = $row['status'];
+
+                    // Fetch admin user details from the database using user_id
+                    $sql = "SELECT fname, lname, role_id, status FROM users WHERE user_id = ?";
+                    $stmt = $conn->prepare($sql);
+                    $stmt->bind_param("i", $user_id);
+                    $stmt->execute();
+                    $result = $stmt->get_result();
+
+                    if ($row = $result->fetch_assoc()) {
+                        $adminfname = $row['fname'];
+                        $adminlname = $row['lname'];
+                        $adminrole_id = $row['role_id'];
+
+                        // Log the action with user details
+                        logAudit($user_id, $adminfname, $adminlname, $adminrole_id, "User $fname $lname status changed to: $status");
+                    }
+                }
                 // User status updated successfully
                 echo json_encode(array("success" => true, "message" => "User status updated to inactive."));
             } else {
