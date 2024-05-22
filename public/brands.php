@@ -10,15 +10,15 @@ ob_start();
 
     /* Media query for mobile devices */
     @media screen and (max-width: 768px) {
-        .flex {
+        #brandsContainer{
             flex-direction: column;
-            flex-wrap: nowrap;
+			align-items: center;
             margin: 0 !important;
             padding: 0 !important;
         }
 
         #brandVerticalCarousel {
-            margin: 0 !important;
+			margin: 0 !important;
             padding: 0 !important;
         }
 
@@ -40,7 +40,8 @@ ob_start();
             min-width: 350px !important;
             padding: 20px !important;
             padding-top: 20px !important;
-            margin-left: 290% !important;
+            margin-left: 5% !important;
+			margin-right: 5% !important;
         }
 
         .carousel-item {
@@ -82,11 +83,12 @@ ob_start();
             flex-wrap: nowrap;
             width: 100%;
             height: auto;
-            padding-top: 20px !important;
-            margin-top: 5% !important;
+            padding-top: 10px !important;
+            margin-top: 0.25rem !important;
             box-sizing: border-box;
             overflow-y: visible;
             max-height: none;
+			max-width: none;
         }
 
         #brandDetails .relative {
@@ -116,15 +118,18 @@ ob_start();
         }
 
         #brandsInfo {
-            margin-top: 0;
-            padding: 20px;
+			margin: 0 !important;
             position: abosolute;
             z-index: 10;
         }
 
         #brandsImagesHeader {
-            margin-top: 20%;
+            margin-top: 5px;
         }
+
+		#brandsImagesSection {
+			margin-bottom:0.75rem !important;
+		}
 
         #brandsImagesSection img {
             max-width: 120px;
@@ -155,10 +160,15 @@ ob_start();
         #catalogListHeader,
         #brandsImagesHeader {
             font-size: 1.25rem;
+			margin-left: 1rem;
         }
+		
+		#catalogList {
+			gap: 0.75rem
+		}
 
         #catalogList a {
-            padding: 10px;
+            padding: 0.25rem !important;
             font-size: 0.875rem;
             white-space: nowrap;
             overflow: hidden;
@@ -175,6 +185,7 @@ ob_start();
         #inquirySection {
             flex-direction: column !important;
             padding-bottom: 2rem !important;
+			margin-bottom: 0 !important;
         }
 
         #inquirySection img,
@@ -256,6 +267,10 @@ ob_start();
             flex-direction: column !important;
         }
 
+		#callToActionWrapper{
+			margin-bottom: 0!imporant;
+		}
+
         .tooltip-text {
             display: none;
         }
@@ -284,7 +299,7 @@ ob_start();
 </style>
 
 <!-- Your page content goes here -->
-<div class="flex">
+<div id="brandsContainer" class="flex">
     <!-- Vertical Slider of Brand Logos -->
     <div id="brandVerticalCarousel" class="w-1/4 p-0 fade-in-hidden">
         <div id="verticalCarouselContainer" class=" flex justify-center items-center h-screen bg-gray-100">
@@ -316,7 +331,7 @@ ob_start();
                     <!-- Catalog Listing -->
                     <div class="mt-5 mb-4">
                         <h3 id="catalogListHeader" class="text-xl font-bold mb-4 text-black">Catalogs</h3>
-                        <div id="catalogList" class="flex flex-wrap gap-4 mb-8"></div>
+                        <div id="catalogList" class="flex flex-wrap justify-center gap-4 mb-8"></div>
                     </div>
                     <div id="inquirySection" class="relative mt-2 mb-2 w-full">
                         <img src="../assets/image/customizebanner.png"
@@ -325,7 +340,7 @@ ob_start();
                             class="absolute top-0 left-0 w-full h-full bg-black bg-contain bg-center bg-no-repeat opacity-50">
                         </div>
 
-                        <div class="flex relative items-center justify-center mb-4">
+                        <div id="callToActionWrapper" class="flex relative items-center justify-center mb-4">
                             <p class="text-[#F6E381] font-extrabold text-3xl text-center mt-8">
                                 The possibilities are
                                 <span class="text-amber-900 bg-[#F6E381]/80 p-1 rounded-md">unlimited</span>. <br>
@@ -431,11 +446,12 @@ ob_start();
                     }
                 );
 
-                catalogContainer.append( wrapper );
+                //catalogContainer.append( wrapper );
+				$( '#catalogList' ).append( wrapper );
             } );
 
             // Append the catalog container to the catalog list
-            $( '#catalogList' ).append( catalogContainer );
+            //$( '#catalogList' ).append( catalogContainer );
         }
 
         function updateBrandImages ( brand )
