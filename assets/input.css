@@ -279,6 +279,8 @@ body {
                         grid-template-columns: 1fr 1fr;
                         gap: 10px;
                         padding-top: 0px !important;
+                        padding-left: 10px !important;
+                        padding-right: 10px !important;
                     }
 
                     .product-column {
@@ -445,8 +447,8 @@ body {
     display: flex;
     justify-content: space-around;
     padding-top: 20px;
-    padding-left: 40px;
-    padding-right: 40px;
+    padding-left: 190px;
+    padding-right: 190px;
     flex-wrap: wrap;
     /* Ensure wrapping on smaller screens */
 }
@@ -493,8 +495,8 @@ body {
 
 .description {
     font-size: 1.25rem;
-    font-weight: bold;
     padding-bottom: 15px;
+    text-align: justify !important;
 }
 
 .news-image {
@@ -599,10 +601,6 @@ p {
     display: flex;
     padding: 0px 190px;
 }
-
- .column p {
-     font-weight: bold;
- }
 
 .section .column {
     flex: 1;

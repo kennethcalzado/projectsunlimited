@@ -45,7 +45,7 @@ ob_start();
 
         .text-4xl {
             font-size: 18px;
-            padding: 1px;
+            padding: 10px !important;
         }
 
         #prodcat>div {
@@ -116,8 +116,14 @@ ob_start();
             text-align: justify !important;
         }
 
-        .customcontainer .p-8 {
-            padding: 10px !important;
+        .customcontainer {
+            padding-left: 10px !important;
+            padding-right: 10px !important;
+        }
+
+        .custom {
+            padding-left: 10px !important;
+            padding-right: 10px !important;
         }
 
         .customcontainer .px-8 {
@@ -144,6 +150,12 @@ ob_start();
         .banner {
             font-size: 24px !important;
         }
+
+        #categorycontainer {
+            padding-left: 4px !important;
+            padding-right: 4px !important;
+        }
+
     }
 </style>
 <a href="#top" class="back-to-top">
@@ -160,7 +172,7 @@ ob_start();
         </div>
     </div>
     <h1 class="text-4xl font-extrabold text-center text-black p-4">CATEGORIES</h1>
-    <div id="categorycontainer">
+    <div style="padding-left: 190px; padding-right: 190px;" id="categorycontainer">
         <div id="prodcat" class="flex flex-wrap justify-center">
             <!-- Categories will be loaded dynamically here -->
         </div>
@@ -170,7 +182,7 @@ ob_start();
     <div class="relative fade-in-hidden">
         <img src="../assets/image/customizebanner.png" class="w-full h-96 object-cover">
         <div class="absolute inset-0 bg-black opacity-50"></div>
-        <div class="absolute inset-0 flex items-center justify-center">
+        <div class="custom absolute inset-0 flex items-center justify-center">
             <p class="text-[#F6E381] font-extrabold text-4xl text-center">CUSTOMIZE PRODUCTS <br>
                 <span class="text-white text-2xl font-semibold">Many of our products can be customized to the requirements
                     of our clients.<br> These may include the dimensions, colors, textures, and materials used in the
@@ -184,8 +196,8 @@ ob_start();
         </div>
     </div>
 </div>
-<div class="customcontainer fade-in-hidden">
-    <div class="p-8">
+<div style="padding-left: 190px; padding-right: 190px;" class="customcontainer fade-in-hidden">
+    <div class="mt-8 mb-8">
         <div class="flex items-center p-2 px-8 fade-in-hidden">
             <div class="w-10 h-10 bg-gray-800 text-white flex items-center justify-center rounded-full text-xl font-bold mr-4">
                 1</div>

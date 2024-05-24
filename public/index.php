@@ -153,13 +153,13 @@ include("../backend/conn.php");
     </script>
 
     <section class="fade-in-hidden">
-        <p class="section text-2xl font-semibold text-black mt-8">Together, we provide the best quality interior products, and highest level of support at most reasonable price.</p>
+        <p style="text-align: center;" class="section text-2xl font-semibold text-black mt-8">Together, we provide the best quality interior products, and highest level of support at most reasonable price.</p>
     </section>
 
     <section class="section fade-in-hidden">
-        <div class="column" align="center">
-            <div style="align-items: center;" class="about-us">
-                <h1 style="font-size: 31px; font-weight: 530;">ABOUT US</h1>
+        <div class="column" style="display: flex; justify-content: center; align-items: center;">
+            <div class="about-us" style="text-align: center;">
+                <h1 style="font-size: 31px; font-weight: 700;">ABOUT US</h1>
                 <a href="about.php">
                     <button style="border-radius: 50px;" class="yellow-btn">Read more ►</button>
                 </a>
@@ -295,7 +295,7 @@ include("../backend/conn.php");
                 if ($result->num_rows > 0) {
                     // Display limited text from the description column
                     $description = substr($row['description'], 0, 200); // Display first 200 characters
-                    echo '<p class="description">' . $description . '...</p>';
+                    echo '<p class="description font-semibold">' . $description . '...</p>';
                 } else {
                     echo '<p class="description">No news available</p>';
                 }

@@ -18,11 +18,23 @@
             /* Adjustments for smaller screens */
             .md\:w-1\/4 {
                 width: 100%;
+                text-align: center !important;
             }
 
             .mx-16 {
                 margin-left: 0.5rem;
                 margin-right: 0.5rem;
+            }
+
+            .block {
+                text-align: center !important;
+            }
+
+            .follow {
+                font-size: 1rem;
+                text-align: center !important;
+                margin-left: 0px !important;
+                justify-content: center !important;
             }
         }
 
@@ -43,6 +55,7 @@
 
             .text-lg {
                 font-size: 1rem;
+                text-align: center !important;
             }
 
             .ml-8 {
@@ -77,10 +90,11 @@
 
             .mt-2 {
                 margin-top: 0.5rem;
+                text-align: center !important;
             }
 
             .footerimage {
-                width: 97%;
+                width: 96%;
             }
         }
     </style>
@@ -96,7 +110,7 @@
             <p class="text-sm mt-2">620 Tytana St., Binondo, Manila, Philippines, 1006</p>
             <p class="block text-sm text-justify mt-2">Head Office Contact Number: +632 8243 8888-95</p>
             <div class="container mx-auto text-center">
-                <div class="flex items-center ml-6 mt-2">
+                <div class="follow flex items-center ml-6 mt-2">
                     <p class="text-lg ml-8 mr-2">Follow Us:</p>
                     <div class="flex space-x-2">
                         <a href="https://www.facebook.com/projectsunlimitedph" class="text-2xl hover:text-[#F6E381]"><i class="fa-brands fa-facebook"></i></a>
