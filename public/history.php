@@ -5,6 +5,7 @@ ob_start();
 ?>
 
 <head>
+<link rel="icon" href="../assets/image/PUlogo.png" type="image/png">
     <style>
         /* Mobile-specific styles */
         @media (max-width: 768px) {

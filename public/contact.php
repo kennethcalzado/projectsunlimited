@@ -87,6 +87,7 @@ function generateLocationHTML($location)
 </script>
 
 <head>
+    <link rel="icon" href="../assets/image/PUlogo.png" type="image/png">
     <style>
         @media only screen and (max-width: 768px) {
 

@@ -9,6 +9,8 @@
     </title>
     <!-- Link to your Tailwind CSS file -->
     <!-- <link href="../assets/input.css" rel="stylesheet"> -->
+    <!-- Favicon for website -->
+    <link rel="icon" href="../assets/image/PUlogo.png" type="image/png">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.0/font/bootstrap-icons.css" />
     <link rel="stylesheet" href="/assets/input.css">
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">

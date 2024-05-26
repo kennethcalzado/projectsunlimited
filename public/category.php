@@ -6,6 +6,7 @@ ob_start();
 
 <head>
     <link rel="stylesheet" href="../assets/input.css">
+    <link rel="icon" href="../assets/image/PUlogo.png" type="image/png">
 </head>
 <style>
     .square-image {

@@ -91,6 +91,7 @@ if ($result) {
 
 <head>
     <title><?php echo $pageTitle; ?></title>
+    <link rel="icon" href="../assets/image/PUlogo.png" type="image/png">
     <link rel="stylesheet" href="../../assets/input.css">
 
     <style>

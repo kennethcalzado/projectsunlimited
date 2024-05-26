@@ -13,7 +13,7 @@ include("../backend/conn.php");
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo $pageTitle; ?></title>
-    <link rel="icon" type="image/x-icon" href="../assets/image/PUlogo.png">
+    <link rel="icon" href="../assets/image/PUlogo.png" type="image/png">
     <link rel="stylesheet" href="assets/input.css">
 
     <style>

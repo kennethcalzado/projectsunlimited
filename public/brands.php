@@ -3,6 +3,9 @@ $is_public_page = true;
 $pageTitle = "Brands";
 ob_start();
 ?>
+<head>
+<link rel="icon" href="../assets/image/PUlogo.png" type="image/png">
+</head>
 <style>
     #brandsImagesSection img {
         transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
