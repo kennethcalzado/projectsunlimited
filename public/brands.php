@@ -155,7 +155,7 @@ ob_start();
 
         #brandDescription {
             font-size: 1rem;
-            text-align: justify;
+            text-align: justify !important;
             padding-left: 1rem;
             padding-right: 1rem;
         }
@@ -171,7 +171,7 @@ ob_start();
 		}
 
         #catalogList a {
-            padding: 0.25rem !important;
+            padding: 0.75rem !important;
             font-size: 0.875rem;
             white-space: nowrap;
             overflow: hidden;
@@ -182,7 +182,8 @@ ob_start();
             /* Ensure the button behaves like a block element */
             box-sizing: border-box;
             /* Include padding and border in the total width */
-            width: 250px;
+            width: 285px;
+			text-align: center;
         }
 
         #inquirySection {
@@ -380,9 +381,11 @@ ob_start();
         function updateBrandDetails ( brand )
         {
             console.log( "Updating Brand Details for brand:", brand.brand_name );
+const encodedLogoUrl = brand.logo_url.replace(/ /g, '%20');
+			console.log(encodedLogoUrl);
             // Update brand details in Brand Details Container
             $( '#brandDetailsBackground' )
-                .css( 'background-image', `url(${ brand.logo_url })` )
+    			.css('background-image', `url(${encodedLogoUrl})`)
                 .addClass( 'fade-in' )
                 .removeClass( 'fade-out' );
             $( '#brandName' )
@@ -577,13 +580,13 @@ ob_start();
                         section.data( 'images', JSON.stringify( images ) );  // Store catalogs as a JSON string
 
                         // Add the brand name above the logo
-                        var brandNameDiv = $( '<div>' )
-                            .addClass( 'carousel-item-title text-center text-2xl font-semibold mb-1' );
-                        brandNameDiv.text( brandName );
+                        //var brandNameDiv = $( '<div>' )
+                        //    .addClass( 'carousel-item-title text-center text-2xl font-semibold mb-1 mx-6' );
+                        // brandNameDiv.text( brandName );
 
                         // Add the brand logo to the section
                         var img = $( '<img>' )
-                            .addClass( 'carousel-item-image bg-cover bg-no-repeat object-contain  mx-auto' );
+                            .addClass( 'carousel-item-image bg-cover bg-no-repeat object-contain mx-6 max-w-full sm:max-w-[270px]' );
                         img.attr( 'src', logoUrl );
 
                         // Create a wrapper div for the content
@@ -591,7 +594,7 @@ ob_start();
                             .addClass( 'flex flex-col items-center justify-center w-full h-full' );
 
                         // Append the brand name and image to the wrapper
-                        contentWrapper.append( brandNameDiv );
+                        //contentWrapper.append( brandNameDiv );
                         contentWrapper.append( img );
 
                         // Append the wrapper to the section

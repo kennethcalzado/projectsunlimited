@@ -226,7 +226,7 @@ include("../backend/conn.php");
             </div>
         </div>
 
-        <button style="border-radius: 50px;" class="learn-more-btn absolute bottom-4 right-4 bg-gray-300 text-black py-2 px-6 rounded-full">Learn more ►</button>
+        <a href="/public/brands.php" style="border-radius: 50px;" class="learn-more-btn absolute bottom-4 right-4 bg-gray-300 text-black py-2 px-6 rounded-full">Learn more ►</a>
     </section>
 
     <script>
