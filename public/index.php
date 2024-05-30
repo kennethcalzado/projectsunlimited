@@ -29,7 +29,8 @@ include("../backend/conn.php");
         }
 
         .brand-logo {
-            max-height: 700px;
+			min-height: 300px;
+            max-height: 450px;
             min-width: 1000px;
             max-width: 1000px;
             width: auto;
