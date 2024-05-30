@@ -256,6 +256,7 @@ function generateLocationHTML($location)
                             <div class="mb-4">
                                 <label for="subject" class="block text-black font-bold text-xl">Subject of Concern:</label>
                                 <select id="subject" name="subject" class="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent">
+                                    <option value="" disabled selected>Subject of Concern</option>
                                     <option value="Inquiry for Project Quotation">Inquiry for Project Quotation</option>
                                     <option value="Inquiry for Product Quotation">Inquiry for Product Quotation</option>
                                     <option value="Request for Site Inspection and Space Planning">Request for Site Inspection and Space Planning</option>
