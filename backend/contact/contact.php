@@ -23,7 +23,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $mail->isSMTP();
         $mail->Host = 'smtp.gmail.com'; // Gmail SMTP server
         $mail->SMTPAuth = true;
-        // $mail->SMTPDebug = SMTP::DEBUG_SERVER;
+        $mail->SMTPDebug = SMTP::DEBUG_SERVER;
         $mail->Username = 'marketing.projectsunlimited@gmail.com'; // Your Gmail address
         $mail->Password = 'vouargdiqfzxgite'; // Your Gmail password
         $mail->SMTPSecure = 'tls';
@@ -40,7 +40,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $mail->Body = "
             <p>Good Day!</p>
             <p>$message</p>
-            <p>I am hoping to receive feedback at your earliest convenience. You may contact me through my <b>Phone Number:$phone</b> or through my <b>Email: $email</b>.</p>
+            <p>I am hoping to receive feedback at your earliest convenience. You may contact me through my <b> Phone Number: $phone</b> or through my <b> Email: $email</b>.</p>
             <p>Thank You!</p>
             <p></p>
             <p>Best Regards,</p>
@@ -50,7 +50,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $mail->send();
         echo "Thank you! Your message has been sent.";
     } catch (Exception $e) {
-        echo "Sorry, there was an error sending your message. Please try again later.";
+        echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";    
     }
 }
 ?>
