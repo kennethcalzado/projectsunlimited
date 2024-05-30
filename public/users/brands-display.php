@@ -674,6 +674,20 @@ ob_start();
                 // Enable input fields for editing
                 $( '#brandName, #description, #type, #status' ).prop( 'disabled', false );
 
+                $( document ).on( 'change', '#type', function ()
+                {       
+                    var type = $( this ).val();
+                    if ( type == 'inquiry' ){
+                        $( '#uploadCatalogWrapper' ).hide();
+                        $( '#catalogHeader' ).hide();
+                        $( '#catalogWrapper' ).hide();
+                    }  else if ( type == 'catalog') {
+                        $( '#uploadCatalogWrapper' ).show();
+                        $( '#catalogHeader' ).show();
+                        $( '#catalogWrapper' ).hide();
+                    }
+                });
+
                 // Show upload catalog fields and catalog wrapper for other types
                 $( '#uploadCatalogWrapper' ).show();
                 $( '#catalogHeader' ).show();
