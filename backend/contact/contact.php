@@ -1,4 +1,5 @@
 <?php
+
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 use PHPMailer\PHPMailer\SMTP;
@@ -38,19 +39,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $mail->isHTML(true); // Set email format to HTML
         $mail->Subject = "New Inquiry from the website: $subject";
         $mail->Body = "
-            <p>Good Day!</p>
-            <p>$message</p>
-            <p>I am hoping to receive feedback at your earliest convenience. You may contact me through my <b> Phone Number: $phone</b> or through my <b> Email: $email</b>.</p>
-            <p>Thank You!</p>
-            <p></p>
-            <p>Best Regards,</p>
-            <p>$name <br> $email</p>
-        ";
+        <p>Good Day!</p>
+        <p>$message</p>
+        <p>I am hoping to receive feedback at your earliest convenience. You may contact me through my <b> Phone Number: $phone</b> or through my <b> Email: $email</b>.</p>
+        <p>Thank You!</p>
+        <p></p>
+        <p>Best Regards,</p>
+        <p>$name <br> $email</p>
+    ";
 
+        // Send email
         $mail->send();
         echo "Thank you! Your message has been sent.";
     } catch (Exception $e) {
-        echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";    
+        echo "Sorry, there was an error sending your message. Please try again later.";
     }
 }
-?>
