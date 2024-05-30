@@ -420,11 +420,25 @@ function generateLocationHTML($location)
                     },
                     error: function(xhr, status, error) {
                         console.error(xhr.responseText); // Log error message
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Error',
-                            text: 'An error occurred while sending the email. Please try again later.',
-                        });
+                        if (xhr.status === 504) {
+                            // Display success message even for 504 error
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Message Sent',
+                                text: 'Thank you for contacting Projects Unlimited! We will get back to you in a while.',
+                                timer: 2000,
+                                showConfirmButton: false
+                            }).then(() => {
+                                $('#contactForm')[0].reset();
+                            });
+                        } else {
+                            // Display generic error message for other errors
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: 'An error occurred while sending the email. Please try again later.',
+                            });
+                        }
                     }
                 });
             }
