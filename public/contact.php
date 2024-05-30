@@ -157,6 +157,18 @@ function generateLocationHTML($location)
                 /* Adjust width as needed */
             }
 
+            /* Adjust dropdown for mobile */
+            .formcontainer select {
+                width: 100%;
+                font-size: 14px;
+                padding: 10px;
+                margin-top: 10px;
+            }
+
+            .formcontainer option {
+                padding: 10px;
+            }
+
             .banner {
                 font-size: 24px !important;
             }
