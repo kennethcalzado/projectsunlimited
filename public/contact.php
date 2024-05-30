@@ -255,7 +255,14 @@ function generateLocationHTML($location)
                             </div>
                             <div class="mb-4">
                                 <label for="subject" class="block text-black font-bold text-xl">Subject of Concern:</label>
-                                <input type="text" id="subject" name="subject" placeholder="Subject of Concern" class="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent">
+                                <select id="subject" name="subject" class="w-full p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent">
+                                    <option value="Inquiry for Project Quotation">Inquiry for Project Quotation</option>
+                                    <option value="Inquiry for Product Quotation">Inquiry for Product Quotation</option>
+                                    <option value="Request for Site Inspection and Space Planning">Request for Site Inspection and Space Planning</option>
+                                    <option value="Request for Product Presentation">Request for Product Presentation</option>
+                                    <option value="Product Warranty">Product Warranty</option>
+                                    <option value="Other">Other</option>
+                                </select>
                             </div>
                             <div class="mb-4">
                                 <label for="message" class="block text-black font-bold text-xl">Message:</label>
