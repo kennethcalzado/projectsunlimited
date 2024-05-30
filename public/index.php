@@ -30,6 +30,8 @@ include("../backend/conn.php");
 
         .brand-logo {
             max-height: 700px;
+            min-width: 1000px;
+            max-width: 1000px;
             width: auto;
             margin: 0 auto;
             /* Add any additional styling here */
@@ -195,7 +197,7 @@ include("../backend/conn.php");
                     // Output data of each row
                     while ($row = $result->fetch_assoc()) {
                         // Output carousel item for each brand
-                        echo '<div class="carousel-item w-full text-black text-center carousel-brands-item">';
+                        echo '<div class="carousel-item w-full text-black text-center carousel-brands-item flex justify-center">';
                         // Output brand logo
                         echo '<img src="' . $row['logo_url'] . '" alt="' . $row['brand_name'] . '" class="brand-logo">';
                         echo '</div>';
@@ -206,10 +208,10 @@ include("../backend/conn.php");
                 ?>
             </div>
 
-            <div class="carousel-arrow prev" onclick="prevSlideSecondCarousel()" style="font-size: 99px; padding: 100px">
+            <div class="carousel-arrow prev absolute left-0 flex items-center" onclick="prevSlideSecondCarousel()" style="font-size: 99px; padding: 100px">
                 <i class="fas fa-chevron-left text-black"></i>
             </div>
-            <div class="carousel-arrow next" onclick="nextSlideSecondCarousel()" style="font-size: 99px; padding: 100px">
+            <div class="carousel-arrow next absolute right-0 flex items-center" onclick="nextSlideSecondCarousel()" style="font-size: 99px; padding: 100px">
                 <i class="fas fa-chevron-right text-black"></i>
             </div>
 

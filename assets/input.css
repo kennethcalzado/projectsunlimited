@@ -428,6 +428,13 @@ body {
                     .third-carousel-dots {
                         padding-top: 20px !important;
                     }
+
+                    .brand-logo {
+                        min-width: 250px !important;
+                        max-width: 250px !important;
+                        min-height: 220px !important;
+                        max-height: 220px !important;
+                    }
 }
 
 /* Latest Products Section */
