@@ -6,6 +6,7 @@ if (session_status() === PHP_SESSION_NONE) {
 
 // Include the database connection script
 include '../../backend/conn.php';
+include("../../backend/auditlog.php");
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['imageSrc']) && isset($_POST['brandId'])) {
@@ -43,24 +44,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             unlink($imagePath);
                         }
 
-                         // Fetch user information from session or database
-                         if (isset($_SESSION['user_id'])) {
+                        // Log the action if user information is available
+                        if (isset($_SESSION['user_id'])) {
                             $user_id = $_SESSION['user_id'];
 
                             // Fetch user details from the database using user_id
                             $sql = "SELECT fname, lname, role_id FROM users WHERE user_id = ?";
-                            $stmt = $conn->prepare($sql);
-                            $stmt->bind_param("i", $user_id);
-                            $stmt->execute();
-                            $result = $stmt->get_result();
+                            $userStmt = $conn->prepare($sql);
+                            $userStmt->bind_param("i", $user_id);
+                            $userStmt->execute();
+                            $userResult = $userStmt->get_result();
 
-                            if ($row = $result->fetch_assoc()) {
+                            if ($row = $userResult->fetch_assoc()) {
                                 $fname = $row['fname'];
                                 $lname = $row['lname'];
                                 $role_id = $row['role_id'];
 
                                 // Log the action with user details
-                                logAudit($user_id, $fname, $lname, $role_id, "Deleted image: '$imageSrc'");
+                                try {
+                                    logAudit($user_id, $fname, $lname, $role_id, "Deleted image: '$imageSrc'");
+                                } catch (Exception $e) {
+                                    // Log the exception message for debugging
+                                    error_log("Error in logAudit function: " . $e->getMessage());
+                                }
                             }
                         }
 
@@ -73,6 +79,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     echo json_encode(['success' => false, 'error' => 'Brand not found.']);
                 }
             } catch (Exception $e) {
+                error_log("Error: " . $e->getMessage()); // Log the exception message
                 echo json_encode(['success' => false, 'error' => 'Error: ' . $e->getMessage()]);
             }
         } else {
