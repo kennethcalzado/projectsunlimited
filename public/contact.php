@@ -406,9 +406,8 @@ function generateLocationHTML($location)
                     success: function(response) {
                         // Clear form fields
                         $('#contactForm')[0].reset();
-
-                        // Show success alert
-                        Swal.fire({
+                          // Show success alert
+                          Swal.fire({
                             icon: 'success',
                             title: 'Message Sent',
                             text: 'Thank you for contacting Projects Unlimited! We will get back to you in a while.',
@@ -420,28 +419,51 @@ function generateLocationHTML($location)
                     },
                     error: function(xhr, status, error) {
                         console.error(xhr.responseText); // Log error message
-                        if (xhr.status === 504) {
-                            // Display success message even for 504 error
-                            Swal.fire({
-                                icon: 'success',
-                                title: 'Message Sent',
-                                text: 'Thank you for contacting Projects Unlimited! We will get back to you in a while.',
-                                timer: 2000,
-                                showConfirmButton: false
-                            }).then(() => {
-                                $('#contactForm')[0].reset();
-                            });
-                        } else {
-                            // Display generic error message for other errors
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'Error',
-                                text: 'An error occurred while sending the email. Please try again later.',
-                            });
-                        }
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: 'An error occurred while sending the email. Please try again later.',
+                        });
                     }
                 });
             }
         });
     });
+//                         // Show success alert
+//                         Swal.fire({
+//                             icon: 'success',
+//                             title: 'Message Sent',
+//                             text: 'Thank you for contacting Projects Unlimited! We will get back to you in a while.',
+//                             timer: 2000,
+//                             showConfirmButton: false
+//                         }).then(() => {
+//                             $('#contactForm')[0].reset();
+//                         });
+//                     },
+//                     error: function(xhr, status, error) {
+//                         console.error(xhr.responseText); // Log error message
+//                         if (xhr.status === 504) {
+//                             // Display success message even for 504 error
+//                             Swal.fire({
+//                                 icon: 'success',
+//                                 title: 'Message Sent',
+//                                 text: 'Thank you for contacting Projects Unlimited! We will get back to you in a while.',
+//                                 timer: 2000,
+//                                 showConfirmButton: false
+//                             }).then(() => {
+//                                 $('#contactForm')[0].reset();
+//                             });
+//                         } else {
+//                             // Display generic error message for other errors
+//                             Swal.fire({
+//                                 icon: 'error',
+//                                 title: 'Error',
+//                                 text: 'An error occurred while sending the email. Please try again later.',
+//                             });
+//                         }
+//                     }
+//                 });
+//             }
+//         });
+//     });
 </script>
