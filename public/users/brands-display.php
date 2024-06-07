@@ -279,7 +279,7 @@ ob_start();
                             </div>
                             <p class="mb-2 text-sm text-gray-500 dark:text-gray-400"><span class="font-semibold">Click
                                     to upload</span> or drag and drop</p>
-                            <p class="text-xs text-gray-500 dark:text-gray-400">CSV, or XLSX (MAX. 800x400px)</p>
+                            <p class="text-xs text-gray-500 dark:text-gray-400">CSV, or XLSX (MAX. 55mb)</p>
                             <!-- Placeholder for the file name -->
                             <p id="brand-file-name" class="text-xs text-gray-500 dark:text-gray-400 mt-2"></p>
                         </div>

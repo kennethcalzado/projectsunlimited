@@ -82,16 +82,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $stmtUpdateLogo = $conn->prepare($sqlUpdateLogo);
                     if ($stmtUpdateLogo) {
                         $stmtUpdateLogo->bind_param("si", $uploadPath, $brandId);
-                        $stmtUpdateLogo->execute();
+                        if (!$stmtUpdateLogo->execute()) {
+                            $errors['uploadingBrandlogo'] = "Failed to update logo URL in the database.";
+                            log_error("Database error: " . $stmtUpdateLogo->error);
+                        }
                         $stmtUpdateLogo->close();
+                    } else {
+                        $errors['uploadingBrandlogo'] = "Failed to prepare logo update statement.";
+                        log_error("Database error: " . $conn->error);
                     }
                 } else {
-                    $response = ["success" => false, "message" => "Failed to move uploaded file"];
-                    http_response_code(500);
+                    $errors['uploadingBrandlogo'] = "Failed to move uploaded file: $fileName";
+                    log_error("File move error: " . error_get_last()['message']);
                 }
             } else {
-                $response = ["success" => false, "message" => "Invalid file extension. Only JPG, JPEG, and PNG files are allowed."];
-                http_response_code(400);
+                $errors['uploadingBrandlogo'] = "Invalid file extension. Only JPG, JPEG, and PNG files are allowed: $fileName";
             }
         }
 
@@ -109,7 +114,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $allowedExtensions = ['jpg', 'jpeg', 'png'];
 
                 if (!in_array($fileExtension, $allowedExtensions)) {
-                    $errors[] = "Invalid file extension for $fileName. Only JPG, JPEG, and PNG files are allowed.";
+                    $errors['uploadingBrandImages'] = "Invalid file extension for $fileName. Only JPG, JPEG, and PNG files are allowed.";
+                    log_error("Invalid file extension: $fileExtension for file: $fileName");
                     continue;
                 }
 
@@ -119,32 +125,51 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 if (move_uploaded_file($fileTmpPath, $uploadImagePath)) {
                     $uploadImagePaths[] = $uploadImagePath;
                 } else {
-                    $errors[] = "Failed to move uploaded file: $fileName";
+                     $errors['uploadingBrandImages'] = "Failed to move uploaded file: $fileName";
+                    // Add detailed logging
+                    $lastError = error_get_last();
+                    $errorMessage = isset($lastError['message']) ? $lastError['message'] : 'No error message';
+                    log_error("File move error for image: $fileName - $errorMessage");
                 }
+            }
+
+            // Fetch existing images from the database
+            $stmtSelect = $conn->prepare("SELECT images FROM brands WHERE brand_id = ?");
+            $stmtSelect->bind_param("i", $brandId);
+            $stmtSelect->execute();
+            $result = $stmtSelect->get_result();
+            $existingImages = [];
+            if ($result->num_rows > 0) {
+                $row = $result->fetch_assoc();
+                $existingImages = json_decode($row['images'], true) ?: [];
+            }
+            $stmtSelect->close();
+
+            // Merge existing images with new uploads
+            $allImages = array_merge($existingImages, $uploadImagePaths);
+            $encodedImagePaths = json_encode($allImages);
+
+            // Update brand images in a separate query
+            $sqlUpdateImages = "UPDATE brands SET images = ? WHERE brand_id = ?";
+            $stmtUpdateImages = $conn->prepare($sqlUpdateImages);
+            if ($stmtUpdateImages) {
+                $stmtUpdateImages->bind_param("si", $encodedImagePaths, $brandId);
+                if (!$stmtUpdateImages->execute()) {
+                    $errors['updatingBrandImages'] = "Failed to update images in the database.";
+                    log_error("Database error: " . $stmtUpdateImages->error);
+                }
+                $stmtUpdateImages->close();
+            } else {
+                $errors['updatingBrandImages'] = "Failed to prepare image update statement.";
+                log_error("Database error: " . $conn->error);
             }
         }
 
-        // Fetch existing images from the database
-        $stmtSelect = $conn->prepare("SELECT images FROM brands WHERE brand_id = ?");
-        $stmtSelect->bind_param("i", $brandId);
-        $stmtSelect->execute();
-        $result = $stmtSelect->get_result();
-        $existingImages = [];
-        if ($result->num_rows > 0) {
-            $row = $result->fetch_assoc();
-            $existingImages = json_decode($row['images'], true) ?: [];
-        }
-        $stmtSelect->close();
-
-        // Merge existing images with new uploads
-        $allImages = array_merge($existingImages, $uploadImagePaths);
-        $encodedImagePaths = json_encode($allImages);
-
-        // Update the brand data including images
-        $sql = "UPDATE brands SET brand_name = ?, description = ?, type = ?, status = ?, images = ?, updated_at = CURRENT_TIMESTAMP WHERE brand_id = ?";
+        // Update the brand data excluding images
+        $sql = "UPDATE brands SET brand_name = ?, description = ?, type = ?, status = ?, updated_at = CURRENT_TIMESTAMP WHERE brand_id = ?";
         $stmt = $conn->prepare($sql);
         if ($stmt) {
-            $stmt->bind_param("sssssi", $brandName, $description, $type, $status, $encodedImagePaths, $brandId);
+            $stmt->bind_param("ssssi", $brandName, $description, $type, $status, $brandId);
             if ($stmt->execute()) {
                 if (isset($_SESSION['user_id'])) {
                     $user_id = $_SESSION['user_id'];
@@ -215,6 +240,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     }
                 }
 
+				// if (!empty($errors)) {
+				// 	// Uncomment one of the lines below to print the error array for debugging
+				// 	 print_r($errors);
+				// 	 var_dump($errors);
+
+				// 	// Send error response
+				// 	//echo json_encode(['success' => false, 'message' => $errors]);
+				// 	exit;
+				// }
+
                 $sql_select_brand = "SELECT * FROM brands WHERE brand_id = ?";
                 $stmt_select_brand = $conn->prepare($sql_select_brand);
                 if ($stmt_select_brand) {
@@ -257,5 +292,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 } else {
     $response = ["success" => false, "message" => "Invalid request method"];
     http_response_code(405);
+}
+
+function log_error($message) {
+    $logFile = __DIR__ . '/error.log'; // Ensure the log file path is correct
+    $timestamp = date('Y-m-d H:i:s');
+    $logMessage = "[$timestamp] $message" . PHP_EOL;
+    file_put_contents($logFile, $logMessage, FILE_APPEND);
 }
 ?>

@@ -26,7 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['email'], $_POST['pass
         exit;
     }
 
-    // Query to check if the user exists
+    // Query to check if the user exists and is active
     $sql = "SELECT * FROM users WHERE email = ?";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("s", $email);
@@ -34,8 +34,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['email'], $_POST['pass
     $result = $stmt->get_result();
 
     if ($result->num_rows > 0) {
-        // User found, check password
+        // User found, check status
         $user = $result->fetch_assoc();
+        if ($user['status'] === 'inactive') {
+            // Account is inactive, return message
+            echo json_encode(['success' => false, 'message' => 'Account deactivated. Please contact the company for further instructions.']);
+            exit;
+        }
+
+        // User is active, check password
         if (password_verify($password, $user['password_hash'])) {
             // Password is correct, login successful
 
@@ -73,14 +80,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['email'], $_POST['pass
             exit;
         } else {
             // Password is incorrect
-            $errors['password'] = 'Incorrect password';
-
-            echo json_encode(['success' => false, 'message' => $errors]);
+            echo json_encode(['success' => false, 'message' => 'Incorrect password']);
             exit;
         }
     } else {
         // User not found
-        http_response_code(404); // Not Found
         echo json_encode(['success' => false, 'message' => 'User not found']);
         exit;
     }
@@ -91,3 +95,4 @@ function generate_token()
     // Generate a unique token using a secure method
     return bin2hex(random_bytes(32));
 }
+?>
