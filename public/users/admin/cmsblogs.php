@@ -249,11 +249,13 @@ ob_start();
                         html += '<td>' + item.title + '</td>';
                         html += '<td>' + item.date + '</td>';
                         html += '<td><img src="../../../assets/blogs_img/' + item.thumbnail + '" width="100" height="100"></td>';
-                        html += '<td class="description">' + item.description + '</td>';
+                        // Replace single quotes in description
+                        var escapedDescription = item.description.replace(/'/g, '~');
+                        html += '<td class="description">' + escapedDescription + '</td>';
                         html += '<td>' + item.type + '</td>';
                         html += '<td class="action-btns">';
                         html += '<button onclick="viewPost(\'' + item.page + '\')" class="btn-view" target="_blank"><i class="fas fa-eye"></i> View</button>';
-                        html += '<button onclick="openUpdateModal(' + item.id + ', \'' + item.title.replace(/'/g, "\\'") + '\', \'' + encodeURIComponent(item.description) + '\', \'' + item.type + '\', \'' + item.date + '\', \'' + item.images + '\', \'' + item.thumbnail + '\')" class="yellow-btn btn-primary" data-title="' + item.title.replace(/'/g, "\\'") + '" data-description="' + encodeURIComponent(item.description) + '" data-type="' + item.type + '" data-date="' + item.date + '" data-images="' + item.images + '"><i class="fas fa-edit"></i> Update</button>';
+                        html += '<button onclick="openUpdateModal(' + item.id + ', \'' + item.title.replace(/'/g, "\\'") + '\', \'' + encodeURIComponent(escapedDescription) + '\', \'' + item.type + '\', \'' + item.date + '\', \'' + item.images + '\', \'' + item.thumbnail + '\')" class="yellow-btn btn-primary" data-title="' + item.title.replace(/'/g, "\\'") + '" data-description="' + encodeURIComponent(escapedDescription) + '" data-type="' + item.type + '" data-date="' + item.date + '" data-images="' + item.images + '"><i class="fas fa-edit"></i> Update</button>';
                         html += '<button onclick="openDeleteModal(' + item.id + ')" class="btn btn-danger"><i class="fas fa-trash-alt"></i> Delete</button>';
                         // Add more action buttons if needed
                         html += '</td>';
@@ -377,13 +379,13 @@ ob_start();
         function openUpdateModal(blogId, title, description, type, date, images, thumbnail) {
             var modal = document.getElementById('updateModal');
             modal.classList.remove('hidden');
-            modal.classList.remove('fade-out'); // Remove fade-out class if applied
+            modal.classList.remove('fade-out');
             modal.classList.add('fade-in');
 
             // Set input values
             document.getElementById('blogIdToUpdate').value = blogId;
             document.getElementById('updateTitle').value = title;
-            document.getElementById('updateDescription').value = decodeURIComponent(description);
+            document.getElementById('updateDescription').value = decodeURIComponent(description).replace(/~/g, "'");
             document.getElementById('updateType').value = type;
             document.getElementById('updateDate').value = date;
 
