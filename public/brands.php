@@ -3,8 +3,9 @@ $is_public_page = true;
 $pageTitle = "Brands";
 ob_start();
 ?>
+
 <head>
-<link rel="icon" href="../assets/image/PUlogo.png" type="image/png">
+    <link rel="icon" href="../assets/image/PUlogo.png" type="image/png">
 </head>
 <style>
     #brandsImagesSection img {
@@ -13,15 +14,15 @@ ob_start();
 
     /* Media query for mobile devices */
     @media screen and (max-width: 768px) {
-        #brandsContainer{
+        #brandsContainer {
             flex-direction: column;
-			align-items: center;
+            align-items: center;
             margin: 0 !important;
             padding: 0 !important;
         }
 
         #brandVerticalCarousel {
-			margin: 0 !important;
+            margin: 0 !important;
             padding: 0 !important;
         }
 
@@ -44,7 +45,7 @@ ob_start();
             padding: 20px !important;
             padding-top: 20px !important;
             margin-left: 5% !important;
-			margin-right: 5% !important;
+            margin-right: 5% !important;
         }
 
         .carousel-item {
@@ -91,7 +92,7 @@ ob_start();
             box-sizing: border-box;
             overflow-y: visible;
             max-height: none;
-			max-width: none;
+            max-width: none;
         }
 
         #brandDetails .relative {
@@ -121,7 +122,7 @@ ob_start();
         }
 
         #brandsInfo {
-			margin: 0 !important;
+            margin: 0 !important;
             position: abosolute;
             z-index: 10;
         }
@@ -130,9 +131,9 @@ ob_start();
             margin-top: 5px;
         }
 
-		#brandsImagesSection {
-			margin-bottom:0.75rem !important;
-		}
+        #brandsImagesSection {
+            margin-bottom: 0.75rem !important;
+        }
 
         #brandsImagesSection img {
             max-width: 120px;
@@ -163,12 +164,12 @@ ob_start();
         #catalogListHeader,
         #brandsImagesHeader {
             font-size: 1.25rem;
-			margin-left: 1rem;
+            margin-left: 1rem;
         }
-		
-		#catalogList {
-			gap: 0.75rem
-		}
+
+        #catalogList {
+            gap: 0.75rem
+        }
 
         #catalogList a {
             padding: 0.75rem !important;
@@ -183,13 +184,13 @@ ob_start();
             box-sizing: border-box;
             /* Include padding and border in the total width */
             width: 285px;
-			text-align: center;
+            text-align: center;
         }
 
         #inquirySection {
             flex-direction: column !important;
             padding-bottom: 2rem !important;
-			margin-bottom: 0 !important;
+            margin-bottom: 0 !important;
         }
 
         #inquirySection img,
@@ -271,9 +272,9 @@ ob_start();
             flex-direction: column !important;
         }
 
-		#callToActionWrapper{
-			margin-bottom: 0!imporant;
-		}
+        #callToActionWrapper {
+            margin-bottom: 0 !imporant;
+        }
 
         .tooltip-text {
             display: none;
@@ -317,11 +318,9 @@ ob_start();
         class="w-3/4 overflow-y-scroll max-h-screen relative flex justify-center items-center fade-in-hidden">
         <!-- Brand Logo will be set as background here -->
         <div class="relative h-full w-full">
-            <div id="brandDetailsBackground"
-                class="top-0 left-0 w-full w-full bg-contain bg-center bg-no-repeat">
+            <div id="brandDetailsBackground" class="top-0 left-0 w-full w-full bg-contain bg-center bg-no-repeat">
                 <!--Overlay-->
-                <div id="brandInfoOverlay"
-                    class="absolute top-0 left-0 w-full h-full bg-[#f4f4fc] opacity-90"></div>
+                <div id="brandInfoOverlay" class="absolute top-0 left-0 w-full h-full bg-[#f4f4fc] opacity-90"></div>
 
                 <!-- Content inside the brand details section -->
                 <div id="brandsInfo" class="flex flex-col items-center relative z-10 mx-4 ">
@@ -381,11 +380,10 @@ ob_start();
         function updateBrandDetails ( brand )
         {
             console.log( "Updating Brand Details for brand:", brand.brand_name );
-const encodedLogoUrl = brand.logo_url.replace(/ /g, '%20');
-			console.log(encodedLogoUrl);
+            const encodedLogoUrl = brand.logo_url.replace( / /g, '%20' );
             // Update brand details in Brand Details Container
             $( '#brandDetailsBackground' )
-    			.css('background-image', `url(${encodedLogoUrl})`)
+                .css( 'background-image', `url(${ encodedLogoUrl })` )
                 .addClass( 'fade-in' )
                 .removeClass( 'fade-out' );
             $( '#brandName' )
@@ -421,10 +419,11 @@ const encodedLogoUrl = brand.logo_url.replace(/ /g, '%20');
                 } );
 
                 // Add click event listener to open catalog in new tab
-                catalogButton.on('click', function() {
-                    var url = `../../backend/brands/catalog-open.php?catalogId=${catalog.catalog_id}`;
-                    window.open(url, '_blank');
-                });
+                catalogButton.on( 'click', function ()
+                {
+                    var url = `../../backend/brands/catalog-open.php?catalogId=${ catalog.catalog_id }`;
+                    window.open( url, '_blank' );
+                } );
 
                 // Tooltip for additional information
                 var tooltip = $( '<span>', {
@@ -453,7 +452,7 @@ const encodedLogoUrl = brand.logo_url.replace(/ /g, '%20');
                 );
 
                 //catalogContainer.append( wrapper );
-				$( '#catalogList' ).append( wrapper );
+                $( '#catalogList' ).append( wrapper );
             } );
 
             // Append the catalog container to the catalog list
@@ -463,10 +462,8 @@ const encodedLogoUrl = brand.logo_url.replace(/ /g, '%20');
         function updateBrandImages ( brand )
         {
             console.log( "Updating brand images for brand:", brand.brand_name );
-            console.log( brand );
-
             var images = brand.images;
-            console.log( images );
+
             // Check if there are images for the brand
             if ( images && images.length > 0 )
             {
@@ -551,7 +548,7 @@ const encodedLogoUrl = brand.logo_url.replace(/ /g, '%20');
             type: 'GET',
             success: function ( response )
             {
-                console.log( "Response received:", response );
+                console.log( "Response received" );
                 if ( response )
                 {
                     // Iterate over each brand object in the response
@@ -642,15 +639,12 @@ const encodedLogoUrl = brand.logo_url.replace(/ /g, '%20');
                     {
                         // Calculate the height of each slide including padding and border
                         const slideHeight = $( '#verticalCarousel .carousel-item' ).outerHeight();
-                        // console.log( 'Slide Height:', slideHeight );
 
                         // Determine the current scroll position
                         const scrollTop = $( '#verticalCarousel' ).scrollTop();
-                        // console.log( 'Scroll Top:', scrollTop );
 
                         // Calculate the index of the currently visible slide
                         const visibleSlideIndex = Math.round( scrollTop / slideHeight );
-                        // console.log( 'Visible Slide Index:', visibleSlideIndex );
 
                         // Update brand information when the carousel snaps to a new slide
                         updateBrandInformation( visibleSlideIndex );
@@ -661,15 +655,12 @@ const encodedLogoUrl = brand.logo_url.replace(/ /g, '%20');
                     {
                         // Calculate the width of each slide including padding and border
                         const slideWidth = $( '#verticalCarousel .carousel-item' ).outerWidth();
-                        console.log( 'Slide Width:', slideWidth );
 
                         // Determine the current scroll position
                         const scrollLeft = $( '#verticalCarousel' ).scrollLeft();
-                        console.log( 'Scroll Left:', scrollLeft );
 
                         // Calculate the index of the currently visible slide
                         const visibleSlideIndex = Math.round( scrollLeft / slideWidth );
-                        console.log( 'Visible Slide Index:', visibleSlideIndex );
 
                         // Update brand information when the carousel snaps to a new slide
                         updateBrandInformation( visibleSlideIndex );

@@ -172,7 +172,6 @@ ob_start();
                     {
                         if ( response.success )
                         {
-                            console.log( response );
                             // Redirect user based on their role
                             if ( response.role === 'admin' || response.role === 'marketing' )
                             {

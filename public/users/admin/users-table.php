@@ -404,7 +404,6 @@ ob_start();
                 },
                 success: function ( data )
                 {
-                    // console.log( data );
                     renderUserData( data.users, data.pagination );
                 },
                 error: function ( xhr, status, error )
@@ -487,8 +486,6 @@ ob_start();
                 } );
             }
 
-            console.log( pagination );
-
             // Update item count display
             const currentPage = parseInt( pagination.currentPage );
             const totalRows = parseInt( pagination.totalRows );
@@ -547,8 +544,6 @@ ob_start();
             $( '#userModalTitle' ).text( 'Edit User' );
             const userId = user.user_id
             $( '#userModal' ).data( 'userId', userId );
-
-            console.log( userId );
 
             $( '#firstName' ).val( user.fname );
             $( '#lastName' ).val( user.lname );
@@ -898,9 +893,6 @@ ob_start();
                 let url;
                 let actionType;
                 const userId = $( '#userModal' ).data( 'userId' );
-                console.log(userId);
-                console.log(userId !== undefined);
-                console.log(userId !== null);
 
                 if ( userId !== null)
                 {
@@ -994,10 +986,8 @@ ob_start();
             // Get user information
             const userId = $( this ).data( 'userId' );
             const userStatus = $( this ).data( 'userStatus' );
-            console.log( userStatus );
             const popupMessage = userStatus === 'active' ? 'Are you sure you want to deactivate this user?' : 'Are you sure you want to activate this user?';
             const header = userStatus === 'active' ? 'Confirm Deactivation' : 'Confirm Activation';
-            console.log( userId );
             // Call Swal.fire with confirmation parameters
             Swal.fire( {
                 title: header,
