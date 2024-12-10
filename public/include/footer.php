@@ -166,7 +166,7 @@
                 <p class="text-xl font-bold ml-8">Office Hours</p>
                 <p class="block text-sm mt-1 font-semibold  hover:text-[#F6E381]">Mondays - Fridays <u>9am - 5pm</u>
                 </p>
-                <p class="block text-sm font-bold hover:text-[#F6E381]">Sundays and Holidays <u>CLOSED</u></p>
+                <p class="block text-sm font-bold hover:text-[#F6E381]">Saturdays, Sundays and Holidays <u>CLOSED</u></p>
             </div>
         </div>
     </div>
